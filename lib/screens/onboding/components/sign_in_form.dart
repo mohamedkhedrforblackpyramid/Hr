@@ -1,0 +1,263 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:rive/rive.dart';
+
+
+import '../../../network/local/cache_helper.dart';
+import '../../../network/remote/dio_helper.dart';
+import '../../choose_list.dart';
+
+class SignInForm extends StatefulWidget {
+  const SignInForm({
+    super.key,
+  });
+
+  @override
+  State<SignInForm> createState() => _SignInFormState();
+}
+
+class _SignInFormState extends State<SignInForm> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final userNameController = TextEditingController(text: 'Test user');
+  final passwordController = TextEditingController(text: '123');
+
+  bool isShowLoading = false;
+  bool isShowConfetti = false;
+
+  late SMITrigger check;
+  late SMITrigger error;
+  late SMITrigger reset;
+
+  late SMITrigger confetti;
+
+  StateMachineController getRiveController(Artboard artboard) {
+    StateMachineController? controller =
+        StateMachineController.fromArtboard(artboard, "State Machine 1");
+    artboard.addController(controller!);
+    return controller;
+  }
+  Future? userLogin({
+    required String name,
+    required String password,
+  })
+  async {
+    setState(() {
+      isShowLoading = true;
+      isShowConfetti = true;
+    });
+    print("sending");
+    print(name);
+    print(password);
+
+    await DioHelper.postData(
+      url: "api/auth/login",
+      formData: {
+        "name": name,
+        "password": password,
+      },
+    ).then((Response response) {
+      Future.delayed(Duration(seconds: 1), () {
+        if (_formKey.currentState!.validate()) {
+          // show success
+          check.fire();
+          Future.delayed(Duration(seconds: 2), () {
+            setState(() {
+              isShowLoading = false;
+            });
+            confetti.fire();
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ChooseList()));
+          });
+
+        }
+      });
+
+      CacheHelper.saveData(key: "token", value: response.data['token']);
+
+    }).catchError((error) async {
+      print(error);
+      await Alert(
+      context: context,
+     // title: "RFLUTTER ALERT",
+      desc: "user name or password is not correct .. Try Again",
+      ).show();
+      setState(() {
+        isShowLoading = false;
+      });
+      });
+
+  }
+
+
+  void signIn(BuildContext contexto) {
+    setState(() {
+      isShowLoading = true;
+      isShowConfetti = true;
+    });
+    Future.delayed(Duration(seconds: 1), () {
+      if (_formKey.currentState!.validate()&&userNameController.text=='Test user'&&passwordController.text=='123') {
+
+        // show success
+        check.fire();
+        Future.delayed(Duration(seconds: 2), () {
+          setState(() {
+            isShowLoading = false;
+          });
+          confetti.fire();
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const ChooseList()));
+        });
+      } else {
+        error.fire();
+        Future.delayed(Duration(seconds: 2), () {
+          setState(() {
+            isShowLoading = false;
+          });
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "User Name",
+                  style: TextStyle(color: Colors.black54),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 16),
+                  child: TextFormField(
+                    controller: userNameController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "";
+                      }
+                      return null;
+                    },
+                    onSaved: (email) {},
+                    decoration: const InputDecoration(
+                        prefixIcon: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Icon(
+                        Icons.account_box_sharp,
+                        color: Colors.pinkAccent,
+                      ),
+                    )),
+                  ),
+                ),
+                const Text(
+                  "Password",
+                  style: TextStyle(color: Colors.black54),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 16),
+                  child: TextFormField(
+                    controller: passwordController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "";
+                      }
+                      return null;
+                    },
+                    onSaved: (password) {},
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                        prefixIcon: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Icon(Icons.password, color: Colors.pinkAccent),
+                    )),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 24),
+                  child: ElevatedButton.icon(
+                      onPressed: () async {
+                        signIn(context);
+                      /*  userLogin(name: userNameController.text,
+                            password: passwordController.text);*/
+
+
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFF77D8E),
+                          minimumSize: const Size(double.infinity, 56),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(25),
+                                  bottomRight: Radius.circular(25),
+                                  bottomLeft: Radius.circular(25)))),
+                      icon: const Icon(
+                        CupertinoIcons.arrow_right,
+                        color: Color(0xFFFE0037),
+                      ),
+                      label: const Text("Sign In")),
+                )
+              ],
+            )),
+        isShowLoading
+            ? CustomPositioned(
+                child: RiveAnimation.asset(
+                "assets/RiveAssets/check.riv",
+                onInit: (artboard) {
+                  StateMachineController controller =
+                      getRiveController(artboard);
+                  check = controller.findSMI("Check") as SMITrigger;
+                  error = controller.findSMI("Error") as SMITrigger;
+                  reset = controller.findSMI("Reset") as SMITrigger;
+                },
+              ))
+            : const SizedBox(),
+        isShowConfetti
+            ? CustomPositioned(
+                child: Transform.scale(
+                scale: 6,
+                child: RiveAnimation.asset(
+                  "assets/RiveAssets/confetti.riv",
+                  onInit: (artboard) {
+                    StateMachineController controller =
+                        getRiveController(artboard);
+                    confetti =
+                        controller.findSMI("Trigger explosion") as SMITrigger;
+                  },
+                ),
+              ))
+            : const SizedBox()
+      ],
+    );
+  }
+}
+
+class CustomPositioned extends StatelessWidget {
+  const CustomPositioned({super.key, required this.child, this.size = 100});
+  final Widget child;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Column(
+        children: [
+          Spacer(),
+          SizedBox(
+            height: size,
+            width: size,
+            child: child,
+          ),
+          Spacer(flex: 2),
+        ],
+      ),
+    );
+  }
+}
+

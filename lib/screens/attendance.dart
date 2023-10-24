@@ -1,0 +1,332 @@
+import 'dart:ui';
+
+import 'package:app_settings/app_settings.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:gradient_slide_to_act/gradient_slide_to_act.dart';
+import 'package:rive/rive.dart';
+
+import '../network/local/cache_helper.dart';
+import '../network/remote/dio_helper.dart';
+import 'onboding/onboding_screen.dart';
+
+class Attendance extends StatefulWidget  {
+  const Attendance({super.key});
+
+  @override
+  State<Attendance> createState() => _AttendanceState();
+}
+
+class _AttendanceState extends State<Attendance>with WidgetsBindingObserver {
+  double lat = 0.0;
+  double long = 0.0;
+  bool shouldPop = false;
+  bool isSignInDialogShown = false;
+  late RiveAnimationController _btnAnimationController;
+  String? _currentAddress;
+  Position? _currentPosition;
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+        _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+        '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<Position> _determinePosition() async {
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      AppSettings.openAppSettings(type: AppSettingsType.location);
+      if(serviceEnabled == false){
+        print(serviceEnabled);
+      }else{
+        setState(() {
+
+        });
+      }
+
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+  Future<Position> _determinePositionNoSetting() async {
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      if(serviceEnabled == false){
+        setState(() {
+
+        });
+        print(serviceEnabled);
+      }else{
+        setState(() {
+
+        });
+      }
+
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
+
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    _determinePositionNoSetting();
+
+    _btnAnimationController = OneShotAnimation("active", autoplay: false);
+    super.initState();
+  }
+
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.inactive:
+        print('appLifeCycleState inactive');
+        break;
+      case AppLifecycleState.resumed:
+        setState(() {
+          _determinePositionNoSetting();
+          print(serviceEnabled);
+
+        });
+        break;
+      case AppLifecycleState.paused:
+        print('appLifeCycleState paused');
+        setState(() {
+          serviceEnabled = true;
+        });
+        break;
+
+      case AppLifecycleState.detached:
+        print('appLifeCycleState paused');
+        break;
+      case AppLifecycleState.hidden:
+        print('appLifeCycleState paused');
+        break;
+    }
+  }
+
+
+
+  bool serviceEnabled = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        return shouldPop;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+            backgroundColor: Color(0xffb098a4),
+          leading: IconButton(
+            onPressed: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const OnboardingScreen()));
+            },
+            icon: Icon(Icons.logout,
+              color: Colors.indigo,
+              size: 30,
+            ),
+          ),
+        ),
+          body: Stack(
+            children: [
+              Positioned(
+                  width: MediaQuery.of(context).size.width * 1.7,
+                  bottom: 200,
+                  left: 100,
+                  child: Image.asset('assets/Backgrounds/Spline.png')),
+              Positioned.fill(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
+                  )),
+              const RiveAnimation.asset('assets/RiveAssets/shapes.riv'),
+              Positioned.fill(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
+                    child: const SizedBox(),
+                  )),
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 240),
+                top: isSignInDialogShown ? -50 : 0,
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        serviceEnabled==false?
+                        Container(
+                          child: TextButton(
+                              onPressed:(){
+                                setState(() {});
+                                print(serviceEnabled);
+                                print('gggggggg');
+                                _determinePosition();
+                                print('Sevice = ${serviceEnabled}');
+                              } ,
+                              child: Text('Open Location',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+
+                          ),
+                          decoration: BoxDecoration(
+                            color:Color(0xff770737),
+                            borderRadius: BorderRadius.circular(30)
+                          ),
+                          width: MediaQuery.sizeOf(context).width/1.5,
+                        ):
+                        GradientSlideToAct(
+                          width: 300,
+                          textStyle: TextStyle(color: Colors.white,fontSize: 15),
+                          backgroundColor: Color(0Xff172663),
+                          onSubmit: () async {
+                            print("hhhhhhhhhhhhhhhhhhhhhhhh");
+                            await _getCurrentPosition();
+                            print(_currentPosition?.latitude);
+                            print("hhhhhhhhhhhhhhhhhhhhhhhh");
+
+                            print(CacheHelper.getData(key: 'token'));
+                          },
+
+                        ),
+                        SizedBox(height: 40,),
+                        serviceEnabled==false?
+                            SizedBox():
+                        GradientSlideToAct(
+                          text: 'Slide to Confirm Departure',
+                          width: 300,
+                          textStyle: TextStyle(color: Colors.white,fontSize: 15),
+                          backgroundColor: Color(0Xff133337),
+                          onSubmit: (){
+                            debugPrint("Submitted!");
+                          },
+                        )
+
+                      ]),
+                ),
+              )
+            ],
+          )),
+    );
+  }
+}
+
+
+
+
