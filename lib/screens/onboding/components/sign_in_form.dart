@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
@@ -182,10 +181,9 @@ class _SignInFormState extends State<SignInForm> {
                   padding: const EdgeInsets.only(top: 8.0, bottom: 24),
                   child: ElevatedButton.icon(
                       onPressed: () async {
-                        signIn(context);
-                      /*  userLogin(name: userNameController.text,
-                            password: passwordController.text);*/
-
+                   //     signIn(context);
+                        userLogin(name: userNameController.text,
+                            password: passwordController.text);
 
                       },
                       style: ElevatedButton.styleFrom(

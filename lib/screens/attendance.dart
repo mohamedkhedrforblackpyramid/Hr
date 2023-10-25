@@ -298,12 +298,19 @@ class _AttendanceState extends State<Attendance>with WidgetsBindingObserver {
                           onSubmit: () async {
                             print("hhhhhhhhhhhhhhhhhhhhhhhh");
                             await _getCurrentPosition();
+                            await DioHelper.postData(
+                              url: "api/organizations/1/attend",
+                              formData: {
+                                "longitude": 140,
+                                "latitude": 100,
+                              },
+                            ).then((value) => print(value.toString()));
                             print(_currentPosition?.latitude);
                             print("hhhhhhhhhhhhhhhhhhhhhhhh");
 
                             print(CacheHelper.getData(key: 'token'));
                           },
-
+                          text: 'Slide to Confirm Attendance',
                         ),
                         SizedBox(height: 40,),
                         serviceEnabled==false?
@@ -313,9 +320,16 @@ class _AttendanceState extends State<Attendance>with WidgetsBindingObserver {
                           width: 300,
                           textStyle: TextStyle(color: Colors.white,fontSize: 15),
                           backgroundColor: Color(0Xff133337),
-                          onSubmit: (){
-                            debugPrint("Submitted!");
-                          },
+                          onSubmit: () async {
+                            print("hhhhhhhhhhhhhhhhhhhhhhhh");
+                            await _getCurrentPosition();
+                            await DioHelper.postData(
+                              url: "api/organizations/1/leave",
+                              formData: {
+                                "longitude": 140,
+                                "latitude": 100,
+                              },
+                            ).then((value) => print(value.toString()));                          },
                         )
 
                       ]),

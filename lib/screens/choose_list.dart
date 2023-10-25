@@ -80,11 +80,11 @@ class _ChooseListState extends State<ChooseList> {
                                             MaterialPageRoute(builder: (context) => const RequestPermission()));
                                       },
                                     ),
-                                    Text("Permission Request",
+                                    Text("Permit",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 20
+                                        fontSize: 22
                                       ),
                                     ),
 
@@ -105,10 +105,10 @@ class _ChooseListState extends State<ChooseList> {
                                             MaterialPageRoute(builder: (context) => const HolidayPermission()));
                                       },
                                     ),
-                                    Text("Vacation Request",
+                                    Text("Excuse",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20,
+                                          fontSize: 22,
                                         color: Colors.white,
 
                                       ),
@@ -139,7 +139,7 @@ class _ChooseListState extends State<ChooseList> {
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20
+                                          fontSize: 22
                                       ),
                                     ),
 
@@ -159,7 +159,7 @@ class _ChooseListState extends State<ChooseList> {
                                     Text("Profile",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 20,
+                                        fontSize: 22,
                                         color: Colors.white,
 
                                       ),
