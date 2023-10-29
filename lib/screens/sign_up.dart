@@ -26,7 +26,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool shouldPop = false;
-  String valueClosed = '0';
+  String valueClosed = '1';
   bool isOpen = false;
   File?  image;
 
