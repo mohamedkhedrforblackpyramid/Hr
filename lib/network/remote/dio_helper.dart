@@ -7,11 +7,15 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
+          connectTimeout: Duration(
+            seconds: 20
+          ),
           receiveDataWhenStatusError: true,
           //  baseUrl: 'http://192.168.1.135:8000/')
           //   baseUrl: 'http://192.168.1.135:8000/')
          // baseUrl: 'http://192.168.1.142:8000/'),
            baseUrl: 'http://192.168.1.142:8000/'),
+
     );
     /*   (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {

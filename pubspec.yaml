@@ -47,6 +47,10 @@ dependencies:
   app_settings: ^5.1.1
   image_picker: ^1.0.4
   flutter_easyloading: ^3.0.5
+  table_calendar: ^3.0.9
+  flutter_calendar_carousel: ^2.4.2
+
+
 
 
 

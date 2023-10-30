@@ -2,7 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+import '../test.dart';
 
 
 class RequestPermission extends StatefulWidget {
@@ -69,9 +73,27 @@ class _RequestPermissionState extends State<RequestPermission> {
                         Theme(
                           data: Theme.of(context).copyWith(splashColor: Colors.transparent),
                           child: TextField(
+
                             autofocus: false,
                             style: TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
                             decoration: InputDecoration(
+                              suffix: IconButton(
+                                icon: Icon(Icons.calendar_month,
+                                  color: Colors.black,
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    Alert(
+                                      content: Container(
+                                          child: Test(),
+                                      ),
+                                      context: context,
+                                      // title: "RFLUTTER ALERT",
+                                    ).show();
+                                  });
+
+                                }
+                              ),
                               filled: true,
                               fillColor: Color(0xFCED3FF),
                               label: Text(
