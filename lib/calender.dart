@@ -4,21 +4,24 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
+import 'package:hr/screens/request_permission.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 
 DateTime _currentDate = DateTime.now();
 DateTime _currentDate2 = DateTime.now();
-
-class Test extends StatefulWidget {
-  DateTime? dat = _currentDate;
-
+String dateToSend = DateFormat('MM/dd/yyyy').format(_currentDate2);
+class Calender extends StatefulWidget {
+  Function onSubmit;
+ Calender({
+   required this.onSubmit
+ });
 
   @override
-  _TestState createState() => new _TestState();
+  _CalenderState createState() => new _CalenderState();
 }
 
-class _TestState extends State<Test> {
+class _CalenderState extends State<Calender> {
 
   String _currentMonth = DateFormat.yMMM().format(DateTime.now());
   DateTime _targetDateTime = DateTime.now();
@@ -38,8 +41,6 @@ class _TestState extends State<Test> {
 
   @override
   void initState() {
-
-
     super.initState();
   }
 
@@ -53,9 +54,8 @@ class _TestState extends State<Test> {
       onDayPressed: (date, events) {
         this.setState(() => _currentDate2 = date);
         events.forEach((event) => print(event.title));
-        print(_currentDate2);
-        widget.dat = _currentDate ;
-        print(widget.dat);
+        print(dateToSend);
+
       },
       daysHaveCircularBorder: true,
       showOnlyCurrentMonthDate: false,
@@ -132,6 +132,16 @@ class _TestState extends State<Test> {
                           _targetDateTime.year, _targetDateTime.month - 1);
                       _currentMonth =
                           DateFormat.yMMM().format(_targetDateTime);
+                    });
+                  },
+                ),
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    widget.onSubmit(dateToSend.toString());
+                    Navigator.pop(context);
+                    setState(() {
+
                     });
                   },
                 ),

@@ -2,15 +2,16 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hr/screens/test.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../test.dart';
+import '../calender.dart';
 
 
 class RequestPermission extends StatefulWidget {
-  const RequestPermission({super.key});
+
 
   @override
   State<RequestPermission> createState() => _RequestPermissionState();
@@ -18,9 +19,11 @@ class RequestPermission extends StatefulWidget {
 
 class _RequestPermissionState extends State<RequestPermission> {
   bool shouldPop = false;
-
   bool isSignInDialogShown = false;
   late RiveAnimationController _btnAnimationController;
+  var dateController = TextEditingController();
+  var timeFromController = TextEditingController();
+  var timeToController = TextEditingController();
 
   @override
   void initState() {
@@ -60,187 +63,238 @@ class _RequestPermissionState extends State<RequestPermission> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 30),
-                          child: Text("Permission Request",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.grey
-                            ),
-                          ),
-                        ),
-                        Theme(
-                          data: Theme.of(context).copyWith(splashColor: Colors.transparent),
-                          child: TextField(
-
-                            autofocus: false,
-                            style: TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
-                            decoration: InputDecoration(
-                              suffix: IconButton(
-                                icon: Icon(Icons.calendar_month,
-                                  color: Colors.black,
-                                ),
-                                onPressed: (){
-                                  setState(() {
-                                    Alert(
-                                      content: Container(
-                                          child: Test(),
-                                      ),
-                                      context: context,
-                                      // title: "RFLUTTER ALERT",
-                                    ).show();
-                                  });
-
-                                }
-                              ),
-                              filled: true,
-                              fillColor: Color(0xFCED3FF),
-                              label: Text(
-                                'Date',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                                ),
-                              ),
-                              contentPadding:
-                              const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(25.7),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(25.7),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Theme(
-                            data: Theme.of(context).copyWith(splashColor: Colors.transparent),
-                            child: TextField(
-                              autofocus: false,
-                              style: TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Color(0xFCED3FF),
-                                label: Text(
-                                  'Time From',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white
-                                  ),
-                                ),
-                                contentPadding:
-                                const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(25.7),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(25.7),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Theme(
-                            data: Theme.of(context).copyWith(splashColor: Colors.transparent),
-                            child: TextField(
-                              autofocus: false,
-                              style: TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Color(0xFCED3FF),
-                                label: Text(
-                                  'Time To',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white
-                                  ),
-                                ),
-                                contentPadding:
-                                const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(25.7),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(25.7),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Theme(
-                            data: Theme.of(context).copyWith(splashColor: Colors.transparent),
-                            child: TextField(
-                              autofocus: false,
-                              style: TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Color(0xFCED3FF),
-                                label: Text(
-                                  'Notes (Optional)',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white
-                                  ),
-                                ),
-                                contentPadding:
-                                const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(25.7),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(25.7),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 150,
-                          height: 100,
+                        Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0, bottom: 24),
-                            child: ElevatedButton.icon(
-                                onPressed: () {
-                                  Navigator.pop(context);
+                            padding: const EdgeInsets.symmetric(vertical: 30),
+                            child: Text("Permission Request",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.grey
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Theme(
+                            data: Theme.of(context).copyWith(splashColor: Colors.transparent),
+                            child: TextField(
+                              controller: dateController ,
+                              autofocus: false,
+                              style: TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                              decoration: InputDecoration(
+                                suffix: IconButton(
+                                  icon: Icon(Icons.calendar_month,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: (){
+                                    setState(() {
+                                      Alert(
+                                        content: Container(
+                                          width: 100,
+                                            child: Calender(
+                                              onSubmit: (data) {
+                                                print("Heeeeeeloooooo");
+                                                print(data);
+                                                print("Heeeeeeloooooo");
+                                                dateController.text = data;
+                                                setState(() {
 
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF9397B7),
-                                    minimumSize: const Size(double.infinity, 56),
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(25),
-                                            bottomRight: Radius.circular(25),
-                                            bottomLeft: Radius.circular(25)))),
-                                icon: const Icon(
-                                  CupertinoIcons.arrow_right,
-                                  color: Color(0xFFFE0037),
+                                                });
+                                              }
+                                            ),
+                                        ),
+                                        context: context,
+                                        // title: "RFLUTTER ALERT",
+                                      ).show();
+
+                                    });
+
+                                  }
                                 ),
-                                label: const Text("Send")),
+                                filled: true,
+                                fillColor: Color(0xFCED3FF),
+                                label: Text(
+                                  'Date',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white
+                                  ),
+                                ),
+                                contentPadding:
+                                const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(25.7),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(25.7),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Theme(
+                              data: Theme.of(context).copyWith(splashColor: Colors.transparent),
+                              child: TextField(
+
+                                autofocus: false,
+                                style: TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                                decoration: InputDecoration(
+                                  suffix: IconButton(
+                                      icon: Icon(Icons.more_time_outlined,
+                                        color: Colors.black,
+                                      ),
+                                      onPressed: (){
+                                        setState(() {
+                                          Alert(
+                                            content: Container(
+                                              width: 80,
+                                              height: 80,
+                                              child: TimePicker(
+                                                  onPressed: (data) {
+                                                    print("Heeeeeeloooooo");
+                                                    print(data);
+                                                    print("Heeeeeeloooooo");
+                                                    timeFromController.text = data;
+                                                    setState(() {
+
+                                                    });
+                                                  }
+                                              ),
+                                            ),
+                                            context: context,
+                                            // title: "RFLUTTER ALERT",
+                                          ).show();
+
+                                        });
+
+                                      }
+                                  ),
+                                  filled: true,
+                                  fillColor: Color(0xFCED3FF),
+                                  label: Text(
+                                    'Time From',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white
+                                    ),
+                                  ),
+                                  contentPadding:
+                                  const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(25.7),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(25.7),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Theme(
+                              data: Theme.of(context).copyWith(splashColor: Colors.transparent),
+                              child: TextField(
+                                autofocus: false,
+                                style: TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Color(0xFCED3FF),
+                                  label: Text(
+                                    'Time To',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white
+                                    ),
+                                  ),
+                                  contentPadding:
+                                  const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(25.7),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(25.7),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Theme(
+                              data: Theme.of(context).copyWith(splashColor: Colors.transparent),
+                              child: TextField(
+                                autofocus: false,
+                                style: TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Color(0xFCED3FF),
+                                  label: Text(
+                                    'Notes (Optional)',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white
+                                    ),
+                                  ),
+                                  contentPadding:
+                                  const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(25.7),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white),
+                                    borderRadius: BorderRadius.circular(25.7),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            width: 150,
+                            height: 100,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8.0, bottom: 24),
+                              child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF9397B7),
+                                      minimumSize: const Size(double.infinity, 56),
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(25),
+                                              bottomRight: Radius.circular(25),
+                                              bottomLeft: Radius.circular(25)))),
+                                  icon: const Icon(
+                                    CupertinoIcons.arrow_right,
+                                    color: Color(0xFFFE0037),
+                                  ),
+                                  label: const Text("Send")),
+                            ),
                           ),
                         )
 
-
                       ]),
-
-
-
                       ),
                 ),
               ),

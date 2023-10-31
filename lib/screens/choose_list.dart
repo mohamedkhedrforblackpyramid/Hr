@@ -77,7 +77,7 @@ class _ChooseListState extends State<ChooseList> {
                                       ),
                                       onTap: (){
                                         Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) => const RequestPermission()));
+                                            MaterialPageRoute(builder: (context) =>  RequestPermission()));
                                       },
                                     ),
                                     Text("Permit",
