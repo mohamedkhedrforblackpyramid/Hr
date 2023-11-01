@@ -477,6 +477,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                     setState(() {
                                     });
                                     clickdepar = true;
+                                    loadingShowAttend = false;
+
                                     Alert(
                                       context: context,
                                       // title: "RFLUTTER ALERT",

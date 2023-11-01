@@ -218,7 +218,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                             Expanded(
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                    const EdgeInsets.symmetric(vertical: 10,),
                                 child: Theme(
                                   data: Theme.of(context).copyWith(
                                       splashColor: Colors.transparent),
@@ -265,9 +265,13 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                 icon: const Icon(Icons.add,
                                   color: Colors.black,
                                   size: 30,
+
                                 ),
                                 elevation: 16,
-                                style: const TextStyle(color: Colors.deepPurple),
+                                style: const TextStyle(color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                                ),
                                 underline: Container(
                                   color: Colors.deepPurpleAccent,
                                 ),
