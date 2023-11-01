@@ -10,7 +10,7 @@ import 'package:intl/intl.dart' show DateFormat;
 
 DateTime _currentDate = DateTime.now();
 DateTime _currentDate2 = DateTime.now();
-String dateToSend = DateFormat('MM/dd/yyyy').format(_currentDate2);
+String? dateToSend;
 class Calender extends StatefulWidget {
   Function onSubmit;
  Calender({
@@ -41,6 +41,8 @@ class _CalenderState extends State<Calender> {
 
   @override
   void initState() {
+    dateToSend =  DateFormat('MM/dd/yyyy').format(_currentDate2);
+
     super.initState();
   }
 
@@ -54,6 +56,7 @@ class _CalenderState extends State<Calender> {
       onDayPressed: (date, events) {
         this.setState(() => _currentDate2 = date);
         events.forEach((event) => print(event.title));
+        dateToSend =  DateFormat('MM/dd/yyyy').format(_currentDate2);
         print(dateToSend);
 
       },
@@ -140,9 +143,7 @@ class _CalenderState extends State<Calender> {
                   onPressed: () {
                     widget.onSubmit(dateToSend.toString());
                     Navigator.pop(context);
-                    setState(() {
-
-                    });
+                    
                   },
                 ),
                 TextButton(

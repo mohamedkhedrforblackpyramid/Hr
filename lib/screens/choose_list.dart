@@ -80,7 +80,7 @@ class _ChooseListState extends State<ChooseList> {
                                             MaterialPageRoute(builder: (context) =>  RequestPermission()));
                                       },
                                     ),
-                                    Text("Permit",
+                                    Text("Excuse",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -102,10 +102,10 @@ class _ChooseListState extends State<ChooseList> {
                                         ),
                                       onTap: (){
                                         Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) => const HolidayPermission()));
+                                            MaterialPageRoute(builder: (context) =>  HolidayPermission()));
                                       },
                                     ),
-                                    Text("Excuse",
+                                    Text("Vacation",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 22,
