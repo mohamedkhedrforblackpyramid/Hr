@@ -261,18 +261,22 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: DropdownButton<String>(
-                                value: dropdownValue,
-                                icon: const Icon(Icons.add),
+                                //value: dropdownValue,
+                                icon: const Icon(Icons.add,
+                                  color: Colors.black,
+                                  size: 30,
+                                ),
                                 elevation: 16,
                                 style: const TextStyle(color: Colors.deepPurple),
                                 underline: Container(
-                                  height: 2,
                                   color: Colors.deepPurpleAccent,
                                 ),
                                 onChanged: (String? value) {
                                   // This is called when the user selects an item.
                                   setState(() {
                                     dropdownValue = value!;
+                                    timeToController.text = dropdownValue.toString();
+
                                   });
                                 },
                                 items: list.map<DropdownMenuItem<String>>(

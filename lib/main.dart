@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hr/screens/attendance.dart';
+import 'package:hr/screens/choose_list.dart';
 import 'package:hr/screens/onboding/onboding_screen.dart';
+import 'package:hr/screens/request_permission.dart';
 import 'package:hr/screens/test.dart';
 
 import 'network/local/cache_helper.dart';
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
           errorBorder: defaultInputBorder,
         ),
       ),
-      home: OnboardingScreen(),
+      home: ChooseList(),
     );
   }
 }
