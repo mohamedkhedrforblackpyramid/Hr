@@ -5,7 +5,7 @@ import 'package:hr/screens/attendance.dart';
 import 'package:hr/screens/choose_list.dart';
 import 'package:hr/screens/onboding/onboding_screen.dart';
 import 'package:hr/screens/request_permission.dart';
-import 'package:hr/screens/test.dart';
+import 'package:hr/screens/timepicker.dart';
 
 import 'network/local/cache_helper.dart';
 import 'network/remote/dio_helper.dart';
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
           errorBorder: defaultInputBorder,
         ),
       ),
-      home: ChooseList(),
+      home: OnboardingScreen(),
     );
   }
 }

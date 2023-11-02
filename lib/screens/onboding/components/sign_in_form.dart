@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
@@ -19,13 +21,16 @@ class SignInForm extends StatefulWidget {
 }
 
 class _SignInFormState extends State<SignInForm> {
+  bool? _jailbroken;
+  bool? _developerMode;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final userNameController = TextEditingController(text: 'Test user');
   final passwordController = TextEditingController(text: '123');
 
   bool isShowLoading = false;
   bool isShowConfetti = false;
-
+late  bool jailbroken;
+late  bool developerMode;
   late SMITrigger check;
   late SMITrigger error;
   late SMITrigger reset;
@@ -89,7 +94,32 @@ class _SignInFormState extends State<SignInForm> {
       });
 
   }
+@override
+  void initState() {
+  initPlatformState();
+    super.initState();
+  }
+  Future<void> initPlatformState() async {
 
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      jailbroken = await FlutterJailbreakDetection.jailbroken;
+      developerMode = await FlutterJailbreakDetection.developerMode;
+    } on PlatformException {
+      jailbroken = true;
+      developerMode = false;
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _jailbroken = jailbroken;
+      _developerMode = developerMode;
+    });
+  }
 
   void signIn(BuildContext contexto) {
     setState(() {
@@ -182,8 +212,16 @@ class _SignInFormState extends State<SignInForm> {
                   child: ElevatedButton.icon(
                       onPressed: () async {
                    //     signIn(context);
-                        userLogin(name: userNameController.text,
-                            password: passwordController.text);
+                        if(developerMode == false) {
+                          userLogin(name: userNameController.text,
+                              password: passwordController.text);
+                        }else{
+                        await Alert(
+                          context: context,
+                          // title: "RFLUTTER ALERT",
+                          desc: "Close Developer Mode",
+                        ).show();
+                        }
 
                       },
                       style: ElevatedButton.styleFrom(

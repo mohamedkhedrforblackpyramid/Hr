@@ -60,7 +60,7 @@ class _TimePickerState extends State<TimePicker> {
                   cancelText: 'Cancel',
                   confirmText: 'OK',
                   pressType: PressType.singlePress,
-                  timeFormat: 'jm',
+                  timeFormat: 'Hm',
                   iconSize: 30,
 
                   // Customize your time widget

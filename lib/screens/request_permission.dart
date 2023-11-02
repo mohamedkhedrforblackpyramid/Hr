@@ -2,12 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hr/screens/test.dart';
+import 'package:hr/screens/timepicker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../calender.dart';
+import '../network/remote/dio_helper.dart';
 
 class RequestPermission extends StatefulWidget {
   @override
@@ -21,6 +22,7 @@ class _RequestPermissionState extends State<RequestPermission> {
   var dateController = TextEditingController();
   var timeFromController = TextEditingController();
   var timeToController = TextEditingController();
+  var notesController = TextEditingController();
 
   @override
   void initState() {
@@ -278,6 +280,7 @@ class _RequestPermissionState extends State<RequestPermission> {
                               data: Theme.of(context)
                                   .copyWith(splashColor: Colors.transparent),
                               child: TextField(
+                                controller: notesController,
                                 autofocus: false,
                                 style: TextStyle(
                                     fontSize: 22.0, color: Color(0xFFbdc6cf)),
@@ -314,7 +317,7 @@ class _RequestPermissionState extends State<RequestPermission> {
                                   const EdgeInsets.only(top: 8.0, bottom: 24),
                               child: ElevatedButton.icon(
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    sendExcuse();
                                   },
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: const Color(0xFF9397B7),
@@ -342,4 +345,18 @@ class _RequestPermissionState extends State<RequestPermission> {
           ],
         ));
   }
+
+  sendExcuse()async{
+    await DioHelper.postData(
+      url: "",
+      formData: {
+        "datefrom": '${dateController}${timeFromController}',
+        "dateto": '${dateController}${timeToController}',
+        "notes": notesController,
+      },
+    );
+    print(dateController.text +" "+ timeFromController.text);
+
+  }
+
 }

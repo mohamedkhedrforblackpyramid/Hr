@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hr/screens/test.dart';
+import 'package:hr/screens/timepicker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -15,7 +15,11 @@ class HolidayPermission extends StatefulWidget {
 }
 
 class _HolidayPermissionState extends State<HolidayPermission> {
-  List<String> list = <String>['ORDINARY', 'CASUAL', 'SICK',];
+  List<String> list = <String>[
+    'ORDINARY',
+    'CASUAL',
+    'SICK',
+  ];
   String? dropdownValue;
   bool shouldPop = false;
   bool isSignInDialogShown = false;
@@ -217,8 +221,9 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10,),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                ),
                                 child: Theme(
                                   data: Theme.of(context).copyWith(
                                       splashColor: Colors.transparent),
@@ -233,10 +238,11 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                       filled: true,
                                       fillColor: Color(0xFCED3FF),
                                       label: Text(
-                                        'Excuse Type',
+                                        'Vacataion Type',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white),
+                                            color: Colors.white,
+                                            fontSize: 20),
                                       ),
                                       contentPadding: const EdgeInsets.only(
                                           left: 14.0, bottom: 8.0, top: 8.0),
@@ -257,21 +263,21 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                 ),
                               ),
                             ),
-
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: DropdownButton<String>(
+                                dropdownColor:  Color(0xffFAACB4),
                                 //value: dropdownValue,
-                                icon: const Icon(Icons.add,
+                                icon: const Icon(
+                                  Icons.add,
                                   color: Colors.black,
                                   size: 30,
-
                                 ),
                                 elevation: 16,
-                                style: const TextStyle(color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
-                                ),
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
                                 underline: Container(
                                   color: Colors.deepPurpleAccent,
                                 ),
@@ -279,8 +285,8 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                   // This is called when the user selects an item.
                                   setState(() {
                                     dropdownValue = value!;
-                                    timeToController.text = dropdownValue.toString();
-
+                                    timeToController.text =
+                                        dropdownValue.toString();
                                   });
                                 },
                                 items: list.map<DropdownMenuItem<String>>(
