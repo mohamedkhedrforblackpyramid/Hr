@@ -68,7 +68,7 @@ class _CalenderState extends State<Calender> {
       thisMonthDayBorderColor: Colors.grey,
       weekFormat: false,
 //      firstDayOfWeek: 4,
-      height: 420.0,
+      height: 300.0,
       selectedDateTime: _currentDate2,
       targetDateTime: _targetDateTime,
       customGridViewPhysics: NeverScrollableScrollPhysics(),
@@ -139,14 +139,6 @@ class _CalenderState extends State<Calender> {
                   },
                 ),
                 TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    widget.onSubmit(dateToSend.toString());
-                    Navigator.pop(context);
-                    
-                  },
-                ),
-                TextButton(
                   child: Text('NEXT'),
                   onPressed: () {
                     setState(() {
@@ -163,6 +155,29 @@ class _CalenderState extends State<Calender> {
             //  margin: EdgeInsets.symmetric(horizontal: 16.0),
               child: _calendarCarouselNoHeader,
             ), //
+            Center(
+              child: Container(
+                width: 100,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                decoration: BoxDecoration(
+                  color:Color(0xff1A6293),
+                  borderRadius: BorderRadius.circular(30)
+
+                ),
+                child: TextButton(
+                    onPressed: (){
+                  widget.onSubmit(dateToSend.toString());
+                  Navigator.pop(context);
+
+                },
+                    child: Text('OK',
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white
+                      ),
+                    )),
+              ),
+            )
           ],
         );
   }

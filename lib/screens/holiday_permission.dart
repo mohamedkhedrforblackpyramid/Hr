@@ -130,20 +130,26 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    Alert(
-                                      content: Container(
-                                        width: 100,
-                                        child: Calender(onSubmit: (data) {
-                                          print("Heeeeeeloooooo");
-                                          print(data);
-                                          print("Heeeeeeloooooo");
-                                          dateFromController.text = data;
-                                          setState(() {});
-                                        }),
-                                      ),
+                                    showDialog(
                                       context: context,
-                                      // title: "RFLUTTER ALERT",
-                                    ).show();
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+
+                                          //  backgroundColor: Color(0xff93D0FC),
+                                          content: Container(
+                                            width: 500,
+                                            height: 450,
+                                            child: Calender(onSubmit: (data) {
+                                              print("Heeeeeeloooooo");
+                                              print(data);
+                                              print("Heeeeeeloooooo");
+                                              dateFromController.text = data;
+                                              setState(() {});
+                                            }),
+                                          ),
+                                        );
+                                      },
+                                    );
                                   });
                                 }),
                           ],
@@ -199,20 +205,26 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    Alert(
-                                      content: Container(
-                                        width: 100,
-                                        child: Calender(onSubmit: (data) {
-                                          print("Heeeeeeloooooo");
-                                          print(data);
-                                          print("Heeeeeeloooooo");
-                                          dateToController.text = data;
-                                          setState(() {});
-                                        }),
-                                      ),
+                                    showDialog(
                                       context: context,
-                                      // title: "RFLUTTER ALERT",
-                                    ).show();
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+
+                                          //  backgroundColor: Color(0xff93D0FC),
+                                          content: Container(
+                                            width: 500,
+                                            height: 450,
+                                            child: Calender(onSubmit: (data) {
+                                              print("Heeeeeeloooooo");
+                                              print(data);
+                                              print("Heeeeeeloooooo");
+                                              dateToController.text = data;
+                                              setState(() {});
+                                            }),
+                                          ),
+                                        );
+                                      },
+                                    );
                                   });
                                 }),
                           ],

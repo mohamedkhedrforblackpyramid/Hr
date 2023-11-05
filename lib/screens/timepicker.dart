@@ -25,61 +25,41 @@ class _TimePickerState extends State<TimePicker> {
   @override
   Widget build(BuildContext context) {
     return 
-         Container(
-           height: 150,
-           child: Stack(
-            children: [
-              Positioned(
-                  width: MediaQuery.of(context).size.width * 1.7,
-                  bottom: 200,
-                  left: 100,
-                  child: Image.asset('assets/Backgrounds/Spline.png')),
-              Positioned.fill(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-                  )),
-              const RiveAnimation.asset('assets/RiveAssets/shapes.riv'),
-              Positioned.fill(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-                    child: const SizedBox(),
-                  )),
-              Positioned(
-                left: 30,
-                top: 60,
-                child: TimePickerSpinnerPopUp(
-                  mode: CupertinoDatePickerMode.time,
-                  minuteInterval: 1,
-                  textStyle: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+         Positioned(
+           left: 30,
+           top: 60,
+           child: TimePickerSpinnerPopUp(
 
-                  ),
+             mode: CupertinoDatePickerMode.time,
+             minuteInterval: 1,
+             textStyle: TextStyle(
+               fontSize: 50,
+               fontWeight: FontWeight.bold,
+               color: Colors.blueAccent
 
-                  padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                  cancelText: 'Cancel',
-                  confirmText: 'OK',
-                  pressType: PressType.singlePress,
-                  timeFormat: 'Hm',
-                  iconSize: 30,
+             ),
 
-                  // Customize your time widget
-                  // timeWidgetBuilder: (dateTime) {},
-                  onChange: (dateTime) {
-                    setState(() {
-                      dateToSend =  DateFormat('hh:mm').format(dateTime);
-                      print(dateToSend);
-                      widget.onPressed(dateToSend.toString());
-
-                    });
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ],
+           //  padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+             cancelText: 'Cancel',
+             confirmText: 'OK',
+             pressType: PressType.singlePress,
+             timeFormat: 'Hm',
+             iconSize: 30,
 
 
-    ),
+             // Customize your time widget
+             // timeWidgetBuilder: (dateTime) {},
+             onChange: (dateTime) {
+
+               setState(() {
+                 dateToSend =  DateFormat('Hm').format(dateTime);
+                 print(dateToSend);
+                 widget.onPressed(dateToSend.toString());
+
+               });
+               Navigator.pop(context);
+             },
+           ),
          );
   }
 }

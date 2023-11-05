@@ -78,16 +78,18 @@ class _RequestPermissionState extends State<RequestPermission> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Theme(
-                                  data: Theme.of(context)
-                                      .copyWith(splashColor: Colors.transparent),
+                                  data: Theme.of(context).copyWith(
+                                      splashColor: Colors.transparent),
                                   child: TextField(
                                     enabled: false,
                                     controller: dateController,
                                     autofocus: false,
                                     style: TextStyle(
-                                        fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                                        fontSize: 22.0,
+                                        color: Color(0xFFbdc6cf)),
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Color(0xFCED3FF),
@@ -100,12 +102,16 @@ class _RequestPermissionState extends State<RequestPermission> {
                                       contentPadding: const EdgeInsets.only(
                                           left: 14.0, bottom: 8.0, top: 8.0),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(25.7),
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                        borderRadius:
+                                            BorderRadius.circular(25.7),
                                       ),
                                       enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(25.7),
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                        borderRadius:
+                                            BorderRadius.circular(25.7),
                                       ),
                                     ),
                                   ),
@@ -119,20 +125,26 @@ class _RequestPermissionState extends State<RequestPermission> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    Alert(
-                                      content: Container(
-                                        width: 100,
-                                        child: Calender(onSubmit: (data) {
-                                          print("Heeeeeeloooooo");
-                                          print(data);
-                                          print("Heeeeeeloooooo");
-                                          dateController.text = data;
-                                          setState(() {});
-                                        }),
-                                      ),
+                                    showDialog(
                                       context: context,
-                                      // title: "RFLUTTER ALERT",
-                                    ).show();
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+
+                                          //  backgroundColor: Color(0xff93D0FC),
+                                          content: Container(
+                                            width: 500,
+                                            height: 450,
+                                            child: Calender(onSubmit: (data) {
+                                              print("Heeeeeeloooooo");
+                                              print(data);
+                                              print("Heeeeeeloooooo");
+                                              dateController.text = data;
+                                              setState(() {});
+                                            }),
+                                          ),
+                                        );
+                                      },
+                                    );
                                   });
                                 }),
                           ],
@@ -141,17 +153,18 @@ class _RequestPermissionState extends State<RequestPermission> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Theme(
-                                  data: Theme.of(context)
-                                      .copyWith(splashColor: Colors.transparent),
+                                  data: Theme.of(context).copyWith(
+                                      splashColor: Colors.transparent),
                                   child: TextField(
                                     enabled: false,
-
                                     controller: timeFromController,
                                     autofocus: false,
                                     style: TextStyle(
-                                        fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                                        fontSize: 22.0,
+                                        color: Color(0xFFbdc6cf)),
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Color(0xFCED3FF),
@@ -164,12 +177,16 @@ class _RequestPermissionState extends State<RequestPermission> {
                                       contentPadding: const EdgeInsets.only(
                                           left: 14.0, bottom: 8.0, top: 8.0),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(25.7),
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                        borderRadius:
+                                            BorderRadius.circular(25.7),
                                       ),
                                       enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(25.7),
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                        borderRadius:
+                                            BorderRadius.circular(25.7),
                                       ),
                                     ),
                                   ),
@@ -187,17 +204,14 @@ class _RequestPermissionState extends State<RequestPermission> {
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         //  backgroundColor: Color(0xff93D0FC),
-                                        content:  TimePicker(
-                                            onPressed: (data) {
-                                              print(data);
-                                              print("Heeeeeeloooooo");
-                                              print(data);
-                                              print("Heeeeeeloooooo");
-                                              timeFromController.text = data;
-                                              setState(() {
-                                              });
-                                            }
-                                        ),
+                                        content: TimePicker(onPressed: (data) {
+                                        /*  print(data);
+                                          print("Heeeeeeloooooo");
+                                          print(data);
+                                          print("Heeeeeeloooooo");*/
+                                          timeFromController.text = data;
+                                          setState(() {});
+                                        }),
                                       );
                                     },
                                   );
@@ -208,16 +222,18 @@ class _RequestPermissionState extends State<RequestPermission> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Theme(
-                                  data: Theme.of(context)
-                                      .copyWith(splashColor: Colors.transparent),
+                                  data: Theme.of(context).copyWith(
+                                      splashColor: Colors.transparent),
                                   child: TextField(
                                     enabled: false,
                                     controller: timeToController,
                                     autofocus: false,
                                     style: TextStyle(
-                                        fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                                        fontSize: 22.0,
+                                        color: Color(0xFFbdc6cf)),
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Color(0xFCED3FF),
@@ -230,12 +246,16 @@ class _RequestPermissionState extends State<RequestPermission> {
                                       contentPadding: const EdgeInsets.only(
                                           left: 14.0, bottom: 8.0, top: 8.0),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(25.7),
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                        borderRadius:
+                                            BorderRadius.circular(25.7),
                                       ),
                                       enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(25.7),
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                        borderRadius:
+                                            BorderRadius.circular(25.7),
                                       ),
                                     ),
                                   ),
@@ -253,20 +273,14 @@ class _RequestPermissionState extends State<RequestPermission> {
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         //  backgroundColor: Color(0xff93D0FC),
-                                        content:  TimePicker(
-                                            onPressed: (data) {
-                                              print(data);
-                                              print("Heeeeeeloooooo");
-                                              print(data);
-                                              print("Heeeeeeloooooo");
-                                              timeToController.text = data;
-                                              setState(() {
-
-                                              });
-
-                                            }
-                                        ),
-
+                                        content: TimePicker(onPressed: (data) {
+                                          print(data);
+                                          print("Heeeeeeloooooo");
+                                          print(data);
+                                          print("Heeeeeeloooooo");
+                                          timeToController.text = data;
+                                          setState(() {});
+                                        }),
                                       );
                                     },
                                   );
@@ -346,7 +360,7 @@ class _RequestPermissionState extends State<RequestPermission> {
         ));
   }
 
-  sendExcuse()async{
+  sendExcuse() async {
     await DioHelper.postData(
       url: "",
       formData: {
@@ -355,8 +369,6 @@ class _RequestPermissionState extends State<RequestPermission> {
         "notes": notesController,
       },
     );
-    print(dateController.text +" "+ timeFromController.text);
-
+    print(dateController.text + " " + timeFromController.text);
   }
-
 }
