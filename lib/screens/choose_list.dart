@@ -10,7 +10,8 @@ import 'holiday_permission.dart';
 
 
 class ChooseList extends StatefulWidget {
-  const ChooseList({super.key});
+  int? userId;
+   ChooseList({required this.userId});
 
   @override
   State<ChooseList> createState() => _ChooseListState();
@@ -77,7 +78,7 @@ class _ChooseListState extends State<ChooseList> {
                                       ),
                                       onTap: (){
                                         Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) =>  RequestPermission()));
+                                            MaterialPageRoute(builder: (context) =>  RequestPermission(userId: widget.userId,)));
                                       },
                                     ),
                                     Text("Excuse",

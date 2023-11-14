@@ -34,8 +34,8 @@ late  bool developerMode;
   late SMITrigger check;
   late SMITrigger error;
   late SMITrigger reset;
-
   late SMITrigger confetti;
+  int? userID;
 
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
@@ -63,6 +63,8 @@ late  bool developerMode;
         "password": password,
       },
     ).then((Response response) {
+      userID = response.data['user']['id'];
+      print(userID);
       Future.delayed(Duration(seconds: 1), () {
         if (_formKey.currentState!.validate()) {
           // show success
@@ -73,13 +75,14 @@ late  bool developerMode;
             });
             confetti.fire();
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const ChooseList()));
+                MaterialPageRoute(builder: (context) =>  ChooseList(userId: userID,)));
           });
 
         }
       });
 
       CacheHelper.saveData(key: "token", value: response.data['token']);
+      print(response.data);
 
     }).catchError((error) async {
       print(error);
@@ -121,6 +124,7 @@ late  bool developerMode;
     });
   }
 
+/*
   void signIn(BuildContext contexto) {
     setState(() {
       isShowLoading = true;
@@ -149,6 +153,7 @@ late  bool developerMode;
       }
     });
   }
+*/
 
   @override
   Widget build(BuildContext context) {

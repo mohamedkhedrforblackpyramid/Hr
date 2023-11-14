@@ -11,6 +11,8 @@ import '../calender.dart';
 import '../network/remote/dio_helper.dart';
 
 class RequestPermission extends StatefulWidget {
+  int?userId;
+  RequestPermission({required this.userId});
   @override
   State<RequestPermission> createState() => _RequestPermissionState();
 }
@@ -23,6 +25,8 @@ class _RequestPermissionState extends State<RequestPermission> {
   var timeFromController = TextEditingController();
   var timeToController = TextEditingController();
   var notesController = TextEditingController();
+  String valueClosed = '0';
+  bool isOpen = false;
 
   @override
   void initState() {
@@ -62,18 +66,71 @@ class _RequestPermissionState extends State<RequestPermission> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 30),
-                            child: Text(
-                              "Excuse Request",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.grey),
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 30),
+                          child: Text(
+                            "Excuse Request",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.grey),
                           ),
                         ),
+                        SizedBox(height: 20,),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile(
+                                title: Text("First Day"),
+                                value: '0',
+                                groupValue: valueClosed,
+                                onChanged: (value) {
+                                  isOpen = false;
+                                  valueClosed =
+                                      value.toString();
+                                  setState(() {
+                                    valueClosed =
+                                        value.toString();
+                                  });
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile(
+                                title: Text("Mid Day"),
+                                value: '1',
+                                groupValue: valueClosed,
+                                onChanged: (value) {
+                                  isOpen = false;
+                                  valueClosed =
+                                      value.toString();
+                                  setState(() {
+                                    valueClosed =
+                                        value.toString();
+                                  });
+                                },
+                              ),
+                            ),
+
+                          ],
+                        ),
+                        Expanded(
+                          child: RadioListTile(
+                            title: Text("End Of Day"),
+                            value: '2',
+                            groupValue: valueClosed,
+                            onChanged: (value) {
+                              isOpen = false;
+                              valueClosed =
+                                  value.toString();
+                              setState(() {
+                                valueClosed =
+                                    value.toString();
+                              });
+                            },
+                          ),
+                        ),
+
                         Row(
                           children: [
                             Expanded(
@@ -362,13 +419,21 @@ class _RequestPermissionState extends State<RequestPermission> {
 
   sendExcuse() async {
     await DioHelper.postData(
-      url: "",
+      url: "api/vacancies",
       formData: {
-        "datefrom": '${dateController}${timeFromController}',
-        "dateto": '${dateController}${timeToController}',
-        "notes": notesController,
+        "from": '${dateController.text} ${timeFromController.text}',
+        "to": '${dateController.text} ${timeToController.text}' ,
+        'is_permit' : true,
+        "notes": notesController.text,
+        'permit_type' : 'MORNING',
+        'type':'ORDINARY',
+        'organization_id':1,
+        'user_id':widget.userId
       },
-    );
+    ).then((value) => null).catchError((error){
+      print(widget.userId);
+      print(error.response.data);
+    });
     print(dateController.text + " " + timeFromController.text);
   }
 }
