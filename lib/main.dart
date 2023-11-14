@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
           errorBorder: defaultInputBorder,
         ),
       ),
-      home: OnboardingScreen(),
+      home: RequestPermission(userId: null,),
     );
   }
 }

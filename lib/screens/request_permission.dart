@@ -27,6 +27,12 @@ class _RequestPermissionState extends State<RequestPermission> {
   var notesController = TextEditingController();
   String valueClosed = '0';
   bool isOpen = false;
+   String permit_type = 'MORNING';
+  bool loadingSend = false;
+  bool isFirst = true;
+  bool isEnd = false;
+
+
 
   @override
   void initState() {
@@ -63,7 +69,7 @@ class _RequestPermissionState extends State<RequestPermission> {
               child: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(50),
-                  child: Column(
+                  child: loadingSend==false?Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
@@ -81,10 +87,17 @@ class _RequestPermissionState extends State<RequestPermission> {
                           children: [
                             Expanded(
                               child: RadioListTile(
+
                                 title: Text("First Day"),
                                 value: '0',
                                 groupValue: valueClosed,
                                 onChanged: (value) {
+                                  setState(() {
+
+                                  });
+                                  isFirst = true;
+                                  isEnd = false;
+                                  permit_type = 'MORNING';
                                   isOpen = false;
                                   valueClosed =
                                       value.toString();
@@ -93,6 +106,9 @@ class _RequestPermissionState extends State<RequestPermission> {
                                         value.toString();
                                   });
                                 },
+                                fillColor:MaterialStateProperty.all(
+                                    Colors.white
+                                ) ,
                               ),
                             ),
                             Expanded(
@@ -101,6 +117,12 @@ class _RequestPermissionState extends State<RequestPermission> {
                                 value: '1',
                                 groupValue: valueClosed,
                                 onChanged: (value) {
+                                  setState(() {
+
+                                  });
+                                  isEnd = false;
+                                  isFirst=false;
+                                  permit_type = 'MIDDAY';
                                   isOpen = false;
                                   valueClosed =
                                       value.toString();
@@ -109,6 +131,9 @@ class _RequestPermissionState extends State<RequestPermission> {
                                         value.toString();
                                   });
                                 },
+                                fillColor:MaterialStateProperty.all(
+                                    Colors.white
+                                ) ,
                               ),
                             ),
 
@@ -120,6 +145,10 @@ class _RequestPermissionState extends State<RequestPermission> {
                             value: '2',
                             groupValue: valueClosed,
                             onChanged: (value) {
+                              isEnd = true;
+                              isFirst=false;
+                              permit_type = 'EVENING';
+
                               isOpen = false;
                               valueClosed =
                                   value.toString();
@@ -128,6 +157,9 @@ class _RequestPermissionState extends State<RequestPermission> {
                                     value.toString();
                               });
                             },
+                            fillColor:MaterialStateProperty.all(
+                                Colors.white
+                            ) ,
                           ),
                         ),
 
@@ -206,7 +238,7 @@ class _RequestPermissionState extends State<RequestPermission> {
                                 }),
                           ],
                         ),
-                        Row(
+                        isFirst==false?Row(
                           children: [
                             Expanded(
                               child: Padding(
@@ -274,8 +306,8 @@ class _RequestPermissionState extends State<RequestPermission> {
                                   );
                                 }),
                           ],
-                        ),
-                        Row(
+                        ):SizedBox(),
+                        isEnd == false?Row(
                           children: [
                             Expanded(
                               child: Padding(
@@ -343,7 +375,7 @@ class _RequestPermissionState extends State<RequestPermission> {
                                   );
                                 }),
                           ],
-                        ),
+                        ):SizedBox(),
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -388,6 +420,10 @@ class _RequestPermissionState extends State<RequestPermission> {
                                   const EdgeInsets.only(top: 8.0, bottom: 24),
                               child: ElevatedButton.icon(
                                   onPressed: () {
+                                    setState(() {
+
+                                    });
+                                    loadingSend = true;
                                     sendExcuse();
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -409,7 +445,13 @@ class _RequestPermissionState extends State<RequestPermission> {
                             ),
                           ),
                         )
-                      ]),
+                      ]):
+                  Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.indigo,
+                    ),
+                  )
+                  ,
                 ),
               ),
             ),
@@ -425,14 +467,31 @@ class _RequestPermissionState extends State<RequestPermission> {
         "to": '${dateController.text} ${timeToController.text}' ,
         'is_permit' : true,
         "notes": notesController.text,
-        'permit_type' : 'MORNING',
+        'permit_type' : permit_type,
         'type':'ORDINARY',
         'organization_id':1,
         'user_id':widget.userId
       },
-    ).then((value) => null).catchError((error){
+    ).then((value) {
+      loadingSend = false;
+    }).catchError((error){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+            content: Text('You can not send right now , Try again later'),
+          );
+        },
+      );
+      setState(() {
+
+      });
+      loadingSend = false;
+      print(permit_type);
       print(widget.userId);
       print(error.response.data);
+
     });
     print(dateController.text + " " + timeFromController.text);
   }
