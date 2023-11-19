@@ -8,18 +8,24 @@ import 'package:rive/rive.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../calender.dart';
+import '../network/remote/dio_helper.dart';
 
 class HolidayPermission extends StatefulWidget {
+  int?userId;
+  HolidayPermission({required this.userId});
   @override
   State<HolidayPermission> createState() => _HolidayPermissionState();
 }
 
 class _HolidayPermissionState extends State<HolidayPermission> {
+
   List<String> list = <String>[
     'ORDINARY',
     'CASUAL',
     'SICK',
   ];
+  bool loadingSend = false;
+
   String? dropdownValue;
   bool shouldPop = false;
   bool isSignInDialogShown = false;
@@ -27,7 +33,8 @@ class _HolidayPermissionState extends State<HolidayPermission> {
   var dateFromController = TextEditingController();
   var dateToController = TextEditingController();
   var timeFromController = TextEditingController();
-  var timeToController = TextEditingController();
+  var vacationtype = TextEditingController();
+  var noteController = TextEditingController();
 
   @override
   void initState() {
@@ -64,7 +71,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
               child: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(50),
-                  child: Column(
+                  child:loadingSend==false? Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
@@ -241,7 +248,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                       splashColor: Colors.transparent),
                                   child: TextField(
                                     enabled: false,
-                                    controller: timeToController,
+                                    controller: vacationtype,
                                     autofocus: false,
                                     style: TextStyle(
                                         fontSize: 22.0,
@@ -250,7 +257,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                       filled: true,
                                       fillColor: Color(0xFCED3FF),
                                       label: Text(
-                                        'Vacataion Type',
+                                        'Vacation Type',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
@@ -297,9 +304,10 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                   // This is called when the user selects an item.
                                   setState(() {
                                     dropdownValue = value!;
-                                    timeToController.text =
+                                    vacationtype.text =
                                         dropdownValue.toString();
                                   });
+                                  print(vacationtype.text);
                                 },
                                 items: list.map<DropdownMenuItem<String>>(
                                     (String value) {
@@ -319,6 +327,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                               data: Theme.of(context)
                                   .copyWith(splashColor: Colors.transparent),
                               child: TextField(
+                                controller: noteController,
                                 autofocus: false,
                                 style: TextStyle(
                                     fontSize: 22.0, color: Color(0xFFbdc6cf)),
@@ -355,7 +364,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                   const EdgeInsets.only(top: 8.0, bottom: 24),
                               child: ElevatedButton.icon(
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    sendVacation();
                                   },
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: const Color(0xFF9397B7),
@@ -376,11 +385,66 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                             ),
                           ),
                         )
-                      ]),
+                      ]):  Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.indigo,
+                    ),
+                  ),
                 ),
               ),
             ),
           ],
         ));
+  }
+  sendVacation() async {
+    await DioHelper.postData(
+      url: "api/vacancies",
+      formData: {
+        "from": '${dateFromController.text}',
+        "to": '${dateToController.text}' ,
+        'is_permit' : false,
+        "notes": noteController.text,
+         'type': vacationtype.text,
+        'organization_id':1,
+        'user_id':widget.userId
+      },
+    ).then((value) {
+      print(widget.userId);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Color(0xff93D0FC),
+            content: Text('Success',
+              textAlign: TextAlign.center,
+            ),
+          );
+        },
+      );
+      loadingSend = false;
+      setState(() {
+
+      });
+    }).catchError((error){
+      print(vacationtype.text);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Color(0xff93D0FC),
+            content: Text('You can not send right now , Try again later'),
+          );
+        },
+      );
+      setState(() {
+
+      });
+      loadingSend = false;
+    //  print(permit_type);
+      print(widget.userId);
+      print(error.response.data);
+
+    });
+ //   print(dateController.text + " " + timeFromController.text);
   }
 }

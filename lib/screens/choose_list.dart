@@ -103,7 +103,7 @@ class _ChooseListState extends State<ChooseList> {
                                         ),
                                       onTap: (){
                                         Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) =>  HolidayPermission()));
+                                            MaterialPageRoute(builder: (context) =>  HolidayPermission(userId: widget.userId,)));
                                       },
                                     ),
                                     Text("Vacation",
