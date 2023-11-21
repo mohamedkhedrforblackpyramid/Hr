@@ -364,6 +364,10 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                   const EdgeInsets.only(top: 8.0, bottom: 24),
                               child: ElevatedButton.icon(
                                   onPressed: () {
+
+                                    loadingSend = true;
+                                    setState(() {
+                                    });
                                     sendVacation();
                                   },
                                   style: ElevatedButton.styleFrom(
