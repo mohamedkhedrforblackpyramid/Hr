@@ -25,7 +25,6 @@ class _HolidayPermissionState extends State<HolidayPermission> {
     'SICK',
   ];
   bool loadingSend = false;
-
   String? dropdownValue;
   bool shouldPop = false;
   bool isSignInDialogShown = false;

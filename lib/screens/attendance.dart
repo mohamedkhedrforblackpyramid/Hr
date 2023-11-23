@@ -38,6 +38,23 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
   var depKeyAgain = GlobalKey();
   bool loadingShowAttend = false;
   bool loadingShowDep = false;
+ late  String status = '';
+
+  Future<void> checkAttendace() async {
+   await DioHelper.getData(
+      url: "api/organizations/1/attendance/check",
+    ).then((response) {
+      status = response.data['status'];
+      print(status);
+      setState(() {
+      });
+    }).catchError((error){
+      print(error.response.data);
+    });
+   print(status);
+
+  }
+
 
 
 
@@ -186,6 +203,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    checkAttendace();
+
     WidgetsBinding.instance.addObserver(this);
     _determinePositionNoSetting();
 
@@ -292,7 +311,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                     borderRadius: BorderRadius.circular(30)),
                                 width: MediaQuery.sizeOf(context).width / 1.5,
                               )
-                            : clickAttend == false? loadingShowAttend == false?GradientSlideToAct(
+                            : clickAttend == false? loadingShowAttend == false?
+                        status=='log_in'?GradientSlideToAct(
                           key: attenKey,
                                 width: 300,
                                 textStyle: TextStyle(
@@ -352,14 +372,13 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                           "can not attend right now ... please try again later",
                                     ).show();
                                   });
-
                                   print(_currentPosition?.latitude);
                                   print("hhhhhhhhhhhhhhhhhhhhhhhh");
-
                                   print(CacheHelper.getData(key: 'token'));
                                 },
                                 text: 'Slide to Confirm Attendance',
-                              ):CircularProgressIndicator(
+                              ):SizedBox()
+                            :CircularProgressIndicator(
                                     color: Colors.indigo,
                                       )
                             : loadingShowAttend == false?GradientSlideToAct(
@@ -433,7 +452,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                         serviceEnabled == false
                             ? const SizedBox()
                             :
-                        clickdepar == false? loadingShowAttend == false?GradientSlideToAct(
+                        clickdepar == false? loadingShowAttend == false?
+                        status =='log_out'?GradientSlideToAct(
                                 key: depKey,
                                 text: 'Slide to Confirm Departure',
                                 width: 300,
@@ -488,7 +508,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
 
                                   });
                                 },
-                              ):CircularProgressIndicator(
+                              ):SizedBox()
+                            :CircularProgressIndicator(
                           color: Colors.indigo,
                         ):
                         loadingShowAttend == false? GradientSlideToAct(
