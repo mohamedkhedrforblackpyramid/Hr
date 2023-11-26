@@ -11,7 +11,7 @@ import '../calender.dart';
 import '../network/remote/dio_helper.dart';
 
 class RequestPermission extends StatefulWidget {
-  int?userId;
+  int? userId;
   RequestPermission({required this.userId});
   @override
   State<RequestPermission> createState() => _RequestPermissionState();
@@ -28,14 +28,12 @@ class _RequestPermissionState extends State<RequestPermission> {
   var notesController = TextEditingController(text: '');
   String valueClosed = '0';
   bool isOpen = false;
-   String permit_type = 'START';
+  String permit_type = 'START';
   bool loadingSend = false;
   bool isFirst = true;
   bool isEnd = false;
   bool isMid = false;
   var iskey = GlobalKey();
-
-
 
   @override
   void initState() {
@@ -72,406 +70,475 @@ class _RequestPermissionState extends State<RequestPermission> {
               child: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(50),
-                  child: loadingSend==false?Form(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 30),
-                            child: Text(
-                              "Excuse Request",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.grey),
-                            ),
-                          ),
-                          SizedBox(height: 20,),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: RadioListTile(
-
-                                  title: Text("First Day"),
-                                  value: '0',
-                                  groupValue: valueClosed,
-                                  onChanged: (value) {
-                                    setState(() {
-
-                                    });
-                                    timeFromController.text = '';
-                                    isMid = false;
-                                    isFirst = true;
-                                    isEnd = false;
-                                    permit_type = 'START';
-                                    isOpen = false;
-                                    valueClosed =
-                                        value.toString();
-                                    setState(() {
-                                      valueClosed =
-                                          value.toString();
-                                    });
-                                  },
-                                  fillColor:MaterialStateProperty.all(
-                                      Colors.white
-                                  ) ,
-                                ),
-                              ),
-                              Expanded(
-                                child: RadioListTile(
-                                  title: Text("Mid Day"),
-                                  value: '1',
-                                  groupValue: valueClosed,
-                                  onChanged: (value) {
-                                    setState(() {
-
-                                    });
-                                    isMid = true;
-                                    isEnd = false;
-                                    isFirst=false;
-                                    permit_type = 'MID';
-                                    isOpen = false;
-                                    valueClosed =
-                                        value.toString();
-                                    setState(() {
-                                      valueClosed =
-                                          value.toString();
-                                    });
-                                  },
-                                  fillColor:MaterialStateProperty.all(
-                                      Colors.white
-                                  ) ,
-                                ),
-                              ),
-
-                            ],
-                          ),
-                          Expanded(
-                            child: RadioListTile(
-                              title: Text("End Of Day"),
-                              value: '2',
-                              groupValue: valueClosed,
-                              onChanged: (value) {
-                                timeToController.text='';
-                                isMid = false;
-                                isEnd = true;
-                                isFirst=false;
-                                permit_type = 'END';
-                                isOpen = false;
-                                valueClosed =
-                                    value.toString();
-                                setState(() {
-                                  valueClosed =
-                                      value.toString();
-                                });
-                              },
-                              fillColor:MaterialStateProperty.all(
-                                  Colors.white
-                              ) ,
-                            ),
-                          ),
-
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Theme(
-                                    data: Theme.of(context).copyWith(
-                                        splashColor: Colors.transparent),
-                                    child: TextFormField(
-                                      validator: (value){},
-                                      enabled: false,
-                                      controller: dateController,
-                                      autofocus: false,
-                                      style: TextStyle(
-                                          fontSize: 22.0,
-                                          color: Color(0xFFbdc6cf)),
-                                      decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: Color(0xFCED3FF),
-                                        label: Text(
-                                          'Date',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                        contentPadding: const EdgeInsets.only(
-                                            left: 14.0, bottom: 8.0, top: 8.0),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(25.7),
-                                        ),
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(25.7),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                  icon: Icon(
-                                    Icons.calendar_month,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-
-                                            //  backgroundColor: Color(0xff93D0FC),
-                                            content: Container(
-                                              width: 500,
-                                              height: 450,
-                                              child: Calender(onSubmit: (data) {
-                                                print("Heeeeeeloooooo");
-                                                print(data);
-                                                print("Heeeeeeloooooo");
-                                                dateController.text = data;
-                                                setState(() {});
-                                              }),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    });
-                                  }),
-                            ],
-                          ),
-                          isFirst==false?Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Theme(
-                                    data: Theme.of(context).copyWith(
-                                        splashColor: Colors.transparent),
-                                    child: TextField(
-                                      enabled: false,
-                                      controller: timeFromController,
-                                      autofocus: false,
-                                      style: TextStyle(
-                                          fontSize: 22.0,
-                                          color: Color(0xFFbdc6cf)),
-                                      decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: Color(0xFCED3FF),
-                                        label: Text(
-                                          'Time From',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                        contentPadding: const EdgeInsets.only(
-                                            left: 14.0, bottom: 8.0, top: 8.0),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(25.7),
-                                        ),
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(25.7),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                  icon: Icon(
-                                    Icons.more_time_outlined,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          //  backgroundColor: Color(0xff93D0FC),
-                                          content: TimePicker(onPressed: (data) {
-                                          /*  print(data);
-                                            print("Heeeeeeloooooo");
-                                            print(data);
-                                            print("Heeeeeeloooooo");*/
-                                            timeFromController.text = data;
-                                            setState(() {});
-                                          }),
-                                        );
-                                      },
-                                    );
-                                  }),
-                            ],
-                          ):SizedBox(),
-                          isEnd == false?Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: Theme(
-                                    data: Theme.of(context).copyWith(
-                                        splashColor: Colors.transparent),
-                                    child: TextField(
-                                      enabled: false,
-                                      controller: timeToController,
-                                      autofocus: false,
-                                      style: TextStyle(
-                                          fontSize: 22.0,
-                                          color: Color(0xFFbdc6cf)),
-                                      decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: Color(0xFCED3FF),
-                                        label: Text(
-                                          'Time To',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                        contentPadding: const EdgeInsets.only(
-                                            left: 14.0, bottom: 8.0, top: 8.0),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(25.7),
-                                        ),
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(25.7),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                  icon: Icon(
-                                    Icons.more_time_outlined,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          //  backgroundColor: Color(0xff93D0FC),
-                                          content: TimePicker(onPressed: (data) {
-                                            print(data);
-                                            print("Heeeeeeloooooo");
-                                            print(data);
-                                            print("Heeeeeeloooooo");
-                                            timeToController.text = data;
-                                            setState(() {});
-                                          }),
-                                        );
-                                      },
-                                    );
-                                  }),
-                            ],
-                          ):SizedBox(),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Theme(
-                                data: Theme.of(context)
-                                    .copyWith(splashColor: Colors.transparent),
-                                child: TextField(
-                                  controller: notesController,
-                                  autofocus: false,
-                                  style: TextStyle(
-                                      fontSize: 22.0, color: Color(0xFFbdc6cf)),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Color(0xFCED3FF),
-                                    label: Text(
-                                      'Notes (Optional)',
+                  child: loadingSend == false
+                      ? Form(
+                          child: SingleChildScrollView(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 30),
+                                    child: Text(
+                                      "Excuse Request",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 14.0, bottom: 8.0, top: 8.0),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.white),
-                                      borderRadius: BorderRadius.circular(25.7),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.white),
-                                      borderRadius: BorderRadius.circular(25.7),
+                                          fontSize: 30,
+                                          color: Colors.grey),
                                     ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              width: 150,
-                              height: 100,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 8.0, bottom: 24),
-                                child: ElevatedButton.icon(
-                                    onPressed: () {
-                                      setState(() {
-                                      });
-                                      loadingSend = true;
-                                      if(isFirst==true){
-                                        sendExcuseNullFrom();
-                                      }else if(isMid==true){
-                                        sendExcuseFromAndTo();
-                                      }else if(isEnd==true){
-
-                                        print('hhhhhhhhhhh');
-                                        sendExcuseNullTo();
-                                        print('hhhhhhhhhhh');
-
-                                      }
-
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF9397B7),
-                                        minimumSize:
-                                            const Size(double.infinity, 56),
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10),
-                                                topRight: Radius.circular(25),
-                                                bottomRight: Radius.circular(25),
-                                                bottomLeft:
-                                                    Radius.circular(25)))),
-                                    icon: const Icon(
-                                      CupertinoIcons.arrow_right,
-                                      color: Color(0xFFFE0037),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: RadioListTile(
+                                          title: Text(
+                                            "First Day",
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          value: '0',
+                                          groupValue: valueClosed,
+                                          onChanged: (value) {
+                                            setState(() {});
+                                            timeFromController.text = '';
+                                            isMid = false;
+                                            isFirst = true;
+                                            isEnd = false;
+                                            permit_type = 'START';
+                                            isOpen = false;
+                                            valueClosed = value.toString();
+                                            setState(() {
+                                              valueClosed = value.toString();
+                                            });
+                                          },
+                                          fillColor: MaterialStateProperty.all(
+                                              Colors.white),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: RadioListTile(
+                                          title: Text(
+                                            "Mid Day",
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          value: '1',
+                                          groupValue: valueClosed,
+                                          onChanged: (value) {
+                                            setState(() {});
+                                            isMid = true;
+                                            isEnd = false;
+                                            isFirst = false;
+                                            permit_type = 'MID';
+                                            isOpen = false;
+                                            valueClosed = value.toString();
+                                            setState(() {
+                                              valueClosed = value.toString();
+                                            });
+                                          },
+                                          fillColor: MaterialStateProperty.all(
+                                              Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  RadioListTile(
+                                    title: Text(
+                                      "End Of Day",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    label: const Text("Send")),
-                              ),
-                            ),
-                          )
-                        ]),
-                  ):
-                  Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.indigo,
-                    ),
-                  )
-                  ,
+                                    value: '2',
+                                    groupValue: valueClosed,
+                                    onChanged: (value) {
+                                      timeToController.text = '';
+                                      isMid = false;
+                                      isEnd = true;
+                                      isFirst = false;
+                                      permit_type = 'END';
+                                      isOpen = false;
+                                      valueClosed = value.toString();
+                                      setState(() {
+                                        valueClosed = value.toString();
+                                      });
+                                    },
+                                    fillColor:
+                                        MaterialStateProperty.all(Colors.white),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: Theme(
+                                            data: Theme.of(context).copyWith(
+                                                splashColor:
+                                                    Colors.transparent),
+                                            child: TextFormField(
+                                              validator: (value) {},
+                                              enabled: false,
+                                              controller: dateController,
+                                              autofocus: false,
+                                              style: TextStyle(
+                                                  fontSize: 22.0,
+                                                  color: Color(0xFFbdc6cf)),
+                                              decoration: InputDecoration(
+                                                filled: true,
+                                                fillColor: Color(0xFCED3FF),
+                                                label: Text(
+                                                  'Date',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                                contentPadding:
+                                                    const EdgeInsets.only(
+                                                        left: 14.0,
+                                                        bottom: 8.0,
+                                                        top: 8.0),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          25.7),
+                                                ),
+                                                enabledBorder:
+                                                    UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          25.7),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      IconButton(
+                                          icon: Icon(
+                                            Icons.calendar_month,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    //  backgroundColor: Color(0xff93D0FC),
+                                                    content: Container(
+                                                      width: 500,
+                                                      height: 450,
+                                                      child: Calender(
+                                                          onSubmit: (data) {
+                                                        print("Heeeeeeloooooo");
+                                                        print(data);
+                                                        print("Heeeeeeloooooo");
+                                                        dateController.text =
+                                                            data;
+                                                        setState(() {});
+                                                      }),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            });
+                                          }),
+                                    ],
+                                  ),
+                                  isFirst == false
+                                      ? Row(
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10),
+                                                child: Theme(
+                                                  data: Theme.of(context)
+                                                      .copyWith(
+                                                          splashColor: Colors
+                                                              .transparent),
+                                                  child: TextField(
+                                                    enabled: false,
+                                                    controller:
+                                                        timeFromController,
+                                                    autofocus: false,
+                                                    style: TextStyle(
+                                                        fontSize: 22.0,
+                                                        color:
+                                                            Color(0xFFbdc6cf)),
+                                                    decoration: InputDecoration(
+                                                      filled: true,
+                                                      fillColor:
+                                                          Color(0xFCED3FF),
+                                                      label: Text(
+                                                        'Time From',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      contentPadding:
+                                                          const EdgeInsets.only(
+                                                              left: 14.0,
+                                                              bottom: 8.0,
+                                                              top: 8.0),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                Colors.white),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25.7),
+                                                      ),
+                                                      enabledBorder:
+                                                          UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                Colors.white),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25.7),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            IconButton(
+                                                icon: Icon(
+                                                  Icons.more_time_outlined,
+                                                  color: Colors.black,
+                                                ),
+                                                onPressed: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        //  backgroundColor: Color(0xff93D0FC),
+                                                        content: TimePicker(
+                                                            onPressed: (data) {
+                                                          /*  print(data);
+                                              print("Heeeeeeloooooo");
+                                              print(data);
+                                              print("Heeeeeeloooooo");*/
+                                                          timeFromController
+                                                              .text = data;
+                                                          setState(() {});
+                                                        }),
+                                                      );
+                                                    },
+                                                  );
+                                                }),
+                                          ],
+                                        )
+                                      : SizedBox(),
+                                  isEnd == false
+                                      ? Row(
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10),
+                                                child: Theme(
+                                                  data: Theme.of(context)
+                                                      .copyWith(
+                                                          splashColor: Colors
+                                                              .transparent),
+                                                  child: TextField(
+                                                    enabled: false,
+                                                    controller:
+                                                        timeToController,
+                                                    autofocus: false,
+                                                    style: TextStyle(
+                                                        fontSize: 22.0,
+                                                        color:
+                                                            Color(0xFFbdc6cf)),
+                                                    decoration: InputDecoration(
+                                                      filled: true,
+                                                      fillColor:
+                                                          Color(0xFCED3FF),
+                                                      label: Text(
+                                                        'Time To',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      contentPadding:
+                                                          const EdgeInsets.only(
+                                                              left: 14.0,
+                                                              bottom: 8.0,
+                                                              top: 8.0),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                Colors.white),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25.7),
+                                                      ),
+                                                      enabledBorder:
+                                                          UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                Colors.white),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25.7),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            IconButton(
+                                                icon: Icon(
+                                                  Icons.more_time_outlined,
+                                                  color: Colors.black,
+                                                ),
+                                                onPressed: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        //  backgroundColor: Color(0xff93D0FC),
+                                                        content: TimePicker(
+                                                            onPressed: (data) {
+                                                          print(data);
+                                                          print(
+                                                              "Heeeeeeloooooo");
+                                                          print(data);
+                                                          print(
+                                                              "Heeeeeeloooooo");
+                                                          timeToController
+                                                              .text = data;
+                                                          setState(() {});
+                                                        }),
+                                                      );
+                                                    },
+                                                  );
+                                                }),
+                                          ],
+                                        )
+                                      : SizedBox(),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: Theme(
+                                      data: Theme.of(context).copyWith(
+                                          splashColor: Colors.transparent),
+                                      child: TextField(
+                                        controller: notesController,
+                                        autofocus: false,
+                                        style: TextStyle(
+                                            fontSize: 22.0,
+                                            color: Color(0xFFbdc6cf)),
+                                        decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: Color(0xFCED3FF),
+                                          label: Text(
+                                            'Notes (Optional)',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                          contentPadding: const EdgeInsets.only(
+                                              left: 14.0,
+                                              bottom: 8.0,
+                                              top: 8.0),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(25.7),
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(25.7),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 150,
+                                    height: 100,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8.0, bottom: 24),
+                                      child: ElevatedButton.icon(
+                                          onPressed: () {
+                                            setState(() {});
+                                            loadingSend = true;
+                                            if (isFirst == true) {
+                                              sendExcuseNullFrom();
+                                            } else if (isMid == true) {
+                                              sendExcuseFromAndTo();
+                                            } else if (isEnd == true) {
+                                              print('hhhhhhhhhhh');
+                                              sendExcuseNullTo();
+                                              print('hhhhhhhhhhh');
+                                            }
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  const Color(0xFF9397B7),
+                                              minimumSize: const Size(
+                                                  double.infinity, 56),
+                                              shape: const RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  10),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  25),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  25),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  25)))),
+                                          icon: const Icon(
+                                            CupertinoIcons.arrow_right,
+                                            color: Color(0xFFFE0037),
+                                          ),
+                                          label: const Text("Send")),
+                                    ),
+                                  )
+                                ]),
+                          ),
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.indigo,
+                          ),
+                        ),
                 ),
               ),
             ),
@@ -485,24 +552,70 @@ class _RequestPermissionState extends State<RequestPermission> {
       url: "api/vacancies",
       formData: {
         //"from": '${dateController.text} ${timeFromController.text}',
-        "to": '${dateController.text} ${timeToController.text}' ,
-        'is_permit' : true,
+        "to": '${dateController.text} ${timeToController.text}',
+        'is_permit': true,
         "notes": notesController.text,
-        'permit_type' : permit_type,
-       // 'type':'ORDINARY',
-        'organization_id':1,
-        'user_id':widget.userId
+        'permit_type': permit_type,
+        // 'type':'ORDINARY',
+        'organization_id': 1,
+        'user_id': widget.userId
       },
     ).then((value) {
       print(value.data);
       print(widget.userId);
-      if(timeToController.text == ''){
+      if (dateController.text == '') {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
-              content: Text('Time To is Empty !'),
+              content: Text(
+                'Date is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      } else if (timeToController.text == '') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Time To is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                '${value.data['message']}',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      }
+      loadingSend = false;
+      setState(() {});
+    }).catchError((error) {
+      if (dateController.text == '') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Date is Empty !',
+                textAlign: TextAlign.center,
+              ),
             );
           },
         );
@@ -512,139 +625,233 @@ class _RequestPermissionState extends State<RequestPermission> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: Color(0xff93D0FC),
-            content: Text('Success'),
-          );
-        },
-      );}
-      loadingSend = false;
-      setState(() {
-
-      });
-    }).catchError((error){
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
             content: Text('You can not send right now , Try again later'),
           );
         },
-      );
-      setState(() {
-
-      });
+      );}
+      setState(() {});
       loadingSend = false;
       print(permit_type);
       print(widget.userId);
       print(error.response.data);
-
     });
     print(dateController.text + " " + timeFromController.text);
   }
+
   sendExcuseNullTo() async {
     print(notesController.text);
     await DioHelper.postData(
       url: "api/vacancies",
       formData: {
         "from": '${dateController.text} ${timeFromController.text}',
-      //  "to": '${dateController.text} ${timeToController.text}' ,
-        'is_permit' : true,
+        //  "to": '${dateController.text} ${timeToController.text}' ,
+        'is_permit': true,
         "notes": notesController.text,
-        'permit_type' : permit_type,
+        'permit_type': permit_type,
         // 'type':'ORDINARY',
-        'organization_id':1,
-        'user_id':widget.userId
+        'organization_id': 1,
+        'user_id': widget.userId
       },
     ).then((value) {
       print(value.data);
       print(widget.userId);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Color(0xff93D0FC),
-            content: Text('Success'),
-          );
-        },
-      );
+      if (dateController.text == '') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Date is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      } else if (timeFromController.text == '') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Time From is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                '${value.data['message']}',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      }
       loadingSend = false;
-      setState(() {
-
-      });
-    }).catchError((error){
+      setState(() {});
+    }).catchError((error) {
       print(error);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Color(0xff93D0FC),
-            content: Text('You can not send right now , Try again later'),
-          );
-        },
-      );
-      setState(() {
+      if (dateController.text == '') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Date is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      } else if (timeFromController.text == '') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Time From is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text('You can not send right now , Try again later'),
+            );
+          },
+        );
+      }
 
-      });
+      setState(() {});
       loadingSend = false;
       print(permit_type);
       print(widget.userId);
       print(error.response.data);
-
     });
     print(dateController.text + " " + timeFromController.text);
   }
+
   sendExcuseFromAndTo() async {
     print(notesController.text);
     await DioHelper.postData(
       url: "api/vacancies",
       formData: {
         "from": '${dateController.text} ${timeFromController.text}',
-        "to": '${dateController.text} ${timeToController.text}' ,
-        'is_permit' : true,
+        "to": '${dateController.text} ${timeToController.text}',
+        'is_permit': true,
         "notes": notesController.text,
-        'permit_type' : permit_type,
+        'permit_type': permit_type,
         // 'type':'ORDINARY',
-        'organization_id':1,
-        'user_id':widget.userId
+        'organization_id': 1,
+        'user_id': widget.userId
       },
     ).then((value) {
       print(value.data);
       print(widget.userId);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Color(0xff93D0FC),
-            content: Text('Success'),
-          );
-        },
-      );
+      if (dateController.text == '') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Date is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      } else if (timeFromController.text == '') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Time From is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      } else if (timeToController.text == '') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Time To is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                '${value.data['message']}',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      }
       loadingSend = false;
-      setState(() {
-
-      });
-    }).catchError((error){
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Color(0xff93D0FC),
-            content: Text('You can not send right now , Try again later'),
-          );
-        },
-      );
-      setState(() {
-
-      });
+      setState(() {});
+    }).catchError((error) {
+      if (dateController.text == '') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Date is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      }else if (timeFromController.text == '') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Time From is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      }
+      setState(() {});
       loadingSend = false;
       print(permit_type);
       print(widget.userId);
       print(error.response.data);
-
     });
     print(dateController.text + " " + timeFromController.text);
   }
-
-
-
 }

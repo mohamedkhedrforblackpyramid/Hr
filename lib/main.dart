@@ -6,6 +6,7 @@ import 'package:hr/screens/choose_list.dart';
 import 'package:hr/screens/holiday_permission.dart';
 import 'package:hr/screens/onboding/onboding_screen.dart';
 import 'package:hr/screens/request_permission.dart';
+import 'package:hr/screens/showpermit.dart';
 import 'package:hr/screens/timepicker.dart';
 
 import 'network/local/cache_helper.dart';

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hr/screens/request_permission.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
 import '../network/remote/dio_helper.dart';
@@ -20,14 +21,29 @@ class ChooseList extends StatefulWidget {
 
 class _ChooseListState extends State<ChooseList> {
   bool shouldPop = false;
-
+  late  String status = '';
   bool isSignInDialogShown = false;
   late RiveAnimationController _btnAnimationController;
 
+  Future<void> checkAttendace() async {
+    await DioHelper.getData(
+      url: "api/organizations/1/attendance/check",
+    ).then((response) {
+      status = response.data['status'];
+      print(status);
+      setState(() {
+      });
+    }).catchError((error){
+      print(error.response.data);
+    });
+    print(status);
+
+  }
 
   @override
   void initState() {
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
+    checkAttendace();
     super.initState();
   }
 
@@ -113,11 +129,8 @@ class _ChooseListState extends State<ChooseList> {
                                           fontWeight: FontWeight.bold,
                                           fontSize: 22,
                                         color: Colors.white,
-
                                       ),
                                     ),
-
-
                                   ]),
                             ),
                           ],
@@ -133,9 +146,20 @@ class _ChooseListState extends State<ChooseList> {
                                         child: Image.asset('assets/icons/machine.png',
                                           width: 150,
                                           height: 150,
-                                        ),onTap: (){
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) => const Attendance()));
+                                        ),onTap: () async {
+                                          if(status=='No Action'){
+                                            await Alert(
+                                            context: context,
+                                            // title: "RFLUTTER ALERT",
+                                            desc: "Try again later",
+                                            ).show();
+                                          }else {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                                      return const Attendance();
+                                                    }));
+                                          }
                                     },
                                     ),
                                     Text("Attendance",

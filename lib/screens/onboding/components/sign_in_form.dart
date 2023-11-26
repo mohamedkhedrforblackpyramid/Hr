@@ -63,8 +63,12 @@ late  bool developerMode;
         "password": password,
       },
     ).then((Response response) {
+      print(response.data);
       userID = response.data['user']['id'];
+      print('hhhhhhhhhhh');
       print(userID);
+      print('hhhhhhhhhhh');
+
       Future.delayed(Duration(seconds: 1), () {
         if (_formKey.currentState!.validate()) {
           // show success

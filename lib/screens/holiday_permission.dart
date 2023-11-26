@@ -412,33 +412,116 @@ class _HolidayPermissionState extends State<HolidayPermission> {
         'user_id':widget.userId
       },
     ).then((value) {
+      print(value.data);
       print(widget.userId);
+      if(dateFromController.text==''){
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Date From is empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      }else if(dateToController.text==''){
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Time To is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      }else if(vacationtype.text==''){
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Vacation type is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      }else{
+
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: Color(0xff93D0FC),
-            content: Text('Success',
+            content: Text('${value.data['message']}',
               textAlign: TextAlign.center,
             ),
           );
         },
-      );
+      );}
       loadingSend = false;
       setState(() {
 
       });
     }).catchError((error){
       print(vacationtype.text);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Color(0xff93D0FC),
-            content: Text('You can not send right now , Try again later'),
-          );
-        },
-      );
+      if(dateFromController.text==''){
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Date From is empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      }else if(dateToController.text==''){
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Time To is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      }else if(vacationtype.text==''){
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text(
+                'Vacation type is Empty !',
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
+        );
+      }else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Color(0xff93D0FC),
+              content: Text('You can not send right now , Try again later'),
+            );
+          },
+        );
+      }
       setState(() {
 
       });
