@@ -25,41 +25,37 @@ class _TimePickerState extends State<TimePicker> {
   @override
   Widget build(BuildContext context) {
     return 
-         Positioned(
-           left: 30,
-           top: 60,
-           child: TimePickerSpinnerPopUp(
+         TimePickerSpinnerPopUp(
 
-             mode: CupertinoDatePickerMode.time,
-             minuteInterval: 1,
-             textStyle: TextStyle(
-               fontSize: 50,
-               fontWeight: FontWeight.bold,
-               color: Colors.blueAccent
+           mode: CupertinoDatePickerMode.time,
+           minuteInterval: 1,
+           textStyle: TextStyle(
+             fontSize: 50,
+             fontWeight: FontWeight.bold,
+             color: Colors.blueAccent
 
-             ),
-
-           //  padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-             cancelText: 'Cancel',
-             confirmText: 'OK',
-             pressType: PressType.singlePress,
-             timeFormat: 'Hm',
-             iconSize: 30,
-
-
-             // Customize your time widget
-             // timeWidgetBuilder: (dateTime) {},
-             onChange: (dateTime) {
-
-               setState(() {
-                 dateToSend =  DateFormat('Hm').format(dateTime);
-                 print(dateToSend);
-                 widget.onPressed(dateToSend.toString());
-
-               });
-               Navigator.pop(context);
-             },
            ),
+
+         //  padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+           cancelText: 'Cancel',
+           confirmText: 'OK',
+           pressType: PressType.singlePress,
+           timeFormat: 'Hm',
+           iconSize: 30,
+
+
+           // Customize your time widget
+           // timeWidgetBuilder: (dateTime) {},
+           onChange: (dateTime) {
+
+             setState(() {
+               dateToSend =  DateFormat('Hm').format(dateTime);
+               print(dateToSend);
+               widget.onPressed(dateToSend.toString());
+
+             });
+             Navigator.pop(context);
+           },
          );
   }
 }

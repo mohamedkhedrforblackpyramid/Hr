@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hr/screens/request_permission.dart';
+import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
@@ -29,6 +30,7 @@ class _ChooseListState extends State<ChooseList> {
     await DioHelper.getData(
       url: "api/organizations/1/attendance/check",
     ).then((response) {
+      print(response.data);
       status = response.data['status'];
       print(status);
       setState(() {
@@ -44,6 +46,7 @@ class _ChooseListState extends State<ChooseList> {
   void initState() {
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
     checkAttendace();
+    print(widget.userId);
     super.initState();
   }
 
@@ -147,17 +150,24 @@ class _ChooseListState extends State<ChooseList> {
                                           width: 150,
                                           height: 150,
                                         ),onTap: () async {
-                                          if(status=='No Action'){
+                                          checkAttendace();
+                                          if(status=='NOACTION'||status.isEmpty){
+                                            setState(() {
+
+                                            });
                                             await Alert(
                                             context: context,
                                             // title: "RFLUTTER ALERT",
                                             desc: "Try again later",
                                             ).show();
                                           }else {
+                                            setState(() {
+
+                                            });
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
-                                                      return const Attendance();
+                                                      return  Attendance(userId: widget.userId,);
                                                     }));
                                           }
                                     },
@@ -178,12 +188,18 @@ class _ChooseListState extends State<ChooseList> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     GestureDetector(
-                                        child: Image.asset('assets/icons/profile.png',
+                                        child: Image.asset('assets/icons/requset.png',
                                           width: 150,
                                           height: 150,
-                                        )),
+                                        ),
+                                      onTap:(){
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) =>  SwitchShowpermitAndVacan()));
+                                      }
+                                      ,
+                                    ),
                                     SizedBox(height: 10,),
-                                    Text("Profile",
+                                    Text("Requsets",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 22,

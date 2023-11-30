@@ -90,7 +90,7 @@ class _SignUpFormState extends State<SignUpForm> {
           confetti.fire();
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const Attendance()));
+              MaterialPageRoute(builder: (context) =>  Attendance(userId: null,)));
         });
 
       } else {

@@ -37,6 +37,7 @@ class _RequestPermissionState extends State<RequestPermission> {
 
   @override
   void initState() {
+    print(widget.userId);
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
     super.initState();
   }
@@ -492,13 +493,19 @@ class _RequestPermissionState extends State<RequestPermission> {
                                           top: 8.0, bottom: 24),
                                       child: ElevatedButton.icon(
                                           onPressed: () {
+                                            print(widget.userId);
                                             setState(() {});
                                             loadingSend = true;
                                             if (isFirst == true) {
+                                              print(widget.userId);
                                               sendExcuseNullFrom();
                                             } else if (isMid == true) {
+                                              print(widget.userId);
+
                                               sendExcuseFromAndTo();
                                             } else if (isEnd == true) {
+                                              print(widget.userId);
+
                                               print('hhhhhhhhhhh');
                                               sendExcuseNullTo();
                                               print('hhhhhhhhhhh');
@@ -547,6 +554,8 @@ class _RequestPermissionState extends State<RequestPermission> {
   }
 
   sendExcuseNullFrom() async {
+    print(widget.userId);
+
     print(notesController.text);
     await DioHelper.postData(
       url: "api/vacancies",
@@ -558,7 +567,7 @@ class _RequestPermissionState extends State<RequestPermission> {
         'permit_type': permit_type,
         // 'type':'ORDINARY',
         'organization_id': 1,
-        'user_id': widget.userId
+        'user_id':widget.userId
       },
     ).then((value) {
       print(value.data);
@@ -633,12 +642,15 @@ class _RequestPermissionState extends State<RequestPermission> {
       loadingSend = false;
       print(permit_type);
       print(widget.userId);
-      print(error.response.data);
+      print(error);
     });
     print(dateController.text + " " + timeFromController.text);
   }
 
   sendExcuseNullTo() async {
+    setState(() {
+      print(widget.userId);
+    });
     print(notesController.text);
     await DioHelper.postData(
       url: "api/vacancies",
@@ -725,7 +737,7 @@ class _RequestPermissionState extends State<RequestPermission> {
             );
           },
         );
-      } else {
+      } else {print(widget.userId);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -747,6 +759,11 @@ class _RequestPermissionState extends State<RequestPermission> {
   }
 
   sendExcuseFromAndTo() async {
+    print(widget.userId);
+
+    setState(() {
+
+    });
     print(notesController.text);
     await DioHelper.postData(
       url: "api/vacancies",

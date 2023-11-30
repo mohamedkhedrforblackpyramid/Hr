@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gradient_slide_to_act/gradient_slide_to_act.dart';
+import 'package:hr/screens/choose_list.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
@@ -15,8 +16,8 @@ import '../network/remote/dio_helper.dart';
 import 'onboding/onboding_screen.dart';
 
 class Attendance extends StatefulWidget {
-  const Attendance({super.key});
-
+  int? userId;
+  Attendance({required this.userId});
   @override
   State<Attendance> createState() => _AttendanceState();
 }
@@ -49,7 +50,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
       setState(() {
       });
     }).catchError((error){
-      print(error.response.data);
+      print(error);
     });
    print(status);
 
@@ -308,7 +309,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                   width: MediaQuery.sizeOf(context).width / 1.5,
                                 )
                               : clickAttend == false? loadingShowAttend == false?
-                          status=='log_in'?GradientSlideToAct(
+                          status=='LOGIN'?GradientSlideToAct(
                             key: attenKey,
                                   width: 300,
                                   textStyle: TextStyle(
@@ -324,8 +325,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                     await DioHelper.postData(
                                       url: "api/organizations/1/attend",
                                       formData: {
-                                        "longitude": _currentPosition?.longitude,
-                                        "latitude": _currentPosition?.latitude,
+                                        "longitude": 150,
+                                        "latitude": 100,
                                       },
                                     )
                                         .then((value) {
@@ -344,6 +345,12 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                             });
                                           }
                                           else{
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId)));
+                                            setState(() {
+
+                                            });
                                             Alert(
                                               context: context,
                                               // title: "RFLUTTER ALERT",
@@ -377,7 +384,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                               :CircularProgressIndicator(
                                       color: Colors.indigo,
                                         )
-                              : loadingShowAttend == false?GradientSlideToAct(
+                              : loadingShowAttend == false?
+                          status=='LOGIN'?GradientSlideToAct(
                             key: attenKeyAgain,
                             width: 300,
                             textStyle: TextStyle(
@@ -393,8 +401,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                               await DioHelper.postData(
                                 url: "api/organizations/1/attend",
                                 formData: {
-                                  "longitude": _currentPosition?.longitude,
-                                  "latitude": _currentPosition?.latitude,
+                                  "longitude": 150,
+                                  "latitude": 100,
                                 },
                               )
                                   .then((value) {
@@ -410,6 +418,12 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                   setState(() {
                                   });
                                 }else{
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId)));
+                                  setState(() {
+
+                                  });
                                   Alert(
                                     context: context,
                                     // title: "RFLUTTER ALERT",
@@ -439,7 +453,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                               print(CacheHelper.getData(key: 'token'));
                             },
                             text: 'Slide to Confirm Attendance',
-                          ):CircularProgressIndicator(
+                          ):SizedBox()
+                              :CircularProgressIndicator(
                                  color: Colors.indigo,
                                     ),
                           const SizedBox(
@@ -449,7 +464,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                               ? const SizedBox()
                               :
                           clickdepar == false? loadingShowAttend == false?
-                          status =='log_out'?GradientSlideToAct(
+                          status =='LOGOUT'?GradientSlideToAct(
                                   key: depKey,
                                   text: 'Slide to Confirm Departure',
                                   width: 300,
@@ -464,10 +479,11 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                     await DioHelper.postData(
                                       url: "api/organizations/1/leave",
                                       formData: {
-                                        "longitude": 140,
+                                        "longitude": 150,
                                         "latitude": 100,
                                       },
                                     ).then((value) {
+
                                       loadingShowAttend = false;
                                       print(value.data);
                                       if(value.data['status'] == false){
@@ -482,6 +498,12 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
 
                                         });
                                       }else{
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId)));
+                                        setState(() {
+
+                                        });
                                         Alert(
                                           context: context,
                                           // title: "RFLUTTER ALERT",
@@ -508,7 +530,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                               :CircularProgressIndicator(
                             color: Colors.indigo,
                           ):
-                          loadingShowAttend == false? GradientSlideToAct(
+                          loadingShowAttend == false?
+                          status =='LOGOUT'? GradientSlideToAct(
                             key: depKeyAgain,
                             text: 'Slide to Confirm Departure',
                             width: 300,
@@ -523,7 +546,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                               await DioHelper.postData(
                                 url: "api/organizations/1/leave",
                                 formData: {
-                                  "longitude": 140,
+                                  "longitude": 150,
                                   "latitude": 100,
                                 },
                               ).then((value) {
@@ -541,6 +564,12 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
 
                                   });
                                 }else{
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId)));
+                                  setState(() {
+
+                                  });
                                   Alert(
                                     context: context,
                                     // title: "RFLUTTER ALERT",
@@ -562,7 +591,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
 
                               });
                             },
-                          ):CircularProgressIndicator(
+                          ):SizedBox()
+                              :CircularProgressIndicator(
                             color: Colors.indigo,
                           )
                         ]),

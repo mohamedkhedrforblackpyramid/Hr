@@ -36,6 +36,7 @@ late  bool developerMode;
   late SMITrigger reset;
   late SMITrigger confetti;
   int? userID;
+  String? name;
 
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
@@ -63,8 +64,12 @@ late  bool developerMode;
         "password": password,
       },
     ).then((Response response) {
-      print(response.data);
-      userID = response.data['user']['id'];
+      name =response.data['data']['user']['name'];
+      CacheHelper.saveData(key: "name", value: response.data['data']['user']['name']);
+
+      userID = response.data['data']['user']['id'];
+      CacheHelper.saveData(key: "token", value: response.data['token']);
+
       print('hhhhhhhhhhh');
       print(userID);
       print('hhhhhhhhhhh');
