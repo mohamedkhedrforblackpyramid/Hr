@@ -85,155 +85,136 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                             ),
                           ),
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: Theme(
-                                  data: Theme.of(context).copyWith(
-                                      splashColor: Colors.transparent),
-                                  child: TextField(
-                                    enabled: false,
-                                    controller: dateFromController,
-                                    autofocus: false,
+                        Padding(
+                          padding:
+                              const EdgeInsets.symmetric(vertical: 10),
+                          child: Theme(
+                            data: Theme.of(context).copyWith(
+                                splashColor: Colors.transparent),
+                            child: GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        //  backgroundColor: Color(0xff93D0FC),
+                                        content: Container(
+                                          width: 500,
+                                          height: 450,
+                                          child: Calender(onSubmit: (data) {
+                                            print("Heeeeeeloooooo");
+                                            print(data);
+                                            print("Heeeeeeloooooo");
+                                            dateFromController.text = data;
+                                            setState(() {});
+                                          }),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                });
+                              },
+                              child: TextField(
+                                enabled: false,
+                                controller: dateFromController,
+                                autofocus: false,
+                                style: TextStyle(
+                                    fontSize: 22.0,
+                                    color: Color(0xFFbdc6cf)),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Color(0xFCED3FF),
+                                  label: Text(
+                                    'Date From',
                                     style: TextStyle(
-                                        fontSize: 22.0,
-                                        color: Color(0xFFbdc6cf)),
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Color(0xFCED3FF),
-                                      label: Text(
-                                        'Date From',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                      contentPadding: const EdgeInsets.only(
-                                          left: 14.0, bottom: 8.0, top: 8.0),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            BorderRadius.circular(25.7),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            BorderRadius.circular(25.7),
-                                      ),
-                                    ),
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 14.0, bottom: 8.0, top: 8.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white),
+                                    borderRadius:
+                                        BorderRadius.circular(25.7),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white),
+                                    borderRadius:
+                                        BorderRadius.circular(25.7),
                                   ),
                                 ),
                               ),
                             ),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.calendar_month,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-
-                                          //  backgroundColor: Color(0xff93D0FC),
-                                          content: Container(
-                                            width: 500,
-                                            height: 450,
-                                            child: Calender(onSubmit: (data) {
-                                              print("Heeeeeeloooooo");
-                                              print(data);
-                                              print("Heeeeeeloooooo");
-                                              dateFromController.text = data;
-                                              setState(() {});
-                                            }),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  });
-                                }),
-                          ],
+                          ),
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: Theme(
-                                  data: Theme.of(context).copyWith(
-                                      splashColor: Colors.transparent),
-                                  child: TextField(
-                                    enabled: false,
-                                    controller: dateToController,
-                                    autofocus: false,
+                        Padding(
+                          padding:
+                              const EdgeInsets.symmetric(vertical: 10),
+                          child: Theme(
+                            data: Theme.of(context).copyWith(
+                                splashColor: Colors.transparent),
+                            child: GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+
+                                        //  backgroundColor: Color(0xff93D0FC),
+                                        content: Container(
+                                          width: 500,
+                                          height: 450,
+                                          child: Calender(onSubmit: (data) {
+                                            print("Heeeeeeloooooo");
+                                            print(data);
+                                            print("Heeeeeeloooooo");
+                                            dateToController.text = data;
+                                            setState(() {});
+                                          }),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                });
+                              },
+                              child: TextField(
+                                enabled: false,
+                                controller: dateToController,
+                                autofocus: false,
+                                style: TextStyle(
+                                    fontSize: 22.0,
+                                    color: Color(0xFFbdc6cf)),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Color(0xFCED3FF),
+                                  label: Text(
+                                    'Date To',
                                     style: TextStyle(
-                                        fontSize: 22.0,
-                                        color: Color(0xFFbdc6cf)),
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Color(0xFCED3FF),
-                                      label: Text(
-                                        'Date To',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                      contentPadding: const EdgeInsets.only(
-                                          left: 14.0, bottom: 8.0, top: 8.0),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            BorderRadius.circular(25.7),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            BorderRadius.circular(25.7),
-                                      ),
-                                    ),
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 14.0, bottom: 8.0, top: 8.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white),
+                                    borderRadius:
+                                        BorderRadius.circular(25.7),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white),
+                                    borderRadius:
+                                        BorderRadius.circular(25.7),
                                   ),
                                 ),
                               ),
                             ),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.calendar_month,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-
-                                          //  backgroundColor: Color(0xff93D0FC),
-                                          content: Container(
-                                            width: 500,
-                                            height: 450,
-                                            child: Calender(onSubmit: (data) {
-                                              print("Heeeeeeloooooo");
-                                              print(data);
-                                              print("Heeeeeeloooooo");
-                                              dateToController.text = data;
-                                              setState(() {});
-                                            }),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  });
-                                }),
-                          ],
+                          ),
                         ),
                         Row(
                           children: [

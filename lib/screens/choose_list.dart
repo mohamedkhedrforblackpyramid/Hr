@@ -7,6 +7,7 @@ import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
+import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
 import 'attendance.dart';
 import 'holiday_permission.dart';
@@ -46,6 +47,11 @@ class _ChooseListState extends State<ChooseList> {
   void initState() {
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
     checkAttendace();
+    print("toooooooooooooooooooooooookeeeeeeeeeeeeeen");
+    print(CacheHelper.getData(key: 'token'));
+    print("toooooooooooooooooooooooookeeeeeeeeeeeeeen");
+
+
     print(widget.userId);
     super.initState();
   }

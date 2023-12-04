@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hr/modules/permitmodel.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
 import '../network/local/cache_helper.dart';
@@ -24,29 +25,27 @@ class _ShowpermitState extends State<Showpermit> {
   bool permitLoading = false;
 
   getinfo() {
-    CacheHelper.getData(key: 'token');
     permitLoading = true;
     DioHelper.getData(
-      url: "api/vacancies/",
+      url: "api/organizations/1/getvacancies?is_permit=1",
     ).then((response) {
       permits = PermitList.fromJson(response.data);
+      print(response.data);
       setState(() {
         permitLoading = false;
       });
-      print("hhhhhhhhhhhh");
-      print(response.data);
-      print("hhhhhhhhhhhh");
     }).catchError((error) {
-      print(error.response);
+      print('hhhhhhhhhhhhhhhh');
     });
   }
 
   @override
   void initState() {
-    getinfo();
-    print(    CacheHelper.getData(key: 'token'));
+    print(CacheHelper.getData(key: 'token'));
 
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
+    getinfo();
+
 
     super.initState();
   }
@@ -91,7 +90,7 @@ class _ShowpermitState extends State<Showpermit> {
                                     (BuildContext context, int index) =>
                                         buildpermitList(
                                             per: permits.permitList![index],
-                                            index: index),
+                                            index: index, context: context),
                                 itemCount: permits.permitList!.length,
                               ),
                             )
@@ -123,7 +122,7 @@ class _ShowpermitState extends State<Showpermit> {
   }
 }
 
-Widget buildpermitList({required PermitModel per, required int index}) {
+Widget buildpermitList({required PermitModel per, required int index, required BuildContext context}) {
   return Container(
     margin: EdgeInsets.all(20),
     padding: EdgeInsets.all(20),
@@ -174,7 +173,45 @@ Widget buildpermitList({required PermitModel per, required int index}) {
                 color: Colors.indigo,
                 borderRadius: BorderRadius.circular(30)
               ),
-              child: TextButton(onPressed: (){},
+              child: TextButton(onPressed: (){
+                showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                    //  title: const Text('Basic dialog title'),
+                      content: const Text(
+                        'Are you sure you approve to the permission?',
+                      ),
+                      actions:[
+                        Row(
+                          children: [
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                textStyle: Theme.of(context).textTheme.labelLarge,
+                              ),
+                              child: const Text('Yes'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                textStyle: Theme.of(context).textTheme.labelLarge,
+                              ),
+                              child: const Text('No'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.center,
+
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
                   child: Text('Accept',
                     style: TextStyle(
                       color: Colors.white,
@@ -187,7 +224,45 @@ Widget buildpermitList({required PermitModel per, required int index}) {
                   color: Colors.indigo,
                   borderRadius: BorderRadius.circular(30)
               ),
-              child: TextButton(onPressed: (){},
+              child: TextButton(onPressed: (){
+                showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      //  title: const Text('Basic dialog title'),
+                      content: const Text(
+                        'Are you sure to deny the permission?',
+                      ),
+                      actions: [
+                        Row(
+                          children: [
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                textStyle: Theme.of(context).textTheme.labelLarge,
+                              ),
+                              child: const Text('Yes'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                textStyle: Theme.of(context).textTheme.labelLarge,
+                              ),
+                              child: const Text('No'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                         // crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
                   child: Text('Refuse',
                     style: TextStyle(
                         color: Colors.white

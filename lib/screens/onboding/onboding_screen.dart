@@ -23,6 +23,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   void initState() {
+
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
     super.initState();
   }

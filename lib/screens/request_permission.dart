@@ -173,33 +173,136 @@ class _RequestPermissionState extends State<RequestPermission> {
                                     fillColor:
                                         MaterialStateProperty.all(Colors.white),
                                   ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          child: Theme(
-                                            data: Theme.of(context).copyWith(
-                                                splashColor:
-                                                    Colors.transparent),
-                                            child: TextFormField(
-                                              validator: (value) {},
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: Theme(
+                                      data: Theme.of(context).copyWith(
+                                          splashColor:
+                                              Colors.transparent),
+                                      child: GestureDetector(
+                                        onTap: (){
+                                          setState(() {
+                                            showDialog(
+                                              context: context,
+                                              builder:
+                                                  (BuildContext context) {
+                                                return AlertDialog(
+                                                  //  backgroundColor: Color(0xff93D0FC),
+                                                  content: Container(
+                                                    width: 500,
+                                                    height: 450,
+                                                    child: Calender(
+                                                        onSubmit: (data) {
+                                                          print("Heeeeeeloooooo");
+                                                          print(data);
+                                                          print("Heeeeeeloooooo");
+                                                          dateController.text =
+                                                              data;
+                                                          setState(() {});
+                                                        }),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          });
+                                        },
+                                        child: TextFormField(
+                                          validator: (value) {},
+                                          enabled: false,
+                                          controller: dateController,
+                                          autofocus: false,
+                                          style: TextStyle(
+                                              fontSize: 22.0,
+                                              color: Color(0xFFbdc6cf)),
+                                          decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor: Color(0xFCED3FF),
+                                            label: Text(
+                                              'Date',
+                                              style: TextStyle(
+                                                  fontWeight:
+                                                      FontWeight.bold,
+                                                  color: Colors.white),
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.only(
+                                                    left: 14.0,
+                                                    bottom: 8.0,
+                                                    top: 8.0),
+                                            focusedBorder:
+                                                OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      25.7),
+                                            ),
+                                            enabledBorder:
+                                                UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      25.7),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  isFirst == false
+                                      ? Padding(
+                                        padding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                        child: Theme(
+                                          data: Theme.of(context)
+                                              .copyWith(
+                                                  splashColor: Colors
+                                                      .transparent),
+                                          child: GestureDetector(
+                                            onTap: (){
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    //  backgroundColor: Color(0xff93D0FC),
+                                                    content: TimePicker(
+                                                        onPressed: (data) {
+                                                          /*  print(data);
+                                      print("Heeeeeeloooooo");
+                                      print(data);
+                                      print("Heeeeeeloooooo");*/
+                                                          timeFromController
+                                                              .text = data;
+                                                          setState(() {});
+                                                        }),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: TextField(
                                               enabled: false,
-                                              controller: dateController,
+                                              controller:
+                                                  timeFromController,
                                               autofocus: false,
                                               style: TextStyle(
                                                   fontSize: 22.0,
-                                                  color: Color(0xFFbdc6cf)),
+                                                  color:
+                                                      Color(0xFFbdc6cf)),
                                               decoration: InputDecoration(
                                                 filled: true,
-                                                fillColor: Color(0xFCED3FF),
+                                                fillColor:
+                                                    Color(0xFCED3FF),
                                                 label: Text(
-                                                  'Date',
+                                                  'Time From',
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      color: Colors.white),
+                                                      color:
+                                                          Colors.white),
                                                 ),
                                                 contentPadding:
                                                     const EdgeInsets.only(
@@ -209,224 +312,47 @@ class _RequestPermissionState extends State<RequestPermission> {
                                                 focusedBorder:
                                                     OutlineInputBorder(
                                                   borderSide: BorderSide(
-                                                      color: Colors.white),
+                                                      color:
+                                                          Colors.white),
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          25.7),
+                                                      BorderRadius
+                                                          .circular(25.7),
                                                 ),
                                                 enabledBorder:
                                                     UnderlineInputBorder(
                                                   borderSide: BorderSide(
-                                                      color: Colors.white),
+                                                      color:
+                                                          Colors.white),
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          25.7),
+                                                      BorderRadius
+                                                          .circular(25.7),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      IconButton(
-                                          icon: Icon(
-                                            Icons.calendar_month,
-                                            color: Colors.black,
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
+                                      )
+                                      : SizedBox(),
+                                  isEnd == false
+                                      ? Padding(
+                                        padding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                        child: Theme(
+                                          data: Theme.of(context)
+                                              .copyWith(
+                                                  splashColor: Colors
+                                                      .transparent),
+                                          child: GestureDetector(
+                                            onTap: (){
                                               showDialog(
                                                 context: context,
                                                 builder:
                                                     (BuildContext context) {
                                                   return AlertDialog(
                                                     //  backgroundColor: Color(0xff93D0FC),
-                                                    content: Container(
-                                                      width: 500,
-                                                      height: 450,
-                                                      child: Calender(
-                                                          onSubmit: (data) {
-                                                        print("Heeeeeeloooooo");
-                                                        print(data);
-                                                        print("Heeeeeeloooooo");
-                                                        dateController.text =
-                                                            data;
-                                                        setState(() {});
-                                                      }),
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                            });
-                                          }),
-                                    ],
-                                  ),
-                                  isFirst == false
-                                      ? Row(
-                                          children: [
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10),
-                                                child: Theme(
-                                                  data: Theme.of(context)
-                                                      .copyWith(
-                                                          splashColor: Colors
-                                                              .transparent),
-                                                  child: TextField(
-                                                    enabled: false,
-                                                    controller:
-                                                        timeFromController,
-                                                    autofocus: false,
-                                                    style: TextStyle(
-                                                        fontSize: 22.0,
-                                                        color:
-                                                            Color(0xFFbdc6cf)),
-                                                    decoration: InputDecoration(
-                                                      filled: true,
-                                                      fillColor:
-                                                          Color(0xFCED3FF),
-                                                      label: Text(
-                                                        'Time From',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      contentPadding:
-                                                          const EdgeInsets.only(
-                                                              left: 14.0,
-                                                              bottom: 8.0,
-                                                              top: 8.0),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.white),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(25.7),
-                                                      ),
-                                                      enabledBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.white),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(25.7),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            IconButton(
-                                                icon: Icon(
-                                                  Icons.more_time_outlined,
-                                                  color: Colors.black,
-                                                ),
-                                                onPressed: () {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return AlertDialog(
-                                                        //  backgroundColor: Color(0xff93D0FC),
-                                                        content: TimePicker(
-                                                            onPressed: (data) {
-                                                          /*  print(data);
-                                              print("Heeeeeeloooooo");
-                                              print(data);
-                                              print("Heeeeeeloooooo");*/
-                                                          timeFromController
-                                                              .text = data;
-                                                          setState(() {});
-                                                        }),
-                                                      );
-                                                    },
-                                                  );
-                                                }),
-                                          ],
-                                        )
-                                      : SizedBox(),
-                                  isEnd == false
-                                      ? Row(
-                                          children: [
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10),
-                                                child: Theme(
-                                                  data: Theme.of(context)
-                                                      .copyWith(
-                                                          splashColor: Colors
-                                                              .transparent),
-                                                  child: TextField(
-                                                    enabled: false,
-                                                    controller:
-                                                        timeToController,
-                                                    autofocus: false,
-                                                    style: TextStyle(
-                                                        fontSize: 22.0,
-                                                        color:
-                                                            Color(0xFFbdc6cf)),
-                                                    decoration: InputDecoration(
-                                                      filled: true,
-                                                      fillColor:
-                                                          Color(0xFCED3FF),
-                                                      label: Text(
-                                                        'Time To',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      contentPadding:
-                                                          const EdgeInsets.only(
-                                                              left: 14.0,
-                                                              bottom: 8.0,
-                                                              top: 8.0),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.white),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(25.7),
-                                                      ),
-                                                      enabledBorder:
-                                                          UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.white),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(25.7),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            IconButton(
-                                                icon: Icon(
-                                                  Icons.more_time_outlined,
-                                                  color: Colors.black,
-                                                ),
-                                                onPressed: () {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return AlertDialog(
-                                                        //  backgroundColor: Color(0xff93D0FC),
-                                                        content: TimePicker(
-                                                            onPressed: (data) {
+                                                    content: TimePicker(
+                                                        onPressed: (data) {
                                                           print(data);
                                                           print(
                                                               "Heeeeeeloooooo");
@@ -437,12 +363,59 @@ class _RequestPermissionState extends State<RequestPermission> {
                                                               .text = data;
                                                           setState(() {});
                                                         }),
-                                                      );
-                                                    },
                                                   );
-                                                }),
-                                          ],
-                                        )
+                                                },
+                                              );
+                                            },
+                                            child: TextField(
+                                              enabled: false,
+                                              controller:
+                                                  timeToController,
+                                              autofocus: false,
+                                              style: TextStyle(
+                                                  fontSize: 22.0,
+                                                  color:
+                                                      Color(0xFFbdc6cf)),
+                                              decoration: InputDecoration(
+                                                filled: true,
+                                                fillColor:
+                                                    Color(0xFCED3FF),
+                                                label: Text(
+                                                  'Time To',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color:
+                                                          Colors.white),
+                                                ),
+                                                contentPadding:
+                                                    const EdgeInsets.only(
+                                                        left: 14.0,
+                                                        bottom: 8.0,
+                                                        top: 8.0),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color:
+                                                          Colors.white),
+                                                  borderRadius:
+                                                      BorderRadius
+                                                          .circular(25.7),
+                                                ),
+                                                enabledBorder:
+                                                    UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color:
+                                                          Colors.white),
+                                                  borderRadius:
+                                                      BorderRadius
+                                                          .circular(25.7),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
                                       : SizedBox(),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(

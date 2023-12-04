@@ -379,7 +379,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                     print("hhhhhhhhhhhhhhhhhhhhhhhh");
                                     print(CacheHelper.getData(key: 'token'));
                                   },
-                                  text: 'Slide to Confirm Attendance',
+                                  text: 'Slide to Confirm Attend',
                                 ):SizedBox()
                               :CircularProgressIndicator(
                                       color: Colors.indigo,
@@ -452,7 +452,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
 
                               print(CacheHelper.getData(key: 'token'));
                             },
-                            text: 'Slide to Confirm Attendance',
+                            text: 'Slide to Confirm Attend',
                           ):SizedBox()
                               :CircularProgressIndicator(
                                  color: Colors.indigo,
@@ -516,14 +516,12 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                       });
                                       clickdepar = true;
                                       loadingShowAttend = false;
-
                                       Alert(
                                         context: context,
                                         // title: "RFLUTTER ALERT",
                                         desc:
                                             "can not Departure right now ... please try again later",
                                       ).show();
-
                                     });
                                   },
                                 ):SizedBox()
