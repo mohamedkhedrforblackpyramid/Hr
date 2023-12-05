@@ -23,7 +23,7 @@ class ChooseList extends StatefulWidget {
 
 class _ChooseListState extends State<ChooseList> {
   bool shouldPop = false;
-  late  String status = '';
+  late  String status ='';
   bool isSignInDialogShown = false;
   late RiveAnimationController _btnAnimationController;
 
@@ -31,15 +31,11 @@ class _ChooseListState extends State<ChooseList> {
     await DioHelper.getData(
       url: "api/organizations/1/attendance/check",
     ).then((response) {
-      print(response.data);
       status = response.data['status'];
-      print(status);
       setState(() {
       });
     }).catchError((error){
-      print(error.response.data);
     });
-    print(status);
 
   }
 
@@ -47,12 +43,8 @@ class _ChooseListState extends State<ChooseList> {
   void initState() {
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
     checkAttendace();
-    print("toooooooooooooooooooooooookeeeeeeeeeeeeeen");
-    print(CacheHelper.getData(key: 'token'));
-    print("toooooooooooooooooooooooookeeeeeeeeeeeeeen");
 
 
-    print(widget.userId);
     super.initState();
   }
 

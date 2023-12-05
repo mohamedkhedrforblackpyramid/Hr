@@ -64,15 +64,18 @@ late  bool developerMode;
         "password": password,
       },
     ).then((Response response) {
+      print(response.data);
+      print(response.data['data']['user']['name']);
+
       name =response.data['data']['user']['name'];
       CacheHelper.saveData(key: "name", value: response.data['data']['user']['name']);
-
+    // print(response.data['data']['token']);
       userID = response.data['data']['user']['id'];
       CacheHelper.saveData(key: "token", value: response.data['token']);
+     // print(userID);
+    //  print(response.data);
 
-      print('hhhhhhhhhhh');
-      print(userID);
-      print('hhhhhhhhhhh');
+
 
       Future.delayed(Duration(seconds: 1), () {
         if (_formKey.currentState!.validate()) {
@@ -86,15 +89,13 @@ late  bool developerMode;
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) =>  ChooseList(userId: userID,)));
           });
-
         }
       });
 
-      CacheHelper.saveData(key: "token", value: response.data['token']);
-      print(response.data);
-
+      CacheHelper.saveData(key: "token", value: response.data['data']['token']);
     }).catchError((error) async {
       print(error);
+      print(error.response.data);
       await Alert(
       context: context,
      // title: "RFLUTTER ALERT",

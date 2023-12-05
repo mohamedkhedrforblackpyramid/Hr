@@ -10,6 +10,11 @@ class DioHelper {
           connectTimeout: Duration(
             seconds: 20
           ),
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
           receiveDataWhenStatusError: true,
           //  baseUrl: 'http://192.168.1.135:8000/')
           //  baseUrl: 'http://localhost:8000/')
@@ -33,15 +38,8 @@ class DioHelper {
     /* print(url);
     print(query);*/
     if (CacheHelper.getData(key: "token") != null) {
-      print('got token');
-      dio.options.headers = {
-        'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/json',
-      };
       dio.options.headers['Authorization'] = "Bearer ${CacheHelper.getData(key: "token")}";
     }
-    print(dio.options);
-
     return await dio.get(url, queryParameters: query);
   }
 
@@ -49,16 +47,10 @@ class DioHelper {
     required String url,
     Map<String, dynamic>? query,
     required Map<String, dynamic> formData,
-  }) async {  if (CacheHelper.getData(key: "token") != null) {
-    print('got token');
-    dio.options.headers = {
-      'X-Requested-With': 'XMLHttpRequest',
-      'Content-Type': 'application/json',
-    };
-    dio.options.headers['Authorization'] = "Bearer ${CacheHelper.getData(key: "token")}";
-  }
-
-    // print(formData);
+  }) async {
+    if (CacheHelper.getData(key: "token") != null) {
+      dio.options.headers['Authorization'] = "Bearer ${CacheHelper.getData(key: "token")}";
+    }
     return await dio.post(url, queryParameters: query, data: formData);
   }
 
@@ -67,7 +59,10 @@ class DioHelper {
     Map<String, dynamic>? query,
     required Map<String, dynamic> formData,
   }) async {
-    // print(FormData.fromMap(formData));
+    if (CacheHelper.getData(key: "token") != null) {
+      dio.options.headers['Authorization'] = "Bearer ${CacheHelper.getData(key: "token")}";
+    }
+    dio.options.headers['Content-Type'] = 'multipart/form-data';
     return await dio.post(url,
         queryParameters: query, data: FormData.fromMap(formData));
   }
@@ -76,6 +71,9 @@ class DioHelper {
     Map<String, dynamic>? query,
     required Map<String, dynamic> formData,
   }) async {
+    if (CacheHelper.getData(key: "token") != null) {
+      dio.options.headers['Authorization'] = "Bearer ${CacheHelper.getData(key: "token")}";
+    }
     return await dio.patch(url,
         queryParameters: query, data: FormData.fromMap(formData));
   }

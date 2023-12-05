@@ -27,7 +27,7 @@ class _ShowVacancesState extends State<ShowVacances> {
     CacheHelper.getData(key: 'token');
     permitLoading = true;
     DioHelper.getData(
-      url: "api/organizations/1/getvacancies?is_permit=0",
+      url: "api/organizations/1/getvacancies?is_permit=0&status=1",
     ).then((response) {
       permits = PermitList.fromJson(response.data);
       setState(() {
@@ -123,158 +123,185 @@ class _ShowVacancesState extends State<ShowVacances> {
           ],
         ));
   }
-}
+  Widget buildpermitList({required PermitModel per, required int index, required BuildContext context, }) {
+    print('naaaaaaaaaaaaaaaaaaaaaaame');
+    print(per.name);
+    print('naaaaaaaaaaaaaaaaaaaaaaame');
 
-Widget buildpermitList({required PermitModel per, required int index, required BuildContext context}) {
-  return Container(
-    margin: EdgeInsets.all(20),
-    padding: EdgeInsets.all(20),
-    decoration: BoxDecoration(
-      color: Colors.deepOrangeAccent[200],
-      borderRadius: BorderRadius.only(
-        topRight: Radius.circular(40.0),
-        bottomLeft: Radius.circular(40.0),
+    return Container(
+      margin: EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.deepOrangeAccent[200],
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(40.0),
+          bottomLeft: Radius.circular(40.0),
+        ),
       ),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'User Name : ',
-          style: TextStyle(
-              fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          'Time From : ${per.from}',
-          style: TextStyle(
-              fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          'Time To :${per.to}',
-          style: TextStyle(
-              fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          'Status : ${per.status}',
-          style: TextStyle(
-              fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          'Notes : ${per.notes==null?'____':per.notes}',
-          style: TextStyle(
-            fontSize: 15,
-            color: Colors.black45,
-            fontWeight: FontWeight.bold,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'User Name : ${per.name} ',
+            style: TextStyle(
+                fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
           ),
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.indigo,
-                  borderRadius: BorderRadius.circular(30)
-              ),
-              child: TextButton(onPressed: (){
-                showDialog<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      //  title: const Text('Basic dialog title'),
-                      content: const Text(
-                        'Are you sure you approve to the vacation?',
-                      ),
-                      actions: <Widget>[
-                        Row(
-                          children: [
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                textStyle: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              child: const Text('Yes'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                textStyle: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              child: const Text('No'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.center,
-
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-                  child: Text('Accept',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  )),
+          Text(
+            'Time From : ${per.from}',
+            style: TextStyle(
+                fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            'Time To :${per.to}',
+            style: TextStyle(
+                fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            'Status : ${per.status}',
+            style: TextStyle(
+                fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            'Notes : ${per.notes==null?'____':per.notes}',
+            style: TextStyle(
+              fontSize: 15,
+              color: Colors.black45,
+              fontWeight: FontWeight.bold,
             ),
-            SizedBox(width: 10,),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.indigo,
-                  borderRadius: BorderRadius.circular(30)
-              ),
-              child: TextButton(onPressed: (){
-                showDialog<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      //  title: const Text('Basic dialog title'),
-                      content: const Text(
-                        'Are you sure to deny the vacation?',
-                      ),
-                      actions: <Widget>[
-                        Row(
-                          children: [
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                textStyle: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              child: const Text('Yes'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                textStyle: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              child: const Text('No'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.center,
-
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.indigo,
+                    borderRadius: BorderRadius.circular(30)
+                ),
+                child: TextButton(onPressed: (){
+                  showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        //  title: const Text('Basic dialog title'),
+                        content: const Text(
+                          'Are you sure you approve to the vacation?',
                         ),
-                      ],
-                    );
-                  },
-                );
-              },
-                  child: Text('Refuse',
-                    style: TextStyle(
-                        color: Colors.white
-                    ),
-                  )),
-            ),
-          ],
-        )
-      ],
-    ),
-  );
+                        actions:[
+                          Row(
+                            children: [
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  textStyle: Theme.of(context).textTheme.labelLarge,
+                                ),
+                                child: const Text('Yes'),
+                                onPressed: () async {
+                                  await DioHelper.postData(
+                                    url: "api/update-status/${per.id}",
+                                    formData: {
+                                      "status": true,
+                                    },
+                                  ).then((value) {
+                                    setState(() {
+                                      permits.permitList?.removeAt(index);
+                                    });
+                                    print('mbroook');
+                                  }).catchError((error){});
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  textStyle: Theme.of(context).textTheme.labelLarge,
+                                ),
+                                child: const Text('No'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                            mainAxisAlignment: MainAxisAlignment.center,
+
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                    child: Text('Accept',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    )),
+              ),
+              SizedBox(width: 10,),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.indigo,
+                    borderRadius: BorderRadius.circular(30)
+                ),
+                child: TextButton(onPressed: (){
+                  showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        //  title: const Text('Basic dialog title'),
+                        content: const Text(
+                          'Are you sure to deny the vacation?',
+                        ),
+                        actions: [
+                          Row(
+                            children: [
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  textStyle: Theme.of(context).textTheme.labelLarge,
+                                ),
+                                child: const Text('Yes'),
+                                onPressed: () async {
+                                  await DioHelper.postData(
+                                    url: "api/update-status/${per.id}",
+                                    formData: {
+                                      "status": false,
+                                    },
+                                  ).then((value) {
+                                    setState(() {
+                                      permits.permitList?.removeAt(index);
+                                    });
+                                    print('mbroook');
+                                  }).catchError((error){});
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  textStyle: Theme.of(context).textTheme.labelLarge,
+                                ),
+                                child: const Text('No'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                    child: Text('Refuse',
+                      style: TextStyle(
+                          color: Colors.white
+                      ),
+                    )),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
 }
+
