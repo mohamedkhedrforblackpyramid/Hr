@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/screens/request_permission.dart';
 import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -15,7 +16,10 @@ import 'holiday_permission.dart';
 
 class ChooseList extends StatefulWidget {
   int? userId;
-   ChooseList({required this.userId});
+  OrganizationsList oranizaionsList;
+   ChooseList({required this.userId,
+     required this.oranizaionsList
+   });
 
   @override
   State<ChooseList> createState() => _ChooseListState();
@@ -26,6 +30,8 @@ class _ChooseListState extends State<ChooseList> {
   late  String status ='';
   bool isSignInDialogShown = false;
   late RiveAnimationController _btnAnimationController;
+  int? dropdownvalue = null;
+
 
   Future<void> checkAttendace() async {
     await DioHelper.getData(
@@ -55,6 +61,50 @@ class _ChooseListState extends State<ChooseList> {
         return shouldPop;
       },
       child: Scaffold(
+        bottomSheet: Container(
+          color:  Color(0xffC9A9A6),
+          child: DropdownButton(
+            borderRadius: BorderRadius.circular(50),
+              dropdownColor: Color(0xffFAACB4),
+              isExpanded: true,
+              value: dropdownvalue,
+              hint:  Text(
+                "Choose Organizations",
+                style: TextStyle(
+                    fontSize: 20,
+                    color:
+                    Colors.black,
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+              // Down Arrow Icon
+              icon: const Icon(Icons
+                  .keyboard_arrow_down),
+              // Array list of items
+              items: widget.oranizaionsList.organizationsList
+                  ?.map((items) {
+                return DropdownMenuItem(
+                  enabled: true,
+                  value: items.organizations_id,
+                  child: Text(
+                    '${items.name}',
+                    style:
+                    const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged:
+                  (int? newValue) {
+                setState(() {
+                  dropdownvalue =
+                      newValue;
+                });
+              }),
+        ),
+
           backgroundColor: Color(0xff1A6293),
           body: Stack(
             children: [

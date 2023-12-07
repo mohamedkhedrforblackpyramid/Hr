@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
+import 'package:hr/modules/organizationmodel.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
@@ -37,6 +38,7 @@ late  bool developerMode;
   late SMITrigger confetti;
   int? userID;
   String? name;
+  OrganizationsList? orgList;
 
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
@@ -54,8 +56,8 @@ late  bool developerMode;
       isShowConfetti = true;
     });
     print("sending");
-    print(name);
-    print(password);
+  /*  print(name);
+    print(password);*/
 
     await DioHelper.postData(
       url: "api/auth/login",
@@ -65,7 +67,8 @@ late  bool developerMode;
       },
     ).then((Response response) {
       print(response.data);
-      print(response.data['data']['user']['name']);
+      orgList = OrganizationsList.fromJson(response.data['data']['organizations']);
+
 
       name =response.data['data']['user']['name'];
       CacheHelper.saveData(key: "name", value: response.data['data']['user']['name']);
@@ -87,7 +90,9 @@ late  bool developerMode;
             });
             confetti.fire();
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>  ChooseList(userId: userID,)));
+                MaterialPageRoute(builder: (context) =>  ChooseList(userId: userID,
+                  oranizaionsList: orgList!,
+                )));
           });
         }
       });
@@ -101,6 +106,7 @@ late  bool developerMode;
      // title: "RFLUTTER ALERT",
       desc: "user name or password is not correct .. Try Again",
       ).show();
+      isShowLoading = false;
       setState(() {
         isShowLoading = false;
       });

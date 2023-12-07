@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gradient_slide_to_act/gradient_slide_to_act.dart';
+import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/screens/choose_list.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
@@ -347,7 +348,10 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                           else{
                                             Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId)));
+                                                MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
+                                                  oranizaionsList: OrganizationsList(),
+
+                                                )));
                                             setState(() {
 
                                             });
@@ -420,7 +424,9 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                 }else{
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId)));
+                                      MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
+                                        oranizaionsList: OrganizationsList(),
+                                      )));
                                   setState(() {
 
                                   });
@@ -500,7 +506,9 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                       }else{
                                         Navigator.push(
                                             context,
-                                            MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId)));
+                                            MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
+                                              oranizaionsList: OrganizationsList(),
+                                            )));
                                         setState(() {
 
                                         });
@@ -564,7 +572,9 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                 }else{
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId)));
+                                      MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
+                                        oranizaionsList: OrganizationsList(),
+                                      )));
                                   setState(() {
 
                                   });

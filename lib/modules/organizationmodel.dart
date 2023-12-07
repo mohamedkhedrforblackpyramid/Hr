@@ -7,19 +7,21 @@ class OrganizationsModel {
 
   });
   OrganizationsModel.fromJson(Map<String, dynamic> json) {
-    organizations_id = json['data']['organizations']['id'];
-    name = json['data']['organizations']['name'];
+    organizations_id = json['id'];
+    print(organizations_id);
+    name = json['name'];
+    print(name);
 
 
   }
 }
 
-class OrganizationsitList {
+class OrganizationsList {
   List<OrganizationsModel>? organizationsList;
-  OrganizationsitList({this.organizationsList});
-  factory OrganizationsitList.fromJson(List<dynamic> parsedJson) {
+  OrganizationsList({this.organizationsList});
+  factory OrganizationsList.fromJson(List<dynamic> parsedJson) {
     List<OrganizationsModel> organizations;
     organizations = parsedJson.map((i) => OrganizationsModel.fromJson(i)).toList();
-    return OrganizationsitList(organizationsList: organizations);
+    return OrganizationsList(organizationsList: organizations);
   }
 }
