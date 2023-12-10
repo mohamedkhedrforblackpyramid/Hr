@@ -88,9 +88,9 @@ class _SignUpFormState extends State<SignUpForm> {
             isShowLoading = false;
           });
           confetti.fire();
-          Navigator.push(
+/*          Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>  Attendance(userId: null,)));
+              MaterialPageRoute(builder: (context) =>  Attendance(userId: null,)));*/
         });
 
       } else {

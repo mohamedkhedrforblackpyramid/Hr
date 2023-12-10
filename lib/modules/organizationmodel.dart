@@ -17,11 +17,11 @@ class OrganizationsModel {
 }
 
 class OrganizationsList {
-  List<OrganizationsModel>? organizationsList;
-  OrganizationsList({this.organizationsList});
+  List<OrganizationsModel>? organizationsListt;
+  OrganizationsList({this.organizationsListt});
   factory OrganizationsList.fromJson(List<dynamic> parsedJson) {
     List<OrganizationsModel> organizations;
     organizations = parsedJson.map((i) => OrganizationsModel.fromJson(i)).toList();
-    return OrganizationsList(organizationsList: organizations);
+    return OrganizationsList(organizationsListt: organizations);
   }
 }

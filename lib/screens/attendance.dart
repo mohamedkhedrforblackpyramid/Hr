@@ -18,7 +18,11 @@ import 'onboding/onboding_screen.dart';
 
 class Attendance extends StatefulWidget {
   int? userId;
-  Attendance({required this.userId});
+  int?organizationId;
+
+  Attendance({required this.userId,
+    required this.organizationId
+  });
   @override
   State<Attendance> createState() => _AttendanceState();
 }
@@ -44,7 +48,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
 
   Future<void> checkAttendace() async {
    await DioHelper.getData(
-      url: "api/organizations/1/attendance/check",
+      url: "api/organizations/${widget.organizationId}/attendance/check",
     ).then((response) {
       status = response.data['status'];
       print(status);
@@ -350,6 +354,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                                 context,
                                                 MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
                                                   oranizaionsList: OrganizationsList(),
+                                                  organizationId: widget.organizationId,
+                                                  organizationsName: '',
 
                                                 )));
                                             setState(() {
@@ -426,6 +432,9 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                       context,
                                       MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
                                         oranizaionsList: OrganizationsList(),
+                                        organizationId: widget.organizationId,
+                                        organizationsName: '',
+
                                       )));
                                   setState(() {
 
@@ -508,6 +517,9 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                             context,
                                             MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
                                               oranizaionsList: OrganizationsList(),
+                                              organizationId: widget.organizationId,
+                                              organizationsName: '',
+
                                             )));
                                         setState(() {
 
@@ -574,6 +586,9 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                       context,
                                       MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
                                         oranizaionsList: OrganizationsList(),
+                                        organizationId: widget.organizationId,
+                                        organizationsName: '',
+
                                       )));
                                   setState(() {
 

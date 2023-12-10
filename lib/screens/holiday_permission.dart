@@ -12,7 +12,14 @@ import '../network/remote/dio_helper.dart';
 
 class HolidayPermission extends StatefulWidget {
   int?userId;
-  HolidayPermission({required this.userId});
+  int?organizationId;
+
+  HolidayPermission({
+    required this.userId,
+    required this.organizationId
+
+
+  });
   @override
   State<HolidayPermission> createState() => _HolidayPermissionState();
 }
@@ -389,7 +396,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
         'is_permit' : false,
         "notes": noteController.text,
          'type': vacationtype.text,
-        'organization_id':1,
+        'organization_id': widget.organizationId,
         'user_id':widget.userId
       },
     ).then((value) {

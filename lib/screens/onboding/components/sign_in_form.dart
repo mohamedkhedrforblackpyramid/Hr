@@ -39,6 +39,8 @@ late  bool developerMode;
   int? userID;
   String? name;
   OrganizationsList? orgList;
+  late int organizationsId;
+  String organizationsName='';
 
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
@@ -68,6 +70,10 @@ late  bool developerMode;
     ).then((Response response) {
       print(response.data);
       orgList = OrganizationsList.fromJson(response.data['data']['organizations']);
+      organizationsName = response.data['data']['organizations'][0]['name'];
+        organizationsId = response.data['data']['organizations'][0]['id'];
+
+
 
 
       name =response.data['data']['user']['name'];
@@ -92,6 +98,8 @@ late  bool developerMode;
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) =>  ChooseList(userId: userID,
                   oranizaionsList: orgList!,
+                  organizationId: organizationsId,
+                  organizationsName: organizationsName,
                 )));
           });
         }

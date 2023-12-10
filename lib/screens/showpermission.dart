@@ -11,7 +11,10 @@ import '../network/remote/dio_helper.dart';
 import 'onboding/components/animated_btn.dart';
 
 class Showpermit extends StatefulWidget {
-  const Showpermit({super.key});
+  int? userId;
+  int?organizationId;
+   Showpermit({ required this.userId,
+     required this.organizationId});
 
   @override
   State<Showpermit> createState() => _ShowpermitState();
@@ -27,7 +30,7 @@ class _ShowpermitState extends State<Showpermit> {
   getinfo() {
     permitLoading = true;
     DioHelper.getData(
-      url: "api/organizations/1/getvacancies?is_permit=1&status=1",
+      url: "api/organizations/${widget.organizationId}/getvacancies?is_permit=1&status=1",
     ).then((response) {
       permits = PermitList.fromJson(response.data);
       print(response.data);

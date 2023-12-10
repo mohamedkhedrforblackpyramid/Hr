@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hr/modules/organizationmodel.dart';
-import 'package:hr/screens/request_permission.dart';
+import 'package:hr/screens/excusepermission.dart';
 import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
@@ -17,8 +17,12 @@ import 'holiday_permission.dart';
 class ChooseList extends StatefulWidget {
   int? userId;
   OrganizationsList oranizaionsList;
+  int?organizationId;
+  String? organizationsName;
    ChooseList({required this.userId,
-     required this.oranizaionsList
+     required this.oranizaionsList,
+     required this.organizationId,
+     required this.organizationsName
    });
 
   @override
@@ -27,7 +31,7 @@ class ChooseList extends StatefulWidget {
 
 class _ChooseListState extends State<ChooseList> {
   bool shouldPop = false;
-  late  String status ='';
+  String status='';
   bool isSignInDialogShown = false;
   late RiveAnimationController _btnAnimationController;
   int? dropdownvalue = null;
@@ -35,12 +39,14 @@ class _ChooseListState extends State<ChooseList> {
 
   Future<void> checkAttendace() async {
     await DioHelper.getData(
-      url: "api/organizations/1/attendance/check",
+      url: "api/organizations/${widget.organizationId}/attendance/check",
     ).then((response) {
       status = response.data['status'];
+      print(status);
       setState(() {
       });
     }).catchError((error){
+      print(error);
     });
 
   }
@@ -61,10 +67,9 @@ class _ChooseListState extends State<ChooseList> {
         return shouldPop;
       },
       child: Scaffold(
-        bottomSheet: Container(
+  /*      bottomSheet: Container(
           color:  Color(0xffC9A9A6),
           child: DropdownButton(
-            borderRadius: BorderRadius.circular(50),
               dropdownColor: Color(0xffFAACB4),
               isExpanded: true,
               value: dropdownvalue,
@@ -78,8 +83,8 @@ class _ChooseListState extends State<ChooseList> {
                 ),
               ),
               // Down Arrow Icon
-              icon: const Icon(Icons
-                  .keyboard_arrow_down),
+             *//* icon: const Icon(Icons
+                  .keyboard_arrow_down),*//*
               // Array list of items
               items: widget.oranizaionsList.organizationsList
                   ?.map((items) {
@@ -103,7 +108,7 @@ class _ChooseListState extends State<ChooseList> {
                       newValue;
                 });
               }),
-        ),
+        );*/
 
           backgroundColor: Color(0xff1A6293),
           body: Stack(
@@ -126,7 +131,7 @@ class _ChooseListState extends State<ChooseList> {
               AnimatedPositioned(
                 duration: Duration(milliseconds: 240),
                 top: isSignInDialogShown ? -50 : 0,
-                height: MediaQuery.of(context).size.height,
+            //    height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: SafeArea(
                   child: Padding(
@@ -134,6 +139,49 @@ class _ChooseListState extends State<ChooseList> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text('${widget.organizationsName}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 22
+                                  ),
+                                ),
+                                flex: 3,
+                              ),
+                              Expanded(
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.black45,
+                                  child: IconButton(onPressed: (){
+                                    showModalBottomSheet<void>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return ListView.builder(
+                                          shrinkWrap: true,
+                                          itemBuilder:
+                                              (BuildContext context, int index) =>
+                                              buildOranizationsList(
+                                                  organizations: widget.oranizaionsList.organizationsListt![index],
+                                                  index: index),
+                                          itemCount: widget.oranizaionsList.organizationsListt!.length,
+                                        );
+                                      },
+                                    );
+                                  },
+                                      icon: Icon(
+                                          Icons.edit,
+                                        color: Colors.white,
+                                      )),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                         Row(
                           children: [
                             Expanded(
@@ -147,7 +195,9 @@ class _ChooseListState extends State<ChooseList> {
                                       ),
                                       onTap: (){
                                         Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) =>  RequestPermission(userId: widget.userId,)));
+                                            MaterialPageRoute(builder: (context) =>  ExcusePrmission(userId: widget.userId,
+                                              organizationId: widget.organizationId,
+                                            )));
                                       },
                                     ),
                                     Text("Excuse",
@@ -172,7 +222,9 @@ class _ChooseListState extends State<ChooseList> {
                                         ),
                                       onTap: (){
                                         Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) =>  HolidayPermission(userId: widget.userId,)));
+                                            MaterialPageRoute(builder: (context) =>  HolidayPermission(userId: widget.userId,
+                                              organizationId: widget.organizationId,
+                                            )));
                                       },
                                     ),
                                     Text("Vacation",
@@ -199,7 +251,7 @@ class _ChooseListState extends State<ChooseList> {
                                           height: 150,
                                         ),onTap: () async {
                                           checkAttendace();
-                                          if(status=='NOACTION'||status.isEmpty){
+                                          if(status=='NOACTION'||status==''){
                                             setState(() {
 
                                             });
@@ -209,13 +261,16 @@ class _ChooseListState extends State<ChooseList> {
                                             desc: "Try again later",
                                             ).show();
                                           }else {
+                                            print(status);
                                             setState(() {
 
                                             });
                                             Navigator.push(context,
                                                 MaterialPageRoute(
                                                     builder: (context) {
-                                                      return  Attendance(userId: widget.userId,);
+                                                      return  Attendance(userId: widget.userId,
+                                                        organizationId: widget.organizationId,
+                                                      );
                                                     }));
                                           }
                                     },
@@ -242,7 +297,10 @@ class _ChooseListState extends State<ChooseList> {
                                         ),
                                       onTap:(){
                                       Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) =>  SwitchShowpermitAndVacan()));
+                                          MaterialPageRoute(builder: (context) =>  SwitchShowpermitAndVacan(
+                                            userId: widget.userId,
+                                            organizationId: widget.organizationId,
+                                          )));
                                       }
                                       ,
                                     ),
@@ -270,6 +328,29 @@ class _ChooseListState extends State<ChooseList> {
 
             ],
           )),
+    );
+  }
+ Widget buildOranizationsList({required OrganizationsModel organizations,required int index}){
+    return Column(
+      children:[
+        Container(
+          width: double.infinity,
+          child: TextButton(
+            child:  Text(organizations.name!,
+              style: TextStyle(
+                color: Colors.black
+              ),
+            ),
+            onPressed: () {
+              setState(() {
+              });
+              widget.organizationsName = organizations.name!;
+              widget.organizationId = organizations.organizations_id;
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      ],
     );
   }
 }

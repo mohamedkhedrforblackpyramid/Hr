@@ -8,7 +8,7 @@ class DioHelper {
     dio = Dio(
       BaseOptions(
           connectTimeout: Duration(
-            seconds: 20
+            seconds: 10
           ),
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
@@ -35,6 +35,7 @@ class DioHelper {
     int? id,
     bool auth = false
   }) async {
+    print(url);
     /* print(url);
     print(query);*/
     if (CacheHelper.getData(key: "token") != null) {

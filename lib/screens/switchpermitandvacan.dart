@@ -10,7 +10,13 @@ import 'onboding/components/animated_btn.dart';
 
 
 class SwitchShowpermitAndVacan extends StatefulWidget {
-  const SwitchShowpermitAndVacan({super.key});
+  int? userId;
+  int?organizationId;
+
+  SwitchShowpermitAndVacan({
+    required this.userId,
+    required this.organizationId
+});
 
   @override
   State<SwitchShowpermitAndVacan> createState() => _SwitchShowpermitAndVacanState();
@@ -71,7 +77,10 @@ class _SwitchShowpermitAndVacanState extends State<SwitchShowpermitAndVacan> {
                                     color:  Color(0xFF0E3311).withOpacity(0.5),
                                     child: TextButton(onPressed: ()async{
                                      await   Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) =>  Showpermit()));
+                                            MaterialPageRoute(builder: (context) =>  Showpermit(
+                                              organizationId: widget.organizationId,
+                                              userId: widget.userId,
+                                            )));
 
                                     },
                                         child: Text('Permissions',
@@ -92,7 +101,10 @@ class _SwitchShowpermitAndVacanState extends State<SwitchShowpermitAndVacan> {
                                     color:  Color(0xFF0E3311).withOpacity(0.5),
                                     child: TextButton(onPressed: () async {
                                       await   Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) =>  ShowVacances()));
+                                          MaterialPageRoute(builder: (context) =>  ShowVacances(
+                                            userId: widget.userId,
+                                            organizationId: widget.organizationId,
+                                          )));
                                     },
                                         child: Text('Vacanses',
                                           style: TextStyle(

@@ -10,14 +10,18 @@ import 'package:table_calendar/table_calendar.dart';
 import '../calender.dart';
 import '../network/remote/dio_helper.dart';
 
-class RequestPermission extends StatefulWidget {
+class ExcusePrmission extends StatefulWidget {
   int? userId;
-  RequestPermission({required this.userId});
+  int?organizationId;
+
+  ExcusePrmission({required this.userId,
+    required this.organizationId
+  });
   @override
-  State<RequestPermission> createState() => _RequestPermissionState();
+  State<ExcusePrmission> createState() => _ExcusePrmissionState();
 }
 
-class _RequestPermissionState extends State<RequestPermission> {
+class _ExcusePrmissionState extends State<ExcusePrmission> {
   bool shouldPop = false;
   bool isSignInDialogShown = false;
   late RiveAnimationController _btnAnimationController;
@@ -268,13 +272,8 @@ class _RequestPermissionState extends State<RequestPermission> {
                                                 builder:
                                                     (BuildContext context) {
                                                   return AlertDialog(
-                                                    //  backgroundColor: Color(0xff93D0FC),
                                                     content: TimePicker(
                                                         onPressed: (data) {
-                                                          /*  print(data);
-                                      print("Heeeeeeloooooo");
-                                      print(data);
-                                      print("Heeeeeeloooooo");*/
                                                           timeFromController
                                                               .text = data;
                                                           setState(() {});
@@ -539,10 +538,12 @@ class _RequestPermissionState extends State<RequestPermission> {
         "notes": notesController.text,
         'permit_type': permit_type,
         // 'type':'ORDINARY',
-        'organization_id': 1,
+        'organization_id': widget.organizationId,
         'user_id':widget.userId
       },
     ).then((value) {
+      print(widget.organizationId);
+
       print(value.data);
       print(widget.userId);
       if (dateController.text == '') {
@@ -588,6 +589,8 @@ class _RequestPermissionState extends State<RequestPermission> {
       loadingSend = false;
       setState(() {});
     }).catchError((error) {
+      print(widget.organizationId);
+
       if (dateController.text == '') {
         showDialog(
           context: context,
@@ -634,7 +637,7 @@ class _RequestPermissionState extends State<RequestPermission> {
         "notes": notesController.text,
         'permit_type': permit_type,
         // 'type':'ORDINARY',
-        'organization_id': 1,
+        'organization_id':widget.organizationId,
         'user_id': widget.userId
       },
     ).then((value) {
@@ -747,7 +750,7 @@ class _RequestPermissionState extends State<RequestPermission> {
         "notes": notesController.text,
         'permit_type': permit_type,
         // 'type':'ORDINARY',
-        'organization_id': 1,
+        'organization_id': widget.organizationId,
         'user_id': widget.userId
       },
     ).then((value) {
