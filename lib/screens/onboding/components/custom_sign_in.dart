@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hr/screens/onboding/components/sign_in_form.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../sign_up.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 
@@ -36,8 +37,8 @@ Future<Object?> customSigninDialog(BuildContext context,
                   clipBehavior: Clip.none,
                   children: [
                     Column(children: [
-                      const Text(
-                        "Sign In",
+                       Text(
+                        "${AppLocalizations.of(context)!.signIn}",
                         style: TextStyle(fontSize: 34, fontFamily: "Poppins"),
                       ),
                       const Padding(
@@ -48,7 +49,7 @@ Future<Object?> customSigninDialog(BuildContext context,
                         ),
                       ),
                       const SignInForm(),
-                      const Row(
+                       Row(
                         children: [
                           Expanded(
                             child: Divider(),
@@ -56,7 +57,7 @@ Future<Object?> customSigninDialog(BuildContext context,
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                              "OR",
+                              "${AppLocalizations.of(context)!.or}",
                               style: TextStyle(color: Colors.black26,
                                 fontWeight: FontWeight.bold
                               ),
@@ -67,9 +68,9 @@ Future<Object?> customSigninDialog(BuildContext context,
                           ),
                         ],
                       ),
-                      const Padding(
+                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.0),
-                        child: Text("Sign up ",
+                        child: Text("${AppLocalizations.of(context)!.signUp}",
                             style: TextStyle(color: Colors.black54,
                               fontWeight: FontWeight.bold
                             )),

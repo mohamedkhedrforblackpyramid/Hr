@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:hr/screens/showpermission.dart';
 import 'package:hr/screens/showvacances.dart';
 import 'package:rive/rive.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 import 'onboding/components/animated_btn.dart';
 
@@ -83,7 +85,7 @@ class _SwitchShowpermitAndVacanState extends State<SwitchShowpermitAndVacan> {
                                             )));
 
                                     },
-                                        child: Text('Permissions',
+                                        child: Text('${AppLocalizations.of(context)!.permissions}',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 35
@@ -106,7 +108,7 @@ class _SwitchShowpermitAndVacanState extends State<SwitchShowpermitAndVacan> {
                                             organizationId: widget.organizationId,
                                           )));
                                     },
-                                        child: Text('Vacanses',
+                                        child: Text('${AppLocalizations.of(context)!.vacances}',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 35

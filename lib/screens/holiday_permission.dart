@@ -6,6 +6,8 @@ import 'package:hr/screens/timepicker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 import '../calender.dart';
 import '../network/remote/dio_helper.dart';
@@ -26,11 +28,7 @@ class HolidayPermission extends StatefulWidget {
 
 class _HolidayPermissionState extends State<HolidayPermission> {
 
-  List<String> list = <String>[
-    'ORDINARY',
-    'CASUAL',
-    'SICK',
-  ];
+
   bool loadingSend = false;
   String? dropdownValue;
   bool shouldPop = false;
@@ -41,6 +39,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
   var timeFromController = TextEditingController();
   var vacationtype = TextEditingController();
   var noteController = TextEditingController();
+  String translateType ='';
 
   @override
   void initState() {
@@ -50,6 +49,11 @@ class _HolidayPermissionState extends State<HolidayPermission> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> list =[
+      '${AppLocalizations.of(context)!.ordinary}',
+      '${AppLocalizations.of(context)!.casual}',
+      '${AppLocalizations.of(context)!.sick}',
+    ];
     return Scaffold(
         backgroundColor: Color(0xff1A6293),
         body: Stack(
@@ -84,7 +88,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 30),
                             child: Text(
-                              "Vacation  Request",
+                              "${AppLocalizations.of(context)!.vacationRequest}",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 30,
@@ -110,9 +114,6 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                           width: 500,
                                           height: 450,
                                           child: Calender(onSubmit: (data) {
-                                            print("Heeeeeeloooooo");
-                                            print(data);
-                                            print("Heeeeeeloooooo");
                                             dateFromController.text = data;
                                             setState(() {});
                                           }),
@@ -132,11 +133,14 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Color(0xFCED3FF),
-                                  label: Text(
-                                    'Date From',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                                  label: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                        '${AppLocalizations.of(context)!.dateFrom}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                   contentPadding: const EdgeInsets.only(
                                       left: 14.0, bottom: 8.0, top: 8.0),
@@ -176,9 +180,6 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                           width: 500,
                                           height: 450,
                                           child: Calender(onSubmit: (data) {
-                                            print("Heeeeeeloooooo");
-                                            print(data);
-                                            print("Heeeeeeloooooo");
                                             dateToController.text = data;
                                             setState(() {});
                                           }),
@@ -198,11 +199,14 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Color(0xFCED3FF),
-                                  label: Text(
-                                    'Date To',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                                  label: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                      '${AppLocalizations.of(context)!.dateTo}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                   contentPadding: const EdgeInsets.only(
                                       left: 14.0, bottom: 8.0, top: 8.0),
@@ -243,12 +247,15 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                     decoration: InputDecoration(
                                       filled: true,
                                       fillColor: Color(0xFCED3FF),
-                                      label: Text(
-                                        'Vacation Type',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                            fontSize: 20),
+                                      label: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text(
+                                          '${AppLocalizations.of(context)!.vacationType}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
                                       ),
                                       contentPadding: const EdgeInsets.only(
                                           left: 14.0, bottom: 8.0, top: 8.0),
@@ -273,7 +280,6 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                               padding: const EdgeInsets.all(8.0),
                               child: DropdownButton<String>(
                                 dropdownColor:  Color(0xffFAACB4),
-                                //value: dropdownValue,
                                 icon: const Icon(
                                   Icons.add,
                                   color: Colors.black,
@@ -282,7 +288,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                 elevation: 16,
                                 style: const TextStyle(
                                     color: Colors.black,
-                                    fontSize: 10,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold),
                                 underline: Container(
                                   color: Colors.deepPurpleAccent,
@@ -293,19 +299,27 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                     dropdownValue = value!;
                                     vacationtype.text =
                                         dropdownValue.toString();
+
+                                    if(vacationtype.text=="اعتيادي"){
+                                      translateType = "ORDINARY";
+                                    }
+                                   else if(vacationtype.text=="عارضة"){
+                                     translateType = "CASUAL";
+                                    }
+                                   else if(vacationtype.text=="مرضي") {
+                                      translateType = 'SICK';
+                                    }
                                   });
-                                  print(vacationtype.text);
                                 },
                                 items: list.map<DropdownMenuItem<String>>(
-                                    (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
+                                        (String value) {
+                                          return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
                               ),
-                            )
-                          ],
+                            )                          ],
                         ),
                         Expanded(
                           child: Padding(
@@ -321,14 +335,17 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Color(0xFCED3FF),
-                                  label: Text(
-                                    'Notes (Optional)',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                                  label: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                      '${AppLocalizations.of(context)!.notes}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                   contentPadding: const EdgeInsets.only(
-                                      left: 14.0, bottom: 8.0, top: 8.0),
+                                      left: 14.0, bottom: 8.0, top: 8.0,right: 14),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.white),
                                     borderRadius: BorderRadius.circular(25.7),
@@ -341,6 +358,9 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                               ),
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).viewInsets.bottom/2,
                         ),
                         Expanded(
                           child: Container(
@@ -368,11 +388,12 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                               bottomRight: Radius.circular(25),
                                               bottomLeft:
                                                   Radius.circular(25)))),
-                                  icon: const Icon(
-                                    CupertinoIcons.arrow_right,
+                                  icon:  Icon(
+                                    AppLocalizations.of(context)!.localeName=='en'?
+                                    CupertinoIcons.arrow_right:CupertinoIcons.arrow_left,
                                     color: Color(0xFFFE0037),
                                   ),
-                                  label: const Text("Send")),
+                                  label:  Text("${AppLocalizations.of(context)!.send}")),
                             ),
                           ),
                         )
@@ -395,13 +416,12 @@ class _HolidayPermissionState extends State<HolidayPermission> {
         "to": '${dateToController.text}' ,
         'is_permit' : false,
         "notes": noteController.text,
-         'type': vacationtype.text,
+         'type': translateType,
         'organization_id': widget.organizationId,
         'user_id':widget.userId
       },
     ).then((value) {
-      print(value.data);
-      print(widget.userId);
+      print(translateType);
       if(dateFromController.text==''){
         showDialog(
           context: context,
@@ -409,7 +429,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Date From is empty !',
+                '${AppLocalizations.of(context)!.dateFrom}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -422,7 +442,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Time To is Empty !',
+                '${AppLocalizations.of(context)!.dateToisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -435,7 +455,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Vacation type is Empty !',
+                '${AppLocalizations.of(context)!.vacationTypeis}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -459,7 +479,6 @@ class _HolidayPermissionState extends State<HolidayPermission> {
 
       });
     }).catchError((error){
-      print(vacationtype.text);
       if(dateFromController.text==''){
         showDialog(
           context: context,
@@ -467,7 +486,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Date From is empty !',
+                '${AppLocalizations.of(context)!.dateFromisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -480,7 +499,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Time To is Empty !',
+                '${AppLocalizations.of(context)!.dateToisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -493,7 +512,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Vacation type is Empty !',
+                '${AppLocalizations.of(context)!.vacationTypeis}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -505,7 +524,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
           builder: (BuildContext context) {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
-              content: Text('You can not send right now , Try again later'),
+              content: Text('${AppLocalizations.of(context)!.youCanNotSend}'),
             );
           },
         );
@@ -514,11 +533,9 @@ class _HolidayPermissionState extends State<HolidayPermission> {
 
       });
       loadingSend = false;
-    //  print(permit_type);
-      print(widget.userId);
+
       print(error.response.data);
 
     });
- //   print(dateController.text + " " + timeFromController.text);
   }
 }

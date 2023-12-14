@@ -12,17 +12,21 @@ import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
 import 'attendance.dart';
 import 'holiday_permission.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 
 class ChooseList extends StatefulWidget {
   int? userId;
-  OrganizationsList oranizaionsList;
+  late OrganizationsList oranizaionsList;
   int?organizationId;
   String? organizationsName;
+  String?organizationsArabicName;
    ChooseList({required this.userId,
      required this.oranizaionsList,
      required this.organizationId,
-     required this.organizationsName
+     required this.organizationsName,
+     required this.organizationsArabicName
    });
 
   @override
@@ -42,11 +46,14 @@ class _ChooseListState extends State<ChooseList> {
       url: "api/organizations/${widget.organizationId}/attendance/check",
     ).then((response) {
       status = response.data['status'];
-      print(status);
       setState(() {
       });
     }).catchError((error){
-      print(error);
+      if (error.response?.statusCode != 200) {
+        status = '';
+      } else {
+        print(error);
+      }
     });
 
   }
@@ -145,7 +152,9 @@ class _ChooseListState extends State<ChooseList> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
-                                child: Text('${widget.organizationsName}',
+                                child: Text(AppLocalizations.of(context)!.localeName == 'ar'?widget.organizationsArabicName!:
+                                    widget.organizationsName!
+                                  ,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
@@ -189,6 +198,85 @@ class _ChooseListState extends State<ChooseList> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     GestureDetector(
+                                      child: Image.asset('assets/icons/machine.png',
+                                        width: 150,
+                                        height: 150,
+                                      ),onTap: () async {
+                                      await checkAttendace();
+                                      if(status=='NOACTION'||status.isEmpty){
+                                        Alert(
+                                          context: context,
+                                          // title: "RFLUTTER ALERT",
+                                          desc: "Try again later",
+                                        ).show();
+                                      }else {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                                  return  Attendance(userId: widget.userId,
+                                                    organizationId: widget.organizationId,
+                                                    organizationsName: widget.organizationsName,
+                                                    oranizaionsList: widget.oranizaionsList,
+                                                    organizationsArabicName: widget.organizationsArabicName,
+                                                  );
+                                                }));
+                                      }
+                                    },
+                                    ),
+                                    Text("${AppLocalizations.of(context)!.attendance}",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 22
+                                      ),
+                                    ),
+
+                                  ]),
+                            ),
+
+                            SizedBox(width: 20,),
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      child: Image.asset('assets/icons/requset.png',
+                                        width: 150,
+                                        height: 150,
+                                      ),
+                                      onTap:(){
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) =>  SwitchShowpermitAndVacan(
+                                              userId: widget.userId,
+                                              organizationId: widget.organizationId,
+                                            )));
+                                      }
+                                      ,
+                                    ),
+                                    SizedBox(height: 10,),
+                                    Text("${AppLocalizations.of(context)!.requests}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22,
+                                        color: Colors.white,
+
+                                      ),
+                                    ),
+
+
+                                  ]),
+                            ),
+
+                          ],
+                        ),
+                        SizedBox(height: 40,),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
                                       child: Image.asset('assets/icons/time-tracking.png',
                                         width: 150,
                                         height: 150,
@@ -200,82 +288,7 @@ class _ChooseListState extends State<ChooseList> {
                                             )));
                                       },
                                     ),
-                                    Text("Excuse",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 22
-                                      ),
-                                    ),
-
-                                  ]),
-                            ),
-                            SizedBox(width: 20,),
-                            Expanded(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                        child: Image.asset('assets/icons/holiday.png',
-                                          width: 150,
-                                          height: 150,
-                                        ),
-                                      onTap: (){
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) =>  HolidayPermission(userId: widget.userId,
-                                              organizationId: widget.organizationId,
-                                            )));
-                                      },
-                                    ),
-                                    Text("Vacation",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 22,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ]),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 40,),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                        child: Image.asset('assets/icons/machine.png',
-                                          width: 150,
-                                          height: 150,
-                                        ),onTap: () async {
-                                          checkAttendace();
-                                          if(status=='NOACTION'||status==''){
-                                            setState(() {
-
-                                            });
-                                            await Alert(
-                                            context: context,
-                                            // title: "RFLUTTER ALERT",
-                                            desc: "Try again later",
-                                            ).show();
-                                          }else {
-                                            print(status);
-                                            setState(() {
-
-                                            });
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                                      return  Attendance(userId: widget.userId,
-                                                        organizationId: widget.organizationId,
-                                                      );
-                                                    }));
-                                          }
-                                    },
-                                    ),
-                                    Text("Attendance",
+                                    Text("${AppLocalizations.of(context)!.excuse}",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -291,32 +304,27 @@ class _ChooseListState extends State<ChooseList> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     GestureDetector(
-                                        child: Image.asset('assets/icons/requset.png',
-                                          width: 150,
-                                          height: 150,
-                                        ),
-                                      onTap:(){
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) =>  SwitchShowpermitAndVacan(
-                                            userId: widget.userId,
-                                            organizationId: widget.organizationId,
-                                          )));
-                                      }
-                                      ,
+                                      child: Image.asset('assets/icons/holiday.png',
+                                        width: 150,
+                                        height: 150,
+                                      ),
+                                      onTap: (){
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) =>  HolidayPermission(userId: widget.userId,
+                                              organizationId: widget.organizationId,
+                                            )));
+                                      },
                                     ),
-                                    SizedBox(height: 10,),
-                                    Text("Requsets",
+                                    Text("${AppLocalizations.of(context)!.vacation}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 22,
                                         color: Colors.white,
-
                                       ),
                                     ),
-
-
                                   ]),
                             ),
+
                           ],
                         ),
                       ],
@@ -336,7 +344,8 @@ class _ChooseListState extends State<ChooseList> {
         Container(
           width: double.infinity,
           child: TextButton(
-            child:  Text(organizations.name!,
+            child:  Text(AppLocalizations.of(context)!.localeName == 'ar'?
+            organizations.arabicName!:organizations.name!,
               style: TextStyle(
                 color: Colors.black
               ),
@@ -345,6 +354,7 @@ class _ChooseListState extends State<ChooseList> {
               setState(() {
               });
               widget.organizationsName = organizations.name!;
+              widget.organizationsArabicName=organizations.arabicName;
               widget.organizationId = organizations.organizations_id;
               Navigator.pop(context);
             },

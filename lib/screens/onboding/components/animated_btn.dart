@@ -1,5 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_ar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
+
+
 
 class AnimatedBtn extends StatelessWidget {
   const AnimatedBtn({
@@ -23,16 +29,16 @@ class AnimatedBtn extends StatelessWidget {
             "assets/RiveAssets/button.riv",
             controllers: [_btnAnimationController],
           ),
-          const Positioned.fill(
+           Positioned.fill(
               top: 8,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(CupertinoIcons.arrow_right),
+                  Icon(AppLocalizations.of(context)!.localeName == 'ar' ? CupertinoIcons.arrow_right : CupertinoIcons.arrow_left),
                   SizedBox(
                     width: 8,
                   ),
-                  Text("Start now",
+                  Text(AppLocalizations.of(context)!.startNow,
                       style: TextStyle(fontWeight: FontWeight.w600))
                 ],
               )),

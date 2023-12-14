@@ -6,6 +6,8 @@ import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:hr/modules/organizationmodel.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 
 import '../../../network/local/cache_helper.dart';
@@ -41,6 +43,7 @@ late  bool developerMode;
   OrganizationsList? orgList;
   late int organizationsId;
   String organizationsName='';
+  String organizationsArabicName='';
 
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
@@ -71,6 +74,7 @@ late  bool developerMode;
       print(response.data);
       orgList = OrganizationsList.fromJson(response.data['data']['organizations']);
       organizationsName = response.data['data']['organizations'][0]['name'];
+      organizationsArabicName = response.data['data']['organizations'][0]['name_ar'];
         organizationsId = response.data['data']['organizations'][0]['id'];
 
 
@@ -96,10 +100,12 @@ late  bool developerMode;
             });
             confetti.fire();
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>  ChooseList(userId: userID,
+                MaterialPageRoute(builder: (context) =>  ChooseList(
+                    userId: userID,
                   oranizaionsList: orgList!,
                   organizationId: organizationsId,
                   organizationsName: organizationsName,
+                  organizationsArabicName:organizationsArabicName
                 )));
           });
         }
@@ -188,8 +194,8 @@ late  bool developerMode;
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "User Name",
+                 Text(
+                  "${AppLocalizations.of(context)!.userName}",
                   style: TextStyle(color: Colors.black54),
                 ),
                 Padding(
@@ -213,8 +219,8 @@ late  bool developerMode;
                     )),
                   ),
                 ),
-                const Text(
-                  "Password",
+                 Text(
+                  "${AppLocalizations.of(context)!.password}",
                   style: TextStyle(color: Colors.black54),
                 ),
                 Padding(
@@ -240,8 +246,10 @@ late  bool developerMode;
                   padding: const EdgeInsets.only(top: 8.0, bottom: 24),
                   child: ElevatedButton.icon(
                       onPressed: () async {
+                        userLogin(name: userNameController.text,
+                            password: passwordController.text);
                    //     signIn(context);
-                        if(developerMode == false) {
+                        /*if(developerMode == false) {
                           userLogin(name: userNameController.text,
                               password: passwordController.text);
                         }else{
@@ -250,7 +258,7 @@ late  bool developerMode;
                           // title: "RFLUTTER ALERT",
                           desc: "Close Developer Mode",
                         ).show();
-                        }
+                        }*/
 
                       },
                       style: ElevatedButton.styleFrom(
@@ -262,11 +270,9 @@ late  bool developerMode;
                                   topRight: Radius.circular(25),
                                   bottomRight: Radius.circular(25),
                                   bottomLeft: Radius.circular(25)))),
-                      icon: const Icon(
-                        CupertinoIcons.arrow_right,
-                        color: Color(0xFFFE0037),
-                      ),
-                      label: const Text("Sign In")),
+                      icon:Icon(AppLocalizations.of(context)!.localeName == 'ar' ? CupertinoIcons.arrow_left : CupertinoIcons.arrow_right),
+
+                      label:  Text("${AppLocalizations.of(context)!.signIn}")),
                 )
               ],
             )),

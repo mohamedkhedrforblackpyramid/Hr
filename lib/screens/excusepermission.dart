@@ -6,6 +6,8 @@ import 'package:hr/screens/timepicker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 import '../calender.dart';
 import '../network/remote/dio_helper.dart';
@@ -85,7 +87,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 30),
                                     child: Text(
-                                      "Excuse Request",
+                                      "${AppLocalizations.of(context)!.excuseRequest}",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 30,
@@ -95,69 +97,61 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: RadioListTile(
-                                          title: Text(
-                                            "First Day",
-                                            style: TextStyle(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          value: '0',
-                                          groupValue: valueClosed,
-                                          onChanged: (value) {
-                                            setState(() {});
-                                            timeFromController.text = '';
-                                            isMid = false;
-                                            isFirst = true;
-                                            isEnd = false;
-                                            permit_type = 'START';
-                                            isOpen = false;
-                                            valueClosed = value.toString();
-                                            setState(() {
-                                              valueClosed = value.toString();
-                                            });
-                                          },
-                                          fillColor: MaterialStateProperty.all(
-                                              Colors.white),
-                                        ),
+                                  RadioListTile(
+                                    title: Text(
+                                      "${AppLocalizations.of(context)!.first}",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      Expanded(
-                                        child: RadioListTile(
-                                          title: Text(
-                                            "Mid Day",
-                                            style: TextStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          value: '1',
-                                          groupValue: valueClosed,
-                                          onChanged: (value) {
-                                            setState(() {});
-                                            isMid = true;
-                                            isEnd = false;
-                                            isFirst = false;
-                                            permit_type = 'MID';
-                                            isOpen = false;
-                                            valueClosed = value.toString();
-                                            setState(() {
-                                              valueClosed = value.toString();
-                                            });
-                                          },
-                                          fillColor: MaterialStateProperty.all(
-                                              Colors.white),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
+                                    value: '0',
+                                    groupValue: valueClosed,
+                                    onChanged: (value) {
+                                      setState(() {});
+                                      timeFromController.text = '';
+                                      isMid = false;
+                                      isFirst = true;
+                                      isEnd = false;
+                                      permit_type = 'START';
+                                      isOpen = false;
+                                      valueClosed = value.toString();
+                                      setState(() {
+                                        valueClosed = value.toString();
+                                      });
+                                    },
+                                    fillColor: MaterialStateProperty.all(
+                                        Colors.white),
                                   ),
                                   RadioListTile(
                                     title: Text(
-                                      "End Of Day",
+                                      "${AppLocalizations.of(context)!.mid}",
                                       style: TextStyle(
-                                          fontSize: 13,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    value: '1',
+                                    groupValue: valueClosed,
+                                    onChanged: (value) {
+                                      setState(() {});
+                                      isMid = true;
+                                      isEnd = false;
+                                      isFirst = false;
+                                      permit_type = 'MID';
+                                      isOpen = false;
+                                      valueClosed = value.toString();
+                                      setState(() {
+                                        valueClosed = value.toString();
+                                      });
+                                    },
+                                    fillColor: MaterialStateProperty.all(
+                                        Colors.white),
+                                  ),
+                                  RadioListTile(
+                                    title: Text(
+                                      "${AppLocalizations.of(context)!.end}",
+                                      style: TextStyle(
+                                          fontSize: 15,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     value: '2',
@@ -222,12 +216,15 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                           decoration: InputDecoration(
                                             filled: true,
                                             fillColor: Color(0xFCED3FF),
-                                            label: Text(
-                                              'Date',
-                                              style: TextStyle(
-                                                  fontWeight:
-                                                      FontWeight.bold,
-                                                  color: Colors.white),
+                                            label: Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: Text(
+                                                '${AppLocalizations.of(context)!.date}',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold,
+                                                    color: Colors.white),
+                                              ),
                                             ),
                                             contentPadding:
                                                 const EdgeInsets.only(
@@ -295,13 +292,16 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                                 filled: true,
                                                 fillColor:
                                                     Color(0xFCED3FF),
-                                                label: Text(
-                                                  'Time From',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color:
-                                                          Colors.white),
+                                                label: Padding(
+                                                  padding: const EdgeInsets.all(10.0),
+                                                  child: Text(
+                                                    '${AppLocalizations.of(context)!.timeFrom}',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            Colors.white),
+                                                  ),
                                                 ),
                                                 contentPadding:
                                                     const EdgeInsets.only(
@@ -379,13 +379,16 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                                 filled: true,
                                                 fillColor:
                                                     Color(0xFCED3FF),
-                                                label: Text(
-                                                  'Time To',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color:
-                                                          Colors.white),
+                                                label: Padding(
+                                                  padding: const EdgeInsets.all(10.0),
+                                                  child: Text(
+                                                    '${AppLocalizations.of(context)!.timeTo}',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            Colors.white),
+                                                  ),
                                                 ),
                                                 contentPadding:
                                                     const EdgeInsets.only(
@@ -431,13 +434,17 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                         decoration: InputDecoration(
                                           filled: true,
                                           fillColor: Color(0xFCED3FF),
-                                          label: Text(
-                                            'Notes (Optional)',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
+                                          label: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Text(
+                                              '${AppLocalizations.of(context)!.notes}',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                            ),
                                           ),
                                           contentPadding: const EdgeInsets.only(
+                                            right: 14,
                                               left: 14.0,
                                               bottom: 8.0,
                                               top: 8.0),
@@ -456,6 +463,8 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                         ),
                                       ),
                                     ),
+                                  ),SizedBox(
+                                    height: MediaQuery.of(context).viewInsets.bottom/2,
                                   ),
                                   Container(
                                     width: 150,
@@ -503,11 +512,12 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                                           bottomLeft:
                                                               Radius.circular(
                                                                   25)))),
-                                          icon: const Icon(
-                                            CupertinoIcons.arrow_right,
+                                          icon:  Icon(
+                                            AppLocalizations.of(context)!.localeName=='en'?
+                                            CupertinoIcons.arrow_right:CupertinoIcons.arrow_left,
                                             color: Color(0xFFFE0037),
                                           ),
-                                          label: const Text("Send")),
+                                          label:  Text("${AppLocalizations.of(context)!.send}")),
                                     ),
                                   )
                                 ]),
@@ -553,7 +563,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Date is Empty !',
+                '${AppLocalizations.of(context)!.dateisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -566,7 +576,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Time To is Empty !',
+                '${AppLocalizations.of(context)!.timeToisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -589,6 +599,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
       loadingSend = false;
       setState(() {});
     }).catchError((error) {
+      print(error.response.data);
       print(widget.organizationId);
 
       if (dateController.text == '') {
@@ -598,7 +609,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Date is Empty !',
+                '${AppLocalizations.of(context)!.dateisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -610,7 +621,8 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: Color(0xff93D0FC),
-            content: Text('You can not send right now , Try again later'),
+            content: Text('${AppLocalizations.of(context)!.youCanNotSend}'),
+
           );
         },
       );}
@@ -650,7 +662,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Date is Empty !',
+                '${AppLocalizations.of(context)!.dateisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -663,7 +675,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Time From is Empty !',
+                '${AppLocalizations.of(context)!.timeFromisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -694,7 +706,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Date is Empty !',
+                '${AppLocalizations.of(context)!.dateisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -707,7 +719,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Time From is Empty !',
+                '${AppLocalizations.of(context)!.timeFromisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -763,7 +775,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Date is Empty !',
+                '${AppLocalizations.of(context)!.dateisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -776,7 +788,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Time From is Empty !',
+                '${AppLocalizations.of(context)!.timeFromisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -789,7 +801,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Time To is Empty !',
+                '${AppLocalizations.of(context)!.timeToisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -819,7 +831,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Date is Empty !',
+                '${AppLocalizations.of(context)!.dateisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
@@ -832,7 +844,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                'Time From is Empty !',
+                '${AppLocalizations.of(context)!.timeFromisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );

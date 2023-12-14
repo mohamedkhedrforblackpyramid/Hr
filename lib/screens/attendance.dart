@@ -14,14 +14,26 @@ import 'package:rive/rive.dart';
 
 import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'onboding/onboding_screen.dart';
 
 class Attendance extends StatefulWidget {
   int? userId;
   int?organizationId;
+  String? organizationsName;
+  late OrganizationsList oranizaionsList;
+  String?organizationsArabicName;
+
+
 
   Attendance({required this.userId,
-    required this.organizationId
+    required this.organizationId,
+    required this.organizationsName,
+    required this.oranizaionsList,
+    required this.organizationsArabicName
+
+
   });
   @override
   State<Attendance> createState() => _AttendanceState();
@@ -302,7 +314,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                       print('Sevice = ${serviceEnabled}');
                                     },
                                     child: Text(
-                                      'Open Location',
+                                      '${AppLocalizations.of(context)!.openlocation}',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
@@ -314,160 +326,171 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                   width: MediaQuery.sizeOf(context).width / 1.5,
                                 )
                               : clickAttend == false? loadingShowAttend == false?
-                          status=='LOGIN'?GradientSlideToAct(
-                            key: attenKey,
-                                  width: 300,
-                                  textStyle: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                  backgroundColor: Color(0Xff172663),
-                                  onSubmit: () async {
-                              loadingShowAttend = true;
-                              setState(() {
+                          status=='LOGIN'?Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: GradientSlideToAct(
+                              key: attenKey,
 
-                              });
-                                    print("hhhhhhhhhhhhhhhhhhhhhhhh");
-                                    await _getCurrentPosition();
-                                    await DioHelper.postData(
-                                      url: "api/organizations/1/attend",
-                                      formData: {
-                                        "longitude": 150,
-                                        "latitude": 100,
-                                      },
-                                    )
-                                        .then((value) {
-                                          loadingShowAttend = false;
-                                          print(value);
-                                          if(value.data['status'] == false){
+                                    width: 300,
+                                    textStyle: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                    backgroundColor: Color(0Xff172663),
+                                    onSubmit: () async {
+                                loadingShowAttend = true;
+                                setState(() {
+                                });
+                                      print("hhhhhhhhhhhhhhhhhhhhhhhh");
+                                      await _getCurrentPosition();
+                                      await DioHelper.postData(
+                                        url: "api/organizations/${widget.organizationId}/attend",
+                                        formData: {
+                                          "longitude":29.743200 ,//_currentPosition!.longitude,
+                                          "latitude":30.997700 //_currentPosition!.latitude,
+                                        },
+                                      )
+                                          .then((value) {
+                                            loadingShowAttend = false;
+                                            print(value);
+                                            if(value.data['status'] == false){
 
-                                            clickAttend =true;
-                                            Alert(
-                                              context: context,
-                                              // title: "RFLUTTER ALERT",
-                                              desc:
-                                              "This Location Out Of Range",
-                                            ).show();
-                                            setState(() {
+                                              clickAttend =true;
+                                              Alert(
+                                                context: context,
+                                                // title: "RFLUTTER ALERT",
+                                                desc:
+                                                "This Location Out Of Range",
+                                              ).show();
+                                              setState(() {
+                                              });
+                                            }
+                                            else{
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) =>  ChooseList(
+                                                    userId: widget.userId,
+                                                    oranizaionsList: widget.oranizaionsList,
+                                                    organizationId: widget.organizationId,
+                                                    organizationsName: widget.organizationsName,
+                                                    organizationsArabicName: widget.organizationsArabicName,
+
+                                                  )));
+                                              setState(() {
+
+                                              });
+                                              Alert(
+                                                context: context,
+                                                // title: "RFLUTTER ALERT",
+                                                desc:
+                                                "${AppLocalizations.of(context)!.attendAlert}",
+                                              ).show();
+                                            }
+                                          })
+                                          .catchError((error) {
+                                        loadingShowAttend = false;
+                                            print("ggggggggg");
+
+                                        setState(() {
+                                          clickAttend =true;
+
                                             });
-                                          }
-                                          else{
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
-                                                  oranizaionsList: OrganizationsList(),
-                                                  organizationId: widget.organizationId,
-                                                  organizationsName: '',
-
-                                                )));
-                                            setState(() {
-
-                                            });
-                                            Alert(
-                                              context: context,
-                                              // title: "RFLUTTER ALERT",
-                                              desc:
-                                              "You Attend Successfully",
-                                            ).show();
-                                          }
-                                        })
-                                        .catchError((error) {
-                                      loadingShowAttend = false;
-                                          print("ggggggggg");
-
-                                      setState(() {
-                                        clickAttend =true;
-
-                                          });
-                                          print(error.toString());
-                                      Alert(
-                                        context: context,
-                                        // title: "RFLUTTER ALERT",
-                                        desc:
-                                            "can not attend right now ... please try again later",
-                                      ).show();
-                                    });
-                                    print(_currentPosition?.latitude);
-                                    print("hhhhhhhhhhhhhhhhhhhhhhhh");
-                                    print(CacheHelper.getData(key: 'token'));
-                                  },
-                                  text: 'Slide to Confirm Attend',
-                                ):SizedBox()
+                                            print(error.toString());
+                                        Alert(
+                                          context: context,
+                                          // title: "RFLUTTER ALERT",
+                                          desc:
+                                              "can not attend right now ... please try again later",
+                                        ).show();
+                                      });
+                                      print(_currentPosition?.latitude);
+                                      print("hhhhhhhhhhhhhhhhhhhhhhhh");
+                                      print(CacheHelper.getData(key: 'token'));
+                                    },
+                                    text: AppLocalizations.of(context)!.localeName == 'ar'?'اسحب الى اليمين للحضور':
+                                    'Slide to Confirm Attend',
+                                  ),
+                          ):SizedBox()
                               :CircularProgressIndicator(
                                       color: Colors.indigo,
                                         )
                               : loadingShowAttend == false?
-                          status=='LOGIN'?GradientSlideToAct(
-                            key: attenKeyAgain,
-                            width: 300,
-                            textStyle: TextStyle(
-                                color: Colors.white, fontSize: 15),
-                            backgroundColor: Color(0Xff172663),
-                            onSubmit: () async {
-                              setState(() {
+                          status=='LOGIN'?Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: GradientSlideToAct(
+                              key: attenKeyAgain,
+                              width: 300,
+                              textStyle: TextStyle(
+                                  color: Colors.white, fontSize: 15),
+                              backgroundColor: Color(0Xff172663),
+                              onSubmit: () async {
+                                setState(() {
 
-                              });
-                              loadingShowAttend = true;
-                              print("hhhhhhhhhhhhhhhhhhhhhhhh");
-                              await _getCurrentPosition();
-                              await DioHelper.postData(
-                                url: "api/organizations/1/attend",
-                                formData: {
-                                  "longitude": 150,
-                                  "latitude": 100,
-                                },
-                              )
-                                  .then((value) {
-                                    loadingShowAttend = false;
-                                if(value.data['status'] == false){
-                                  clickAttend =false;
-                                  Alert(
-                                    context: context,
-                                    // title: "RFLUTTER ALERT",
-                                    desc:
-                                    "This Location Out Of Range",
-                                  ).show();
-                                  setState(() {
-                                  });
-                                }else{
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
-                                        oranizaionsList: OrganizationsList(),
-                                        organizationId: widget.organizationId,
-                                        organizationsName: '',
+                                });
+                                loadingShowAttend = true;
+                                print("hhhhhhhhhhhhhhhhhhhhhhhh");
+                                await _getCurrentPosition();
+                                await DioHelper.postData(
+                                  url: "api/organizations/${widget.organizationId}/attend",
+                                  formData: {
+                                    "longitude":29.743200 ,//_currentPosition!.longitude,
+                                    "latitude":30.997700 //_currentPosition!.latitude,
+                                  },
+                                )
+                                    .then((value) {
+                                      loadingShowAttend = false;
+                                  if(value.data['status'] == false){
+                                    clickAttend =false;
+                                    Alert(
+                                      context: context,
+                                      // title: "RFLUTTER ALERT",
+                                      desc:
+                                      "This Location Out Of Range",
+                                    ).show();
+                                    setState(() {
+                                    });
+                                  }else{
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
+                                          oranizaionsList: widget.oranizaionsList,
 
-                                      )));
-                                  setState(() {
-
-                                  });
-                                  Alert(
-                                    context: context,
-                                    // title: "RFLUTTER ALERT",
-                                    desc:
-                                    "You Attend Successfully",
-                                  ).show();
-                                }
-                                  })
-                                  .catchError((error) {
-                                loadingShowAttend = false;
-                                    clickAttend = false;
+                                          organizationId: widget.organizationId,
+                                            organizationsName: widget.organizationsName,
+                                          organizationsArabicName: widget.organizationsArabicName,
+                                        )));
                                     setState(() {
 
                                     });
-                                print(error.toString());
-                                Alert(
-                                  context: context,
-                                  // title: "RFLUTTER ALERT",
-                                  desc:
-                                  "can not attend right now ... please try again later",
-                                ).show();
-                              });
+                                    Alert(
+                                      context: context,
+                                      // title: "RFLUTTER ALERT",
+                                      desc:
+                                      "${AppLocalizations.of(context)!.attendAlert}",
+                                    ).show();
+                                  }
+                                    })
+                                    .catchError((error) {
+                                  loadingShowAttend = false;
+                                      clickAttend = false;
+                                      setState(() {
 
-                              print(_currentPosition?.latitude);
-                              print("hhhhhhhhhhhhhhhhhhhhhhhh");
+                                      });
+                                  print(error.toString());
+                                  Alert(
+                                    context: context,
+                                    // title: "RFLUTTER ALERT",
+                                    desc:
+                                    "can not attend right now ... please try again later",
+                                  ).show();
+                                });
 
-                              print(CacheHelper.getData(key: 'token'));
-                            },
-                            text: 'Slide to Confirm Attend',
+                                print(_currentPosition?.latitude);
+                                print("hhhhhhhhhhhhhhhhhhhhhhhh");
+
+                                print(CacheHelper.getData(key: 'token'));
+                              },
+                              text: AppLocalizations.of(context)!.localeName == 'ar'?'اسحب الى اليمين للحضور':
+                              'Slide to Confirm Attend',
+                            ),
                           ):SizedBox()
                               :CircularProgressIndicator(
                                  color: Colors.indigo,
@@ -478,142 +501,155 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                           serviceEnabled == false
                               ? const SizedBox()
                               :
-                          clickdepar == false? loadingShowAttend == false?
-                          status =='LOGOUT'?GradientSlideToAct(
-                                  key: depKey,
-                                  text: 'Slide to Confirm Departure',
-                                  width: 300,
-                                  textStyle: const TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                  backgroundColor: Color(0Xff133337),
-                                  onSubmit: () async {
-                                    setState(() {
-                                      loadingShowAttend = true;
-                                    });
-                                    await _getCurrentPosition();
-                                    await DioHelper.postData(
-                                      url: "api/organizations/1/leave",
-                                      formData: {
-                                        "longitude": 150,
-                                        "latitude": 100,
-                                      },
-                                    ).then((value) {
-
-                                      loadingShowAttend = false;
-                                      print(value.data);
-                                      if(value.data['status'] == false){
-                                        clickdepar = true;
-                                        Alert(
-                                          context: context,
-                                          // title: "RFLUTTER ALERT",
-                                          desc:
-                                          "This Location Out Of Range",
-                                        ).show();
-                                        setState(() {
-
-                                        });
-                                      }else{
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
-                                              oranizaionsList: OrganizationsList(),
-                                              organizationId: widget.organizationId,
-                                              organizationsName: '',
-
-                                            )));
-                                        setState(() {
-
-                                        });
-                                        Alert(
-                                          context: context,
-                                          // title: "RFLUTTER ALERT",
-                                          desc:
-                                          "You Leaved Successfully",
-                                        ).show();
-                                      }
-                                    }).catchError((error) {
+                          clickdepar == false? loadingShowDep == false?
+                          status =='LOGOUT'?Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: GradientSlideToAct(
+                                    key: depKey,
+                                    text: AppLocalizations.of(context)!.localeName == 'ar'?"اسحب الى اليمين للإنصراف":
+                                    'Slide to Confirm Departure',
+                                    width: 300,
+                                    textStyle: const TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                    backgroundColor: Color(0Xff133337),
+                                    onSubmit: () async {
                                       setState(() {
+                                        loadingShowDep = true;
                                       });
-                                      clickdepar = true;
-                                      loadingShowAttend = false;
+                                      await _getCurrentPosition();
+                                      await DioHelper.postData(
+                                        url: "api/organizations/${widget.organizationId}/leave",
+                                        formData: {
+                                          "longitude":29.743200 ,//_currentPosition!.longitude,
+                                          "latitude":30.997700 //_currentPosition!.latitude,
+                                        },
+                                      ).then((value) {
+
+                                        loadingShowDep = false;
+                                        print(value.data);
+                                        if(value.data['status'] == false){
+                                          clickdepar = true;
+                                          Alert(
+                                            context: context,
+                                            // title: "RFLUTTER ALERT",
+                                            desc:
+                                            "This Location Out Of Range",
+                                          ).show();
+                                          setState(() {
+
+                                          });
+                                        }else{
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
+                                                oranizaionsList: widget.oranizaionsList,
+
+                                                organizationId: widget.organizationId,
+                                                  organizationsName: widget.organizationsName,
+                                                organizationsArabicName: widget.organizationsArabicName,
+                                              )));
+                                          setState(() {
+
+                                          });
+                                          Alert(
+                                            context: context,
+                                            // title: "RFLUTTER ALERT",
+                                            desc:
+                                            "${AppLocalizations.of(context)!.leaveAlert}",
+                                          ).show();
+                                        }
+                                      }).catchError((error) {
+                                        setState(() {
+                                        });
+                                        clickdepar = true;
+                                        loadingShowDep = false;
+                                        Alert(
+                                          context: context,
+                                          // title: "RFLUTTER ALERT",
+                                          desc:
+                                              "can not Departure right now ... please try again later",
+                                        ).show();
+                                      });
+                                    },
+                                  ),
+                          ):SizedBox()
+                              :CircularProgressIndicator(
+                            color: Colors.indigo,
+                          ):
+                          loadingShowDep == false?
+                          status =='LOGOUT'? Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: GradientSlideToAct(
+                                key: depKeyAgain,
+                                text: AppLocalizations.of(context)!.localeName == 'ar'?"اسحب الى اليمين للإنصراف":
+                                'Slide to Confirm Departure',
+                                width: 300,
+                                textStyle: const TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                                backgroundColor: Color(0Xff133337),
+                                onSubmit: () async {
+                                  setState(() {
+                                    loadingShowDep = true;
+                                  });
+                                  await _getCurrentPosition();
+                                  await DioHelper.postData(
+                                    url: "api/organizations/${widget.organizationId}/leave",
+                                    formData: {
+                                      "longitude":29.743200 ,//_currentPosition!.longitude,
+                                      "latitude":30.997700 //_currentPosition!.latitude,
+                                    },
+                                  ).then((value) {
+                                    loadingShowDep = false;
+                                    print(value.data);
+                                    if(value.data['status'] == false){
+                                      clickdepar = false;
                                       Alert(
                                         context: context,
                                         // title: "RFLUTTER ALERT",
                                         desc:
-                                            "can not Departure right now ... please try again later",
+                                        "This Location Out Of Range",
                                       ).show();
+                                      setState(() {
+
+                                      });
+                                    }else{
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
+                                            oranizaionsList: widget.oranizaionsList,
+                                            organizationId: widget.organizationId,
+                                            organizationsName: widget.organizationsName,
+                                            organizationsArabicName: widget.organizationsArabicName,
+
+                                          )));
+                                      setState(() {
+
+                                      });
+                                      Alert(
+                                        context: context,
+                                        // title: "RFLUTTER ALERT",
+                                        desc:
+                                        "${AppLocalizations.of(context)!.leaveAlert}",
+                                      ).show();
+                                    }
+                                  }).catchError((error) {
+                                    loadingShowDep = false;
+                                    setState(() {
                                     });
-                                  },
-                                ):SizedBox()
-                              :CircularProgressIndicator(
-                            color: Colors.indigo,
-                          ):
-                          loadingShowAttend == false?
-                          status =='LOGOUT'? GradientSlideToAct(
-                            key: depKeyAgain,
-                            text: 'Slide to Confirm Departure',
-                            width: 300,
-                            textStyle: const TextStyle(
-                                color: Colors.white, fontSize: 15),
-                            backgroundColor: Color(0Xff133337),
-                            onSubmit: () async {
-                              setState(() {
-                                loadingShowAttend = true;
-                              });
-                              await _getCurrentPosition();
-                              await DioHelper.postData(
-                                url: "api/organizations/1/leave",
-                                formData: {
-                                  "longitude": 150,
-                                  "latitude": 100,
+                                    clickdepar = false;
+                                    Alert(
+                                      context: context,
+                                      // title: "RFLUTTER ALERT",
+                                      desc:
+                                      "can not Departure right now ... please try again later",
+                                    ).show();
+
+                                  });
                                 },
-                              ).then((value) {
-                                loadingShowAttend = false;
-                                print(value.data);
-                                if(value.data['status'] == false){
-                                  clickdepar = false;
-                                  Alert(
-                                    context: context,
-                                    // title: "RFLUTTER ALERT",
-                                    desc:
-                                    "This Location Out Of Range",
-                                  ).show();
-                                  setState(() {
-
-                                  });
-                                }else{
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
-                                        oranizaionsList: OrganizationsList(),
-                                        organizationId: widget.organizationId,
-                                        organizationsName: '',
-
-                                      )));
-                                  setState(() {
-
-                                  });
-                                  Alert(
-                                    context: context,
-                                    // title: "RFLUTTER ALERT",
-                                    desc:
-                                    "You Leaved Successfully",
-                                  ).show();
-                                }
-                              }).catchError((error) {
-                                loadingShowAttend = false;
-                                setState(() {
-                                });
-                                clickdepar = false;
-                                Alert(
-                                  context: context,
-                                  // title: "RFLUTTER ALERT",
-                                  desc:
-                                  "can not Departure right now ... please try again later",
-                                ).show();
-
-                              });
-                            },
+                              ),
+                            ),
                           ):SizedBox()
                               :CircularProgressIndicator(
                             color: Colors.indigo,

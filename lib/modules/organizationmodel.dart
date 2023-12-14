@@ -1,9 +1,11 @@
 class OrganizationsModel {
   int? organizations_id;
   String? name;
+  String? arabicName;
   OrganizationsModel({
      this.organizations_id,
      this.name,
+    this.arabicName
 
   });
   OrganizationsModel.fromJson(Map<String, dynamic> json) {
@@ -11,6 +13,7 @@ class OrganizationsModel {
     print(organizations_id);
     name = json['name'];
     print(name);
+    arabicName=json['name_ar'];
 
 
   }
