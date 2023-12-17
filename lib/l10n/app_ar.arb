@@ -40,11 +40,15 @@
   "attendAlert": "تم حضورك بنجاح",
   "leaveAlert":"تم مغادرتك بنجاح",
   "permissions": "الأذونات",
-  "vacances": "الأجازات"
-
-
-
-
-
-
+  "vacances": "الأجازات",
+  "accept": "قبول",
+  "refuse": "رفض",
+  "are_denyPermission":"هل أنت متأكد من رفض الإذن؟\n",
+  "accept_permission": "هل أنت متأكد من موافقتك على الإذن؟\n",
+  "are_denyExcuse":"هل أنت متأكد من رفض الأجازة؟\n",
+  "accept_excuse": "هل أنت متأكد من موافقتك على الأجازة؟\n",
+  "yes": "نعم",
+  "no": "لا",
+  "tryAgain": "حاول مرة اخرى",
+  "notesView": "ملاحظات"
 }

@@ -1,13 +1,15 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hr/main.dart';
 import 'package:hr/network/local/cache_helper.dart';
 import 'package:rive/rive.dart';
 
-import 'components/animated_btn.dart';
 import 'components/custom_sign_in.dart';
+import 'components/animated_btn.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -77,6 +79,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                         return MyApp(lang: 'en');
                                       }));
                                       // AppLocalizations.of(context).localeName = 'en';
+                                      getOutOfApp();
                                     },
                                     child: Text(
                                       'English',
@@ -96,6 +99,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                         return MyApp(lang: 'ar');
                                       }));
                                       // AppLocalizations.of(context).localeName = 'en';
+                                      getOutOfApp();
+
                                     },
                                     child: Text(
                                       'عربي',
@@ -163,4 +168,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           )),
     );
   }
+  void getOutOfApp() {
+
+  if (Platform.isIOS) {
+
+  try {
+  exit(0);
+  } catch (e) {
+  SystemNavigator.pop(); // for IOS, not true this, you can make comment this :)
+  }
+
+  } else {
+
+  try {
+  SystemNavigator.pop(); // sometimes it cant exit app
+  } catch (e) {
+  exit(0); // so i am giving crash to app ... sad :(
+  }
+
+  }
+}
 }

@@ -40,7 +40,15 @@
   "attendAlert": "You Attend Successfully",
   "leaveAlert":"You Leaved Successfully",
   "permissions": "Permissions",
-  "vacances": "Vacances"
-
-
+  "vacances": "Vacances",
+  "accept": "Accept",
+  "refuse": "Refuse",
+  "are_denyPermission":"Are you sure to deny the permission?",
+  "accept_permission": "Are you sure you approve to the permission?",
+  "are_denyExcuse":"Are you sure you approve to the vacation?",
+  "accept_excuse": "Are you sure to deny the vacation?",
+  "yes": "Yes",
+  "no": "No",
+  "tryAgain": "Try again later",
+  "notesView": "Notes"
 }

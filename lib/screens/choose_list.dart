@@ -207,7 +207,7 @@ class _ChooseListState extends State<ChooseList> {
                                         Alert(
                                           context: context,
                                           // title: "RFLUTTER ALERT",
-                                          desc: "Try again later",
+                                          desc: "${AppLocalizations.of(context)!.tryAgain}",
                                         ).show();
                                       }else {
                                         Navigator.push(context,

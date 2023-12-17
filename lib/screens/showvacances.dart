@@ -8,6 +8,8 @@ import 'package:rive/rive.dart';
 import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
 import 'onboding/components/animated_btn.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ShowVacances extends StatefulWidget {
   int? userId;
@@ -146,33 +148,34 @@ class _ShowVacancesState extends State<ShowVacances> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'User Name : ${per.name} ',
+            '${AppLocalizations.of(context)!.userName} : ${per.name} ',
             style: TextStyle(
                 fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
           ),
           Text(
-            'Time From : ${per.from}',
+            '${AppLocalizations.of(context)!.timeFrom} : ${per.from}',
             style: TextStyle(
                 fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
           ),
           Text(
-            'Time To :${per.to}',
+            '${AppLocalizations.of(context)!.timeTo} :${per.to}',
             style: TextStyle(
                 fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
           ),
-          Text(
+         /* Text(
             'Status : ${per.status}',
             style: TextStyle(
                 fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
-          ),
+          ),*/
           Text(
-            'Notes : ${per.notes==null?'____':per.notes}',
+            '${AppLocalizations.of(context)!.notesView} : ${per.notes==null?'____':per.notes}',
             style: TextStyle(
               fontSize: 15,
               color: Colors.black45,
               fontWeight: FontWeight.bold,
             ),
           ),
+          SizedBox(height: 15,),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -188,8 +191,8 @@ class _ShowVacancesState extends State<ShowVacances> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         //  title: const Text('Basic dialog title'),
-                        content: const Text(
-                          'Are you sure you approve to the vacation?',
+                        content:  Text(
+                          '${AppLocalizations.of(context)!.accept_excuse}',
                         ),
                         actions:[
                           Row(
@@ -198,7 +201,7 @@ class _ShowVacancesState extends State<ShowVacances> {
                                 style: TextButton.styleFrom(
                                   textStyle: Theme.of(context).textTheme.labelLarge,
                                 ),
-                                child: const Text('Yes'),
+                                child:  Text('${AppLocalizations.of(context)!.yes}'),
                                 onPressed: () async {
                                   await DioHelper.postData(
                                     url: "api/update-status/${per.id}",
@@ -218,7 +221,7 @@ class _ShowVacancesState extends State<ShowVacances> {
                                 style: TextButton.styleFrom(
                                   textStyle: Theme.of(context).textTheme.labelLarge,
                                 ),
-                                child: const Text('No'),
+                                child:  Text('${AppLocalizations.of(context)!.no}'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -232,7 +235,7 @@ class _ShowVacancesState extends State<ShowVacances> {
                     },
                   );
                 },
-                    child: Text('Accept',
+                    child: Text('${AppLocalizations.of(context)!.accept}',
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -250,8 +253,8 @@ class _ShowVacancesState extends State<ShowVacances> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         //  title: const Text('Basic dialog title'),
-                        content: const Text(
-                          'Are you sure to deny the vacation?',
+                        content:  Text(
+                          '${AppLocalizations.of(context)!.are_denyExcuse}',
                         ),
                         actions: [
                           Row(
@@ -260,7 +263,7 @@ class _ShowVacancesState extends State<ShowVacances> {
                                 style: TextButton.styleFrom(
                                   textStyle: Theme.of(context).textTheme.labelLarge,
                                 ),
-                                child: const Text('Yes'),
+                                child:  Text('${AppLocalizations.of(context)!.yes}'),
                                 onPressed: () async {
                                   await DioHelper.postData(
                                     url: "api/update-status/${per.id}",
@@ -280,7 +283,7 @@ class _ShowVacancesState extends State<ShowVacances> {
                                 style: TextButton.styleFrom(
                                   textStyle: Theme.of(context).textTheme.labelLarge,
                                 ),
-                                child: const Text('No'),
+                                child:  Text('${AppLocalizations.of(context)!.no}'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -294,7 +297,7 @@ class _ShowVacancesState extends State<ShowVacances> {
                     },
                   );
                 },
-                    child: Text('Refuse',
+                    child: Text('${AppLocalizations.of(context)!.refuse}',
                       style: TextStyle(
                           color: Colors.white
                       ),

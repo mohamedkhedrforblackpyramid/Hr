@@ -429,7 +429,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                '${AppLocalizations.of(context)!.dateFrom}',
+                '${AppLocalizations.of(context)!.dateisEmpty}',
                 textAlign: TextAlign.center,
               ),
             );
