@@ -50,5 +50,8 @@
   "yes": "Yes",
   "no": "No",
   "tryAgain": "Try again later",
-  "notesView": "Notes"
+  "notesView": "Notes",
+  "tasks": "Tasks",
+  "profile": "Profile"
+
 }

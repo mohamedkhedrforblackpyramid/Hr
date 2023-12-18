@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/screens/excusepermission.dart';
+import 'package:hr/screens/projects.dart';
 import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
@@ -135,14 +136,10 @@ class _ChooseListState extends State<ChooseList> {
                     filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
                     child: const SizedBox(),
                   )),
-              AnimatedPositioned(
-                duration: Duration(milliseconds: 240),
-                top: isSignInDialogShown ? -50 : 0,
-            //    height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(50),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(50),
+                  child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -230,10 +227,10 @@ class _ChooseListState extends State<ChooseList> {
                                           fontSize: 22
                                       ),
                                     ),
-
+                    
                                   ]),
                             ),
-
+                    
                             SizedBox(width: 20,),
                             Expanded(
                               child: Column(
@@ -259,14 +256,14 @@ class _ChooseListState extends State<ChooseList> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 22,
                                         color: Colors.white,
-
+                    
                                       ),
                                     ),
-
-
+                    
+                    
                                   ]),
                             ),
-
+                    
                           ],
                         ),
                         SizedBox(height: 40,),
@@ -295,7 +292,7 @@ class _ChooseListState extends State<ChooseList> {
                                           fontSize: 22
                                       ),
                                     ),
-
+                    
                                   ]),
                             ),
                             SizedBox(width: 20,),
@@ -324,13 +321,72 @@ class _ChooseListState extends State<ChooseList> {
                                     ),
                                   ]),
                             ),
-
+                    
                           ],
                         ),
+                        SizedBox(height: 40,),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      child: Image.asset('assets/icons/check-list.png',
+                                        width: 150,
+                                        height: 120,
+                                      ),
+                                      onTap: (){
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) =>  Projects(
+                                              organizationId:widget.organizationId ,
+                                            )));
+                                      },
+                                    ),
+                                    Text("${AppLocalizations.of(context)!.tasks}",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 22
+                                      ),
+                                    ),
+                    
+                                  ]),
+                            ),
+                            SizedBox(width: 20,),
+                            Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      child: Image.asset('assets/icons/profile.png',
+                                        width: 150,
+                                        height: 120,
+                                      ),
+                                     /* onTap: (){
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) =>  HolidayPermission(userId: widget.userId,
+                                              organizationId: widget.organizationId,
+                                            )));
+                                      },*/
+                                    ),
+                                    Text("${AppLocalizations.of(context)!.profile}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ]),
+                            ),
+                    
+                          ],
+                        ),
+                    
                       ],
                     ),
-
                   ),
+
                 ),
               ),
 
