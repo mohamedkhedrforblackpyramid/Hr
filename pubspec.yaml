@@ -52,6 +52,11 @@ dependencies:
   time_picker_spinner_pop_up: ^1.2.1
   flutter_jailbreak_detection: ^1.10.0
   flutter_phoenix: ^1.1.1
+  fancy_containers: ^0.0.1
+  another_flushbar: ^1.12.30
+
+
+
 
   flutter_localizations:
     sdk: flutter

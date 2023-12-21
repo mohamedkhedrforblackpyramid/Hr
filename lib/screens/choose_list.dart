@@ -70,6 +70,11 @@ class _ChooseListState extends State<ChooseList> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> list =[
+      '${AppLocalizations.of(context)!.ordinary}',
+      '${AppLocalizations.of(context)!.casual}',
+      '${AppLocalizations.of(context)!.sick}',
+    ];
     return WillPopScope(
       onWillPop: () async {
         return shouldPop;
