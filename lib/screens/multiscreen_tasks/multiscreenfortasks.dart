@@ -43,7 +43,8 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
     List<Widget>screens=[
       Addphase(projectId: widget.projectId,
         organization_id: widget.organization_id,),
-      AddTask(),
+      AddTasks(projectId: widget.projectId,
+          organization_id: widget.organization_id),
       ShowTasks()
     ];
     return Scaffold(

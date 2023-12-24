@@ -34,6 +34,8 @@ class _AddphaseState extends State<Addphase> {
   int currentIndex = 0;
   var phaseName = TextEditingController();
   var phasedesc = TextEditingController();
+  bool clickAdd = false;
+
   @override
   void initState() {
     super.initState();
@@ -127,7 +129,7 @@ class _AddphaseState extends State<Addphase> {
                 ),
               ),
             ),
-            Padding(
+           clickAdd==false? Padding(
               padding: const EdgeInsets.only(bottom: 40),
               child: Center(
                 child:  Container(
@@ -139,6 +141,10 @@ class _AddphaseState extends State<Addphase> {
                     color1: Colors.purple,
                     color2: Colors.lightBlue,
                     onTap: () async {
+                      setState(() {
+
+                      });
+                      clickAdd = true;
                       await DioHelper.postData(
                         url: "api/projects",
                         formData: {
@@ -148,6 +154,11 @@ class _AddphaseState extends State<Addphase> {
                           "organization_id":widget.organization_id ,
                         },
                       ).then((value) {
+                        setState(() {
+
+                        });
+                        clickAdd = false;
+
                         phaseName.text='';
                         phasedesc.text='';
                         Flushbar(
@@ -164,6 +175,10 @@ class _AddphaseState extends State<Addphase> {
                         )
                           ..show(context);
                       }).catchError((error){
+                        setState(() {
+
+                        });
+                        clickAdd=false;
                         if(phaseName.text.isEmpty) {
                           Flushbar(
                             message: "Phase name is empty !",
@@ -216,7 +231,11 @@ class _AddphaseState extends State<Addphase> {
                   ),
                 ),
               ),
-            ),
+            ):Center(
+             child: CircularProgressIndicator(
+               color: Colors.indigo,
+             ),
+           ),
 
 
           ],

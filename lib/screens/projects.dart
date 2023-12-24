@@ -24,6 +24,7 @@ class _ProjectsState extends State<Projects> {
   bool projectLoading = false;
   var projectName = TextEditingController();
   var projectDescription = TextEditingController();
+  bool clickAdd = false;
 
 
 
@@ -57,35 +58,58 @@ class _ProjectsState extends State<Projects> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
         showModalBottomSheet<void>(
-
             isScrollControlled: true,
             context: context,
             builder: (BuildContext context) {
-              return Padding(
-                padding: EdgeInsets.only(top: 20,  right: 20,  left: 20,
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: Container(
-                  height: MediaQuery.of(context).size.height/2,
-                    width: MediaQuery.of(context).size.width/1.1,
-                    child:  Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text("Add Project",
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold
+              return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+                  return Padding(
+                  padding: EdgeInsets.only(top: 20,  right: 20,  left: 20,
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height/2,
+                      width: MediaQuery.of(context).size.width/1.1,
+                      child:  Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text("Add Project",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold
+                              ),
                             ),
                           ),
-                        ),
-                         Padding(
-                           padding: const EdgeInsets.only(bottom: 20),
-                           child: Container(
-                             width: 300,
-                             child: TextFormField(
-                               controller: projectName,
+                           Padding(
+                             padding: const EdgeInsets.only(bottom: 20),
+                             child: Container(
+                               width: 300,
+                               child: TextFormField(
+                                 controller: projectName,
+                                decoration: new InputDecoration(
+                                  labelText: "Project Name",
+                                  fillColor: Colors.white,
+                                  border: new OutlineInputBorder(
+                                    borderRadius: new BorderRadius.circular(25.0),
+                                    borderSide: new BorderSide(
+                                    ),
+                                  ),
+                                  //fillColor: Colors.green
+                                ),
+                                keyboardType: TextInputType.emailAddress,
+                                style: new TextStyle(
+                                  fontFamily: "Poppins",
+                                ),
+                               ),
+                             ),
+                           ),
+                          SizedBox(height: 10,),
+                          Container(
+                            width: 300,
+                            child: TextFormField(
+                              controller: projectDescription,
                               decoration: new InputDecoration(
-                                labelText: "Project Name",
+                                labelText: "Project Description",
                                 fillColor: Colors.white,
                                 border: new OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(25.0),
@@ -94,117 +118,112 @@ class _ProjectsState extends State<Projects> {
                                 ),
                                 //fillColor: Colors.green
                               ),
+
                               keyboardType: TextInputType.emailAddress,
                               style: new TextStyle(
                                 fontFamily: "Poppins",
                               ),
-                                                   ),
-                           ),
-                         ),
-                        SizedBox(height: 10,),
-                        Container(
-                          width: 300,
-                          child: TextFormField(
-                            controller: projectDescription,
-                            decoration: new InputDecoration(
-                              labelText: "Project Description",
-                              fillColor: Colors.white,
-                              border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(25.0),
-                                borderSide: new BorderSide(
+                            ),
+                          ),
+                           SizedBox(height: 20,),
+                           Center(
+                            child:  Container(
+                              height: 50,
+                              width: 200,
+                              child: clickAdd==false?FancyContainer(
+                                textColor: Colors.white,
+                                onTap: () async {
+                                  setState(() {
+                                    clickAdd = true;
+
+                                  });
+                                  await DioHelper.postData(
+                                    url: "api/projects",
+                                    formData: {
+                                      "name":"${projectName.text}" ,
+                                      "description":"${projectDescription.text}" ,
+                                      "organization_id":widget.organizationId ,
+                                    },
+                                  ).then((value) {
+
+                                    setState(() {});
+                                    clickAdd = false;
+
+                                    print("Shaaaaaaaaatr");
+                                    getProjects();
+                                    projectName.text='';
+                                    projectDescription.text = '';
+                                    Navigator.pop(context);
+                                  })
+                                      .catchError((error){
+                                    clickAdd = false;
+
+                                    setState(() {
+
+                                        });
+                                        if(projectName.text.isEmpty) {
+                                          Flushbar(
+                                            backgroundColor: Colors.red,
+                                            message: "project name is empty !",
+                                            icon: Icon(
+                                              Icons.info_outline,
+                                              size: 30.0,
+                                              color: Colors.black,
+                                            ),
+                                            duration: Duration(seconds: 3),
+                                            leftBarIndicatorColor: Colors
+                                                .blue[300],
+                                          )
+                                            ..show(context);
+                                        }
+                                        else if(projectDescription.text.isEmpty){
+                                          Flushbar(
+                                            message: "project Description is empty !",
+                                            backgroundColor: Colors.red,
+                                            icon: Icon(
+                                              Icons.info_outline,
+                                              size: 30.0,
+                                              color: Colors.black,
+
+                                            ),
+                                            duration: Duration(seconds: 3),
+                                            leftBarIndicatorColor: Colors
+                                                .blue[300],
+                                          )
+                                            ..show(context);
+                                        }
+                                        else{
+                                          Flushbar(
+                                            message: "Sorry! try again later",
+                                            icon: Icon(
+                                              Icons.info_outline,
+                                              size: 30.0,
+                                              color: Colors.blue[300],
+                                            ),
+                                            duration: Duration(seconds: 3),
+                                            leftBarIndicatorColor: Colors
+                                                .blue[300],
+                                          )
+                                            ..show(context);
+                                        }
+
+                                    print(error.response.data);
+                                  });
+                                },
+                                title: 'Add',
+                                color1: Colors.purple,
+                                color2: Colors.lightBlue,
+                              ):Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.indigo,
                                 ),
                               ),
-                              //fillColor: Colors.green
                             ),
-
-                            keyboardType: TextInputType.emailAddress,
-                            style: new TextStyle(
-                              fontFamily: "Poppins",
-                            ),
-                          ),
-                        ),
-                         SizedBox(height: 20,),
-                         Center(
-                          child:  Container(
-                            height: 50,
-                            width: 200,
-                            child: FancyContainer(
-                              textColor: Colors.white,
-                              onTap: () async {
-                                await DioHelper.postData(
-                                  url: "api/projects",
-                                  formData: {
-                                    "name":"${projectName.text}" ,
-                                    "description":"${projectDescription.text}" ,
-                                    "organization_id":widget.organizationId ,
-                                  },
-                                ).then((value) {
-                                  print("Shaaaaaaaaatr");
-                                  getProjects();
-                                  projectName.text='';
-                                  projectDescription.text = '';
-                                  Navigator.pop(context);
-
-                                })
-                                    .catchError((error){
-                                      setState(() {
-
-                                      });
-                                      if(projectName.text.isEmpty) {
-                                        Flushbar(
-                                          message: "project name is empty !",
-                                          icon: Icon(
-                                            Icons.info_outline,
-                                            size: 30.0,
-                                            color: Colors.blue[300],
-                                          ),
-                                          duration: Duration(seconds: 3),
-                                          leftBarIndicatorColor: Colors
-                                              .blue[300],
-                                        )
-                                          ..show(context);
-                                      }
-                                      else if(projectDescription.text.isEmpty){
-                                        Flushbar(
-                                          message: "project Description is empty !",
-                                          icon: Icon(
-                                            Icons.info_outline,
-                                            size: 30.0,
-                                            color: Colors.blue[300],
-                                          ),
-                                          duration: Duration(seconds: 3),
-                                          leftBarIndicatorColor: Colors
-                                              .blue[300],
-                                        )
-                                          ..show(context);
-                                      }
-                                      else{
-                                        Flushbar(
-                                          message: "Sorry! try again later",
-                                          icon: Icon(
-                                            Icons.info_outline,
-                                            size: 30.0,
-                                            color: Colors.blue[300],
-                                          ),
-                                          duration: Duration(seconds: 3),
-                                          leftBarIndicatorColor: Colors
-                                              .blue[300],
-                                        )
-                                          ..show(context);
-                                      }
-
-                                  print(error.response.data);
-                                });
-                              },
-                              title: 'Add',
-                              color1: Colors.purple,
-                              color2: Colors.lightBlue,
-                            ),
-                          ),
-                                                 ),
-                      ],
-                    )
-                ),
+                                                   ),
+                        ],
+                      )
+                  ),
+                );}
               );
 
             },
