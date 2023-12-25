@@ -52,6 +52,11 @@
   "tryAgain": "حاول مرة اخرى",
   "notesView": "ملاحظات",
   "tasks": "المهام",
-  "profile": "الملف الشخصي"
+  "profile": "الملف الشخصي",
+  "myProject": "مشاريعي",
+  "projectName": "اسم المشروع",
+  "projectDescription": "وصف المشروع",
+  "add": "إضافة"
+
 
 }

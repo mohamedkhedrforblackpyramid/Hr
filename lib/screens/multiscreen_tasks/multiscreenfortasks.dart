@@ -45,8 +45,8 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
         organization_id: widget.organization_id,),
       AddTasks(projectId: widget.projectId,
           organization_id: widget.organization_id),
-      ShowTasks()
-    ];
+      ShowTasks(projectId: widget.projectId,
+          organization_id: widget.organization_id),];
     return Scaffold(
       resizeToAvoidBottomInset: true,
       bottomNavigationBar: BottomNavigationBar(

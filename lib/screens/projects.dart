@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:hr/modules/projects.dart';
 import 'package:hr/screens/multiscreen_tasks/multiscreenfortasks.dart';
 import 'package:rive/rive.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../network/remote/dio_helper.dart';
 
 class Projects extends StatefulWidget {
@@ -43,7 +43,6 @@ class _ProjectsState extends State<Projects> {
     }).catchError((error){
       print(error.response.data);
     });
-
   }
 
   @override
@@ -257,7 +256,7 @@ class _ProjectsState extends State<Projects> {
                     child: Column(
 
                         children: [
-                          Text("My Projects",
+                          Text("${AppLocalizations.of(context)!.myProject}",
                             style: TextStyle(
                                 fontSize: 30,
                                 color: Colors.white,
@@ -329,21 +328,21 @@ class _ProjectsState extends State<Projects> {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Project Name : ${pr.name}',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+            Center(
+              child: Text(
+                '${pr.name}',
+                style: const TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
             Text(
-              textAlign: TextAlign.start,
-              'Description : ${pr.description}',
+              '${pr.description}',
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),

@@ -52,6 +52,10 @@
   "tryAgain": "Try again later",
   "notesView": "Notes",
   "tasks": "Tasks",
-  "profile": "Profile"
+  "profile": "Profile",
+  "myProject": "My Projects",
+  "projectName": "Project Name",
+  "projectDescription": "Project Description",
+  "add": "Add"
 
 }
