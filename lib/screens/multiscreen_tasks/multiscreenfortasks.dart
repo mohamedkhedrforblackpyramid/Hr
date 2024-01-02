@@ -63,16 +63,16 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.create),
-            label: "Add Phase",
+            label: "${AppLocalizations.of(context)!.add_phase}",
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.task),
-              label: "Add Tasks"
+              label: "${AppLocalizations.of(context)!.addTask}"
 
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.task_outlined),
-              label: "Show My Tasks"
+              label: "${AppLocalizations.of(context)!.showTasks}"
 
           ),
         ],
@@ -99,9 +99,7 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: SingleChildScrollView(
-                  child: screens[currentIndex]
-                ),
+                child: screens[currentIndex],
               ),
             ),
           ],

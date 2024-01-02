@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:hr/modules/chooseusers.dart';
 import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/modules/phases.dart';
+import 'package:hr/modules/tasks.dart';
 import 'package:hr/screens/excusepermission.dart';
+import 'package:hr/screens/multiscreen_tasks/closeandshow_task.dart';
 import 'package:hr/screens/projects.dart';
 import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -35,23 +37,13 @@ class ShowTasks extends StatefulWidget {
 
 class _ShowTasksState extends State<ShowTasks> {
  bool showLoading =false;
+ late TasksList task_list;
  late PhaseList phase_list;
+ bool phaseLoading = false;
 
- getProjects() async {
-    showLoading = true;
-    await DioHelper.getData(
-      url: "api/organizations/${widget.organization_id}/tasks",
-    ).then((response) {
-      print(response.data);
-      setState(() {
-        showLoading = false;
-      });
-    }).catchError((error){
-      print(error.response.data);
-    });
 
-  }
  getPhases() {
+   phaseLoading = true;
    DioHelper.getData(
      url: "api/organizations/${widget.organization_id}/phases/?project_id=${widget.projectId}",
    ).then((response) {
@@ -59,6 +51,7 @@ class _ShowTasksState extends State<ShowTasks> {
 
      print(response.data);
      setState(() {
+       phaseLoading = false;
      });
    }).catchError((error) {
      print('hhhhhhhhhhhhhhhh');
@@ -67,8 +60,10 @@ class _ShowTasksState extends State<ShowTasks> {
  }
 
 
+
   @override
   void initState() {
+  //  getTasks();
     getPhases();
     super.initState();
   }
@@ -81,20 +76,54 @@ class _ShowTasksState extends State<ShowTasks> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-          Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: ListView.separated(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder:
-                (BuildContext context, int index) =>
-                buildChoosePhaes(
-                    phase: phase_list.phaseList![index],
-                    index: index),
-            itemCount:   phase_list.phaseList!.length,
-            separatorBuilder:(BuildContext context, int index) =>SizedBox(height: 20) ,
-          ),
-                )
+              Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 100),
+                      child: Text("${AppLocalizations.of(context)!.choosePhase}",
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+
+                    phaseLoading==false?Column(
+                      children: [
+                        phase_list.phaseList!.isNotEmpty ?
+                        SizedBox(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const ScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemBuilder:
+                                (BuildContext context, int index) =>
+                                buildTasks(
+                                    task: phase_list.phaseList![index],
+                                    index: index, ),
+                            itemCount: phase_list.phaseList!.length,
+                          ),
+                        ):Padding(
+                          padding: EdgeInsets.symmetric(vertical: 300),
+                          child: Center(
+                            child: Text(
+                              "${AppLocalizations.of(context)!.noTask}",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ):const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 300),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.indigo,
+                        ),
+                      ),
+                    ),
+
+                  ]),
             ],
           ),
         ),
@@ -102,29 +131,46 @@ class _ShowTasksState extends State<ShowTasks> {
     );
 
   }
- Widget buildChoosePhaes({required PhasesModel phase,required int index}){
-   return Column(
+ Widget buildTasks({required PhasesModel task, required int index,}) {
 
-     children: [
-       Container(
-         width: MediaQuery.of(context).size.width,
-         height: MediaQuery.of(context).size.height/4,
+   return GestureDetector(
+     onTap: (){
+       Navigator.push(
+           context,
+           MaterialPageRoute(builder: (context) =>  CloseTasks(
+             projectId: widget.projectId,
+             organization_id: widget.organization_id,
+             phase_id: task.phase_id,
 
-         decoration: BoxDecoration(
-           color: const Color(0xff7c94b6),
-           border: Border.all(
-             width: 8,
+           )));     },
+     child: Container(
+       width: MediaQuery.of(context).size.width,
+       margin: const EdgeInsets.all(20),
+       padding: const EdgeInsets.all(20),
+       decoration: BoxDecoration(
+         color: const Color(0xFF0E3311).withOpacity(0.5),
+         borderRadius: BorderRadius.circular(20),
+       ),
+       child: Column(
+         children: [
+           Center(
+             child: Text(
+               '${task.phaseName}',
+               style: const TextStyle(
+                 fontSize: 30,
+                 fontWeight: FontWeight.bold,
+                 color: Colors.white,
+               ),
+             ),
            ),
-           borderRadius: BorderRadius.circular(12),
-         ),
-         child: Text(
-           textAlign: TextAlign.center,
-             "${phase.phaseName}",
-           style: TextStyle(),
-         ),
-       )
-     ],
+
+         ],
+       ),
+
+
+     ),
    );
+
  }
 
 

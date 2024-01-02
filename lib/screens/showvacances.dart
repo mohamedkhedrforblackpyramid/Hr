@@ -33,7 +33,7 @@ class _ShowVacancesState extends State<ShowVacances> {
     CacheHelper.getData(key: 'token');
     permitLoading = true;
     DioHelper.getData(
-      url: "api/organizations/${widget.organizationId}/getvacancies?is_permit=0&status=1",
+      url: "api/organizations/${widget.organizationId}/vacancies?is_permit=0&status=1",
     ).then((response) {
       permits = PermitList.fromJson(response.data);
       setState(() {

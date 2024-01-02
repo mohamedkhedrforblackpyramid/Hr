@@ -12,7 +12,6 @@ import '../network/remote/dio_helper.dart';
 
 class Projects extends StatefulWidget {
   int?organizationId;
-
    Projects({required this.organizationId});
 
   @override
@@ -33,15 +32,16 @@ class _ProjectsState extends State<Projects> {
   getProjects() async {
     projectLoading = true;
     await DioHelper.getData(
-      url: "api/projects/",
+      url: "api/organizations/${widget.organizationId}/projects",
     ).then((response) {
+      print(response.data);
       projects = ProjectsList.fromJson(response.data);
-      print(projects);
+    //  print(projects);
       setState(() {
         projectLoading = false;
       });
     }).catchError((error){
-      print(error.response.data);
+      print(error.response);
     });
   }
 
@@ -72,7 +72,7 @@ class _ProjectsState extends State<Projects> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(15.0),
-                            child: Text("Add Project",
+                            child: Text("${AppLocalizations.of(context)!.addProject}",
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold
@@ -86,7 +86,7 @@ class _ProjectsState extends State<Projects> {
                                child: TextFormField(
                                  controller: projectName,
                                 decoration: new InputDecoration(
-                                  labelText: "Project Name",
+                                  labelText: "${AppLocalizations.of(context)!.projectName}",
                                   fillColor: Colors.white,
                                   border: new OutlineInputBorder(
                                     borderRadius: new BorderRadius.circular(25.0),
@@ -108,7 +108,7 @@ class _ProjectsState extends State<Projects> {
                             child: TextFormField(
                               controller: projectDescription,
                               decoration: new InputDecoration(
-                                labelText: "Project Description",
+                                labelText: "${AppLocalizations.of(context)!.projectDescription}",
                                 fillColor: Colors.white,
                                 border: new OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(25.0),
@@ -157,13 +157,11 @@ class _ProjectsState extends State<Projects> {
                                       .catchError((error){
                                     clickAdd = false;
 
-                                    setState(() {
-
-                                        });
+                                    setState(() {});
                                         if(projectName.text.isEmpty) {
                                           Flushbar(
                                             backgroundColor: Colors.red,
-                                            message: "project name is empty !",
+                                            message: "${AppLocalizations.of(context)!.projectNameisEmpty}",
                                             icon: Icon(
                                               Icons.info_outline,
                                               size: 30.0,
@@ -177,7 +175,7 @@ class _ProjectsState extends State<Projects> {
                                         }
                                         else if(projectDescription.text.isEmpty){
                                           Flushbar(
-                                            message: "project Description is empty !",
+                                            message: "${AppLocalizations.of(context)!.projectDescisEmpty}",
                                             backgroundColor: Colors.red,
                                             icon: Icon(
                                               Icons.info_outline,
@@ -193,7 +191,7 @@ class _ProjectsState extends State<Projects> {
                                         }
                                         else{
                                           Flushbar(
-                                            message: "Sorry! try again later",
+                                            message: "${AppLocalizations.of(context)!.project_error}",
                                             icon: Icon(
                                               Icons.info_outline,
                                               size: 30.0,
@@ -209,7 +207,7 @@ class _ProjectsState extends State<Projects> {
                                     print(error.response.data);
                                   });
                                 },
-                                title: 'Add',
+                                title: '${AppLocalizations.of(context)!.add}',
                                 color1: Colors.purple,
                                 color2: Colors.lightBlue,
                               ):Center(

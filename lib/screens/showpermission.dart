@@ -32,7 +32,7 @@ class _ShowpermitState extends State<Showpermit> {
   getinfo() {
     permitLoading = true;
     DioHelper.getData(
-      url: "api/organizations/${widget.organizationId}/getvacancies?is_permit=1&status=1",
+      url: "api/organizations/${widget.organizationId}/vacancies?is_permit=1&status=1",
     ).then((response) {
       permits = PermitList.fromJson(response.data);
       print(response.data);

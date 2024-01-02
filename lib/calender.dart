@@ -77,72 +77,74 @@ class _CalenderState extends State<Calender> {
     );
 
     return
-         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            //custom icon
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16.0),
-            ), // This trailing comma makes auto-formatting nicer for build methods.
-            //custom icon without header
-            Row(
-              children: <Widget>[
-                Expanded(
-                    child: Text(
-                      DateFormat.yMMM().format(_targetDateTime),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
-                      ),
-                    )),
-                TextButton(
-                  child: const Text('PREV'),
-                  onPressed: () {
-                    setState(() {
-                      _targetDateTime = DateTime(
-                          _targetDateTime.year, _targetDateTime.month - 1);
-                    });
-                  },
-                ),
-                TextButton(
-                  child: const Text('NEXT'),
-                  onPressed: () {
-                    setState(() {
-                      _targetDateTime = DateTime(
-                          _targetDateTime.year, _targetDateTime.month + 1);
-                    });
-                  },
-                )
-              ],
-            ),
-            Container(
-            //  margin: EdgeInsets.symmetric(horizontal: 16.0),
-              child: _calendarCarouselNoHeader,
-            ), //
-            Center(
-              child: Container(
-                width: 100,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                decoration: BoxDecoration(
-                  color:const Color(0xff1A6293),
-                  borderRadius: BorderRadius.circular(30)
-
-                ),
-                child: TextButton(
-                    onPressed: (){
-                  widget.onSubmit(DateFormat('yyyy-MM-dd').format(_currentDate));
-                  Navigator.pop(context);
-                },
-                    child: const Text('OK',
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white
-                      ),
-                    )),
+         SingleChildScrollView(
+           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              //custom icon
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              ), // This trailing comma makes auto-formatting nicer for build methods.
+              //custom icon without header
+              Row(
+                children: <Widget>[
+                  Expanded(
+                      child: Text(
+                        DateFormat.yMMM().format(_targetDateTime),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24.0,
+                        ),
+                      )),
+                  TextButton(
+                    child: const Text('PREV'),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month - 1);
+                      });
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('NEXT'),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month + 1);
+                      });
+                    },
+                  )
+                ],
               ),
-            )
-          ],
-        );
+              Container(
+              //  margin: EdgeInsets.symmetric(horizontal: 16.0),
+                child: _calendarCarouselNoHeader,
+              ), //
+              Center(
+                child: Container(
+                  width: 100,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  decoration: BoxDecoration(
+                    color:const Color(0xff1A6293),
+                    borderRadius: BorderRadius.circular(30)
+           
+                  ),
+                  child: TextButton(
+                      onPressed: (){
+                    widget.onSubmit(DateFormat('yyyy-MM-dd').format(_currentDate));
+                    Navigator.pop(context);
+                  },
+                      child: const Text('OK',
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.white
+                        ),
+                      )),
+                ),
+              )
+            ],
+                   ),
+         );
   }
 }
