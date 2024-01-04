@@ -6,6 +6,7 @@ import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/screens/excusepermission.dart';
 import 'package:hr/screens/projects.dart';
 import 'package:hr/screens/switchpermitandvacan.dart';
+import 'package:hr/screens/tasktable.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
@@ -337,7 +338,7 @@ class _ChooseListState extends State<ChooseList> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     GestureDetector(
-                                      child: Image.asset('assets/icons/check-list.png',
+                                      child: Image.asset('assets/icons/projects.png',
                                         width: 150,
                                         height: 120,
                                       ),
@@ -348,7 +349,7 @@ class _ChooseListState extends State<ChooseList> {
                                             )));
                                       },
                                     ),
-                                    Text("${AppLocalizations.of(context)!.tasks}",
+                                    Text("${AppLocalizations.of(context)!.myProject}",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -364,18 +365,18 @@ class _ChooseListState extends State<ChooseList> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     GestureDetector(
-                                      child: Image.asset('assets/icons/profile.png',
+                                      child: Image.asset('assets/icons/check-list.png',
                                         width: 150,
                                         height: 120,
                                       ),
-                                     /* onTap: (){
+                                      onTap: (){
                                         Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) =>  HolidayPermission(userId: widget.userId,
+                                            MaterialPageRoute(builder: (context) =>  TaskTable(
                                               organizationId: widget.organizationId,
                                             )));
-                                      },*/
+                                      },
                                     ),
-                                    Text("${AppLocalizations.of(context)!.profile}",
+                                    Text("${AppLocalizations.of(context)!.tasks}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 22,

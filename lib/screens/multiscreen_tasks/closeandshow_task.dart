@@ -49,9 +49,7 @@ class _CloseTasksState extends State<CloseTasks> {
       print(response.data);
       setState(() {
         showLoading = false;
-
       });
-
     }).catchError((error){
       print(error.response.data);
     });

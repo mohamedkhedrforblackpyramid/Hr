@@ -68,7 +68,7 @@
   "phaseName_isEmpty": "phase name is empty",
   "phaseDesc_isEmpty": "phase description is empty",
   "due_dateIsEmpty": "due date is empty",
-  "addedSuccessfully": "Added phase Successfully",
+  "addedSuccessfully": "Added Successfully",
   "addTask": "Add Task",
   "showTasks": "Show My Tasks",
   "taskName": "Task Name",
@@ -80,12 +80,13 @@
   "taskName_isEmpty": "task name is empty",
   "taskDesc_isEmpty": "task description is empty",
   "chooseEmployeesEmpty": "You Must Choose employee",
-  "mustChoosePhase": "You Must Choose Phase",
+  "mustChoosePhase": "You Must CaddedSuccessfullyhoose Phase",
   "datefromIsEmpty": "Date From is empty",
   "noTask": "No Tasks Found",
   "finishTask": "Did you finish this task ?",
   "startTask": "Start Task : ",
-  "endDay": "End Task :"
+  "endDay": "End Task :",
+  "phases": "Phases"
 
 
 }

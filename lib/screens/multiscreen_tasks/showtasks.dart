@@ -70,62 +70,52 @@ class _ShowTasksState extends State<ShowTasks> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 100),
-                      child: Text("${AppLocalizations.of(context)!.choosePhase}",
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text("${AppLocalizations.of(context)!.choosePhase}",
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold
+              ),
+            ),
+            phaseLoading==false?Column(
+              children: [
+                phase_list.phaseList!.isNotEmpty ?
+                SizedBox(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const ScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemBuilder:
+                        (BuildContext context, int index) =>
+                        buildTasks(
+                            task: phase_list.phaseList![index],
+                            index: index, ),
+                    itemCount: phase_list.phaseList!.length,
+                  ),
+                ):Padding(
+                  padding: EdgeInsets.symmetric(vertical: 300),
+                  child: Center(
+                    child: Text(
+                      "${AppLocalizations.of(context)!.noTask}",
+                      style: TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-
-                    phaseLoading==false?Column(
-                      children: [
-                        phase_list.phaseList!.isNotEmpty ?
-                        SizedBox(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const ScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            itemBuilder:
-                                (BuildContext context, int index) =>
-                                buildTasks(
-                                    task: phase_list.phaseList![index],
-                                    index: index, ),
-                            itemCount: phase_list.phaseList!.length,
-                          ),
-                        ):Padding(
-                          padding: EdgeInsets.symmetric(vertical: 300),
-                          child: Center(
-                            child: Text(
-                              "${AppLocalizations.of(context)!.noTask}",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ):const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 300),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.indigo,
-                        ),
-                      ),
-                    ),
-
-                  ]),
-            ],
-          ),
+                  ),
+                ),
+              ],
+            ):const Padding(
+              padding: EdgeInsets.symmetric(vertical: 300),
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Colors.indigo,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

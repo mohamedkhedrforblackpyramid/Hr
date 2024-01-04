@@ -72,7 +72,7 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.task_outlined),
-              label: "${AppLocalizations.of(context)!.showTasks}"
+              label: "Phases"
 
           ),
         ],
