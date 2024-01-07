@@ -23,10 +23,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class AddTasks extends StatefulWidget {
   int projectId;
   int organization_id;
-
+  int? userId;
+  late OrganizationsList oranizaionsList;
+  String? organizationsName;
+  String?organizationsArabicName;
   AddTasks({
     required this.projectId,
-    required this.organization_id
+    required this.organization_id,
+    required this.userId,
+    required this.organizationsArabicName,
+    required this.organizationsName,
+    required this.oranizaionsList
 
   });
   @override
@@ -73,7 +80,18 @@ class _AddTasksState extends State<AddTasks> {
       print(error.response.data);
     });
   }
-
+  returnPage(){
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) =>  Projects(
+          userId: widget.userId,
+          organizationId: widget.organization_id,
+          organizationsName: widget.organizationsName,
+          oranizaionsList: widget.oranizaionsList,
+          organizationsArabicName: widget.organizationsArabicName,
+        )
+        ));
+  }
 
   @override
   void initState() {
@@ -84,139 +102,32 @@ class _AddTasksState extends State<AddTasks> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Text("${AppLocalizations.of(context)!.addTask}",
-                  style: TextStyle(color: Colors.white70,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 40),
-                child: Theme(
-                  data: Theme.of(context)
-                      .copyWith(splashColor: Colors.transparent),
-                  child: TextField(
-                    controller: taskName,
-                    autofocus: false,
-                    style: TextStyle(
-                        fontSize: 22.0, color: Color(0xFFbdc6cf)),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Color(0xFCED3FF),
-                      label: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          '${AppLocalizations.of(context)!.taskName}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ),
-                      contentPadding: const EdgeInsets.only(
-                          left: 14.0, bottom: 8.0, top: 8.0,right: 14),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(25.7),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(25.7),
-                      ),
+    return WillPopScope(
+      onWillPop: (){
+        return returnPage();
+      },
+      child: Center(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Text("${AppLocalizations.of(context)!.addTask}",
+                    style: TextStyle(color: Colors.white70,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 40),
-                child: Theme(
-                  data: Theme.of(context)
-                      .copyWith(splashColor: Colors.transparent),
-                  child: TextField(
-                    controller: taskdesc,
-                    autofocus: false,
-                    style: TextStyle(
-                        fontSize: 22.0, color: Color(0xFFbdc6cf)),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Color(0xFCED3FF),
-                      label: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          '${AppLocalizations.of(context)!.taskDesc}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ),
-                      contentPadding: const EdgeInsets.only(
-                          left: 14.0, bottom: 8.0, top: 8.0,right: 14),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(25.7),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(25.7),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: (){
-                 chooseList.chooseuserList!.isNotEmpty?showModalBottomSheet<void>(
-                    context: context,
-                    backgroundColor: Color(0xffFAACB4),
-                    builder: (BuildContext context) {
-                      return Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemBuilder:
-                              (BuildContext context, int index) =>
-                              buildChooseUsers(
-                                  user: chooseList.chooseuserList![index],
-                                  index: index),
-                          itemCount:  chooseList.chooseuserList!.length,
-                        ),
-                      );
-          
-                    },
-                  ).whenComplete(() {
-                    setState(() {
-          
-                    });
-                  }):Flushbar(
-                  message: "${AppLocalizations.of(context)!.noEmployee}",
-                  icon: Icon(
-                  Icons.info_outline,
-                  size: 30.0,
-                  color: Colors.black,
-                  ),
-                  duration: Duration(seconds: 3),
-                  leftBarIndicatorColor: Colors
-                      .blue[300],
-                  backgroundColor: Colors.red,
-          
-                  )
-                      .show(context);
-                },
-                child: Padding(
+                Padding(
                   padding: const EdgeInsets.only(bottom: 40),
                   child: Theme(
                     data: Theme.of(context)
                         .copyWith(splashColor: Colors.transparent),
                     child: TextField(
-                      enabled: false,
+                      controller: taskName,
                       autofocus: false,
                       style: TextStyle(
                           fontSize: 22.0, color: Color(0xFFbdc6cf)),
@@ -225,16 +136,11 @@ class _AddTasksState extends State<AddTasks> {
                         fillColor: Color(0xFCED3FF),
                         label: Padding(
                           padding: const EdgeInsets.all(10),
-                          child: users.isEmpty?Text(
-                            '${AppLocalizations.of(context)!.addTaskTo}',
+                          child: Text(
+                            '${AppLocalizations.of(context)!.taskName}',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
-                          ):Text(
-                            'You Selected ${users.length} Employee',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
                           ),
                         ),
                         contentPadding: const EdgeInsets.only(
@@ -251,426 +157,547 @@ class _AddTasksState extends State<AddTasks> {
                     ),
                   ),
                 ),
-          
-              ),
-              GestureDetector(
-                onTap: (){
-                  phase_list.phaseList!.isNotEmpty?showModalBottomSheet<void>(
-                    context: context,
-                    backgroundColor: Color(0xffFAACB4),
-                    builder: (BuildContext context) {
-                      return Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemBuilder:
-                              (BuildContext context, int index) =>
-                              buildChoosePhaes(
-                                  phase: phase_list.phaseList![index],
-                                  index: index),
-                          itemCount:   phase_list.phaseList!.length,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 40),
+                  child: Theme(
+                    data: Theme.of(context)
+                        .copyWith(splashColor: Colors.transparent),
+                    child: TextField(
+                      controller: taskdesc,
+                      autofocus: false,
+                      style: TextStyle(
+                          fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Color(0xFCED3FF),
+                        label: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            '${AppLocalizations.of(context)!.taskDesc}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
                         ),
-                      );
-                    },
-                  ):Flushbar(
-                    message: "${AppLocalizations.of(context)!.noPhase}",
+                        contentPadding: const EdgeInsets.only(
+                            left: 14.0, bottom: 8.0, top: 8.0,right: 14),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: (){
+                   chooseList.chooseuserList!.isNotEmpty?showModalBottomSheet<void>(
+                      context: context,
+                      backgroundColor: Color(0xffFAACB4),
+                      builder: (BuildContext context) {
+                        return Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder:
+                                (BuildContext context, int index) =>
+                                buildChooseUsers(
+                                    user: chooseList.chooseuserList![index],
+                                    index: index),
+                            itemCount:  chooseList.chooseuserList!.length,
+                          ),
+                        );
+
+                      },
+                    ).whenComplete(() {
+                      setState(() {
+
+                      });
+                    }):Flushbar(
+                    message: "${AppLocalizations.of(context)!.noEmployee}",
                     icon: Icon(
-                      Icons.info_outline,
-                      size: 30.0,
-                      color: Colors.black,
+                    Icons.info_outline,
+                    size: 30.0,
+                    color: Colors.black,
                     ),
                     duration: Duration(seconds: 3),
                     leftBarIndicatorColor: Colors
                         .blue[300],
                     backgroundColor: Colors.red,
-          
-                  )
-                      .show(context);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 40),
-                  child: Theme(
-                    data: Theme.of(context)
-                        .copyWith(splashColor: Colors.transparent),
-                    child: TextField(
-                      controller: phaseController,
-                      enabled: false,
-                      autofocus: false,
-                      style: TextStyle(
-                          fontSize: 22.0, color: Color(0xFFbdc6cf)),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xFCED3FF),
-                        label: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(
-                            '${AppLocalizations.of(context)!.choosePhase}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ),
-                        contentPadding: const EdgeInsets.only(
-                            left: 14.0, bottom: 8.0, top: 8.0,right: 14),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(25.7),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(25.7),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-          
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    bottom: 40),
-                child: Theme(
-                  data: Theme.of(context).copyWith(
-                      splashColor:
-                      Colors.transparent),
-                  child: GestureDetector(
-                    onTap: (){
-                      setState(() {
-                        showDialog(
-                          context: context,
-                          builder:
-                              (BuildContext context) {
-                            return AlertDialog(
-                              //  backgroundColor: Color(0xff93D0FC),
-                              content: Container(
-                                width: 500,
-                                height: 450,
-                                child: Calender(
-                                    onSubmit: (data) {
-                                      print("Heeeeeeloooooo");
-                                      print(data);
-                                      print("Heeeeeeloooooo");
-                                      fromDateController.text =
-                                          data;
-                                      setState(() {});
-                                    }),
-                              ),
-                            );
-                          },
-                        );
-                      });
-                    },
-                    child: TextFormField(
-                      enabled: false,
-                      controller: fromDateController,
-                      autofocus: false,
-                      style: TextStyle(
-                          fontSize: 22.0,
-                          color: Color(0xFFbdc6cf)),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xFCED3FF),
-                        label: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            '${AppLocalizations.of(context)!.dateFrom}',
-                            style: TextStyle(
-                                fontWeight:
-                                FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ),
-                        contentPadding:
-                        const EdgeInsets.only(
-                            left: 14.0,
-                            bottom: 8.0,
-                            top: 8.0),
-                        focusedBorder:
-                        OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white),
-                          borderRadius:
-                          BorderRadius.circular(
-                              25.7),
-                        ),
-                        enabledBorder:
-                        UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white),
-                          borderRadius:
-                          BorderRadius.circular(
-                              25.7),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-          
-              Padding(
-                padding: const EdgeInsets.only(
-                    bottom: 40),
-                child: Theme(
-                  data: Theme.of(context).copyWith(
-                      splashColor:
-                      Colors.transparent),
-                  child: GestureDetector(
-                    onTap: (){
-                      setState(() {
-                        showDialog(
-                          context: context,
-                          builder:
-                              (BuildContext context) {
-                            return AlertDialog(
-                              //  backgroundColor: Color(0xff93D0FC),
-                              content: Container(
-                                width: 500,
-                                height: 450,
-                                child: Calender(
-                                    onSubmit: (data) {
-                                      print("Heeeeeeloooooo");
-                                      print(data);
-                                      print("Heeeeeeloooooo");
-                                      dateController.text =
-                                          data;
-                                      setState(() {});
-                                    }),
-                              ),
-                            );
-                          },
-                        );
-                      });
-                    },
-                    child: TextFormField(
-                      validator: (value) {},
-                      enabled: false,
-                      controller: dateController,
-                      autofocus: false,
-                      style: TextStyle(
-                          fontSize: 22.0,
-                          color: Color(0xFFbdc6cf)),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xFCED3FF),
-                        label: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            '${AppLocalizations.of(context)!.due_date}',
-                            style: TextStyle(
-                                fontWeight:
-                                FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ),
-                        contentPadding:
-                        const EdgeInsets.only(
-                            left: 14.0,
-                            bottom: 8.0,
-                            top: 8.0),
-                        focusedBorder:
-                        OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white),
-                          borderRadius:
-                          BorderRadius.circular(
-                              25.7),
-                        ),
-                        enabledBorder:
-                        UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white),
-                          borderRadius:
-                          BorderRadius.circular(
-                              25.7),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-          
-          
-              clickAdd==false? Padding(
-                padding: const EdgeInsets.only(bottom: 40),
-                child: Center(
-                  child:  Container(
-                    height: 50,
-                    width: 200,
-                    child: FancyContainer(
-                      textColor: Colors.white,
-                      title: '${AppLocalizations.of(context)!.add}',
-                      color1: Colors.purple,
-                      color2: Colors.lightBlue,
-                      onTap: () async {
-                        setState(() {
-                        });
-                        clickAdd = true;
-                        await DioHelper.postData(
-                          url: "api/organizations/${widget.organization_id}/tasks",
-                          formData: {
-                            "name": "${taskName.text}" ,
-                            "description": "${taskdesc.text}" ,
-                            "phase_id": phaseID ,
-                            "due_date":dateController.text,
-                            "assignees":users,
-                            "status":"PENDING",
-                            "from_date":fromDateController.text,
-          
-          
-          
-                          },
-                        ).then((value) {
-                          setState(() {
-          
-                          });
-                          clickAdd = false;
-          
-                          taskName.text='';
-                          taskdesc.text='';
-                          Flushbar(
-                            message: "${AppLocalizations.of(context)!.addedSuccessfully}",
-                            icon: Icon(
-                              Icons.verified_outlined,
-                              size: 30.0,
-                              color: Colors.green,
+
+                    )
+                        .show(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 40),
+                    child: Theme(
+                      data: Theme.of(context)
+                          .copyWith(splashColor: Colors.transparent),
+                      child: TextField(
+                        enabled: false,
+                        autofocus: false,
+                        style: TextStyle(
+                            fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xFCED3FF),
+                          label: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: users.isEmpty?Text(
+                              '${AppLocalizations.of(context)!.addTaskTo}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ):Text(
+                              'You Selected ${users.length} Employee',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green),
                             ),
-                            duration: Duration(seconds: 3),
-                            leftBarIndicatorColor: Colors
-                                .blue[300],
-                            backgroundColor: Colors.green,
-                          )
-                            ..show(context);
-                        }).catchError((error){
-                          setState(() {
-          
-                          });
-                          clickAdd=false;
-                          if(taskName.text.isEmpty) {
-                            Flushbar(
-                              message: "${AppLocalizations.of(context)!.taskName_isEmpty}",
-                              icon: Icon(
-                                Icons.info_outline,
-                                size: 30.0,
-                                color: Colors.black,
-                              ),
-                              duration: Duration(seconds: 3),
-                              leftBarIndicatorColor: Colors
-                                  .blue[300],
-                              backgroundColor: Colors.red,
-          
-                            )
-                              ..show(context);
-                          }
-                          else if(taskdesc.text.isEmpty){
-                            Flushbar(
-                              message: "${AppLocalizations.of(context)!.taskDesc_isEmpty}",
-                              icon: Icon(
-                                Icons.info_outline,
-                                size: 30.0,
-                                color: Colors.blue[300],
-                              ),
-                              duration: Duration(seconds: 3),
-                              leftBarIndicatorColor: Colors
-                                  .blue[300],
-                              backgroundColor: Colors.red,
-                            )
-                              ..show(context);
-          
-                          }
-                          else if(users.isEmpty){
-                            Flushbar(
-                              message: "${AppLocalizations.of(context)!.chooseEmployeesEmpty}",
-                              icon: Icon(
-                                Icons.info_outline,
-                                size: 30.0,
-                                color: Colors.blue[300],
-                              ),
-                              duration: Duration(seconds: 3),
-                              leftBarIndicatorColor: Colors
-                                  .blue[300],
-                              backgroundColor: Colors.red,
-                            )
-                              ..show(context);
-          
-                          }
-                          else if(phaseController.text.isEmpty){
-                            Flushbar(
-                              message: "${AppLocalizations.of(context)!.choosePhase}",
-                              icon: Icon(
-                                Icons.info_outline,
-                                size: 30.0,
-                                color: Colors.blue[300],
-                              ),
-                              duration: Duration(seconds: 3),
-                              leftBarIndicatorColor: Colors
-                                  .blue[300],
-                              backgroundColor: Colors.red,
-                            )
-                              ..show(context);
-          
-                          }
-                          else if(fromDateController.text.isEmpty){
-                            Flushbar(
-                              message: "${AppLocalizations.of(context)!.datefromIsEmpty}",
-                              icon: Icon(
-                                Icons.info_outline,
-                                size: 30.0,
-                                color: Colors.blue[300],
-                              ),
-                              duration: Duration(seconds: 3),
-                              leftBarIndicatorColor: Colors
-                                  .blue[300],
-                              backgroundColor: Colors.red,
-                            )
-                              ..show(context);
-          
-                          }
-                          else if(dateController.text.isEmpty){
-                            Flushbar(
-                              message: "${AppLocalizations.of(context)!.due_dateIsEmpty}",
-                              icon: Icon(
-                                Icons.info_outline,
-                                size: 30.0,
-                                color: Colors.blue[300],
-                              ),
-                              duration: Duration(seconds: 3),
-                              leftBarIndicatorColor: Colors
-                                  .blue[300],
-                              backgroundColor: Colors.red,
-                            )
-                              ..show(context);
-          
-                          }
-          
-          
-                          else{
-                            Flushbar(
-                              message: "${AppLocalizations.of(context)!.project_error}",
-                              icon: Icon(
-                                Icons.info_outline,
-                                size: 30.0,
-                                color: Colors.blue[300],
-                              ),
-                              duration: Duration(seconds: 3),
-                              leftBarIndicatorColor: Colors
-                                  .blue[300],
-                            )
-                              ..show(context);
-                          }
-                          print(error.response.data);
+                          ),
+                          contentPadding: const EdgeInsets.only(
+                              left: 14.0, bottom: 8.0, top: 8.0,right: 14),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(25.7),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(25.7),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                ),
+                GestureDetector(
+                  onTap: (){
+                    phase_list.phaseList!.isNotEmpty?showModalBottomSheet<void>(
+                      context: context,
+                      backgroundColor: Color(0xffFAACB4),
+                      builder: (BuildContext context) {
+                        return Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder:
+                                (BuildContext context, int index) =>
+                                buildChoosePhaes(
+                                    phase: phase_list.phaseList![index],
+                                    index: index),
+                            itemCount:   phase_list.phaseList!.length,
+                          ),
+                        );
+                      },
+                    ):Flushbar(
+                      message: "${AppLocalizations.of(context)!.noPhase}",
+                      icon: Icon(
+                        Icons.info_outline,
+                        size: 30.0,
+                        color: Colors.black,
+                      ),
+                      duration: Duration(seconds: 3),
+                      leftBarIndicatorColor: Colors
+                          .blue[300],
+                      backgroundColor: Colors.red,
+
+                    )
+                        .show(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 40),
+                    child: Theme(
+                      data: Theme.of(context)
+                          .copyWith(splashColor: Colors.transparent),
+                      child: TextField(
+                        controller: phaseController,
+                        enabled: false,
+                        autofocus: false,
+                        style: TextStyle(
+                            fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xFCED3FF),
+                          label: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(
+                              '${AppLocalizations.of(context)!.choosePhase}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.only(
+                              left: 14.0, bottom: 8.0, top: 8.0,right: 14),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(25.7),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(25.7),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: 40),
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                        splashColor:
+                        Colors.transparent),
+                    child: GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          showDialog(
+                            context: context,
+                            builder:
+                                (BuildContext context) {
+                              return AlertDialog(
+                                //  backgroundColor: Color(0xff93D0FC),
+                                content: Container(
+                                  width: 500,
+                                  height: 450,
+                                  child: Calender(
+                                      onSubmit: (data) {
+                                        print("Heeeeeeloooooo");
+                                        print(data);
+                                        print("Heeeeeeloooooo");
+                                        fromDateController.text =
+                                            data;
+                                        setState(() {});
+                                      }),
+                                ),
+                              );
+                            },
+                          );
                         });
                       },
+                      child: TextFormField(
+                        enabled: false,
+                        controller: fromDateController,
+                        autofocus: false,
+                        style: TextStyle(
+                            fontSize: 22.0,
+                            color: Color(0xFFbdc6cf)),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xFCED3FF),
+                          label: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              '${AppLocalizations.of(context)!.dateFrom}',
+                              style: TextStyle(
+                                  fontWeight:
+                                  FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                          contentPadding:
+                          const EdgeInsets.only(
+                              left: 14.0,
+                              bottom: 8.0,
+                              top: 8.0),
+                          focusedBorder:
+                          OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.white),
+                            borderRadius:
+                            BorderRadius.circular(
+                                25.7),
+                          ),
+                          enabledBorder:
+                          UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.white),
+                            borderRadius:
+                            BorderRadius.circular(
+                                25.7),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ):Center(
-                child: CircularProgressIndicator(
-                  color: Colors.indigo,
+
+                Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: 40),
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                        splashColor:
+                        Colors.transparent),
+                    child: GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          showDialog(
+                            context: context,
+                            builder:
+                                (BuildContext context) {
+                              return AlertDialog(
+                                //  backgroundColor: Color(0xff93D0FC),
+                                content: Container(
+                                  width: 500,
+                                  height: 450,
+                                  child: Calender(
+                                      onSubmit: (data) {
+                                        print("Heeeeeeloooooo");
+                                        print(data);
+                                        print("Heeeeeeloooooo");
+                                        dateController.text =
+                                            data;
+                                        setState(() {});
+                                      }),
+                                ),
+                              );
+                            },
+                          );
+                        });
+                      },
+                      child: TextFormField(
+                        validator: (value) {},
+                        enabled: false,
+                        controller: dateController,
+                        autofocus: false,
+                        style: TextStyle(
+                            fontSize: 22.0,
+                            color: Color(0xFFbdc6cf)),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xFCED3FF),
+                          label: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              '${AppLocalizations.of(context)!.due_date}',
+                              style: TextStyle(
+                                  fontWeight:
+                                  FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                          contentPadding:
+                          const EdgeInsets.only(
+                              left: 14.0,
+                              bottom: 8.0,
+                              top: 8.0),
+                          focusedBorder:
+                          OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.white),
+                            borderRadius:
+                            BorderRadius.circular(
+                                25.7),
+                          ),
+                          enabledBorder:
+                          UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.white),
+                            borderRadius:
+                            BorderRadius.circular(
+                                25.7),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-          
-          
-            ],
+
+
+                clickAdd==false? Padding(
+                  padding: const EdgeInsets.only(bottom: 40),
+                  child: Center(
+                    child:  Container(
+                      height: 50,
+                      width: 200,
+                      child: FancyContainer(
+                        textColor: Colors.white,
+                        title: '${AppLocalizations.of(context)!.add}',
+                        color1: Colors.purple,
+                        color2: Colors.lightBlue,
+                        onTap: () async {
+                          setState(() {
+                          });
+                          clickAdd = true;
+                          await DioHelper.postData(
+                            url: "api/organizations/${widget.organization_id}/tasks",
+                            formData: {
+                              "name": "${taskName.text}" ,
+                              "description": "${taskdesc.text}" ,
+                              "phase_id": phaseID ,
+                              "due_date":dateController.text,
+                              "assignees":users,
+                              "status":"PENDING",
+                              "from_date":fromDateController.text,
+
+
+
+                            },
+                          ).then((value) {
+                            setState(() {
+
+                            });
+                            clickAdd = false;
+                            dateController.text='';
+                            taskName.text='';
+                            taskdesc.text='';
+                            fromDateController.text='';
+                            phaseController.text='';
+                            users.length=0;
+
+                            Flushbar(
+                              message: "${AppLocalizations.of(context)!.addedSuccessfully}",
+                              icon: Icon(
+                                Icons.verified_outlined,
+                                size: 30.0,
+                                color: Colors.green,
+                              ),
+                              duration: Duration(seconds: 3),
+                              leftBarIndicatorColor: Colors
+                                  .blue[300],
+                              backgroundColor: Colors.green,
+                            )
+                              ..show(context);
+                          }).catchError((error){
+                            setState(() {
+
+                            });
+                            clickAdd=false;
+                            if(taskName.text.isEmpty) {
+                              Flushbar(
+                                message: "${AppLocalizations.of(context)!.taskName_isEmpty}",
+                                icon: Icon(
+                                  Icons.info_outline,
+                                  size: 30.0,
+                                  color: Colors.black,
+                                ),
+                                duration: Duration(seconds: 3),
+                                leftBarIndicatorColor: Colors
+                                    .blue[300],
+                                backgroundColor: Colors.red,
+
+                              )
+                                ..show(context);
+                            }
+                            else if(taskdesc.text.isEmpty){
+                              Flushbar(
+                                message: "${AppLocalizations.of(context)!.taskDesc_isEmpty}",
+                                icon: Icon(
+                                  Icons.info_outline,
+                                  size: 30.0,
+                                  color: Colors.blue[300],
+                                ),
+                                duration: Duration(seconds: 3),
+                                leftBarIndicatorColor: Colors
+                                    .blue[300],
+                                backgroundColor: Colors.red,
+                              )
+                                ..show(context);
+
+                            }
+                            else if(users.isEmpty){
+                              Flushbar(
+                                message: "${AppLocalizations.of(context)!.chooseEmployeesEmpty}",
+                                icon: Icon(
+                                  Icons.info_outline,
+                                  size: 30.0,
+                                  color: Colors.blue[300],
+                                ),
+                                duration: Duration(seconds: 3),
+                                leftBarIndicatorColor: Colors
+                                    .blue[300],
+                                backgroundColor: Colors.red,
+                              )
+                                ..show(context);
+
+                            }
+                            else if(phaseController.text.isEmpty){
+                              Flushbar(
+                                message: "${AppLocalizations.of(context)!.choosePhase}",
+                                icon: Icon(
+                                  Icons.info_outline,
+                                  size: 30.0,
+                                  color: Colors.blue[300],
+                                ),
+                                duration: Duration(seconds: 3),
+                                leftBarIndicatorColor: Colors
+                                    .blue[300],
+                                backgroundColor: Colors.red,
+                              )
+                                ..show(context);
+
+                            }
+                            else if(fromDateController.text.isEmpty){
+                              Flushbar(
+                                message: "${AppLocalizations.of(context)!.datefromIsEmpty}",
+                                icon: Icon(
+                                  Icons.info_outline,
+                                  size: 30.0,
+                                  color: Colors.blue[300],
+                                ),
+                                duration: Duration(seconds: 3),
+                                leftBarIndicatorColor: Colors
+                                    .blue[300],
+                                backgroundColor: Colors.red,
+                              )
+                                ..show(context);
+
+                            }
+                            else if(dateController.text.isEmpty){
+                              Flushbar(
+                                message: "${AppLocalizations.of(context)!.due_dateIsEmpty}",
+                                icon: Icon(
+                                  Icons.info_outline,
+                                  size: 30.0,
+                                  color: Colors.blue[300],
+                                ),
+                                duration: Duration(seconds: 3),
+                                leftBarIndicatorColor: Colors
+                                    .blue[300],
+                                backgroundColor: Colors.red,
+                              )
+                                ..show(context);
+
+                            }
+
+
+                            else{
+                              Flushbar(
+                                message: "${AppLocalizations.of(context)!.project_error}",
+                                icon: Icon(
+                                  Icons.info_outline,
+                                  size: 30.0,
+                                  color: Colors.blue[300],
+                                ),
+                                duration: Duration(seconds: 3),
+                                leftBarIndicatorColor: Colors
+                                    .blue[300],
+                              )
+                                ..show(context);
+                            }
+                            print(error.response.data);
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ):Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.indigo,
+                  ),
+                ),
+
+
+              ],
+            ),
           ),
         ),
       ),

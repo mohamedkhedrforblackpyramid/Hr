@@ -21,16 +21,28 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class MultiScreenForTasks extends StatefulWidget {
   int projectId;
   int organization_id;
-  MultiScreenForTasks({
+  int currentIndex = 0;
+  int? userId;
+  late OrganizationsList oranizaionsList;
+  String? organizationsName;
+  String?organizationsArabicName;
+  MultiScreenForTasks(
+      {
    required this.projectId,
-    required this.organization_id
-  } );
+    required this.organization_id,
+        required this.currentIndex,
+        required this.userId,
+        required this.organizationsArabicName,
+        required this.organizationsName,
+        required this.oranizaionsList
+  }
+  );
   @override
   State<MultiScreenForTasks> createState() => _MultiScreenForTasksState();
 }
 
 class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
-  int currentIndex = 0;
+
 
 
   @override
@@ -42,22 +54,36 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
   Widget build(BuildContext context) {
     List<Widget>screens=[
       Addphase(projectId: widget.projectId,
-        organization_id: widget.organization_id,),
+        organization_id: widget.organization_id,
+        organizationsArabicName: widget.organizationsArabicName,
+        oranizaionsList: widget.oranizaionsList,
+        userId: widget.userId,
+        organizationsName: widget.organizationsName,),
       AddTasks(projectId: widget.projectId,
-          organization_id: widget.organization_id),
+        organization_id: widget.organization_id,
+        organizationsArabicName: widget.organizationsArabicName,
+        oranizaionsList: widget.oranizaionsList,
+        userId: widget.userId,
+        organizationsName: widget.organizationsName,),
       ShowTasks(projectId: widget.projectId,
-          organization_id: widget.organization_id),];
+          organization_id: widget.organization_id,
+        organizationsArabicName: widget.organizationsArabicName,
+        oranizaionsList: widget.oranizaionsList,
+        userId: widget.userId,
+        organizationsName: widget.organizationsName,
+      ),
+    ];
     return Scaffold(
       resizeToAvoidBottomInset: true,
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.black,
         selectedItemColor: Colors.pinkAccent,
-        currentIndex:currentIndex,
+        currentIndex:widget.currentIndex,
         onTap: (int currentIndexOntap){
           setState(() {
             
           });
-          currentIndex = currentIndexOntap;
+          widget.currentIndex = currentIndexOntap;
         },
         backgroundColor:  Colors.white.withOpacity(.8),
         items: [
@@ -99,7 +125,7 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: screens[currentIndex],
+                child: screens[widget.currentIndex],
               ),
             ),
           ],

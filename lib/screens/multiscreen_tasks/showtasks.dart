@@ -22,13 +22,23 @@ import '../attendance.dart';
 import '../holiday_permission.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'multiscreenfortasks.dart';
+
 class ShowTasks extends StatefulWidget {
   int projectId;
   int organization_id;
+  int? userId;
+  late OrganizationsList oranizaionsList;
+  String? organizationsName;
+  String?organizationsArabicName;
 
   ShowTasks({
     required this.projectId,
-    required this.organization_id
+    required this.organization_id,
+    required this.userId,
+    required this.organizationsArabicName,
+    required this.organizationsName,
+    required this.oranizaionsList
 
   });
   @override
@@ -58,6 +68,18 @@ class _ShowTasksState extends State<ShowTasks> {
      print(error.response.data);
    });
  }
+ returnPage(){
+   Navigator.push(
+       context,
+       MaterialPageRoute(builder: (context) =>  Projects(
+         userId: widget.userId,
+         organizationId: widget.organization_id,
+         organizationsName: widget.organizationsName,
+         oranizaionsList: widget.oranizaionsList,
+         organizationsArabicName: widget.organizationsArabicName,
+       )
+       ));
+ }
 
 
 
@@ -70,52 +92,83 @@ class _ShowTasksState extends State<ShowTasks> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text("${AppLocalizations.of(context)!.choosePhase}",
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold
-              ),
-            ),
-            phaseLoading==false?Column(
-              children: [
-                phase_list.phaseList!.isNotEmpty ?
-                SizedBox(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const ScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemBuilder:
-                        (BuildContext context, int index) =>
-                        buildTasks(
-                            task: phase_list.phaseList![index],
-                            index: index, ),
-                    itemCount: phase_list.phaseList!.length,
-                  ),
-                ):Padding(
-                  padding: EdgeInsets.symmetric(vertical: 300),
-                  child: Center(
-                    child: Text(
-                      "${AppLocalizations.of(context)!.noTask}",
-                      style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
+    return WillPopScope(
+      onWillPop: (){
+       return  returnPage();
+
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("${AppLocalizations.of(context)!.choosePhase}",
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      color: Colors.white70
                     ),
                   ),
-                ),
-              ],
-            ):const Padding(
-              padding: EdgeInsets.symmetric(vertical: 300),
-              child: Center(
-                child: CircularProgressIndicator(
-                  color: Colors.indigo,
+                  SizedBox(width: 20,),
+                  CircleAvatar(
+                    child: IconButton(onPressed: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>  MultiScreenForTasks(
+                            projectId: widget.projectId,
+                            organization_id: widget.organization_id,
+                            currentIndex: 0,
+                            organizationsName: widget.organizationsName,
+                            userId: widget.userId,
+                            oranizaionsList: widget.oranizaionsList,
+                            organizationsArabicName: widget.organizationsArabicName,
+                          )
+                          ));
+                    }
+                        , icon: Icon(Icons.add,color: Colors.white,)),
+                    backgroundColor: Colors.black45,
+                  )
+                ],
+              ),
+              phaseLoading==false?Column(
+                children: [
+                  phase_list.phaseList!.isNotEmpty ?
+                  SizedBox(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      itemBuilder:
+                          (BuildContext context, int index) =>
+                          buildTasks(
+                              task: phase_list.phaseList![index],
+                              index: index, ),
+                      itemCount: phase_list.phaseList!.length,
+                    ),
+                  ):Padding(
+                    padding: EdgeInsets.symmetric(vertical: 300),
+                    child: Center(
+                      child: Text(
+                        "${AppLocalizations.of(context)!.noTask}",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ):const Padding(
+                padding: EdgeInsets.symmetric(vertical: 300),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.indigo,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -131,6 +184,10 @@ class _ShowTasksState extends State<ShowTasks> {
              projectId: widget.projectId,
              organization_id: widget.organization_id,
              phase_id: task.phase_id,
+             organizationsName: widget.organizationsName,
+             userId: widget.userId,
+             oranizaionsList: widget.oranizaionsList,
+             organizationsArabicName: widget.organizationsArabicName,
 
            )));     },
      child: Container(

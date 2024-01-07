@@ -86,7 +86,7 @@ class _TaskTableState extends State<TaskTable> {
                               TableRow(
                                   children: [
                                 Center(child:
-                                Text('Project',
+                                Text('Tasks',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                       color: Colors.white,
@@ -99,7 +99,7 @@ class _TaskTableState extends State<TaskTable> {
                                     color: Colors.white
                                   ),
                                 )),
-                                Center(child: Text('Task',
+                                Center(child: Text('Projects',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white
@@ -158,104 +158,176 @@ class _TaskTableState extends State<TaskTable> {
         ));
   }
   Widget buildTaskTabl({required TasksModel task, required int index, }) {
-    return Container(padding: EdgeInsets.all(5),
-      height: 70,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-        color: Colors.white70 ,
-      ),
-      child: Table(
-        border: TableBorder.all(
-            color: Colors.transparent),
-        children: [
-          TableRow(
-              children: [
-                Center(child: Text('${task.project_name}',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                  ),
-                )),
-                Center(child: Text('${task.phase_name}',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-
-                  ),
-                )),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Center(child: Text('${task.task_name}',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold
-                    ),
-                  )),
-                ),
-                Checkbox(
-                  checkColor: Colors.indigo,
-                  fillColor: MaterialStateProperty.all(Colors.transparent),
-                  value: task.close,
-                  onChanged: (value) {
-                    if (task.close = value!) {
-                      showDialog(
-                        context: (context),
-                        builder: (contextop) => AlertDialog(
-                          content:  Text(
-                            "${AppLocalizations.of(context)!.finishTask}",
-                            style: TextStyle(fontSize: 20),
+    return GestureDetector(
+      onTap: (){
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+                backgroundColor: Color(0xff93D0FC),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Text('Task : ',
+                          style: TextStyle(
+                            color: Colors.indigo,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20
                           ),
-                          actions: [
-                            TextButton(
-                              child:  Text("${AppLocalizations.of(context)!.yes}"),
-                              onPressed: () {
-                                DioHelper.patchData(
-                                    url: "api/organizations/${widget.organizationId}/tasks/${task.task_id}",
-                                    formData: {
-                                      "status": "COMPLETED",
-                                    }).then((v) {
-                                  print("goooooooooooooooooood");
-                                  setState(() {
-                                    task_list.tasksList!.removeAt(index);
-                                  });
-                                }).catchError((e) {
-                                  print(e);
-                                  setState(() {
-                                    task.close = false;
-                                  });
-                                  showDialog(
-                                    context: (context),
-                                    builder: (contextotllp) =>  AlertDialog(
-                                      content: Text(
-                                        "${e.response.data['en']}",
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                    ),
-                                  );
-                                  // print('errrrrrrrrr');
-                                });
-
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child:  Text("${AppLocalizations.of(context)!.no}"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                task.close = false;
-                                setState(() {});
-                              },
-                            ),
-                          ],
                         ),
-                      );
-                      setState(() {});
-                    }
-                  },
+                    Expanded(child: Text('${task.task_name}')),
+                      ],
+                    ),
+                    Text('_________________________________'),
+                    Row(
+                      children: [
+                        Text('Phase : ',
+                          style: TextStyle(
+                              color: Colors.indigo,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
+                          ),
+                        ),
+                        Expanded(child: Text('${task.phase_name}')),
+                      ],
+                    ),
+                    Text('_________________________________'),
+                    Row(
+                      children: [
+                        Text('Project : ',
+                          style: TextStyle(
+                              color: Colors.indigo,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
+                          ),
+                        ),
+                        Text('${task.project_name}'),
+                      ],
+                    ),
+                    Text('_________________________________'),
 
-                ),
+                  ],
+                )
+            );
+          },
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.all(15),
+        height: MediaQuery.of(context).size.height/8,
+       color: Colors.white70,
+       /* clipBehavior: Clip.antiAliasWithSaveLayer,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Color(0xffE7ADBB) ,
+        ),*/
+        child: Table(
+          border: TableBorder.all(
+              color: Colors.transparent),
+          children: [
+            TableRow(
+                children: [
+                  Container(
 
-              ]),
-          /////////////////
-        ],
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Text('${task.task_name}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 3),
+                    child: Center(child: Text('${task.phase_name}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+
+                      ),
+                    )),
+                  ),
+                  Center(child: Text('${task.project_name}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),                Checkbox(
+                    checkColor: Colors.indigo,
+                    fillColor: MaterialStateProperty.all(Colors.transparent),
+                    value: task.close,
+                    onChanged: (value) {
+                      if (task.close = value!) {
+                        showDialog(
+                          context: (context),
+                          builder: (contextop) => AlertDialog(
+                            content:  Text(
+                              "${AppLocalizations.of(context)!.finishTask}",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            actions: [
+                              TextButton(
+                                child:  Text("${AppLocalizations.of(context)!.yes}"),
+                                onPressed: () {
+                                  DioHelper.patchData(
+                                      url: "api/organizations/${widget.organizationId}/tasks/${task.task_id}",
+                                      formData: {
+                                        "status": "COMPLETED",
+                                      }).then((v) {
+                                    print("goooooooooooooooooood");
+                                    setState(() {
+                                      task_list.tasksList!.removeAt(index);
+                                    });
+                                  }).catchError((e) {
+                                    print(e);
+                                    setState(() {
+                                      task.close = false;
+                                    });
+                                    showDialog(
+                                      context: (context),
+                                      builder: (contextotllp) =>  AlertDialog(
+                                        content: Text(
+                                          "${e.response.data['en']}",
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                      ),
+                                    );
+
+
+                                    // print('errrrrrrrrr');
+                                  });
+
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child:  Text("${AppLocalizations.of(context)!.no}"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  task.close = false;
+                                  setState(() {});
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                        setState(() {});
+                      }
+                    },
+
+                  ),
+
+                ]),
+            /////////////////
+          ],
+        ),
       ),
     );
 

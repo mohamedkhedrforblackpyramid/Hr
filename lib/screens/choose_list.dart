@@ -345,7 +345,11 @@ class _ChooseListState extends State<ChooseList> {
                                       onTap: (){
                                         Navigator.push(context,
                                             MaterialPageRoute(builder: (context) =>  Projects(
-                                              organizationId:widget.organizationId ,
+                                              userId: widget.userId,
+                                              organizationId: widget.organizationId,
+                                              organizationsName: widget.organizationsName,
+                                              oranizaionsList: widget.oranizaionsList,
+                                              organizationsArabicName: widget.organizationsArabicName,
                                             )));
                                       },
                                     ),

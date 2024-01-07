@@ -21,16 +21,26 @@ import '../attendance.dart';
 import '../holiday_permission.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'multiscreenfortasks.dart';
+
 class CloseTasks extends StatefulWidget {
   int projectId;
   int organization_id;
   int? phase_id;
+  int? userId;
+  late OrganizationsList oranizaionsList;
+  String? organizationsName;
+  String?organizationsArabicName;
 
 
   CloseTasks({
     required this.projectId,
     required this.organization_id,
     required this.phase_id,
+    required this.userId,
+    required this.organizationsArabicName,
+    required this.organizationsName,
+    required this.oranizaionsList
   });
   @override
   State<CloseTasks> createState() => _CloseTasksState();
@@ -92,24 +102,42 @@ class _CloseTasksState extends State<CloseTasks> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(40.0),
-                    child: Text("${AppLocalizations.of(context)!.tasks}",
-                      style: TextStyle(
-                          fontSize: 40,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
-                      ),
+                    padding: const EdgeInsets.only(top: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("${AppLocalizations.of(context)!.tasks}",
+                          style: TextStyle(
+                              fontSize: 40,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        SizedBox(width: 20,),
+                        CircleAvatar(
+                          child: IconButton(onPressed: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) =>  MultiScreenForTasks(
+                                  projectId: widget.projectId,
+                                  organization_id: widget.organization_id,
+                                  currentIndex: 1,
+                                  organizationsArabicName: widget.organizationsArabicName,
+                                  oranizaionsList: widget.oranizaionsList,
+                                  userId: widget.userId,
+                                  organizationsName: widget.organizationsName,
+
+                                )
+                                ));
+                          }
+                              , icon: Icon(Icons.add,color: Colors.white,)),
+                          backgroundColor: Colors.black45,
+                        )
+                      ],
                     ),
                   ),
                   Column(
                       children: [
-                        /* Text("${AppLocalizations.of(context)!.myProject}",
-                          style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),*/
                         showLoading==false?Column(
                           children: [
                             task_list.tasksList!.isNotEmpty ?
@@ -165,63 +193,65 @@ class _CloseTasksState extends State<CloseTasks> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Column(
-            children: [
-              Center(
-                child: Text(
-                  '${task.task_name}',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-
+          Expanded(
+            child: Column(
+              children: [
+                Center(
+                  child: Text(
+                    '${task.task_name}',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+            
+                    ),
                   ),
                 ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    '${AppLocalizations.of(context)!.startTask}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                Row(
+                  children: [
+                    Text(
+                      '${AppLocalizations.of(context)!.startTask}',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '${task.fromDate}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                    Text(
+                      '${task.fromDate}',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    '${AppLocalizations.of(context)!.endDay}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      '${AppLocalizations.of(context)!.endDay}',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '${task.toDate}',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                    Text(
+                      '${task.toDate}',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-
-            ],
+                  ],
+                ),
+            
+              ],
+            ),
           ),
           Checkbox(
             checkColor: Colors.black,
