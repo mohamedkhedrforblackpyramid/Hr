@@ -18,6 +18,8 @@ import '../attendance.dart';
 import '../holiday_permission.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'multiscreenfortasks.dart';
+
 class Addphase extends StatefulWidget {
   int projectId;
   int organization_id;
@@ -25,6 +27,10 @@ class Addphase extends StatefulWidget {
   late OrganizationsList oranizaionsList;
   String? organizationsName;
   String?organizationsArabicName;
+  int?phaseId;
+  String? phaseName;
+
+
 
   Addphase({
     required this.projectId,
@@ -32,7 +38,9 @@ class Addphase extends StatefulWidget {
     required this.userId,
     required this.organizationsArabicName,
     required this.organizationsName,
-    required this.oranizaionsList
+    required this.oranizaionsList,
+    required this.phaseId,
+    required this.phaseName
 
   });
   @override
@@ -369,6 +377,20 @@ class _AddphaseState extends State<Addphase> {
                               backgroundColor: Colors.green,
                             )
                               ..show(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) =>  MultiScreenForTasks(
+                                  projectId: widget.projectId,
+                                  organization_id: widget.organization_id,
+                                  currentIndex: 0,
+                                  organizationsName: widget.organizationsName,
+                                  userId: widget.userId,
+                                  oranizaionsList: widget.oranizaionsList,
+                                  organizationsArabicName: widget.organizationsArabicName,
+                                  phaseName: '',
+                                  phaseId: widget.phaseId,
+                                )
+                                ));
                           }).catchError((error){
                             setState(() {
 

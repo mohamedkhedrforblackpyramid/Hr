@@ -26,6 +26,8 @@ class MultiScreenForTasks extends StatefulWidget {
   late OrganizationsList oranizaionsList;
   String? organizationsName;
   String?organizationsArabicName;
+  String? phaseName;
+  int?phaseId;
   MultiScreenForTasks(
       {
    required this.projectId,
@@ -34,7 +36,9 @@ class MultiScreenForTasks extends StatefulWidget {
         required this.userId,
         required this.organizationsArabicName,
         required this.organizationsName,
-        required this.oranizaionsList
+        required this.oranizaionsList,
+        required this.phaseName,
+         this.phaseId
   }
   );
   @override
@@ -53,25 +57,39 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
   @override
   Widget build(BuildContext context) {
     List<Widget>screens=[
-      Addphase(projectId: widget.projectId,
+      ShowTasks(projectId: widget.projectId,
         organization_id: widget.organization_id,
         organizationsArabicName: widget.organizationsArabicName,
         oranizaionsList: widget.oranizaionsList,
         userId: widget.userId,
-        organizationsName: widget.organizationsName,),
+        organizationsName: widget.organizationsName,
+        phaseId: widget.phaseId,
+        phaseName: widget.phaseName,
+      ),
+      Addphase(
+        projectId: widget.projectId,
+        organization_id: widget.organization_id,
+        organizationsArabicName: widget.organizationsArabicName,
+        oranizaionsList: widget.oranizaionsList,
+        userId: widget.userId,
+        organizationsName: widget.organizationsName,
+        phaseId: widget.phaseId,
+        phaseName: widget.phaseName,
+
+
+      ),
       AddTasks(projectId: widget.projectId,
         organization_id: widget.organization_id,
         organizationsArabicName: widget.organizationsArabicName,
         oranizaionsList: widget.oranizaionsList,
         userId: widget.userId,
-        organizationsName: widget.organizationsName,),
-      ShowTasks(projectId: widget.projectId,
-          organization_id: widget.organization_id,
-        organizationsArabicName: widget.organizationsArabicName,
-        oranizaionsList: widget.oranizaionsList,
-        userId: widget.userId,
         organizationsName: widget.organizationsName,
-      ),
+    phaseName: widget.phaseName!,
+        phaseId: widget.phaseId,
+
+      )
+
+
     ];
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -84,9 +102,17 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
             
           });
           widget.currentIndex = currentIndexOntap;
+          if(widget.currentIndex==0){
+            widget.phaseName='';
+            widget.phaseId=null;
+          }
         },
         backgroundColor:  Colors.white.withOpacity(.8),
         items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.task_outlined),
+              label: "Phases"
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.create),
             label: "${AppLocalizations.of(context)!.add_phase}",
@@ -96,11 +122,7 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
               label: "${AppLocalizations.of(context)!.addTask}"
 
           ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.task_outlined),
-              label: "Phases"
 
-          ),
         ],
       ),
         backgroundColor: Color(0xff1A6293),

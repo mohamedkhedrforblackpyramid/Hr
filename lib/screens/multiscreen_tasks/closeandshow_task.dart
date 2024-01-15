@@ -31,6 +31,7 @@ class CloseTasks extends StatefulWidget {
   late OrganizationsList oranizaionsList;
   String? organizationsName;
   String?organizationsArabicName;
+  String?phaseName;
 
 
   CloseTasks({
@@ -40,7 +41,8 @@ class CloseTasks extends StatefulWidget {
     required this.userId,
     required this.organizationsArabicName,
     required this.organizationsName,
-    required this.oranizaionsList
+    required this.oranizaionsList,
+    required this.phaseName
   });
   @override
   State<CloseTasks> createState() => _CloseTasksState();
@@ -116,16 +118,21 @@ class _CloseTasksState extends State<CloseTasks> {
                         SizedBox(width: 20,),
                         CircleAvatar(
                           child: IconButton(onPressed: (){
+                          /*  if(widget.phaseName!.isEmpty){
+                              widget.phase_id =null;
+                            }*/
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) =>  MultiScreenForTasks(
                                   projectId: widget.projectId,
                                   organization_id: widget.organization_id,
-                                  currentIndex: 1,
+                                  currentIndex: 2,
                                   organizationsArabicName: widget.organizationsArabicName,
                                   oranizaionsList: widget.oranizaionsList,
                                   userId: widget.userId,
                                   organizationsName: widget.organizationsName,
+                                  phaseName: widget.phaseName,
+                                  phaseId: widget.phase_id,
 
                                 )
                                 ));

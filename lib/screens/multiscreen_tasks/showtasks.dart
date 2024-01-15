@@ -31,6 +31,9 @@ class ShowTasks extends StatefulWidget {
   late OrganizationsList oranizaionsList;
   String? organizationsName;
   String?organizationsArabicName;
+  int?phaseId;
+  String? phaseName;
+
 
   ShowTasks({
     required this.projectId,
@@ -38,7 +41,10 @@ class ShowTasks extends StatefulWidget {
     required this.userId,
     required this.organizationsArabicName,
     required this.organizationsName,
-    required this.oranizaionsList
+    required this.oranizaionsList,
+    required this.phaseId,
+    required this.phaseName
+
 
   });
   @override
@@ -120,11 +126,14 @@ class _ShowTasksState extends State<ShowTasks> {
                           MaterialPageRoute(builder: (context) =>  MultiScreenForTasks(
                             projectId: widget.projectId,
                             organization_id: widget.organization_id,
-                            currentIndex: 0,
+                            currentIndex: 1,
                             organizationsName: widget.organizationsName,
                             userId: widget.userId,
                             oranizaionsList: widget.oranizaionsList,
                             organizationsArabicName: widget.organizationsArabicName,
+                            phaseName: '',
+                            phaseId: widget.phaseId,
+
                           )
                           ));
                     }
@@ -188,6 +197,7 @@ class _ShowTasksState extends State<ShowTasks> {
              userId: widget.userId,
              oranizaionsList: widget.oranizaionsList,
              organizationsArabicName: widget.organizationsArabicName,
+             phaseName: task.phaseName,
 
            )));     },
      child: Container(

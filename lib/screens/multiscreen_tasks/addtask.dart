@@ -20,6 +20,8 @@ import '../attendance.dart';
 import '../holiday_permission.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'closeandshow_task.dart';
+
 class AddTasks extends StatefulWidget {
   int projectId;
   int organization_id;
@@ -27,13 +29,17 @@ class AddTasks extends StatefulWidget {
   late OrganizationsList oranizaionsList;
   String? organizationsName;
   String?organizationsArabicName;
+  String phaseName;
+  int?phaseId;
   AddTasks({
     required this.projectId,
     required this.organization_id,
     required this.userId,
     required this.organizationsArabicName,
     required this.organizationsName,
-    required this.oranizaionsList
+    required this.oranizaionsList,
+    required this.phaseName,
+    required this.phaseId
 
   });
   @override
@@ -97,6 +103,7 @@ class _AddTasksState extends State<AddTasks> {
   void initState() {
     getUsers();
     getPhases();
+    print(widget.phaseName);
     super.initState();
   }
 
@@ -275,9 +282,10 @@ class _AddTasksState extends State<AddTasks> {
                   ),
 
                 ),
-                GestureDetector(
+               GestureDetector(
                   onTap: (){
-                    phase_list.phaseList!.isNotEmpty?showModalBottomSheet<void>(
+                    phase_list.phaseList!.isNotEmpty?
+                    showModalBottomSheet<void>(
                       context: context,
                       backgroundColor: Color(0xffFAACB4),
                       builder: (BuildContext context) {
@@ -325,8 +333,13 @@ class _AddTasksState extends State<AddTasks> {
                           fillColor: Color(0xFCED3FF),
                           label: Padding(
                             padding: const EdgeInsets.all(10),
-                            child: Text(
+                            child: widget.phaseName.isEmpty?Text(
                               '${AppLocalizations.of(context)!.choosePhase}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ):Text(
+                              '${widget.phaseName}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -524,22 +537,22 @@ class _AddTasksState extends State<AddTasks> {
                         color1: Colors.purple,
                         color2: Colors.lightBlue,
                         onTap: () async {
+
                           setState(() {
                           });
                           clickAdd = true;
+
                           await DioHelper.postData(
+
                             url: "api/organizations/${widget.organization_id}/tasks",
                             formData: {
                               "name": "${taskName.text}" ,
                               "description": "${taskdesc.text}" ,
-                              "phase_id": phaseID ,
+                              "phase_id": widget.phaseId==null?phaseID:widget.phaseId  ,
                               "due_date":dateController.text,
                               "assignees":users,
                               "status":"PENDING",
                               "from_date":fromDateController.text,
-
-
-
                             },
                           ).then((value) {
                             setState(() {
@@ -566,9 +579,21 @@ class _AddTasksState extends State<AddTasks> {
                               backgroundColor: Colors.green,
                             )
                               ..show(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) =>  CloseTasks(
+                                  projectId: widget.projectId,
+                                  organization_id: widget.organization_id,
+                                  phase_id: widget.phaseId==null?phaseID:widget.phaseId ,
+                                  organizationsName: widget.organizationsName,
+                                  userId: widget.userId,
+                                  oranizaionsList: widget.oranizaionsList,
+                                  organizationsArabicName: widget.organizationsArabicName,
+                                  phaseName:widget.phaseName.isEmpty?phaseController.text:widget.phaseName,
+
+                                )));
                           }).catchError((error){
                             setState(() {
-
                             });
                             clickAdd=false;
                             if(taskName.text.isEmpty) {
@@ -619,7 +644,7 @@ class _AddTasksState extends State<AddTasks> {
                                 ..show(context);
 
                             }
-                            else if(phaseController.text.isEmpty){
+                            else if(phaseController.text.isEmpty&&widget.phaseName.isEmpty){
                               Flushbar(
                                 message: "${AppLocalizations.of(context)!.choosePhase}",
                                 icon: Icon(
@@ -746,6 +771,8 @@ class _AddTasksState extends State<AddTasks> {
     );
   }
   Widget buildChoosePhaes({required PhasesModel phase,required int index}){
+
+
     return Column(
       children: [
         TextButton(

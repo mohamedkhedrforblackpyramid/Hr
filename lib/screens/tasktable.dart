@@ -47,7 +47,7 @@ class _TaskTableState extends State<TaskTable> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xff1A6293),
+       // backgroundColor: const Color(0xff1A6293),
         body: SafeArea(
           child: Stack(
             children: [
@@ -70,7 +70,8 @@ class _TaskTableState extends State<TaskTable> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SingleChildScrollView(
-                    child : showLoading==false?Column(
+                    child : showLoading==false?
+                    task_list.tasksList!.isNotEmpty ?Column(
                       children: [
                         Container(
                           clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -89,27 +90,27 @@ class _TaskTableState extends State<TaskTable> {
                                 Text('Tasks',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                      color: Colors.white,
+                                      color: Colors.indigo,
 
                                   ),
                                 )),
                                 Center(child: Text('Phase',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                    color: Colors.white
+                                    color: Colors.indigo,
                                   ),
                                 )),
                                 Center(child: Text('Projects',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.white
+                                    color: Colors.indigo,
 
                                   ),
                                 )),
                                 Center(child: Text('Done',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.white
+                                    color: Colors.indigo,
                                   ),
                                 )),
                               ]),
@@ -117,7 +118,7 @@ class _TaskTableState extends State<TaskTable> {
                             ],
                           ),
                         ),
-                        task_list.tasksList!.isNotEmpty ? SizedBox(
+                         SizedBox(
                           child: ListView.separated(
                             shrinkWrap: true,
                             physics: const ScrollPhysics(),
@@ -131,18 +132,19 @@ class _TaskTableState extends State<TaskTable> {
                             itemCount: task_list.tasksList!.length,
                             separatorBuilder:(BuildContext context, int index) =>SizedBox(height: 10,) ,
                           ),
-                        ):Padding(
-                          padding: EdgeInsets.symmetric(vertical: 300),
-                          child: Center(
-                            child: Text(
-                              "${AppLocalizations.of(context)!.noTask}",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
+                        )
                       ],
-                    ):const Padding(
+                    ):Padding(
+                      padding: EdgeInsets.symmetric(vertical: 300),
+                      child: Center(
+                        child: Text(
+                          "${AppLocalizations.of(context)!.noTask}",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                        :const Padding(
                       padding: EdgeInsets.symmetric(vertical: 300),
                       child: Center(
                         child: CircularProgressIndicator(
@@ -214,120 +216,105 @@ class _TaskTableState extends State<TaskTable> {
           },
         );
       },
-      child: Container(
-        padding: EdgeInsets.all(15),
-        height: MediaQuery.of(context).size.height/8,
-       color: Colors.white70,
-       /* clipBehavior: Clip.antiAliasWithSaveLayer,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-          color: Color(0xffE7ADBB) ,
-        ),*/
-        child: Table(
-          border: TableBorder.all(
-              color: Colors.transparent),
-          children: [
-            TableRow(
-                children: [
-                  Container(
-
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Text('${task.task_name}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 3),
-                    child: Center(child: Text('${task.phase_name}',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-
-                      ),
-                    )),
-                  ),
-                  Center(child: Text('${task.project_name}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )),                Checkbox(
-                    checkColor: Colors.indigo,
-                    fillColor: MaterialStateProperty.all(Colors.transparent),
-                    value: task.close,
-                    onChanged: (value) {
-                      if (task.close = value!) {
-                        showDialog(
-                          context: (context),
-                          builder: (contextop) => AlertDialog(
-                            content:  Text(
-                              "${AppLocalizations.of(context)!.finishTask}",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            actions: [
-                              TextButton(
-                                child:  Text("${AppLocalizations.of(context)!.yes}"),
-                                onPressed: () {
-                                  DioHelper.patchData(
-                                      url: "api/organizations/${widget.organizationId}/tasks/${task.task_id}",
-                                      formData: {
-                                        "status": "COMPLETED",
-                                      }).then((v) {
-                                    print("goooooooooooooooooood");
-                                    setState(() {
-                                      task_list.tasksList!.removeAt(index);
-                                    });
-                                  }).catchError((e) {
-                                    print(e);
-                                    setState(() {
-                                      task.close = false;
-                                    });
-                                    showDialog(
-                                      context: (context),
-                                      builder: (contextotllp) =>  AlertDialog(
-                                        content: Text(
-                                          "${e.response.data['en']}",
-                                          style: TextStyle(fontSize: 20),
-                                        ),
-                                      ),
-                                    );
-
-
-                                    // print('errrrrrrrrr');
-                                  });
-
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              TextButton(
-                                child:  Text("${AppLocalizations.of(context)!.no}"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  task.close = false;
-                                  setState(() {});
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                        setState(() {});
-                      }
-                    },
-
-                  ),
-
-                ]),
-            /////////////////
-          ],
+      child: Table(
+        border: TableBorder.all(
+            color: Colors.black,
         ),
+        children: [
+          TableRow(
+              children: [
+                Center(
+                  child: Text('${task.task_name}',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+
+                Center(child: Text('${task.phase_name}',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+
+                  ),
+                )),
+                Center(child: Text('${task.project_name}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),                Checkbox(
+                  checkColor: Colors.indigo,
+                  fillColor: MaterialStateProperty.all(Colors.transparent),
+                  value: task.close,
+                  onChanged: (value) {
+                    if (task.close = value!) {
+                      showDialog(
+                        context: (context),
+                        builder: (contextop) => AlertDialog(
+                          content:  Text(
+                            "${AppLocalizations.of(context)!.finishTask}",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          actions: [
+                            TextButton(
+                              child:  Text("${AppLocalizations.of(context)!.yes}"),
+                              onPressed: () {
+                                DioHelper.patchData(
+                                    url: "api/organizations/${widget.organizationId}/tasks/${task.task_id}",
+                                    formData: {
+                                      "status": "COMPLETED",
+                                    }).then((v) {
+                                  print("goooooooooooooooooood");
+                                  setState(() {
+                                    task_list.tasksList!.removeAt(index);
+                                  });
+                                }).catchError((e) {
+                                  print(e);
+                                  setState(() {
+                                    task.close = false;
+                                  });
+                                  showDialog(
+                                    context: (context),
+                                    builder: (contextotllp) =>  AlertDialog(
+                                      content: Text(
+                                        "${e.response.data['en']}",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                                  );
+
+
+                                  // print('errrrrrrrrr');
+                                });
+
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child:  Text("${AppLocalizations.of(context)!.no}"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                task.close = false;
+                                setState(() {});
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                      setState(() {});
+                    }
+                  },
+
+                ),
+
+              ]),
+          /////////////////
+        ],
       ),
     );
 

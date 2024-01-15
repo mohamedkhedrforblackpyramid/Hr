@@ -18,13 +18,15 @@ class Projects extends StatefulWidget {
   late OrganizationsList oranizaionsList;
   String? organizationsName;
   String?organizationsArabicName;
-   Projects({
+
+  Projects({
      required this.organizationId,
      required this.userId,
      required this.organizationsArabicName,
      required this.organizationsName,
-     required this.oranizaionsList
-   });
+     required this.oranizaionsList,
+
+  });
 
   @override
   State<Projects> createState() => _ProjectsState();
@@ -347,6 +349,7 @@ class _ProjectsState extends State<Projects> {
               oranizaionsList: widget.oranizaionsList,
               userId: widget.userId,
               organizationsName: widget.organizationsName,
+              phaseName: '', phaseId: null,
 
             )));
       },
