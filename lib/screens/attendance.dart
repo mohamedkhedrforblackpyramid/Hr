@@ -67,7 +67,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
       setState(() {
       });
     }).catchError((error){
-      print(error);
+      print(error.response.data);
     });
    print(status);
 
@@ -344,8 +344,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                       await DioHelper.postData(
                                         url: "api/organizations/${widget.organizationId}/attend",
                                         formData: {
-                                          "longitude":29.743200 ,//_currentPosition!.longitude,
-                                          "latitude":30.997700 //_currentPosition!.latitude,
+                                          "longitude":_currentPosition!.longitude,
+                                          "latitude":_currentPosition!.latitude,
                                         },
                                       )
                                           .then((value) {
@@ -431,8 +431,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                 await DioHelper.postData(
                                   url: "api/organizations/${widget.organizationId}/attend",
                                   formData: {
-                                    "longitude":29.743200 ,//_currentPosition!.longitude,
-                                    "latitude":30.997700 //_currentPosition!.latitude,
+                                    "longitude":_currentPosition!.longitude,
+                                    "latitude":_currentPosition!.latitude,
                                   },
                                 )
                                     .then((value) {
@@ -520,8 +520,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                       await DioHelper.postData(
                                         url: "api/organizations/${widget.organizationId}/leave",
                                         formData: {
-                                          "longitude":29.743200 ,//_currentPosition!.longitude,
-                                          "latitude":30.997700 //_currentPosition!.latitude,
+                                          "longitude":_currentPosition!.longitude,
+                                          "latitude":_currentPosition!.latitude,
                                         },
                                       ).then((value) {
 
@@ -597,8 +597,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                   await DioHelper.postData(
                                     url: "api/organizations/${widget.organizationId}/leave",
                                     formData: {
-                                      "longitude":29.743200 ,//_currentPosition!.longitude,
-                                      "latitude":30.997700 //_currentPosition!.latitude,
+                                      "longitude":_currentPosition!.longitude,
+                                      "latitude":_currentPosition!.latitude,
                                     },
                                   ).then((value) {
                                     loadingShowDep = false;

@@ -8,8 +8,6 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
-
 import '../../../network/local/cache_helper.dart';
 import '../../../network/remote/dio_helper.dart';
 import '../../choose_list.dart';
@@ -32,8 +30,8 @@ class _SignInFormState extends State<SignInForm> {
 
   bool isShowLoading = false;
   bool isShowConfetti = false;
-late  bool jailbroken;
-late  bool developerMode;
+  late bool jailbroken;
+  late bool developerMode;
   late SMITrigger check;
   late SMITrigger error;
   late SMITrigger reset;
@@ -42,8 +40,8 @@ late  bool developerMode;
   String? name;
   OrganizationsList? orgList;
   late int organizationsId;
-  String organizationsName='';
-  String organizationsArabicName='';
+  String organizationsName = '';
+  String organizationsArabicName = '';
 
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
@@ -51,17 +49,17 @@ late  bool developerMode;
     artboard.addController(controller!);
     return controller;
   }
+
   Future? userLogin({
     required String name,
     required String password,
-  })
-  async {
+  }) async {
     setState(() {
       isShowLoading = true;
       isShowConfetti = true;
     });
     print("sending");
-  /*  print(name);
+    /*  print(name);
     print(password);*/
 
     await DioHelper.postData(
@@ -71,24 +69,25 @@ late  bool developerMode;
         "password": password,
       },
     ).then((Response response) {
+      print(response.data['data']['organizations']);
       print(response.data);
-      orgList = OrganizationsList.fromJson(response.data['data']['organizations']);
+
+      orgList =
+          OrganizationsList.fromJson(response.data['data']['organizations']);
+
       organizationsName = response.data['data']['organizations'][0]['name'];
-      organizationsArabicName = response.data['data']['organizations'][0]['name_ar'];
-        organizationsId = response.data['data']['organizations'][0]['id'];
+      organizationsArabicName =
+          response.data['data']['organizations'][0]['name_ar'];
+      organizationsId = response.data['data']['organizations'][0]['id'];
 
-
-
-
-      name =response.data['data']['user']['name'];
-      CacheHelper.saveData(key: "name", value: response.data['data']['user']['name']);
-    // print(response.data['data']['token']);
+      name = response.data['data']['user']['name'];
+      CacheHelper.saveData(
+          key: "name", value: response.data['data']['user']['name']);
+      // print(response.data['data']['token']);
       userID = response.data['data']['user']['id'];
       CacheHelper.saveData(key: "token", value: response.data['token']);
-     // print(userID);
-    //  print(response.data);
-
-
+      // print(userID);
+      //  print(response.data);
 
       Future.delayed(Duration(seconds: 1), () {
         if (_formKey.currentState!.validate()) {
@@ -99,14 +98,15 @@ late  bool developerMode;
               isShowLoading = false;
             });
             confetti.fire();
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>  ChooseList(
-                    userId: userID,
-                  oranizaionsList: orgList!,
-                  organizationId: organizationsId,
-                  organizationsName: organizationsName,
-                  organizationsArabicName:organizationsArabicName
-                )));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ChooseList(
+                        userId: userID,
+                        oranizaionsList: orgList!,
+                        organizationId: organizationsId,
+                        organizationsName: organizationsName,
+                        organizationsArabicName: organizationsArabicName)));
           });
         }
       });
@@ -116,24 +116,24 @@ late  bool developerMode;
       print(error);
       print(error.response.data);
       await Alert(
-      context: context,
-     // title: "RFLUTTER ALERT",
-      desc: "user name or password is not correct .. Try Again",
+        context: context,
+        // title: "RFLUTTER ALERT",
+        desc: "user name or password is not correct .. Try Again",
       ).show();
       isShowLoading = false;
       setState(() {
         isShowLoading = false;
       });
-      });
-
+    });
   }
-@override
+
+  @override
   void initState() {
-  initPlatformState();
+    initPlatformState();
     super.initState();
   }
-  Future<void> initPlatformState() async {
 
+  Future<void> initPlatformState() async {
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       jailbroken = await FlutterJailbreakDetection.jailbroken;
@@ -194,7 +194,7 @@ late  bool developerMode;
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 Text(
+                Text(
                   "${AppLocalizations.of(context)!.userName}",
                   style: TextStyle(color: Colors.black54),
                 ),
@@ -219,7 +219,7 @@ late  bool developerMode;
                     )),
                   ),
                 ),
-                 Text(
+                Text(
                   "${AppLocalizations.of(context)!.password}",
                   style: TextStyle(color: Colors.black54),
                 ),
@@ -246,9 +246,10 @@ late  bool developerMode;
                   padding: const EdgeInsets.only(top: 8.0, bottom: 24),
                   child: ElevatedButton.icon(
                       onPressed: () async {
-                        userLogin(name: userNameController.text,
+                        userLogin(
+                            name: userNameController.text,
                             password: passwordController.text);
-                   //     signIn(context);
+                        //     signIn(context);
                         /*if(developerMode == false) {
                           userLogin(name: userNameController.text,
                               password: passwordController.text);
@@ -259,7 +260,6 @@ late  bool developerMode;
                           desc: "Close Developer Mode",
                         ).show();
                         }*/
-
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFF77D8E),
@@ -270,9 +270,11 @@ late  bool developerMode;
                                   topRight: Radius.circular(25),
                                   bottomRight: Radius.circular(25),
                                   bottomLeft: Radius.circular(25)))),
-                      icon:Icon(AppLocalizations.of(context)!.localeName == 'ar' ? CupertinoIcons.arrow_left : CupertinoIcons.arrow_right),
-
-                      label:  Text("${AppLocalizations.of(context)!.signIn}")),
+                      icon: Icon(
+                          AppLocalizations.of(context)!.localeName == 'ar'
+                              ? CupertinoIcons.arrow_left
+                              : CupertinoIcons.arrow_right),
+                      label: Text("${AppLocalizations.of(context)!.signIn}")),
                 )
               ],
             )),
@@ -331,4 +333,3 @@ class CustomPositioned extends StatelessWidget {
     );
   }
 }
-

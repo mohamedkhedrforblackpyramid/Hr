@@ -18,8 +18,10 @@ class DioHelper {
           receiveDataWhenStatusError: true,
           //  baseUrl: 'http://192.168.1.135:8000/')
           //  baseUrl: 'http://localhost:8000/')
-         // baseUrl: 'http://192.168.1.142:8000/'),
-            baseUrl: 'http://192.168.1.135:8000/'),
+          baseUrl: 'http://192.168.1.142:8000/',
+         //   baseUrl: 'http://192.168.1.135:8000/'
+       // baseUrl: 'https://hr-api.alex4prog.com/'
+      ),
 
     );
     /*   (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
