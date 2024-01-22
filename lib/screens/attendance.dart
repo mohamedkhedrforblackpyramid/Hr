@@ -58,6 +58,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
   bool loadingShowDep = false;
  late  String status = '';
 
+
   Future<void> checkAttendace() async {
    await DioHelper.getData(
       url: "api/organizations/${widget.organizationId}/attendance/check",
@@ -119,7 +120,6 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
 
   Future<void> _getCurrentPosition() async {
     final hasPermission = await _handleLocationPermission();
-
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
@@ -349,6 +349,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                         },
                                       )
                                           .then((value) {
+                                            print(value.data);
                                             loadingShowAttend = false;
                                             print(value);
                                             if(value.data['status'] == false){
@@ -387,6 +388,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                           })
                                           .catchError((error) {
                                         loadingShowAttend = false;
+                                        print(error.response);
                                             print("ggggggggg");
 
                                         setState(() {
@@ -402,7 +404,9 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                         ).show();
                                       });
                                       print(_currentPosition?.latitude);
-                                      print("hhhhhhhhhhhhhhhhhhhhhhhh");
+                                print(_currentPosition?.longitude);
+
+                                print("hhhhhhhhhhhhhhhhhhhhhhhh");
                                       print(CacheHelper.getData(key: 'token'));
                                     },
                                     text: AppLocalizations.of(context)!.localeName == 'ar'?'اسحب الى اليمين للحضور':
@@ -484,6 +488,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                 });
 
                                 print(_currentPosition?.latitude);
+                                print(_currentPosition?.longitude);
                                 print("hhhhhhhhhhhhhhhhhhhhhhhh");
 
                                 print(CacheHelper.getData(key: 'token'));

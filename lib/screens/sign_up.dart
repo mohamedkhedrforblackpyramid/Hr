@@ -30,6 +30,7 @@ class _SignUpFormState extends State<SignUpForm> {
   bool isOpen = false;
   File?  image;
 
+
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -130,8 +131,8 @@ class _SignUpFormState extends State<SignUpForm> {
                           child: TextFormField(
                             controller: userNameController,
                             validator: (value) {
-                              if (value!.isEmpty) {
-                                return "";
+                              if (value == null || value.isEmpty) {
+                                return 'user name is empty';
                               }
                               return null;
                             },
@@ -154,8 +155,12 @@ class _SignUpFormState extends State<SignUpForm> {
                           child: TextFormField(
                             controller: emailController,
                             validator: (value) {
-                              if (value!.isEmpty) {
-                                return "";
+                              if (value == null || value.isEmpty) {
+                                return 'e-mail is empty';
+                              }
+                              else if(!value.contains('@')){
+                              return '@@@@@@@@@@@@@@@@@';
+
                               }
                               return null;
                             },
@@ -238,105 +243,17 @@ class _SignUpFormState extends State<SignUpForm> {
                                 )),
                           ),
                         ),
-                        RadioListTile(
-                          title: Text("Business Owner"),
-                          value: '0',
-                          groupValue: valueClosed,
-                          onChanged: (value) {
-                            isOpen = false;
-                            valueClosed =
-                                value.toString();
-                            setState(() {
-                              valueClosed =
-                                  value.toString();
-                            });
-                          },
-                        ),
-                       valueClosed!='1'?
-                        Text("We need some papers for you to join our team"):
-                           SizedBox()
-                        ,
-                      valueClosed!='1'?  Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: IconButton(onPressed: () async {
-                                pickImage();
-                              },
-                                  icon: Icon(Icons.file_copy,
-                                    size: 30,
-                                  )),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Center(
-                                child: IconButton(
-                                    onPressed: () async {
-                                 // takeAcamera();
-                                },
-                                    icon: Icon(
-                                      Icons.camera_alt,
-                                      size: 30,
-                                    )),
-                              ),
-                            ),
-                          ],
-                        ):SizedBox(),
-                      valueClosed!='1'?  Container(
-
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30)
-                          ),
-                          child: image!=null?Image.file(
-                            File(image!.path),
-                            width: 130,
-                          ):SizedBox(),
-                        ):SizedBox(),
-                        RadioListTile(
-                          title: Text("Employee"),
-                          value: '1',
-                          groupValue: valueClosed,
-                          onChanged: (value) {
-                            isOpen = false;
-                            valueClosed =
-                                value.toString();
-                            setState(() {
-                              valueClosed =
-                                  value.toString();
-                            });
-                          },
-                        ),
-                        valueClosed == '1'? const Text(
-                          "Business Code",
-                          style: TextStyle(color: Colors.black54),
-                        ):SizedBox(),
-                        valueClosed == '1'?  Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                          child: TextFormField(
-                            controller: confirmPasswordController,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "";
-                              }
-                              return null;
-                            },
-                            onSaved: (password) {},
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Icon(Icons.code,color: Colors.pinkAccent),
-                                )),
-                          ),
-                        ):SizedBox(),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0, bottom: 24),
                           child: ElevatedButton.icon(
                               onPressed: () {
-                               // signIn(context);
-                              },
+                                if (_formKey.currentState!.validate()) {
+                                  // If the form is valid, display a snackbar. In the real world,
+                                  // you'd often call a server or save the information in a database.
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Processing Data')),
+                                  );
+                                }                              },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFFF77D8E),
                                   minimumSize: const Size(double.infinity, 56),

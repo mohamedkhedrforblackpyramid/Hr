@@ -51,8 +51,10 @@ class _ChooseListState extends State<ChooseList> {
       setState(() {
       });
     }).catchError((error){
+      print(error.response.data);
       if (error.response?.statusCode != 200) {
         status = '';
+        print('hnaaaaaaaaaaaaaa');
       } else {
         print(error);
       }

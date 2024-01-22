@@ -25,7 +25,7 @@ class _SignInFormState extends State<SignInForm> {
   bool? _jailbroken;
   bool? _developerMode;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final userNameController = TextEditingController(text: 'Test user');
+  final userNameController = TextEditingController(text: 'user');
   final passwordController = TextEditingController(text: '123');
 
   bool isShowLoading = false;
