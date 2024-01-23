@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rive/rive.dart';
 
+import '../network/remote/dio_helper.dart';
 import 'attendance.dart';
 
 
@@ -22,13 +23,16 @@ class _SignUpFormState extends State<SignUpForm> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final userNameController = TextEditingController();
   final emailController = TextEditingController();
-  final mobileController = TextEditingController();
+  final nationalIdController = TextEditingController();
+  final addressController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool shouldPop = false;
   String valueClosed = '1';
   bool isOpen = false;
   File?  image;
+  String userType = 'CLIENT';
+
 
 
   Future pickImage() async {
@@ -154,12 +158,13 @@ class _SignUpFormState extends State<SignUpForm> {
                           padding: const EdgeInsets.only(top: 8.0, bottom: 16),
                           child: TextFormField(
                             controller: emailController,
+
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'e-mail is empty';
                               }
                               else if(!value.contains('@')){
-                              return '@@@@@@@@@@@@@@@@@';
+                              return 'invalid email';
 
                               }
                               return null;
@@ -171,29 +176,47 @@ class _SignUpFormState extends State<SignUpForm> {
                                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                   child: Icon(Icons.email_outlined,color: Colors.pinkAccent),
                                 )),
+
                           ),
                         ),
 
                         const Text(
-                          "mobile",
+                          "National ID (Optional)",
                           style: TextStyle(color: Colors.black54),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0, bottom: 16),
                           child: TextFormField(
-                            controller: mobileController,
+
+                            controller: nationalIdController,
                             validator: (value) {
-                              if (value!.isEmpty) {
-                                return "";
+                              if (value!.length!=14 && value.isNotEmpty) {
+                                return 'national id must be 14 number';
                               }
                               return null;
                             },
+                            onSaved: (password) {},
+                            decoration: InputDecoration(
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Icon(Icons.perm_identity,color: Colors.pinkAccent),
+                                )),
+                          ),
+                        ),
+                        const Text(
+                          "Address (Optional)",
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0, bottom: 16),
+                          child: TextFormField(
+                            controller: addressController,
                             onSaved: (password) {},
                             obscureText: true,
                             decoration: InputDecoration(
                                 prefixIcon: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Icon(Icons.phone_android,color: Colors.pinkAccent),
+                                  child: Icon(Icons.place,color: Colors.pinkAccent),
                                 )),
                           ),
                         ),
@@ -243,16 +266,78 @@ class _SignUpFormState extends State<SignUpForm> {
                                 )),
                           ),
                         ),
+                        RadioListTile(
+                          title: Text(
+                            "CLIENT",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          value: '1',
+                          groupValue: valueClosed,
+                          onChanged: (value) {
+                            setState(() {});
+                            userType = 'CLIENT';
+                            print(userType);
+
+                            isOpen = false;
+                            valueClosed = value.toString();
+                            setState(() {
+                              valueClosed = value.toString();
+                            });
+                          },
+                          fillColor: MaterialStateProperty.all(
+                              Colors.black),
+                        ),
+                        RadioListTile(
+                          title: Text(
+                            "ADMIN",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          value: '0',
+                          groupValue: valueClosed,
+                          onChanged: (value) {
+                            userType = 'ADMIN';
+                            print(userType);
+                            setState(() {});
+                            isOpen = false;
+                            valueClosed = value.toString();
+                            setState(() {
+                              valueClosed = value.toString();
+                            });
+                          },
+                          fillColor: MaterialStateProperty.all(
+                              Colors.black),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0, bottom: 24),
                           child: ElevatedButton.icon(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   // If the form is valid, display a snackbar. In the real world,
                                   // you'd often call a server or save the information in a database.
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Processing Data')),
                                   );
+                                  await DioHelper.postData(
+                                    url: "api/auth/register",
+                                    formData: {
+                                      "name":userNameController.text,
+                                      "email":emailController.text,
+                                      "national_id":nationalIdController.text,
+                                      "password":passwordController.text,
+                                      "password":confirmPasswordController.text,
+                                      "address":addressController.text,
+                                      "user_type":addressController.text
+                                    },
+                                  ).then((value){
+                                    print("Done");
+                                  }).catchError((error){
+                                    print(error.response.data);
+                                  });
                                 }                              },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFFF77D8E),
