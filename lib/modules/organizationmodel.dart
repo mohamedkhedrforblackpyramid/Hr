@@ -14,8 +14,6 @@ class OrganizationsModel {
     name = json['name'];
     print(name);
     arabicName=json['name_ar'];
-
-
   }
 }
 

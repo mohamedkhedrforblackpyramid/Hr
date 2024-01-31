@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:hr/modules/organizationmodel.dart';
+import 'package:hr/screens/create_organizations.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -74,7 +75,15 @@ class _SignInFormState extends State<SignInForm> {
 
       orgList =
           OrganizationsList.fromJson(response.data['data']['organizations']);
-
+      if(orgList!.organizationsListt!.length==0){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CreateOrganizations(
+                    userId: userID,
+                    )));
+      }
+      else{
       organizationsName = response.data['data']['organizations'][0]['name'];
       organizationsArabicName =
           response.data['data']['organizations'][0]['name_ar'];
@@ -112,7 +121,7 @@ class _SignInFormState extends State<SignInForm> {
       });
 
       CacheHelper.saveData(key: "token", value: response.data['data']['token']);
-    }).catchError((error) async {
+    }}).catchError((error) async {
       print(error);
       print(error.response.data);
       await Alert(

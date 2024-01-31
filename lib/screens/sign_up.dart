@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +9,6 @@ import 'package:rive/rive.dart';
 
 import '../network/remote/dio_helper.dart';
 import 'attendance.dart';
-
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({
@@ -30,19 +30,18 @@ class _SignUpFormState extends State<SignUpForm> {
   bool shouldPop = false;
   String valueClosed = '1';
   bool isOpen = false;
-  File?  image;
+  File? image;
   String userType = 'CLIENT';
-
-
+  bool loadingSend = false;
 
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if(image == null) return;
+      if (image == null) return;
       final imageTemp = File(image.path);
       print(image.path);
       setState(() => this.image = imageTemp);
-    } on PlatformException catch(e) {
+    } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
   }
@@ -60,9 +59,6 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 */
 
-
-
-
   bool isShowLoading = false;
   bool isShowConfetti = false;
 
@@ -74,7 +70,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
-    StateMachineController.fromArtboard(artboard, "State Machine 1");
+        StateMachineController.fromArtboard(artboard, "State Machine 1");
     artboard.addController(controller!);
     return controller;
   }
@@ -85,7 +81,9 @@ class _SignUpFormState extends State<SignUpForm> {
       isShowConfetti = true;
     });
     Future.delayed(Duration(seconds: 1), () {
-      if (_formKey.currentState!.validate()&&userNameController.text=='mohamed'&&passwordController.text=='123') {
+      if (_formKey.currentState!.validate() &&
+          userNameController.text == 'mohamed' &&
+          passwordController.text == '123') {
         // show success
         check.fire();
         Future.delayed(Duration(seconds: 2), () {
@@ -97,7 +95,6 @@ class _SignUpFormState extends State<SignUpForm> {
               context,
               MaterialPageRoute(builder: (context) =>  Attendance(userId: null,)));*/
         });
-
       } else {
         error.fire();
         Future.delayed(Duration(seconds: 2), () {
@@ -121,296 +118,305 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: const EdgeInsets.all(50.0),
             child: Stack(
               children: [
-                Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "User Name",
-                          style: TextStyle(color: Colors.black54),
+                loadingSend == false? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "User Name",
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 16),
+                      child: TextFormField(
+                        controller: userNameController,
+                        onSaved: (email) {},
+                        decoration: InputDecoration(
+                            prefixIcon: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Icon(
+                            Icons.account_box_sharp,
+                            color: Colors.pinkAccent,
+                          ),
+                        )),
+                      ),
+                    ),
+                    const Text(
+                      "e-mail",
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 16),
+                      child: TextFormField(
+                        controller: emailController,
+
+                        onSaved: (password) {},
+                        decoration: InputDecoration(
+                            prefixIcon: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Icon(Icons.email_outlined,
+                              color: Colors.pinkAccent),
+                        )),
+                      ),
+                    ),
+                    const Text(
+                      "National ID",
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 16),
+                      child: TextFormField(
+                        controller: nationalIdController,
+                        onSaved: (password) {},
+                        decoration: InputDecoration(
+                            prefixIcon: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Icon(Icons.perm_identity,
+                              color: Colors.pinkAccent),
+                        )),
+                      ),
+                    ),
+                    const Text(
+                      "Create Password",
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 16),
+                      child: TextFormField(
+                        controller: passwordController,
+                        onSaved: (password) {},
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            prefixIcon: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Icon(Icons.password,
+                              color: Colors.pinkAccent),
+                        )),
+                      ),
+                    ),
+                    const Text(
+                      "confirm password",
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 16),
+                      child: TextFormField(
+                        controller: confirmPasswordController,
+                        onSaved: (password) {},
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            prefixIcon: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Icon(Icons.password,
+                              color: Colors.pinkAccent),
+                        )),
+                      ),
+                    ),
+                    RadioListTile(
+                      title: Text(
+                        "CLIENT",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                          child: TextFormField(
-                            controller: userNameController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'user name is empty';
-                              }
-                              return null;
-                            },
-                            onSaved: (email) {},
-                            decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Icon(Icons.account_box_sharp,
-                                    color: Colors.pinkAccent,
+                      ),
+                      value: '1',
+                      groupValue: valueClosed,
+                      onChanged: (value) {
+                        setState(() {});
+                        userType = 'CLIENT';
+                        print(userType);
+
+                        isOpen = false;
+                        valueClosed = value.toString();
+                        setState(() {
+                          valueClosed = value.toString();
+                        });
+                      },
+                      fillColor: MaterialStateProperty.all(Colors.black),
+                    ),
+                    RadioListTile(
+                      title: Text(
+                        "ADMIN",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      value: '0',
+                      groupValue: valueClosed,
+                      onChanged: (value) {
+                        userType = 'ADMIN';
+                        print(userType);
+                        setState(() {});
+                        isOpen = false;
+                        valueClosed = value.toString();
+                        setState(() {
+                          valueClosed = value.toString();
+                        });
+                      },
+                      fillColor: MaterialStateProperty.all(Colors.black),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 24),
+                      child: ElevatedButton.icon(
+                          onPressed: () async {
+                            setState(() {
+
+                            });
+                            loadingSend =true;
+                            if (confirmPasswordController.text !=
+                                passwordController.text) {
+                              setState(() {
+
+                              });
+                              loadingSend = false;
+                              Flushbar(
+                                backgroundColor: Colors.red,
+                                message: "The password does not match ",
+                                icon: Icon(
+                                  Icons.info_outline,
+                                  size: 30.0,
+                                  color: Colors.black,
+                                ),
+                                duration: Duration(seconds: 3),
+                                leftBarIndicatorColor: Colors.blue[300],
+                              )..show(context);
+                            } else {
+                              await DioHelper.postData(
+                                url: "api/auth/register",
+                                formData: {
+                                  "name": userNameController.text,
+                                  "email": emailController.text,
+                                  "national_id": nationalIdController.text,
+                                  "password": passwordController.text,
+                                  "user_type": userType
+                                },
+                              ).then((value) {
+                                userNameController.text='';
+                                emailController.text='';
+                                nationalIdController.text='';
+                                passwordController.text='';
+                                confirmPasswordController.text='';
+                                setState(() {
+
+                                });
+                                loadingSend = false;
+                                Flushbar(
+                                  backgroundColor: Colors.green,
+                                  message: "Sign Up Successfully",
+                                  icon: Icon(
+                                    Icons.verified,
+                                    size: 30.0,
+                                    color: Colors.black,
                                   ),
-                                )),
-                          ),
-                        ),
-                        const Text(
-                          "e-mail",
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                          child: TextFormField(
-                            controller: emailController,
+                                  duration: Duration(seconds: 3),
+                                  leftBarIndicatorColor: Colors.blue[300],
+                                )..show(context);                              }).catchError((error) {
+                                setState(() {
 
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'e-mail is empty';
-                              }
-                              else if(!value.contains('@')){
-                              return 'invalid email';
-
-                              }
-                              return null;
-                            },
-                            onSaved: (password) {},
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Icon(Icons.email_outlined,color: Colors.pinkAccent),
-                                )),
-
-                          ),
-                        ),
-
-                        const Text(
-                          "National ID (Optional)",
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                          child: TextFormField(
-
-                            controller: nationalIdController,
-                            validator: (value) {
-                              if (value!.length!=14 && value.isNotEmpty) {
-                                return 'national id must be 14 number';
-                              }
-                              return null;
-                            },
-                            onSaved: (password) {},
-                            decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Icon(Icons.perm_identity,color: Colors.pinkAccent),
-                                )),
-                          ),
-                        ),
-                        const Text(
-                          "Address (Optional)",
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                          child: TextFormField(
-                            controller: addressController,
-                            onSaved: (password) {},
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Icon(Icons.place,color: Colors.pinkAccent),
-                                )),
-                          ),
-                        ),
-                        const Text(
-                          "Create Password",
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                          child: TextFormField(
-                            controller: passwordController,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "";
-                              }
-                              return null;
-                            },
-                            onSaved: (password) {},
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Icon(Icons.password,color: Colors.pinkAccent),
-                                )),
-                          ),
-                        ),
-                        const Text(
-                          "confirm password",
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                          child: TextFormField(
-                            controller: confirmPasswordController,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "";
-                              }
-                              return null;
-                            },
-                            onSaved: (password) {},
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Icon(Icons.password,color: Colors.pinkAccent),
-                                )),
-                          ),
-                        ),
-                        RadioListTile(
-                          title: Text(
-                            "CLIENT",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          value: '1',
-                          groupValue: valueClosed,
-                          onChanged: (value) {
-                            setState(() {});
-                            userType = 'CLIENT';
-                            print(userType);
-
-                            isOpen = false;
-                            valueClosed = value.toString();
-                            setState(() {
-                              valueClosed = value.toString();
-                            });
+                                });
+                                loadingSend = false;
+                                Flushbar(
+                                  backgroundColor: Colors.red,
+                                  message:
+                                      "${error.response.data['message']}",
+                                  icon: Icon(
+                                    Icons.info_outline,
+                                    size: 30.0,
+                                    color: Colors.black,
+                                  ),
+                                  duration: Duration(seconds: 3),
+                                  leftBarIndicatorColor: Colors.blue[300],
+                                )..show(context);
+                                print('kkkkkkkkkkkkkkkkkkkkkkkkk');
+                                print(error.response.data);
+                              });
+                            }
                           },
-                          fillColor: MaterialStateProperty.all(
-                              Colors.black),
-                        ),
-                        RadioListTile(
-                          title: Text(
-                            "ADMIN",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFF77D8E),
+                              minimumSize: const Size(double.infinity, 56),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(25),
+                                      bottomRight: Radius.circular(25),
+                                      bottomLeft: Radius.circular(25)))),
+                          icon: const Icon(
+                            CupertinoIcons.arrow_right,
+                            color: Color(0xFFFE0037),
                           ),
-                          value: '0',
-                          groupValue: valueClosed,
-                          onChanged: (value) {
-                            userType = 'ADMIN';
-                            print(userType);
-                            setState(() {});
-                            isOpen = false;
-                            valueClosed = value.toString();
-                            setState(() {
-                              valueClosed = value.toString();
-                            });
-                          },
-                          fillColor: MaterialStateProperty.all(
-                              Colors.black),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 24),
+                          label: const Text("Sign Up")),
+                    ),
+                    Center(
+                      child: Container(
+                        width: 150,
+                        height: 100,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(top: 8.0, bottom: 24),
                           child: ElevatedButton.icon(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  // If the form is valid, display a snackbar. In the real world,
-                                  // you'd often call a server or save the information in a database.
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Processing Data')),
-                                  );
-                                  await DioHelper.postData(
-                                    url: "api/auth/register",
-                                    formData: {
-                                      "name":userNameController.text,
-                                      "email":emailController.text,
-                                      "national_id":nationalIdController.text,
-                                      "password":passwordController.text,
-                                      "password":confirmPasswordController.text,
-                                      "address":addressController.text,
-                                      "user_type":addressController.text
-                                    },
-                                  ).then((value){
-                                    print("Done");
-                                  }).catchError((error){
-                                    print(error.response.data);
-                                  });
-                                }                              },
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFFF77D8E),
-                                  minimumSize: const Size(double.infinity, 56),
+                                  minimumSize:
+                                      const Size(double.infinity, 56),
                                   shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(10),
                                           topRight: Radius.circular(25),
                                           bottomRight: Radius.circular(25),
-                                          bottomLeft: Radius.circular(25)))),
+                                          bottomLeft:
+                                              Radius.circular(25)))),
                               icon: const Icon(
                                 CupertinoIcons.arrow_right,
                                 color: Color(0xFFFE0037),
                               ),
-                              label: const Text("Sign Up")),
+                              label: const Text("Sign In")),
                         ),
-                        Center(
-                          child: Container(
-                            width: 150,
-                            height: 100,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8.0, bottom: 24),
-                              child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFFF77D8E),
-                                      minimumSize: const Size(double.infinity, 56),
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(25),
-                                              bottomRight: Radius.circular(25),
-                                              bottomLeft: Radius.circular(25)))),
-                                  icon: const Icon(
-                                    CupertinoIcons.arrow_right,
-                                    color: Color(0xFFFE0037),
-                                  ),
-                                  label: const Text("Sign In")),
+                      ),
+                    )
+                  ],
+                ):Padding(
+                  padding: const EdgeInsets.only(top: 300),
+                  child: Center(
+                            child: CircularProgressIndicator(
+                            color: Colors.indigo,
                             ),
                           ),
-                        )
-                      ],
-                    )),
+                ),
                 isShowLoading
                     ? CustomPositioned(
-                    child: RiveAnimation.asset(
-                      "assets/RiveAssets/check.riv",
-                      onInit: (artboard) {
-                        StateMachineController controller =
-                        getRiveController(artboard);
-                        check = controller.findSMI("Check") as SMITrigger;
-                        error = controller.findSMI("Error") as SMITrigger;
-                        reset = controller.findSMI("Reset") as SMITrigger;
-                      },
-                    ))
+                        child: RiveAnimation.asset(
+                        "assets/RiveAssets/check.riv",
+                        onInit: (artboard) {
+                          StateMachineController controller =
+                              getRiveController(artboard);
+                          check = controller.findSMI("Check") as SMITrigger;
+                          error = controller.findSMI("Error") as SMITrigger;
+                          reset = controller.findSMI("Reset") as SMITrigger;
+                        },
+                      ))
                     : const SizedBox(),
                 isShowConfetti
                     ? CustomPositioned(
-                    child: Transform.scale(
-                      scale: 6,
-                      child: RiveAnimation.asset(
-                        "assets/RiveAssets/confetti.riv",
-                        onInit: (artboard) {
-                          StateMachineController controller =
-                          getRiveController(artboard);
-                          confetti =
-                          controller.findSMI("Trigger explosion") as SMITrigger;
-                        },
-                      ),
-                    ))
+                        child: Transform.scale(
+                        scale: 6,
+                        child: RiveAnimation.asset(
+                          "assets/RiveAssets/confetti.riv",
+                          onInit: (artboard) {
+                            StateMachineController controller =
+                                getRiveController(artboard);
+                            confetti = controller.findSMI("Trigger explosion")
+                                as SMITrigger;
+                          },
+                        ),
+                      ))
                     : const SizedBox()
               ],
             ),
@@ -443,5 +449,3 @@ class CustomPositioned extends StatelessWidget {
     );
   }
 }
-
-

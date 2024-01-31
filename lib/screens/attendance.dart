@@ -388,9 +388,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                           })
                                           .catchError((error) {
                                         loadingShowAttend = false;
-                                        print(error.response);
+                                        print(error);
                                             print("ggggggggg");
-
                                         setState(() {
                                           clickAttend =true;
 
@@ -456,7 +455,6 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                         context,
                                         MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
                                           oranizaionsList: widget.oranizaionsList,
-
                                           organizationId: widget.organizationId,
                                             organizationsName: widget.organizationsName,
                                           organizationsArabicName: widget.organizationsArabicName,
@@ -473,6 +471,8 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                   }
                                     })
                                     .catchError((error) {
+                                      print('errrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+                                      print(error);
                                   loadingShowAttend = false;
                                       clickAttend = false;
                                       setState(() {

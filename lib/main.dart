@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/screens/attendance.dart';
 import 'package:hr/screens/choose_list.dart';
 import 'package:hr/screens/holiday_permission.dart';
@@ -82,7 +83,7 @@ class _MyAppState extends State<MyApp> {
           errorBorder: defaultInputBorder,
         ),
       ),
-      home: OnboardingScreen(),
+      home:OnboardingScreen(),
     );
   }
 }

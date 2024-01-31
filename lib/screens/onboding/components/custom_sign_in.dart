@@ -94,7 +94,7 @@ Future<Object?> customSigninDialog(BuildContext context,
                                     MaterialPageRoute(builder: (context) => const SignUpForm()));
                               },
                               icon: Icon(Icons.login)),
-                          /*IconButton(
+                        /*  IconButton(
                               padding: EdgeInsets.zero,
                               onPressed: () {},
                               icon: SvgPicture.asset(

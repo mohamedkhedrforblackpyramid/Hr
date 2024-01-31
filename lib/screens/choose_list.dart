@@ -42,7 +42,14 @@ class _ChooseListState extends State<ChooseList> {
   late RiveAnimationController _btnAnimationController;
   int? dropdownvalue = null;
 
+  getOrganizations() {
+    DioHelper.getData(
+      url: "api/organizations",
+    ).then((response) {
+      print(response.data);
+    });
 
+  }
   Future<void> checkAttendace() async {
     await DioHelper.getData(
       url: "api/organizations/${widget.organizationId}/attendance/check",
@@ -64,6 +71,7 @@ class _ChooseListState extends State<ChooseList> {
 
   @override
   void initState() {
+    getOrganizations();
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
     checkAttendace();
 
