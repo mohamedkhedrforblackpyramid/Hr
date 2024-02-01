@@ -70,6 +70,13 @@ class _SignInFormState extends State<SignInForm> {
         "password": password,
       },
     ).then((Response response) {
+
+      name = response.data['data']['user']['name'];
+      CacheHelper.saveData(
+          key: "name", value: response.data['data']['user']['name']);
+      // print(response.data['data']['token']);
+      userID = response.data['data']['user']['id'];
+      CacheHelper.saveData(key: "token", value: response.data['token']);
       print(response.data['data']['organizations']);
       print(response.data);
 
@@ -89,12 +96,6 @@ class _SignInFormState extends State<SignInForm> {
           response.data['data']['organizations'][0]['name_ar'];
       organizationsId = response.data['data']['organizations'][0]['id'];
 
-      name = response.data['data']['user']['name'];
-      CacheHelper.saveData(
-          key: "name", value: response.data['data']['user']['name']);
-      // print(response.data['data']['token']);
-      userID = response.data['data']['user']['id'];
-      CacheHelper.saveData(key: "token", value: response.data['token']);
       // print(userID);
       //  print(response.data);
 

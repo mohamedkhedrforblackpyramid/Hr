@@ -595,6 +595,9 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             );
           },
         );
+        dateController.text='';
+        timeToController.text='';
+        timeFromController.text='';
       }
       loadingSend = false;
       setState(() {});
