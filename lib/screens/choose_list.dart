@@ -71,6 +71,8 @@ class _ChooseListState extends State<ChooseList> {
 
   @override
   void initState() {
+    print('hhhhhhhhhhhhhhojhipihiphp');
+    print(CacheHelper.getData(key: 'token'));
     getOrganizations();
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
     checkAttendace();

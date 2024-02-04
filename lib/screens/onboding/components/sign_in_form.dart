@@ -83,6 +83,7 @@ class _SignInFormState extends State<SignInForm> {
       orgList =
           OrganizationsList.fromJson(response.data['data']['organizations']);
       if(orgList!.organizationsListt!.length==0){
+        CacheHelper.getData(key: 'token');
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -91,6 +92,7 @@ class _SignInFormState extends State<SignInForm> {
                     )));
       }
       else{
+        CacheHelper.getData(key: 'token');
       organizationsName = response.data['data']['organizations'][0]['name'];
       organizationsArabicName =
           response.data['data']['organizations'][0]['name_ar'];

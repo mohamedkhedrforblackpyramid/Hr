@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:http_parser/http_parser.dart';
 
 import 'package:another_flushbar/flushbar.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +34,18 @@ class CreateOrganizations extends StatefulWidget {
 }
 
 class _CreateOrganizationsState extends State<CreateOrganizations> {
+  String? image_path_front;
+  XFile? photo_front;
+
+  String? image_path_back;
+  XFile? photo_back;
+
+  String? image_path_bta2aDrebia;
+  XFile? photo_bta2aDrebia;
+
+  String? image_path_card;
+  XFile? photo_card;
+
   bool shouldPop = false;
   String valueClosed = '1';
   bool isOpen = false;
@@ -55,104 +69,254 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
   var organizationphone = TextEditingController(text: '0102569875');
   var organizationwebsite = TextEditingController(text: 'www.hfewf.com');
 
-  Future pickImageFirstId() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      print(image.path);
-      setState(() => this.imageForFirstId = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+   frontid_gallery() async {
+     final ImagePicker picker =
+     ImagePicker();
+     this.photo_front =
+     await picker.pickImage(
+         source:
+         ImageSource.gallery,
+         imageQuality: 50);
+     final photo = this.photo_front;
+     if (photo != null) {
+       print(photo.path);
+       setState(() {
+         image_path_front =
+             photo.path;
+       });
+       print("image is here !");
+       print(image_path_front);
+       print("image is here !");
+     }
+     image_path_front != null
+         ? Container(
+       height: 200,
+       child: Image.file(
+         File(
+             image_path_front!),
+         fit: BoxFit.contain,
+       ),
+     )
+         : SizedBox.shrink();
+  }
+   frontId_camera() async {
+    final ImagePicker picker =
+    ImagePicker();
+    this.photo_front =
+    await picker.pickImage(
+        source:
+        ImageSource.camera,
+        imageQuality: 50);
+    final photo = this.photo_front;
+    if (photo != null) {
+      print(photo.path);
+      setState(() {
+        image_path_front =
+            photo.path;
+      });
+      print("image is here !");
+      print(image_path_front);
+      print("image is here !");
     }
+    image_path_front != null
+        ? Container(
+      height: 200,
+      child: Image.file(
+        File(
+            image_path_front!),
+        fit: BoxFit.contain,
+      ),
+    )
+        : SizedBox.shrink();
   }
 
-  Future cameraFirstId() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      print(image.path);
-      setState(() => this.imageForFirstId = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+   backid_gallery() async {
+    final ImagePicker picker =
+    ImagePicker();
+    this.photo_back =
+    await picker.pickImage(
+        source:
+        ImageSource.gallery,
+        imageQuality: 50);
+    final photo = this.photo_back;
+    if (photo != null) {
+      print(photo.path);
+      setState(() {
+        image_path_back =
+            photo.path;
+      });
+      print("image is here !");
+      print(image_path_front);
+      print("image is here !");
     }
+    image_path_front != null
+        ? Container(
+      height: 200,
+      child: Image.file(
+        File(
+            image_path_front!),
+        fit: BoxFit.contain,
+      ),
+    )
+        : SizedBox.shrink();
+  }
+   backid_camera() async {
+    final ImagePicker picker =
+    ImagePicker();
+    this.photo_back =
+    await picker.pickImage(
+        source:
+        ImageSource.camera,
+        imageQuality: 50);
+    final photo = this.photo_back;
+    if (photo != null) {
+      print(photo.path);
+      setState(() {
+        image_path_back =
+            photo.path;
+      });
+      print("image is here !");
+      print(image_path_front);
+      print("image is here !");
+    }
+    image_path_front != null
+        ? Container(
+      height: 200,
+      child: Image.file(
+        File(
+            image_path_front!),
+        fit: BoxFit.contain,
+      ),
+    )
+        : SizedBox.shrink();
   }
 
-  Future pickImageSecondId() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      print(image.path);
-      setState(() => this.imageForSecond = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+   btakaDrebia_gallery() async {
+    final ImagePicker picker =
+    ImagePicker();
+    this.photo_bta2aDrebia =
+    await picker.pickImage(
+        source:
+        ImageSource.gallery,
+        imageQuality: 50);
+    final photo = this.photo_bta2aDrebia;
+    if (photo != null) {
+      print(photo.path);
+      setState(() {
+        image_path_bta2aDrebia =
+            photo.path;
+      });
+      print("image is here !");
+      print(image_path_front);
+      print("image is here !");
     }
+    image_path_front != null
+        ? Container(
+      height: 200,
+      child: Image.file(
+        File(
+            image_path_front!),
+        fit: BoxFit.contain,
+      ),
+    )
+        : SizedBox.shrink();
+  }
+   btakaDrebia_camera() async {
+    final ImagePicker picker =
+    ImagePicker();
+    this.photo_bta2aDrebia =
+    await picker.pickImage(
+        source:
+        ImageSource.camera,
+        imageQuality: 50);
+    final photo = this.photo_bta2aDrebia;
+    if (photo != null) {
+      print(photo.path);
+      setState(() {
+        image_path_bta2aDrebia =
+            photo.path;
+      });
+      print("image is here !");
+      print(image_path_front);
+      print("image is here !");
+    }
+    image_path_front != null
+        ? Container(
+      height: 200,
+      child: Image.file(
+        File(
+            image_path_front!),
+        fit: BoxFit.contain,
+      ),
+    )
+        : SizedBox.shrink();
   }
 
-  Future cameraSecondId() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      print(image.path);
-      setState(() => this.imageForSecond = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+  card_gallery() async {
+    final ImagePicker picker =
+    ImagePicker();
+    this.photo_card =
+    await picker.pickImage(
+        source:
+        ImageSource.gallery,
+        imageQuality: 50);
+    final photo = this.photo_card;
+    if (photo != null) {
+      print(photo.path);
+      setState(() {
+        image_path_card =
+            photo.path;
+      });
+      print("image is here !");
+      print(image_path_card);
+      print("image is here !");
     }
+    image_path_card != null
+        ? Container(
+      height: 200,
+      child: Image.file(
+        File(
+            image_path_card!),
+        fit: BoxFit.contain,
+      ),
+    )
+        : SizedBox.shrink();
   }
-
-  Future pickImagebta2adrebia() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      print(image.path);
-      setState(() => this.imageFordrebia = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-
-  Future camerabta2adrebia() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      print(image.path);
-      setState(() => this.imageFordrebia = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-
-  Future pickImageCardTax() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      print(image.path);
-      setState(() => this.imageFoCardTax = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-
-  Future cameraCardTax() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      print(image.path);
-      setState(() => this.imageFoCardTax = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
+  card_camera() async {
+     final ImagePicker picker =
+     ImagePicker();
+     this.photo_card =
+     await picker.pickImage(
+         source:
+         ImageSource.camera,
+         imageQuality: 50);
+     final photo = this.photo_card;
+     if (photo != null) {
+       print(photo.path);
+       setState(() {
+         image_path_card =
+             photo.path;
+       });
+       print("image is here !");
+       print(image_path_card);
+       print("image is here !");
+     }
+     image_path_card != null
+         ? Container(
+       height: 200,
+       child: Image.file(
+         File(
+             image_path_card!),
+         fit: BoxFit.contain,
+       ),
+     )
+         : SizedBox.shrink();
   }
 
   @override
   void initState() {
+    print('hhhhhhhhhhhhhhojhipihiphp');
+    print(CacheHelper.getData(key: 'token'));
     super.initState();
   }
 
@@ -183,7 +347,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
               )),
               SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(10),
                   child: SingleChildScrollView(
                     child: loadingSend == false
                         ? Column(
@@ -444,7 +608,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'commercial registry number',
+                                                'tax card',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -588,7 +752,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                           padding: const EdgeInsets.all(15.0),
                                           child: IconButton(
                                               onPressed: () async {
-                                                pickImageFirstId();
+                                                frontid_gallery();
                                               },
                                               icon: Icon(
                                                 Icons.file_copy,
@@ -601,7 +765,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                           child: Center(
                                             child: IconButton(
                                                 onPressed: () async {
-                                                  cameraFirstId();
+                                                  frontId_camera();
                                                 },
                                                 icon: Icon(
                                                   Icons.camera_alt,
@@ -623,7 +787,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                             File(image!.path),
                             width: 130,
                           )*/
-                                          imageForFirstId != null
+                                          image_path_front != null
                                               ? Row(
                                                   children: [
                                                     Expanded(
@@ -671,7 +835,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                           padding: const EdgeInsets.all(15.0),
                                           child: IconButton(
                                               onPressed: () async {
-                                                pickImageSecondId();
+                                              backid_gallery();
                                               },
                                               icon: Icon(
                                                 Icons.file_copy,
@@ -684,8 +848,8 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                           child: Center(
                                             child: IconButton(
                                                 onPressed: () async {
-                                                  cameraSecondId();
-                                                },
+                                                  backid_camera();
+                                                  },
                                                 icon: Icon(
                                                   Icons.camera_alt,
                                                   size: 40,
@@ -706,7 +870,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                             File(image!.path),
                             width: 130,
                           )*/
-                                          imageForSecond != null
+                                          image_path_back != null
                                               ? Row(
                                                   children: [
                                                     Expanded(
@@ -753,8 +917,8 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                           padding: const EdgeInsets.all(15.0),
                                           child: IconButton(
                                               onPressed: () async {
-                                                pickImagebta2adrebia();
-                                              },
+                                                btakaDrebia_gallery();
+                                                },
                                               icon: Icon(
                                                 Icons.file_copy,
                                                 size: 40,
@@ -766,7 +930,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                           child: Center(
                                             child: IconButton(
                                                 onPressed: () async {
-                                                  camerabta2adrebia();
+                                                  btakaDrebia_camera();
                                                 },
                                                 icon: Icon(
                                                   Icons.camera_alt,
@@ -788,7 +952,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                             File(image!.path),
                             width: 130,
                           )*/
-                                          imageFordrebia != null
+                                          image_path_bta2aDrebia != null
                                               ? Row(
                                                   children: [
                                                     Expanded(
@@ -832,7 +996,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                           padding: const EdgeInsets.all(15.0),
                                           child: IconButton(
                                               onPressed: () async {
-                                                pickImageCardTax();
+                                                card_gallery();
                                               },
                                               icon: Icon(
                                                 Icons.file_copy,
@@ -845,7 +1009,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                           child: Center(
                                             child: IconButton(
                                                 onPressed: () async {
-                                                  cameraCardTax();
+                                                  card_camera();
                                                 },
                                                 icon: Icon(
                                                   Icons.camera_alt,
@@ -856,6 +1020,42 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                         ),
                                       ],
                                     )
+                                  : SizedBox(),
+                              valueClosed != '1'
+                                  ? Container(
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.circular(30)),
+                                child: /* image!=null?Image.file(
+                            File(image!.path),
+                            width: 130,
+                          )*/
+                                image_path_card != null
+                                    ? Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Scaned Tax Card Successfully',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight:
+                                            FontWeight.bold,
+                                            color:
+                                            Colors.green),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Icon(
+                                      Icons.verified_outlined,
+                                      color: Colors.green,
+                                    )
+                                  ],
+                                )
+                                    : SizedBox(),
+                              )
                                   : SizedBox(),
                               valueClosed != '1'
                                   ? Container(
@@ -871,6 +1071,48 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                           setState(() {});
                                           loadingSend = true;
 
+                                          var file_image_front;
+                                          var file_image_back;
+                                          var file_image_bta2adrebia;
+                                          var file_image_card;
+
+                                          if (image_path_front != null) {
+                                            file_image_front =
+                                                await MultipartFile.fromFile(
+                                                    image_path_front!,
+                                                    filename: "fileName.jpg",
+                                                    contentType: MediaType(
+                                                        'image', 'jpg'));
+                                            print(file_image_front);
+                                          }
+                                          if (image_path_back != null) {
+                                            file_image_back =
+                                            await MultipartFile.fromFile(
+                                                image_path_back!,
+                                                filename: "fileName.jpg",
+                                                contentType: MediaType(
+                                                    'image', 'jpg'));
+                                            print(file_image_front);
+                                          }
+
+                                          if (image_path_bta2aDrebia != null) {
+                                            file_image_bta2adrebia =
+                                            await MultipartFile.fromFile(
+                                                image_path_bta2aDrebia!,
+                                                filename: "fileName.jpg",
+                                                contentType: MediaType(
+                                                    'image', 'jpg'));
+                                            print(file_image_bta2adrebia);
+                                          }
+                                          if (image_path_card != null) {
+                                            file_image_card =
+                                            await MultipartFile.fromFile(
+                                                image_path_card!,
+                                                filename: "fileName.jpg",
+                                                contentType: MediaType(
+                                                    'image', 'jpg'));
+                                            print(file_image_card);
+                                          }
                                           await DioHelper.postFormData(
                                             url: "api/organizations",
                                             formData: {
@@ -891,12 +1133,11 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               "phone": organizationphone.text,
                                               "website":
                                                   organizationwebsite.text,
-                                              'id_front':
-                                                  imageForSecond,
+                                              'id_front': file_image_front,
+                                              'id_back': file_image_back,
                                               'commercial_registry_image':
-                                                  imageFordrebia,
-                                              'tax_card_image':
-                                                  imageFoCardTax,
+                                                  file_image_bta2adrebia,
+                                              'tax_card_image': file_image_card,
                                             },
                                           ).then((value) {
                                             setState(() {});
@@ -916,13 +1157,29 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               leftBarIndicatorColor:
                                                   Colors.blue[300],
                                             )..show(context);
+                                            organizationName.text='';
+                                            organizationNameArabic.text='';
+                                            organozationDesc.text='';
+                                            organozationDescArabic.text='';
+                                            organizationwebsite.text='';
+                                            organizationphone.text='';
+                                            organizationMail.text='';
+                                            ownerName.text='';
+                                            responsibleManager.text='';
+                                            commercialRegistryNumber.text='';
+                                            taxCardNumber.text='';
+                                            image_path_card =null;
+                                            image_path_bta2aDrebia=null;
+                                            image_path_back=null;
+                                            image_path_front=null;
+
                                           }).catchError((error) {
                                             setState(() {});
 
                                             loadingSend = false;
                                             print(CacheHelper.getData(
                                                 key: 'token'));
-
+                                            print(error.response.data);
                                             print('wqefwewegwrgw4rgwerg');
                                             print(imageForFirstId.toString());
                                             print(error);
@@ -945,42 +1202,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                       ),
                                     )
                                   : SizedBox(),
-                              valueClosed != '1'
-                                  ? Container(
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      child: /* image!=null?Image.file(
-                            File(image!.path),
-                            width: 130,
-                          )*/
-                                          imageFoCardTax != null
-                                              ? Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        'Scaned Tax Card Successfully',
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.green),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Icon(
-                                                      Icons.verified_outlined,
-                                                      color: Colors.green,
-                                                    )
-                                                  ],
-                                                )
-                                              : SizedBox(),
-                                    )
-                                  : SizedBox(),
+
                             ],
                           )
                         : Center(

@@ -49,6 +49,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     CacheHelper.getData(key: 'language');
+
+
     super.initState();
   }
   @override
