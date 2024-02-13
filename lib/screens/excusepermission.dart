@@ -546,7 +546,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
         "to": '${dateController.text} ${timeToController.text}',
         'is_permit': true,
         "notes": notesController.text,
-        'permit_type': permit_type,
+        'type': permit_type,
         // 'type':'ORDINARY',
         'organization_id': widget.organizationId,
         'user_id':widget.userId
@@ -650,7 +650,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
         //  "to": '${dateController.text} ${timeToController.text}' ,
         'is_permit': true,
         "notes": notesController.text,
-        'permit_type': permit_type,
+        'type': permit_type,
         // 'type':'ORDINARY',
         'organization_id':widget.organizationId,
         'user_id': widget.userId
@@ -763,7 +763,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
         "to": '${dateController.text} ${timeToController.text}',
         'is_permit': true,
         "notes": notesController.text,
-        'permit_type': permit_type,
+        'type': permit_type,
         // 'type':'ORDINARY',
         'organization_id': widget.organizationId,
         'user_id': widget.userId

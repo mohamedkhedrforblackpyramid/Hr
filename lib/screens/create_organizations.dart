@@ -357,7 +357,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                 fillColor:
                                     MaterialStateProperty.all(Colors.white),
                                 title: Text(
-                                  "Employee",
+                                  "${AppLocalizations.of(context)!.employee}",
                                   style: TextStyle(
                                       fontSize: 20,
                                       color: Colors.white,
@@ -374,8 +374,8 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                 },
                               ),
                               valueClosed == '1'
-                                  ? const Text(
-                                      "Business Code",
+                                  ?  Text(
+                                      "${AppLocalizations.of(context)!.bussinessCode}",
                                       style: TextStyle(color: Colors.white70),
                                     )
                                   : SizedBox(),
@@ -402,7 +402,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                             color: Colors.transparent,
                                             child: TextButton(
                                               child: Text(
-                                                'Send',
+                                                '${AppLocalizations.of(context)!.send}',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 30),
@@ -424,7 +424,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                                     backgroundColor:
                                                         Colors.green,
                                                     message:
-                                                        "The application has been sent successfully. Please wait for acceptance from the company via email",
+                                                        "${AppLocalizations.of(context)!.sendCodeSuccess}",
                                                     icon: Icon(
                                                       Icons.verified,
                                                       size: 30.0,
@@ -467,7 +467,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                 fillColor:
                                     MaterialStateProperty.all(Colors.white),
                                 title: Text(
-                                  "Business Owner",
+                                  "${AppLocalizations.of(context)!.bussinessOwner}",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 20,
@@ -498,7 +498,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'organization name',
+                                                '${AppLocalizations.of(context)!.organizationName}',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -520,7 +520,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'organization name (arabic)',
+                                                '${AppLocalizations.of(context)!.organizationNameArabic}',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -542,7 +542,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'organization description (Optional)',
+                                                '${AppLocalizations.of(context)!.organizationDesc}',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -564,7 +564,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'organization description in arabic (Optional)',
+                                                '${AppLocalizations.of(context)!.organizationDescArabic}',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -586,7 +586,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'commercial registry number',
+                                                '${AppLocalizations.of(context)!.commercialRegistryNumber}',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -608,7 +608,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'tax card',
+                                                '${AppLocalizations.of(context)!.taxCardNumber}',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -630,7 +630,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'owner name',
+                                                '${AppLocalizations.of(context)!.ownerName}',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -652,7 +652,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'responsible Manager name',
+                                                '${AppLocalizations.of(context)!.responsibleManagerName}',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -674,7 +674,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'organization mail',
+                                                '${AppLocalizations.of(context)!.organizationMail}',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -696,7 +696,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'organization phone',
+                                                '${AppLocalizations.of(context)!.organizationPhone}',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -718,7 +718,8 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               padding:
                                                   const EdgeInsets.all(10.0),
                                               child: Text(
-                                                'organization website',
+                                                '${AppLocalizations.of(context)!.organizationWebSite
+                                                }',
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
@@ -729,13 +730,13 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                           height: 10,
                                         ),
                                         Text(
-                                          " Now We need some papers for you to join our team ",
+                                          "${AppLocalizations.of(context)!.needSomePaper}",
                                           style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                          '1 - Scan National Id first face',
+                                          '${AppLocalizations.of(context)!.scanFirstId}',
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: Colors.white),
@@ -789,17 +790,16 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                           )*/
                                           image_path_front != null
                                               ? Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        'Scaned First Face Successfully',
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.green),
-                                                      ),
+                                                    Text(
+                                                      '${AppLocalizations.of(context)!.scannedSuccef}',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color:
+                                                              Colors.green),
                                                     ),
                                                     SizedBox(
                                                       width: 10,
@@ -818,7 +818,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                               ),
                               valueClosed != '1'
                                   ? Text(
-                                      '2 - Scan National Id second face',
+                                      '${AppLocalizations.of(context)!.scanSecondId}',
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.white,
@@ -872,17 +872,16 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                           )*/
                                           image_path_back != null
                                               ? Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        'Scaned Second Face Successfully',
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.green),
-                                                      ),
+                                                    Text(
+                                                      '${AppLocalizations.of(context)!.scannedSuccef}',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color:
+                                                              Colors.green),
                                                     ),
                                                     SizedBox(
                                                       width: 10,
@@ -901,7 +900,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                               ),
                               valueClosed != '1'
                                   ? Text(
-                                      '3 - Scan commercial register',
+                                      '${AppLocalizations.of(context)!.scancommercial}',
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -954,18 +953,17 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                           )*/
                                           image_path_bta2aDrebia != null
                                               ? Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        'Scaned commercial register Successfully',
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.green),
-                                                      ),
-                                                    ),
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                '${AppLocalizations.of(context)!.scannedSuccef}',
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                    color:
+                                                    Colors.green),
+                                              ),
                                                     SizedBox(
                                                       width: 10,
                                                     ),
@@ -978,9 +976,11 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               : SizedBox(),
                                     )
                                   : SizedBox(),
+                              SizedBox(height: 20,),
+
                               valueClosed != '1'
                                   ? Text(
-                                      '4 - Scan Card Tax',
+                                      '${AppLocalizations.of(context)!.scanCard}',
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -1033,17 +1033,16 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                           )*/
                                 image_path_card != null
                                     ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Scaned Tax Card Successfully',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight:
-                                            FontWeight.bold,
-                                            color:
-                                            Colors.green),
-                                      ),
+                                    Text(
+                                      '${AppLocalizations.of(context)!.scannedSuccef}',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight:
+                                          FontWeight.bold,
+                                          color:
+                                          Colors.green),
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -1057,12 +1056,13 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                     : SizedBox(),
                               )
                                   : SizedBox(),
+                              SizedBox(height: 15,),
                               valueClosed != '1'
                                   ? Container(
                                       color: Colors.transparent,
                                       child: TextButton(
                                         child: Text(
-                                          'Send',
+                                          '${AppLocalizations.of(context)!.send}',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 30),
@@ -1147,7 +1147,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               messageColor: Colors.black,
                                               backgroundColor: Colors.green,
                                               message:
-                                                  "The application has been sent successfully. Please wait for acceptance from the company via email",
+                                                  "${AppLocalizations.of(context)!.sendCodeSuccess}",
                                               icon: Icon(
                                                 Icons.verified,
                                                 size: 30.0,
@@ -1174,29 +1174,269 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                             image_path_front=null;
 
                                           }).catchError((error) {
+                                            print(error.response.data);
                                             setState(() {});
-
                                             loadingSend = false;
                                             print(CacheHelper.getData(
                                                 key: 'token'));
-                                            print(error.response.data);
                                             print('wqefwewegwrgw4rgwerg');
                                             print(imageForFirstId.toString());
-                                            print(error);
-                                            Flushbar(
-                                              messageColor: Colors.white,
-                                              backgroundColor: Colors.red,
-                                              message:
-                                                  "something .. try again later",
-                                              icon: Icon(
-                                                Icons.info_outline,
-                                                size: 30.0,
-                                                color: Colors.black,
-                                              ),
-                                              duration: Duration(seconds: 3),
-                                              leftBarIndicatorColor:
-                                                  Colors.blue[300],
-                                            )..show(context);
+                                            if(organizationName.text.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "organization name is empty",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(error.response.data['message'].toString().contains('The name has already been taken')) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "The organization name has already been taken",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(organizationNameArabic.text.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "organization name in arabic is empty",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(commercialRegistryNumber.text.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "commercial registry number is empty",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(taxCardNumber.text.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "tax card number is empty",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(ownerName.text.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "owner name is empty",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(responsibleManager.text.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "responsible manager is empty",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(organizationMail.text.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "organization e-mail is empty",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(error.response.data['message'].toString().contains('The email has already been taken')) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "The email has already been taken",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(organizationphone.text.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "organization phone is empty",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(organizationwebsite.text.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "organization phone is empty",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(image_path_front!.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "must provide front national id",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(image_path_back!.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "must provide back national id",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(image_path_bta2aDrebia!.isEmpty||error.response.data['message'].toString().contains('The commercial registry image field is required')) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "must provide commercial register",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                             if(image_path_card!.isEmpty) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "must provide tax card",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+
                                           });
                                         },
                                       ),

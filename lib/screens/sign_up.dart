@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rive/rive.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../network/remote/dio_helper.dart';
 import 'attendance.dart';
@@ -118,278 +119,418 @@ class _SignUpFormState extends State<SignUpForm> {
             padding: const EdgeInsets.all(50.0),
             child: Stack(
               children: [
-                loadingSend == false? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "User Name",
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                      child: TextFormField(
-                        controller: userNameController,
-                        onSaved: (email) {},
-                        decoration: InputDecoration(
-                            prefixIcon: Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Icon(
-                            Icons.account_box_sharp,
-                            color: Colors.pinkAccent,
+                loadingSend == false
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${AppLocalizations.of(context)!.userName}",
+                            style: TextStyle(color: Colors.black54),
                           ),
-                        )),
-                      ),
-                    ),
-                    const Text(
-                      "e-mail",
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                      child: TextFormField(
-                        controller: emailController,
-
-                        onSaved: (password) {},
-                        decoration: InputDecoration(
-                            prefixIcon: Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Icon(Icons.email_outlined,
-                              color: Colors.pinkAccent),
-                        )),
-                      ),
-                    ),
-                    const Text(
-                      "National ID",
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                      child: TextFormField(
-                        controller: nationalIdController,
-                        onSaved: (password) {},
-                        decoration: InputDecoration(
-                            prefixIcon: Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Icon(Icons.perm_identity,
-                              color: Colors.pinkAccent),
-                        )),
-                      ),
-                    ),
-                    const Text(
-                      "Create Password",
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                      child: TextFormField(
-                        controller: passwordController,
-                        onSaved: (password) {},
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            prefixIcon: Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Icon(Icons.password,
-                              color: Colors.pinkAccent),
-                        )),
-                      ),
-                    ),
-                    const Text(
-                      "confirm password",
-                      style: TextStyle(color: Colors.black54),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, bottom: 16),
-                      child: TextFormField(
-                        controller: confirmPasswordController,
-                        onSaved: (password) {},
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            prefixIcon: Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Icon(Icons.password,
-                              color: Colors.pinkAccent),
-                        )),
-                      ),
-                    ),
-                    RadioListTile(
-                      title: Text(
-                        "CLIENT",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      value: '1',
-                      groupValue: valueClosed,
-                      onChanged: (value) {
-                        setState(() {});
-                        userType = 'CLIENT';
-                        print(userType);
-
-                        isOpen = false;
-                        valueClosed = value.toString();
-                        setState(() {
-                          valueClosed = value.toString();
-                        });
-                      },
-                      fillColor: MaterialStateProperty.all(Colors.black),
-                    ),
-                    RadioListTile(
-                      title: Text(
-                        "ADMIN",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      value: '0',
-                      groupValue: valueClosed,
-                      onChanged: (value) {
-                        userType = 'ADMIN';
-                        print(userType);
-                        setState(() {});
-                        isOpen = false;
-                        valueClosed = value.toString();
-                        setState(() {
-                          valueClosed = value.toString();
-                        });
-                      },
-                      fillColor: MaterialStateProperty.all(Colors.black),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, bottom: 24),
-                      child: ElevatedButton.icon(
-                          onPressed: () async {
-                            setState(() {
-
-                            });
-                            loadingSend =true;
-                            if (confirmPasswordController.text !=
-                                passwordController.text) {
-                              setState(() {
-
-                              });
-                              loadingSend = false;
-                              Flushbar(
-                                backgroundColor: Colors.red,
-                                message: "The password does not match ",
-                                icon: Icon(
-                                  Icons.info_outline,
-                                  size: 30.0,
-                                  color: Colors.black,
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 8.0, bottom: 16),
+                            child: TextFormField(
+                              controller: userNameController,
+                              onSaved: (email) {},
+                              decoration: InputDecoration(
+                                  prefixIcon: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Icon(
+                                  Icons.account_box_sharp,
+                                  color: Colors.pinkAccent,
                                 ),
-                                duration: Duration(seconds: 3),
-                                leftBarIndicatorColor: Colors.blue[300],
-                              )..show(context);
-                            } else {
-                              await DioHelper.postData(
-                                url: "api/auth/register",
-                                formData: {
-                                  "name": userNameController.text,
-                                  "email": emailController.text,
-                                  "national_id": nationalIdController.text,
-                                  "password": passwordController.text,
-                                  "user_type": userType
-                                },
-                              ).then((value) {
-                                userNameController.text='';
-                                emailController.text='';
-                                nationalIdController.text='';
-                                passwordController.text='';
-                                confirmPasswordController.text='';
-                                setState(() {
-
-                                });
-                                loadingSend = false;
-                                Flushbar(
-                                  backgroundColor: Colors.green,
-                                  message: "Sign Up Successfully",
-                                  icon: Icon(
-                                    Icons.verified,
-                                    size: 30.0,
-                                    color: Colors.black,
-                                  ),
-                                  duration: Duration(seconds: 3),
-                                  leftBarIndicatorColor: Colors.blue[300],
-                                )..show(context);                              }).catchError((error) {
-                                setState(() {
-
-                                });
-                                loadingSend = false;
-                                Flushbar(
-                                  backgroundColor: Colors.red,
-                                  message:
-                                      "${error.response.data['message']}",
-                                  icon: Icon(
-                                    Icons.info_outline,
-                                    size: 30.0,
-                                    color: Colors.black,
-                                  ),
-                                  duration: Duration(seconds: 3),
-                                  leftBarIndicatorColor: Colors.blue[300],
-                                )..show(context);
-                                print('kkkkkkkkkkkkkkkkkkkkkkkkk');
-                                print(error.response.data);
-                              });
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFF77D8E),
-                              minimumSize: const Size(double.infinity, 56),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(25),
-                                      bottomRight: Radius.circular(25),
-                                      bottomLeft: Radius.circular(25)))),
-                          icon: const Icon(
-                            CupertinoIcons.arrow_right,
-                            color: Color(0xFFFE0037),
-                          ),
-                          label: const Text("Sign Up")),
-                    ),
-                    Center(
-                      child: Container(
-                        width: 150,
-                        height: 100,
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.only(top: 8.0, bottom: 24),
-                          child: ElevatedButton.icon(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFF77D8E),
-                                  minimumSize:
-                                      const Size(double.infinity, 56),
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          topRight: Radius.circular(25),
-                                          bottomRight: Radius.circular(25),
-                                          bottomLeft:
-                                              Radius.circular(25)))),
-                              icon: const Icon(
-                                CupertinoIcons.arrow_right,
-                                color: Color(0xFFFE0037),
-                              ),
-                              label: const Text("Sign In")),
-                        ),
-                      ),
-                    )
-                  ],
-                ):Padding(
-                  padding: const EdgeInsets.only(top: 300),
-                  child: Center(
-                            child: CircularProgressIndicator(
-                            color: Colors.indigo,
+                              )),
                             ),
                           ),
-                ),
+                          Text(
+                            "${AppLocalizations.of(context)!.mail}",
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 8.0, bottom: 16),
+                            child: TextFormField(
+                              controller: emailController,
+                              onSaved: (password) {},
+                              decoration: InputDecoration(
+                                  prefixIcon: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Icon(Icons.email_outlined,
+                                    color: Colors.pinkAccent),
+                              )),
+                            ),
+                          ),
+                          Text(
+                            "${AppLocalizations.of(context)!.nationalId}",
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 8.0, bottom: 16),
+                            child: TextFormField(
+                              controller: nationalIdController,
+                              onSaved: (password) {},
+                              decoration: InputDecoration(
+                                  prefixIcon: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Icon(Icons.perm_identity,
+                                    color: Colors.pinkAccent),
+                              )),
+                            ),
+                          ),
+                          Text(
+                            "${AppLocalizations.of(context)!.password}",
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 8.0, bottom: 16),
+                            child: TextFormField(
+                              controller: passwordController,
+                              onSaved: (password) {},
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  prefixIcon: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Icon(Icons.password,
+                                    color: Colors.pinkAccent),
+                              )),
+                            ),
+                          ),
+                          Text(
+                            "${AppLocalizations.of(context)!.confirmPassword}",
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 8.0, bottom: 16),
+                            child: TextFormField(
+                              controller: confirmPasswordController,
+                              onSaved: (password) {},
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  prefixIcon: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Icon(Icons.password,
+                                    color: Colors.pinkAccent),
+                              )),
+                            ),
+                          ),
+                          RadioListTile(
+                            title: Text(
+                              "${AppLocalizations.of(context)!.client}",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            value: '1',
+                            groupValue: valueClosed,
+                            onChanged: (value) {
+                              setState(() {});
+                              userType = 'CLIENT';
+                              print(userType);
+
+                              isOpen = false;
+                              valueClosed = value.toString();
+                              setState(() {
+                                valueClosed = value.toString();
+                              });
+                            },
+                            fillColor: MaterialStateProperty.all(Colors.black),
+                          ),
+                          RadioListTile(
+                            title: Text(
+                              "${AppLocalizations.of(context)!.admin}",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            value: '0',
+                            groupValue: valueClosed,
+                            onChanged: (value) {
+                              userType = 'ADMIN';
+                              print(userType);
+                              setState(() {});
+                              isOpen = false;
+                              valueClosed = value.toString();
+                              setState(() {
+                                valueClosed = value.toString();
+                              });
+                            },
+                            fillColor: MaterialStateProperty.all(Colors.black),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 8.0, bottom: 24),
+                            child: ElevatedButton.icon(
+                                onPressed: () async {
+                                  setState(() {});
+                                  loadingSend = true;
+                                  if (confirmPasswordController.text !=
+                                      passwordController.text) {
+                                    setState(() {});
+                                    loadingSend = false;
+                                    Flushbar(
+                                      backgroundColor: Colors.red,
+                                      message: "${AppLocalizations.of(context)!.passwordnotMatch}",
+                                      icon: Icon(
+                                        Icons.info_outline,
+                                        size: 30.0,
+                                        color: Colors.black,
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      leftBarIndicatorColor: Colors.blue[300],
+                                    )..show(context);
+                                  } else {
+                                    await DioHelper.postData(
+                                      url: "api/auth/register",
+                                      formData: {
+                                        "name": userNameController.text,
+                                        "email": emailController.text,
+                                        "national_id":
+                                            nationalIdController.text,
+                                        "password": passwordController.text,
+                                        "user_type": userType
+                                      },
+                                    ).then((value) {
+                                      userNameController.text = '';
+                                      emailController.text = '';
+                                      nationalIdController.text = '';
+                                      passwordController.text = '';
+                                      confirmPasswordController.text = '';
+                                      setState(() {});
+                                      loadingSend = false;
+                                      Flushbar(
+                                        backgroundColor: Colors.green,
+                                        message: "${AppLocalizations.of(context)!.signUpSuccess}",
+                                        icon: Icon(
+                                          Icons.verified,
+                                          size: 30.0,
+                                          color: Colors.black,
+                                        ),
+                                        duration: Duration(seconds: 3),
+                                        leftBarIndicatorColor: Colors.blue[300],
+                                      )..show(context);
+                                    }).catchError((error) {
+                                      print(error.response.data['message']);
+                                      setState(() {});
+                                      loadingSend = false;
+                                      if(userNameController.text.isEmpty){
+                                      Flushbar(
+                                        backgroundColor: Colors.red,
+                                        message:
+                                            "${'${AppLocalizations.of(context)!.userNameIsEmpty}'}",
+                                        icon: Icon(
+                                          Icons.info_outline,
+                                          size: 30.0,
+                                          color: Colors.black,
+                                        ),
+                                        duration: Duration(seconds: 3),
+                                        leftBarIndicatorColor: Colors.blue[300],
+                                      )..show(context);}
+                                      else if(error.response.data['message'].toString().contains('The name has already been taken')){
+                                        Flushbar(
+                                          backgroundColor: Colors.red,
+                                          message:
+                                          "${AppLocalizations.of(context)!.nameAlreadyTaken}",
+                                          icon: Icon(
+                                            Icons.info_outline,
+                                            size: 30.0,
+                                            color: Colors.black,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          leftBarIndicatorColor: Colors.blue[300],
+                                        )..show(context);}
+                                      else if(emailController.text.isEmpty){
+                                        Flushbar(
+                                          backgroundColor: Colors.red,
+                                          message:
+                                          "${'${AppLocalizations.of(context)!.emailIsEmpty}'}",
+                                          icon: Icon(
+                                            Icons.info_outline,
+                                            size: 30.0,
+                                            color: Colors.black,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          leftBarIndicatorColor: Colors.blue[300],
+                                        )..show(context);}
+                                      else if(error.response.data['message'].toString().contains('The email field must be a valid email address')){
+                                        Flushbar(
+                                          backgroundColor: Colors.red,
+                                          message:
+                                          "${AppLocalizations.of(context)!.mailnotValid}",
+                                          icon: Icon(
+                                            Icons.info_outline,
+                                            size: 30.0,
+                                            color: Colors.black,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          leftBarIndicatorColor: Colors.blue[300],
+                                        )..show(context);}
+                                      else if(error.response.data['message'].toString().contains('The email has already been taken')){
+                                        Flushbar(
+                                          backgroundColor: Colors.red,
+                                          message:
+                                          "${AppLocalizations.of(context)!.mailAlreadyTaken}",
+                                          icon: Icon(
+                                            Icons.info_outline,
+                                            size: 30.0,
+                                            color: Colors.black,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          leftBarIndicatorColor: Colors.blue[300],
+                                        )..show(context);}
+                                      else if(nationalIdController.text.isEmpty){
+                                        Flushbar(
+                                          backgroundColor: Colors.red,
+                                          message:
+                                          "${'${AppLocalizations.of(context)!.nationalIdIsEmpty}'}",
+                                          icon: Icon(
+                                            Icons.info_outline,
+                                            size: 30.0,
+                                            color: Colors.black,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          leftBarIndicatorColor: Colors.blue[300],
+                                        )..show(context);}
+                                      else if(error.response.data['message'].toString().contains('The national id field must be an integer')){
+                                        Flushbar(
+                                          backgroundColor: Colors.red,
+                                          message:
+                                          "The national id field must be 14 numbers",
+                                          icon: Icon(
+                                            Icons.info_outline,
+                                            size: 30.0,
+                                            color: Colors.black,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          leftBarIndicatorColor: Colors.blue[300],
+                                        )..show(context);}
+                                      else if(passwordController.text.isEmpty){
+                                        Flushbar(
+                                          backgroundColor: Colors.red,
+                                          message:
+                                          "${'${AppLocalizations.of(context)!.passwordIsEmpty}'}",
+                                          icon: Icon(
+                                            Icons.info_outline,
+                                            size: 30.0,
+                                            color: Colors.black,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          leftBarIndicatorColor: Colors.blue[300],
+                                        )..show(context);}
+                                      else if(error.response.data['message'].toString().contains('The password field must be at least 6 characters') ){
+                                        Flushbar(
+                                          backgroundColor: Colors.red,
+                                          message:
+                                          "The password field must be at least 6 characters",
+                                          icon: Icon(
+                                            Icons.info_outline,
+                                            size: 30.0,
+                                            color: Colors.black,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          leftBarIndicatorColor: Colors.blue[300],
+                                        )..show(context);}
+                                      else if(confirmPasswordController.text.isEmpty){
+                                        Flushbar(
+                                          backgroundColor: Colors.red,
+                                          message:
+                                          "${'${AppLocalizations.of(context)!.confirmPasswordIsEmpty}'}",
+                                          icon: Icon(
+                                            Icons.info_outline,
+                                            size: 30.0,
+                                            color: Colors.black,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          leftBarIndicatorColor: Colors.blue[300],
+                                        )..show(context);}
+                                      else{
+                                        Flushbar(
+                                          backgroundColor: Colors.red,
+                                          message:
+                                          "${'${error.response.data['message']}'}",
+                                          icon: Icon(
+                                            Icons.info_outline,
+                                            size: 30.0,
+                                            color: Colors.black,
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          leftBarIndicatorColor: Colors.blue[300],
+                                        )..show(context);}
+
+
+
+                                      print('kkkkkkkkkkkkkkkkkkkkkkkkk');
+                                    });
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFF77D8E),
+                                    minimumSize:
+                                        const Size(double.infinity, 56),
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(25),
+                                            bottomRight: Radius.circular(25),
+                                            bottomLeft: Radius.circular(25)))),
+                                icon: const Icon(
+                                  CupertinoIcons.arrow_right,
+                                  color: Color(0xFFFE0037),
+                                ),
+                                label: Text(
+                                    "${AppLocalizations.of(context)!.signUp}")),
+                          ),
+                          Center(
+                            child: Container(
+                              width: 150,
+                              height: 100,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 8.0, bottom: 24),
+                                child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFFF77D8E),
+                                        minimumSize:
+                                            const Size(double.infinity, 56),
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10),
+                                                topRight: Radius.circular(25),
+                                                bottomRight:
+                                                    Radius.circular(25),
+                                                bottomLeft:
+                                                    Radius.circular(25)))),
+                                    icon: const Icon(
+                                      CupertinoIcons.arrow_right,
+                                      color: Color(0xFFFE0037),
+                                    ),
+                                    label: Text(
+                                        "${AppLocalizations.of(context)!.signIn}")),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 300),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.indigo,
+                          ),
+                        ),
+                      ),
                 isShowLoading
                     ? CustomPositioned(
                         child: RiveAnimation.asset(

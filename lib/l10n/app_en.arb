@@ -86,7 +86,52 @@
   "finishTask": "Did you finish this task ?",
   "startTask": "Start Task : ",
   "endDay": "End Task :",
-  "phases": "Phases"
+  "phases": "Phases",
+  "mail": "E-mail",
+  "nationalId": "National ID",
+  "confirmPassword": "Confirm Password",
+  "client": "CLIENT",
+  "admin":"ADMIN",
+  "userNameIsEmpty": "user name is empty",
+  "emailIsEmpty": "e-mail is empty",
+  "nationalIdIsEmpty": "national id is empty",
+  "passwordIsEmpty": "password is empty",
+  "confirmPasswordIsEmpty": "confirm password is empty",
+  "nameAlreadyTaken": "The name has already been taken",
+  "mailnotValid": "The email field must be a valid email address",
+  "mailAlreadyTaken": "The e-mail has already been taken",
+  "signUpSuccess": "Sign Up Successfully",
+  "employee": "Employee",
+  "bussinessOwner": "Bussiness Owner",
+  "bussinessCode": "Bussiness Code",
+  "passwordnotMatch": "The password does not match",
+  "sendCodeSuccess": "The application has been submitted successfully. Please wait for acceptance",
+  "organizationName": "organization name",
+  "organizationNameArabic":"organization name (arabic)",
+  "organizationDesc": "organization description (Optional)",
+  "organizationDescArabic": "organization description in arabic (Optional)",
+  "commercialRegistryNumber":"commercial registry number",
+  "taxCardNumber":"tax card number",
+  "ownerName": "Owner Name",
+  "responsibleManagerName": "responsible manager name",
+  "organizationMail": "organization mail",
+  "organizationPhone": "organization phone",
+  "organizationWebSite": "organization website",
+  "needSomePaper": "Now We need some papers for you to join our team",
+  "scanFirstId":  "Provide front National Id ",
+  "scanSecondId": "Provide back National Id ",
+  "scancommercial": "Provide commercial register",
+  "scanCard": " Provide Card tax",
+  "scannedSuccef": "Attached successfully",
+
+
+
+
+
+
+
+
+
 
 
 }

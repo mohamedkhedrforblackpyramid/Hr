@@ -13,7 +13,7 @@ class DioHelper {
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
           },
           receiveDataWhenStatusError: true,
           //  baseUrl: 'http://192.168.1.135:8000/')

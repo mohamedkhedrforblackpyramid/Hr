@@ -67,9 +67,6 @@ class _CloseTasksState extends State<CloseTasks> {
     });
 
   }
-
-
-
   @override
   void initState() {
     print(widget.phase_id);

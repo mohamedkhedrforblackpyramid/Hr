@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/screens/excusepermission.dart';
+import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/projects.dart';
 import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:hr/screens/tasktable.dart';
@@ -404,7 +405,32 @@ class _ChooseListState extends State<ChooseList> {
                     
                           ],
                         ),
-                    
+                        SizedBox(height: 15,),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                child: Image.asset('assets/icons/profile.png',
+                                  color: Colors.white,
+                                  width: 150,
+                                  height: 120,
+                                ),
+                                onTap: (){
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) =>  Profile(
+                                        organizationId: widget.organizationId,
+                                      )));
+                                },
+                              ),
+                              Text("${AppLocalizations.of(context)!.profile}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ]),
+
                       ],
                     ),
                   ),

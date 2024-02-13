@@ -161,7 +161,7 @@ class _ShowTasksState extends State<ShowTasks> {
                     padding: EdgeInsets.symmetric(vertical: 300),
                     child: Center(
                       child: Text(
-                        "${AppLocalizations.of(context)!.noTask}",
+                        "${AppLocalizations.of(context)!.noPhase}",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),

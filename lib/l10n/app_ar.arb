@@ -86,7 +86,51 @@
   "finishTask": "هل انهيت هذه المهمة؟",
   "startTask": "بداية المهمة: ",
   "endDay": "نهاية المهمة: ",
-  "phases": "المراحل"
+  "phases": "المراحل",
+  "mail": "ايميل",
+  "nationalId": "الرقم القومي",
+  "confirmPassword": "تأكيد الرقم السري",
+  "client": "موظف",
+  "admin":"مدير",
+  "userNameIsEmpty": "اسم المستخدم فارغ",
+  "emailIsEmpty": "الايميل فارغ",
+  "nationalIdIsEmpty": "الرقم القومي فارغ",
+  "passwordIsEmpty": "الرقم السري فارغ",
+  "confirmPasswordIsEmpty": "تأكيد الرقم السري فارغ",
+  "nameAlreadyTaken": "اسم المستخدم موجود بالفعل",
+  "mailnotValid": "هذا الأيميل غير صالح",
+  "mailAlreadyTaken": "هذا الأيميل موجود بالفعل",
+  "signUpSuccess": "تم التسجيل بنجاح",
+  "employee": "موظف",
+  "bussinessOwner": "صاحب عمل",
+  "bussinessCode": "كود الشركة",
+  "passwordnotMatch": "الرقم السري غير متطابق",
+  "sendCodeSuccess": "تم تقديم الطلب بنجاح من فضلك انتظر القبول",
+  "organizationName": "اسم الشركة",
+  "organizationNameArabic":"اسم الشركة (english)",
+  "organizationDesc": "وصف الشركة (اختياري)",
+  "organizationDescArabic": "وصف الشركة بالأنجليزية (اختياري)",
+  "commercialRegistryNumber":"رقم السجل التجاري",
+  "taxCardNumber":"رقم البطاقة الضريبية",
+  "ownerName": "اسم صاحب العمل",
+  "responsibleManagerName": "اسم المدير المسؤول",
+  "organizationMail": "ايميل الشركة",
+  "organizationPhone": "رقم الشركة",
+  "organizationWebSite": "موقع الشركة",
+  "needSomePaper": "نحتاج الآن إلى بعض الأوراق لتتمكن من الانضمام إلى فريقنا",
+  "scanFirstId":  "ارفاق الوجه الأول للبطاقة الشخصية",
+  "scanSecondId": "ارفاق الوجه الثاني للبطاقة الشخصية",
+  "scancommercial": "ارفاق السجل التجاري",
+  "scanCard": "ارفاق البطاقة الضريبية",
+  "scannedSuccef": "تم الإرفاق بنجاح"
+
+
+
+
+
+
+
+
 
 
 }
