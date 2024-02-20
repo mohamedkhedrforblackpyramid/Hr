@@ -55,7 +55,7 @@ class _CloseTasksState extends State<CloseTasks> {
   getTasks() async {
     showLoading = true;
     await DioHelper.getData(
-      url: "api/organizations/${widget.organization_id}/current-tasks/?phase_id=${widget.phase_id}",
+      url: "api/current-tasks?organization_id=${widget.organization_id}&phase_id=${widget.phase_id}",
     ).then((response) {
       task_list = TasksList.fromJson(response.data);
       print(response.data);

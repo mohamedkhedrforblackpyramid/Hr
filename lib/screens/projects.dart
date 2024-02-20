@@ -25,7 +25,6 @@ class Projects extends StatefulWidget {
      required this.organizationsArabicName,
      required this.organizationsName,
      required this.oranizaionsList,
-
   });
 
   @override
@@ -38,7 +37,6 @@ class _ProjectsState extends State<Projects> {
   var projectName = TextEditingController();
   var projectDescription = TextEditingController();
   bool clickAdd = false;
-
 
 
   returnPage(){
@@ -132,6 +130,7 @@ class _ProjectsState extends State<Projects> {
                                  ),
                                ),
                              ),
+                            SizedBox(height: 10,),
                             SizedBox(height: 10,),
                             Container(
                               width: 300,

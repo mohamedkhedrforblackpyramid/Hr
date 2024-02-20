@@ -56,18 +56,19 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
   final _formKey = GlobalKey<FormState>();
   bool loadingSend = false;
   var bussinessCode =
-      TextEditingController(text: '7f2d9ff5-c028-11ee-8c58-6a3cd81fa40a');
-  var organizationName = TextEditingController(text: 'el kayan');
-  var organizationNameArabic = TextEditingController(text: 'الكيان');
-  var organozationDesc = TextEditingController(text: '...');
-  var organozationDescArabic = TextEditingController(text: '...');
-  var commercialRegistryNumber = TextEditingController(text: '665669');
-  var taxCardNumber = TextEditingController(text: '86526456');
-  var ownerName = TextEditingController(text: 'ahmed');
-  var responsibleManager = TextEditingController(text: 'tarek');
-  var organizationMail = TextEditingController(text: 'ahmed@gmail.com');
-  var organizationphone = TextEditingController(text: '0102569875');
-  var organizationwebsite = TextEditingController(text: 'www.hfewf.com');
+      TextEditingController();
+  // 7f2d9ff5-c028-11ee-8c58-6a3cd81fa40a
+  var organizationName = TextEditingController();
+  var organizationNameArabic = TextEditingController();
+  var organozationDesc = TextEditingController();
+  var organozationDescArabic = TextEditingController();
+  var commercialRegistryNumber = TextEditingController();
+  var taxCardNumber = TextEditingController();
+  var ownerName = TextEditingController();
+  var responsibleManager = TextEditingController();
+  var organizationMail = TextEditingController();
+  var organizationphone = TextEditingController();
+  var organizationwebsite = TextEditingController();
 
    frontid_gallery() async {
      final ImagePicker picker =
@@ -1181,7 +1182,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                                 key: 'token'));
                                             print('wqefwewegwrgw4rgwerg');
                                             print(imageForFirstId.toString());
-                                            if(organizationName.text.isEmpty) {
+                                            if(error.response.data['message'].toString().contains('The name field must be a string')) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
@@ -1198,7 +1199,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(error.response.data['message'].toString().contains('The name has already been taken')) {
+                                            else if(error.response.data['message'].toString().contains('The name has already been taken')) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
@@ -1215,7 +1216,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(organizationNameArabic.text.isEmpty) {
+                                            else if(organizationNameArabic.text.isEmpty) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
@@ -1232,7 +1233,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(commercialRegistryNumber.text.isEmpty) {
+                                            else if(commercialRegistryNumber.text.isEmpty) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
@@ -1249,7 +1250,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(taxCardNumber.text.isEmpty) {
+                                            else if(taxCardNumber.text.isEmpty) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
@@ -1266,7 +1267,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(ownerName.text.isEmpty) {
+                                            else if(ownerName.text.isEmpty) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
@@ -1283,7 +1284,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(responsibleManager.text.isEmpty) {
+                                            else if(responsibleManager.text.isEmpty) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
@@ -1300,7 +1301,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(organizationMail.text.isEmpty) {
+                                            else if(organizationMail.text.isEmpty) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
@@ -1317,7 +1318,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(error.response.data['message'].toString().contains('The email has already been taken')) {
+                                            else if(error.response.data['message'].toString().contains('The email has already been taken')) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
@@ -1334,7 +1335,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(organizationphone.text.isEmpty) {
+                                            else if(organizationphone.text.isEmpty) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
@@ -1351,12 +1352,12 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(organizationwebsite.text.isEmpty) {
+                                            else  if(organizationwebsite.text.isEmpty) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
                                                 message:
-                                                "organization phone is empty",
+                                                "organization website is empty",
                                                 icon: Icon(
                                                   Icons.info_outline,
                                                   size: 30.0,
@@ -1368,41 +1369,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(image_path_front!.isEmpty) {
-                                              Flushbar(
-                                                messageColor: Colors.white,
-                                                backgroundColor: Colors.red,
-                                                message:
-                                                "must provide front national id",
-                                                icon: Icon(
-                                                  Icons.info_outline,
-                                                  size: 30.0,
-                                                  color: Colors.black,
-                                                ),
-                                                duration: Duration(seconds: 3),
-                                                leftBarIndicatorColor:
-                                                Colors.blue[300],
-                                              )
-                                                ..show(context);
-                                            }
-                                             if(image_path_back!.isEmpty) {
-                                              Flushbar(
-                                                messageColor: Colors.white,
-                                                backgroundColor: Colors.red,
-                                                message:
-                                                "must provide back national id",
-                                                icon: Icon(
-                                                  Icons.info_outline,
-                                                  size: 30.0,
-                                                  color: Colors.black,
-                                                ),
-                                                duration: Duration(seconds: 3),
-                                                leftBarIndicatorColor:
-                                                Colors.blue[300],
-                                              )
-                                                ..show(context);
-                                            }
-                                             if(image_path_bta2aDrebia!.isEmpty||error.response.data['message'].toString().contains('The commercial registry image field is required')) {
+                                            else  if(error.response.data['message'].toString().contains('The commercial registry image field is required')) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
@@ -1419,12 +1386,46 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-                                             if(image_path_card!.isEmpty) {
+                                            else if(error.response.data['message'].toString().contains('The tax card image field is required')) {
                                               Flushbar(
                                                 messageColor: Colors.white,
                                                 backgroundColor: Colors.red,
                                                 message:
                                                 "must provide tax card",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                            else if(error.response.data['message'].toString().contains('The id front field is required')) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "must provide front national id",
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.black,
+                                                ),
+                                                duration: Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )
+                                                ..show(context);
+                                            }
+                                            else if(error.response.data['message'].toString().contains('The id back field is required')) {
+                                              Flushbar(
+                                                messageColor: Colors.white,
+                                                backgroundColor: Colors.red,
+                                                message:
+                                                "must provide back national id",
                                                 icon: Icon(
                                                   Icons.info_outline,
                                                   size: 30.0,
@@ -1442,7 +1443,6 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                       ),
                                     )
                                   : SizedBox(),
-
                             ],
                           )
                         : Center(

@@ -2,12 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hr/main.dart';
 import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/screens/excusepermission.dart';
 import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/projects.dart';
 import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:hr/screens/tasktable.dart';
+import 'package:hr/screens/whoisattend.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
@@ -42,6 +44,7 @@ class _ChooseListState extends State<ChooseList> {
   bool isSignInDialogShown = false;
   late RiveAnimationController _btnAnimationController;
   int? dropdownvalue = null;
+  String? dropdownValue;
 
   getOrganizations() {
     DioHelper.getData(
@@ -67,7 +70,6 @@ class _ChooseListState extends State<ChooseList> {
         print(error);
       }
     });
-
   }
 
   @override
@@ -85,15 +87,72 @@ class _ChooseListState extends State<ChooseList> {
   @override
   Widget build(BuildContext context) {
     List<String> list =[
-      '${AppLocalizations.of(context)!.ordinary}',
-      '${AppLocalizations.of(context)!.casual}',
-      '${AppLocalizations.of(context)!.sick}',
+      'Profile Setting',
+      'LogOut',
+      'Who is Attend'
+
+
     ];
     return WillPopScope(
       onWillPop: () async {
         return shouldPop;
       },
       child: Scaffold(
+          appBar: AppBar(
+            leadingWidth: double.infinity,
+            leading: DropdownButton<String>(
+              dropdownColor: Colors.indigo,
+              icon:  Text(
+                "${CacheHelper.getData(key: 'name')}"
+              ),
+              elevation: 16,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              underline: Container(
+                color: Colors.deepPurpleAccent,
+              ),
+              onChanged: (String? value) {
+                setState(() {
+                  dropdownValue = value!;
+                  if(dropdownValue == 'Profile Setting'){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) =>  Profile(
+                            organizationId: widget.organizationId,
+                            userId: widget.userId
+
+                        )));
+                  }
+                   if(dropdownValue == 'LogOut'){
+                     Navigator.push(context,
+                         MaterialPageRoute(builder: (context) =>  MyApp(
+                           lang: '${CacheHelper.getData(key: 'language')}',
+
+                         )));
+                  }
+                  if(dropdownValue == 'Who is Attend'){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => WhoIsAttend(
+                        organizationId: widget.organizationId,
+                        userId: widget.userId
+
+                    )));
+                  }
+
+                });
+              },
+              items: list.map<DropdownMenuItem<String>>(
+                      (String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+            ),
+            backgroundColor: Colors.transparent,
+          ),
+
   /*      bottomSheet: Container(
           color:  Color(0xffC9A9A6),
           child: DropdownButton(
@@ -140,11 +199,11 @@ class _ChooseListState extends State<ChooseList> {
           backgroundColor: Color(0xff1A6293),
           body: Stack(
             children: [
-              Positioned(
+             /* Positioned(
                   width: MediaQuery.of(context).size.width * 1.7,
                   bottom: 200,
                   left: 100,
-                  child: Image.asset('assets/Backgrounds/Spline.png')),
+                  child: Image.asset('assets/Backgrounds/Spline.png')),*/
               Positioned.fill(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
@@ -157,13 +216,13 @@ class _ChooseListState extends State<ChooseList> {
                   )),
               SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.all(50),
+                  padding: const EdgeInsets.all(40),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -351,7 +410,7 @@ class _ChooseListState extends State<ChooseList> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     GestureDetector(
-                                      child: Image.asset('assets/icons/projects.png',
+                                      child: Image.asset('assets/icons/project-management.png',
                                         width: 150,
                                         height: 120,
                                       ),
@@ -406,31 +465,6 @@ class _ChooseListState extends State<ChooseList> {
                           ],
                         ),
                         SizedBox(height: 15,),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                child: Image.asset('assets/icons/profile.png',
-                                  color: Colors.white,
-                                  width: 150,
-                                  height: 120,
-                                ),
-                                onTap: (){
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) =>  Profile(
-                                        organizationId: widget.organizationId,
-                                      )));
-                                },
-                              ),
-                              Text("${AppLocalizations.of(context)!.profile}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ]),
-
                       ],
                     ),
                   ),

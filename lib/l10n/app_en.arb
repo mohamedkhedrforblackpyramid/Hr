@@ -53,7 +53,7 @@
   "notesView": "Notes",
   "tasks": "Tasks",
   "profile": "Profile",
-  "myProject": "My Projects",
+  "myProject": "Projects",
   "projectName": "Project Name",
   "projectDescription": "Project Description",
   "add": "Add",
@@ -122,7 +122,7 @@
   "scanSecondId": "Provide back National Id ",
   "scancommercial": "Provide commercial register",
   "scanCard": " Provide Card tax",
-  "scannedSuccef": "Attached successfully",
+  "scannedSuccef": "Attached successfully"
 
 
 

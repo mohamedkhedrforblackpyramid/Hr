@@ -26,14 +26,12 @@ class Attendance extends StatefulWidget {
   String?organizationsArabicName;
 
 
-
-  Attendance({required this.userId,
+  Attendance({
+    required this.userId,
     required this.organizationId,
     required this.organizationsName,
     required this.oranizaionsList,
     required this.organizationsArabicName
-
-
   });
   @override
   State<Attendance> createState() => _AttendanceState();

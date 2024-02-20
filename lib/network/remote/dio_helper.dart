@@ -10,6 +10,7 @@ class DioHelper {
           connectTimeout: Duration(
             seconds: 10
           ),
+
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
             'Content-Type': 'application/json',

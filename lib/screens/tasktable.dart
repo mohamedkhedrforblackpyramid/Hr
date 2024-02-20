@@ -25,16 +25,19 @@ class _TaskTableState extends State<TaskTable> {
   getTasks() async {
     showLoading = true;
     await DioHelper.getData(
-      url: "api/organizations/${widget.organizationId}/current-tasks",
+      url: "api/current-tasks?organization_id=${widget.organizationId}",
     ).then((response) {
       task_list = TasksList.fromJson(response.data);
+      print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
       print(response.data);
+      print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
+
       setState(() {
         showLoading = false;
       });
     }).catchError((error){
       print('kkkkkkkkkkkkkkkkkk');
-      print(error);
+      print(error.response.data);
     });
 
   }
@@ -101,7 +104,7 @@ class _TaskTableState extends State<TaskTable> {
                                     color: Colors.indigo,
                                   ),
                                 )),
-                                Center(child: Text('Projects',
+                                Center(child: Text('Project',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     color: Colors.indigo,
