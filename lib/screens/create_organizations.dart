@@ -1437,7 +1437,6 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                               )
                                                 ..show(context);
                                             }
-
                                           });
                                         },
                                       ),
