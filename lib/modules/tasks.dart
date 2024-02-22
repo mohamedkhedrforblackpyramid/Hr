@@ -23,7 +23,7 @@ class TasksModel {
     phase_id = json['phase_id'];
     task_name = json['name'];
     phase_name = json['phase_name'];
-    project_name = json['organization_name'];
+    project_name = json['project_name'];
     fromDate = json['from_date'];
     toDate = json['due_date'];
 

@@ -8,11 +8,15 @@ import 'package:hr/screens/create_organizations.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../network/local/cache_helper.dart';
 import '../../../network/remote/dio_helper.dart';
 import '../../choose_list.dart';
-
+enum FormData {
+  userName,
+  password,
+}
 class SignInForm extends StatefulWidget {
   const SignInForm({
     super.key,
@@ -26,9 +30,12 @@ class _SignInFormState extends State<SignInForm> {
   bool? _jailbroken;
   bool? _developerMode;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final userNameController = TextEditingController(text: 'mohamedkhedr');
-  final passwordController = TextEditingController(text: '123');
-
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool ispasswordev = true;
+  FormData? selected;
+  Color enabledtxt = Colors.white;
+  Color deaible = Colors.grey;
   bool isShowLoading = false;
   bool isShowConfetti = false;
   late bool jailbroken;
@@ -43,7 +50,7 @@ class _SignInFormState extends State<SignInForm> {
   late int organizationsId;
   String organizationsName = '';
   String organizationsArabicName = '';
-
+  bool _isChecked = false;
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
         StateMachineController.fromArtboard(artboard, "State Machine 1");
@@ -139,9 +146,48 @@ class _SignInFormState extends State<SignInForm> {
     });
   }
 
+
+  void handleRemeberme(value) {
+    print("Handle Rember Me");
+    _isChecked = value;
+    SharedPreferences.getInstance().then(
+          (prefs) {
+        prefs.setBool("remember_me", value);
+        prefs.setString('name', userNameController.text);
+        prefs.setString('password', passwordController.text);
+      },
+    );
+    setState(() {
+      _isChecked = value;
+
+    });
+  }
+  void loadUserEmailPassword() async {
+    print("Load Email");
+    try {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      var name = _prefs.getString("name") ?? "";
+      var password = _prefs.getString("password") ?? "";
+      var _remeberMe = _prefs.getBool("remember_me") ?? false;
+      print(password);
+      print("1111111");
+      print(_remeberMe);
+      if (_remeberMe) {
+        setState(() {
+          _isChecked = true;
+        });
+        userNameController.text = name ?? "";
+        passwordController.text = password ?? "";
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     initPlatformState();
+    loadUserEmailPassword();
     super.initState();
   }
 
@@ -166,36 +212,6 @@ class _SignInFormState extends State<SignInForm> {
     });
   }
 
-/*
-  void signIn(BuildContext contexto) {
-    setState(() {
-      isShowLoading = true;
-      isShowConfetti = true;
-    });
-    Future.delayed(Duration(seconds: 1), () {
-      if (_formKey.currentState!.validate()&&userNameController.text=='Test user'&&passwordController.text=='123') {
-
-        // show success
-        check.fire();
-        Future.delayed(Duration(seconds: 2), () {
-          setState(() {
-            isShowLoading = false;
-          });
-          confetti.fire();
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const ChooseList()));
-        });
-      } else {
-        error.fire();
-        Future.delayed(Duration(seconds: 2), () {
-          setState(() {
-            isShowLoading = false;
-          });
-        });
-      }
-    });
-  }
-*/
 
   @override
   Widget build(BuildContext context) {
@@ -246,18 +262,67 @@ class _SignInFormState extends State<SignInForm> {
                       return null;
                     },
                     onSaved: (password) {},
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                        prefixIcon: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Icon(Icons.password, color: Colors.pinkAccent),
-                    )),
+                    obscureText: ispasswordev,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: ispasswordev==false
+                            ? Icon(
+                          Icons.visibility_off,
+                          color: selected == FormData.password
+                              ? enabledtxt
+                              : deaible,
+                          size: 20,
+                        )
+                            : Icon(
+                          Icons.visibility,
+                          color: selected == FormData.password
+                              ? enabledtxt
+                              : deaible,
+                          size: 20,
+                        ),
+                        onPressed: () => setState(
+                                () => ispasswordev = !ispasswordev),
+                      ),
+                      prefixIcon: Icon(Icons.lock,
+                        color: Colors.pinkAccent,
+
+                      ),
+                    ),
                   ),
                 ),
+                const SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 25),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            height: 24.0,
+                            width: 24.0,
+                            child: Theme(
+                              data: ThemeData(
+                                  unselectedWidgetColor: Color(0xff00C8E8) // Your color
+                              ),
+                              child: Checkbox(
+                                  activeColor: Colors.redAccent,
+                                  value: _isChecked,
+                                  onChanged: handleRemeberme),
+                            )),
+                        SizedBox(width: 10.0),
+                        Text("Remember Me",
+                            textScaleFactor: 1.0,
+                            style: TextStyle(
+                                color: Color(0xff646464),
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Rubic'))
+                      ]),
+                ),
+                SizedBox(height: 20,),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, bottom: 24),
                   child: ElevatedButton.icon(
                       onPressed: () async {
+                        _isChecked==true? handleRemeberme(true):null;
                         userLogin(
                             name: userNameController.text,
                             password: passwordController.text);
@@ -287,7 +352,7 @@ class _SignInFormState extends State<SignInForm> {
                               ? CupertinoIcons.arrow_left
                               : CupertinoIcons.arrow_right),
                       label: Text("${AppLocalizations.of(context)!.signIn}")),
-                )
+                ),
               ],
             )),
         isShowLoading
