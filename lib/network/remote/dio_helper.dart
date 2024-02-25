@@ -15,6 +15,7 @@ class DioHelper {
             'X-Requested-With': 'XMLHttpRequest',
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+
           },
           receiveDataWhenStatusError: true,
           //  baseUrl: 'http://192.168.1.135:8000/')
@@ -70,15 +71,32 @@ class DioHelper {
     return await dio.post(url,
         queryParameters: query, data: FormData.fromMap(formData));
   }
+
   static Future<Response> patchData({
     required String url,
     Map<String, dynamic>? query,
     required Map<String, dynamic> formData,
+
   }) async {
+    print(url);
+
     if (CacheHelper.getData(key: "token") != null) {
       dio.options.headers['Authorization'] = "Bearer ${CacheHelper.getData(key: "token")}";
     }
     return await dio.patch(url,
         queryParameters: query, data: FormData.fromMap(formData));
+  }
+
+  static Future<Response> deleteData({
+    required String url,
+    Map<String, dynamic>? query,
+    int? id,
+    bool auth = false
+  }) async {
+    print(url);
+    if (CacheHelper.getData(key: "token") != null) {
+      dio.options.headers['Authorization'] = "Bearer ${CacheHelper.getData(key: "token")}";
+    }
+    return await dio.delete(url, queryParameters: query);
   }
 }

@@ -79,8 +79,6 @@ class _ChooseListState extends State<ChooseList> {
     getOrganizations();
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
     checkAttendace();
-
-
     super.initState();
   }
 

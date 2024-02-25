@@ -13,18 +13,18 @@ import '../modules/organizationmodel.dart';
 import '../network/remote/dio_helper.dart';
 
 class Projects extends StatefulWidget {
-  int?organizationId;
+  int? organizationId;
   int? userId;
   late OrganizationsList oranizaionsList;
   String? organizationsName;
-  String?organizationsArabicName;
+  String? organizationsArabicName;
 
   Projects({
-     required this.organizationId,
-     required this.userId,
-     required this.organizationsArabicName,
-     required this.organizationsName,
-     required this.oranizaionsList,
+    required this.organizationId,
+    required this.userId,
+    required this.organizationsArabicName,
+    required this.organizationsName,
+    required this.oranizaionsList,
   });
 
   @override
@@ -38,20 +38,18 @@ class _ProjectsState extends State<Projects> {
   var projectDescription = TextEditingController();
   bool clickAdd = false;
 
-
-  returnPage(){
+  returnPage() {
     Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) =>  ChooseList(
-          userId: widget.userId,
-          organizationId: widget.organizationId,
-          organizationsName: widget.organizationsName,
-          oranizaionsList: widget.oranizaionsList,
-          organizationsArabicName: widget.organizationsArabicName,
-        )
-        ));
+        MaterialPageRoute(
+            builder: (context) => ChooseList(
+                  userId: widget.userId,
+                  organizationId: widget.organizationId,
+                  organizationsName: widget.organizationsName,
+                  oranizaionsList: widget.oranizaionsList,
+                  organizationsArabicName: widget.organizationsArabicName,
+                )));
   }
-
 
   getProjects() async {
     projectLoading = true;
@@ -60,11 +58,11 @@ class _ProjectsState extends State<Projects> {
     ).then((response) {
       print(response.data);
       projects = ProjectsList.fromJson(response.data);
-    //  print(projects);
+      //  print(projects);
       setState(() {
         projectLoading = false;
       });
-    }).catchError((error){
+    }).catchError((error) {
       print(error.response);
     });
   }
@@ -78,48 +76,80 @@ class _ProjectsState extends State<Projects> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         return returnPage();
       },
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: (){
-          showModalBottomSheet<void>(
-              isScrollControlled: true,
-              context: context,
-              builder: (BuildContext context) {
-                return StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              showModalBottomSheet<void>(
+                isScrollControlled: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
                     return Padding(
-                    padding: EdgeInsets.only(top: 20,  right: 20,  left: 20,
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height/2,
-                        width: MediaQuery.of(context).size.width/1.1,
-                        child:  Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Text("${AppLocalizations.of(context)!.addProject}",
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold
+                      padding: EdgeInsets.only(
+                          top: 20,
+                          right: 20,
+                          left: 20,
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: Container(
+                          height: MediaQuery.of(context).size.height / 2,
+                          width: MediaQuery.of(context).size.width / 1.1,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Text(
+                                  "${AppLocalizations.of(context)!.addProject}",
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ),
-                             Padding(
-                               padding: const EdgeInsets.only(bottom: 20),
-                               child: Container(
-                                 width: 300,
-                                 child: TextFormField(
-                                   controller: projectName,
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: Container(
+                                  width: 300,
+                                  child: TextFormField(
+                                    controller: projectName,
+                                    decoration: new InputDecoration(
+                                      labelText:
+                                          "${AppLocalizations.of(context)!.projectName}",
+                                      fillColor: Colors.white,
+                                      border: new OutlineInputBorder(
+                                        borderRadius:
+                                            new BorderRadius.circular(25.0),
+                                        borderSide: new BorderSide(),
+                                      ),
+                                      //fillColor: Colors.green
+                                    ),
+                                    keyboardType: TextInputType.emailAddress,
+                                    style: new TextStyle(
+                                      fontFamily: "Poppins",
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                width: 300,
+                                child: TextFormField(
+                                  controller: projectDescription,
                                   decoration: new InputDecoration(
-                                    labelText: "${AppLocalizations.of(context)!.projectName}",
+                                    labelText:
+                                        "${AppLocalizations.of(context)!.projectDescription}",
                                     fillColor: Colors.white,
                                     border: new OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(25.0),
-                                      borderSide: new BorderSide(
-                                      ),
+                                      borderRadius:
+                                          new BorderRadius.circular(25.0),
+                                      borderSide: new BorderSide(),
                                     ),
                                     //fillColor: Colors.green
                                   ),
@@ -127,136 +157,115 @@ class _ProjectsState extends State<Projects> {
                                   style: new TextStyle(
                                     fontFamily: "Poppins",
                                   ),
-                                 ),
-                               ),
-                             ),
-                            SizedBox(height: 10,),
-                            SizedBox(height: 10,),
-                            Container(
-                              width: 300,
-                              child: TextFormField(
-                                controller: projectDescription,
-                                decoration: new InputDecoration(
-                                  labelText: "${AppLocalizations.of(context)!.projectDescription}",
-                                  fillColor: Colors.white,
-                                  border: new OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(25.0),
-                                    borderSide: new BorderSide(
-                                    ),
-                                  ),
-                                  //fillColor: Colors.green
-                                ),
-
-                                keyboardType: TextInputType.emailAddress,
-                                style: new TextStyle(
-                                  fontFamily: "Poppins",
                                 ),
                               ),
-                            ),
-                             SizedBox(height: 20,),
-                             Center(
-                              child:  Container(
-                                height: 50,
-                                width: 200,
-                                child: clickAdd==false?FancyContainer(
-                                  textColor: Colors.white,
-                                  onTap: () async {
-                                    setState(() {
-                                      clickAdd = true;
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Center(
+                                child: Container(
+                                  height: 50,
+                                  width: 200,
+                                  child: clickAdd == false
+                                      ? FancyContainer(
+                                          textColor: Colors.white,
+                                          onTap: () async {
+                                            setState(() {
+                                              clickAdd = true;
+                                            });
+                                            await DioHelper.postData(
+                                              url: "api/projects",
+                                              formData: {
+                                                "name": "${projectName.text}",
+                                                "description":
+                                                    "${projectDescription.text}",
+                                                "organization_id":
+                                                    widget.organizationId,
+                                              },
+                                            ).then((value) {
+                                              setState(() {});
+                                              clickAdd = false;
 
-                                    });
-                                    await DioHelper.postData(
-                                      url: "api/projects",
-                                      formData: {
-                                        "name":"${projectName.text}" ,
-                                        "description":"${projectDescription.text}" ,
-                                        "organization_id":widget.organizationId ,
-                                      },
-                                    ).then((value) {
+                                              print("Shaaaaaaaaatr");
+                                              getProjects();
+                                              projectName.text = '';
+                                              projectDescription.text = '';
+                                              Navigator.pop(context);
+                                            }).catchError((error) {
+                                              clickAdd = false;
 
-                                      setState(() {});
-                                      clickAdd = false;
+                                              setState(() {});
+                                              if (projectName.text.isEmpty) {
+                                                Flushbar(
+                                                  backgroundColor: Colors.red,
+                                                  message:
+                                                      "${AppLocalizations.of(context)!.projectNameisEmpty}",
+                                                  icon: Icon(
+                                                    Icons.info_outline,
+                                                    size: 30.0,
+                                                    color: Colors.black,
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 3),
+                                                  leftBarIndicatorColor:
+                                                      Colors.blue[300],
+                                                )..show(context);
+                                              } else if (projectDescription
+                                                  .text.isEmpty) {
+                                                Flushbar(
+                                                  message:
+                                                      "${AppLocalizations.of(context)!.projectDescisEmpty}",
+                                                  backgroundColor: Colors.red,
+                                                  icon: Icon(
+                                                    Icons.info_outline,
+                                                    size: 30.0,
+                                                    color: Colors.black,
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 3),
+                                                  leftBarIndicatorColor:
+                                                      Colors.blue[300],
+                                                )..show(context);
+                                              } else {
+                                                Flushbar(
+                                                  message:
+                                                      "${AppLocalizations.of(context)!.project_error}",
+                                                  icon: Icon(
+                                                    Icons.info_outline,
+                                                    size: 30.0,
+                                                    color: Colors.blue[300],
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 3),
+                                                  leftBarIndicatorColor:
+                                                      Colors.blue[300],
+                                                )..show(context);
+                                              }
 
-                                      print("Shaaaaaaaaatr");
-                                      getProjects();
-                                      projectName.text='';
-                                      projectDescription.text = '';
-                                      Navigator.pop(context);
-                                    })
-                                        .catchError((error){
-                                      clickAdd = false;
-
-                                      setState(() {});
-                                          if(projectName.text.isEmpty) {
-                                            Flushbar(
-                                              backgroundColor: Colors.red,
-                                              message: "${AppLocalizations.of(context)!.projectNameisEmpty}",
-                                              icon: Icon(
-                                                Icons.info_outline,
-                                                size: 30.0,
-                                                color: Colors.black,
-                                              ),
-                                              duration: Duration(seconds: 3),
-                                              leftBarIndicatorColor: Colors
-                                                  .blue[300],
-                                            )
-                                              ..show(context);
-                                          }
-                                          else if(projectDescription.text.isEmpty){
-                                            Flushbar(
-                                              message: "${AppLocalizations.of(context)!.projectDescisEmpty}",
-                                              backgroundColor: Colors.red,
-                                              icon: Icon(
-                                                Icons.info_outline,
-                                                size: 30.0,
-                                                color: Colors.black,
-
-                                              ),
-                                              duration: Duration(seconds: 3),
-                                              leftBarIndicatorColor: Colors
-                                                  .blue[300],
-                                            )
-                                              ..show(context);
-                                          }
-                                          else{
-                                            Flushbar(
-                                              message: "${AppLocalizations.of(context)!.project_error}",
-                                              icon: Icon(
-                                                Icons.info_outline,
-                                                size: 30.0,
-                                                color: Colors.blue[300],
-                                              ),
-                                              duration: Duration(seconds: 3),
-                                              leftBarIndicatorColor: Colors
-                                                  .blue[300],
-                                            )
-                                              ..show(context);
-                                          }
-
-                                      print(error.response.data);
-                                    });
-                                  },
-                                  title: '${AppLocalizations.of(context)!.add}',
-                                  color1: Colors.purple,
-                                  color2: Colors.lightBlue,
-                                ):Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.indigo,
-                                  ),
+                                              print(error.response.data);
+                                            });
+                                          },
+                                          title:
+                                              '${AppLocalizations.of(context)!.add}',
+                                          color1: Colors.purple,
+                                          color2: Colors.lightBlue,
+                                        )
+                                      : Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.indigo,
+                                          ),
+                                        ),
                                 ),
                               ),
-                                                     ),
-                          ],
-                        )
-                    ),
-                  );}
-                );
-
-              },
-            );
-          },
-          child: const Icon(Icons.add),
-        ),
+                            ],
+                          )),
+                    );
+                  });
+                },
+              );
+            },
+            child: const Icon(Icons.add),
+          ),
           backgroundColor: const Color(0xff1A6293),
           body: SafeArea(
             child: Stack(
@@ -268,65 +277,69 @@ class _ProjectsState extends State<Projects> {
                     child: Image.asset('assets/Backgrounds/Spline.png')),
                 Positioned.fill(
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-                    )),
+                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
+                )),
                 const RiveAnimation.asset('assets/RiveAssets/shapes.riv'),
                 Positioned.fill(
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-                      child: const SizedBox(),
-                    )),
+                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
+                  child: const SizedBox(),
+                )),
                 SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SingleChildScrollView(
-                      child: Column(
-
-                          children: [
-                            Text("${AppLocalizations.of(context)!.myProject}",
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                            projectLoading==false?Column(
-                              children: [
-                                projects.projectList!.isNotEmpty ?
-                                SizedBox(
-                                  child: ListView.builder(
-                                     shrinkWrap: true,
-                                    physics: const ScrollPhysics(),
-                                    scrollDirection: Axis.vertical,
-                                    itemBuilder:
-                                        (BuildContext context, int index) =>
-                                            buildProjects(
-                                            pr: projects.projectList![index],
-                                            index: index, context: context),
-                                    itemCount: projects.projectList!.length,
-                                  ),
-                                ): const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 300),
-                                  child: Center(
-                                    child: Text(
-                                      "No Projects Found",
-                                      style: TextStyle(
-                                          fontSize: 20, fontWeight: FontWeight.bold),
-                                    ),
+                      child: Column(children: [
+                        Text(
+                          "${AppLocalizations.of(context)!.myProject}",
+                          style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        projectLoading == false
+                            ? Column(
+                                children: [
+                                  projects.projectList!.isNotEmpty
+                                      ? SizedBox(
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            physics: const ScrollPhysics(),
+                                            scrollDirection: Axis.vertical,
+                                            itemBuilder: (BuildContext context,
+                                                    int index) =>
+                                                buildProjects(
+                                                    pr: projects
+                                                        .projectList![index],
+                                                    index: index,
+                                                    context: context),
+                                            itemCount:
+                                                projects.projectList!.length,
+                                          ),
+                                        )
+                                      : const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 300),
+                                          child: Center(
+                                            child: Text(
+                                              "No Projects Found",
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                ],
+                              )
+                            : const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 300),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.indigo,
                                   ),
                                 ),
-                              ],
-                            ):const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 300),
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.indigo,
-
-                                ),
                               ),
-                            ),
-
-                          ]),
+                      ]),
                     ),
                   ),
                 )
@@ -335,26 +348,31 @@ class _ProjectsState extends State<Projects> {
           )),
     );
   }
-  Widget buildProjects({required ProjectsModel pr, required int index, required BuildContext context, }) {
+
+  Widget buildProjects({
+    required ProjectsModel pr,
+    required int index,
+    required BuildContext context,
+  }) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>  MultiScreenForTasks(
-             projectId: pr.project_id!,
-              organization_id: widget.organizationId!,
-              currentIndex: 0,
-              organizationsArabicName: widget.organizationsArabicName,
-              oranizaionsList: widget.oranizaionsList,
-              userId: widget.userId,
-              organizationsName: widget.organizationsName,
-              phaseName: '', phaseId: null,
-
-            )));
+            MaterialPageRoute(
+                builder: (context) => MultiScreenForTasks(
+                      projectId: pr.project_id!,
+                      organization_id: widget.organizationId!,
+                      currentIndex: 0,
+                      organizationsArabicName: widget.organizationsArabicName,
+                      oranizaionsList: widget.oranizaionsList,
+                      userId: widget.userId,
+                      organizationsName: widget.organizationsName,
+                      phaseName: '',
+                      phaseId: null,
+                    )));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-
         margin: const EdgeInsets.all(20),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
@@ -371,6 +389,7 @@ class _ProjectsState extends State<Projects> {
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
             Text(
@@ -381,12 +400,313 @@ class _ProjectsState extends State<Projects> {
                 color: Colors.white,
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      showModalBottomSheet<void>(
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return StatefulBuilder(builder:
+                              (BuildContext context, StateSetter setState) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  top: 20,
+                                  right: 20,
+                                  left: 20,
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom),
+                              child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height / 2,
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.1,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Text(
+                                          "Edit Project Name",
+                                          style: TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 20),
+                                        child: Container(
+                                          width: 300,
+                                          child: TextFormField(
+                                            controller: projectName,
+                                            decoration: new InputDecoration(
+                                              labelText:
+                                                  "New Project Name",
+                                              fillColor: Colors.white,
+                                              border: new OutlineInputBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        25.0),
+                                                borderSide: new BorderSide(),
+                                              ),
+                                              //fillColor: Colors.green
+                                            ),
+                                            keyboardType:
+                                                TextInputType.emailAddress,
+                                            style: new TextStyle(
+                                              fontFamily: "Poppins",
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        width: 300,
+                                        child: TextFormField(
+                                          controller: projectDescription,
+                                          decoration: new InputDecoration(
+                                            labelText:
+                                                "New Project Description",
+                                            fillColor: Colors.white,
+                                            border: new OutlineInputBorder(
+                                              borderRadius:
+                                                  new BorderRadius.circular(
+                                                      25.0),
+                                              borderSide: new BorderSide(),
+                                            ),
+                                            //fillColor: Colors.green
+                                          ),
+                                          keyboardType:
+                                              TextInputType.emailAddress,
+                                          style: new TextStyle(
+                                            fontFamily: "Poppins",
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Center(
+                                        child: Container(
+                                          height: 50,
+                                          width: 200,
+                                          child: clickAdd == false
+                                              ? FancyContainer(
+                                                  textColor: Colors.white,
+                                                  onTap: () async {
+                                                    setState(() {
+                                                      clickAdd = true;
+                                                    });
+                                                    await DioHelper.patchData(
+                                                      url:
+                                                          "api/organizations/${widget.organizationId}/projects/${pr.project_id}",
+                                                      formData: {
+                                                        "name":
+                                                            "${projectName.text}",
+                                                        "description":
+                                                            "${projectDescription.text}",
+                                                      },
+                                                    ).then((value) {
+                                                      print(projectName.text);
+                                                      print(projectDescription
+                                                          .text);
+                                                      print(value.data);
+                                                      print(
+                                                          "Tmaaaaaaaaaaaaaaaaaaaaaaaaam");
+                                                      setState(() {});
+                                                      clickAdd = false;
+                                                      getProjects();
+
+                                                      Navigator.pop(context);
+                                                      print("Shaaaaaaaaatr");
+                                                    }).catchError((error) {
+                                                      clickAdd = false;
+
+                                                      setState(() {});
+                                                      if (projectName
+                                                          .text.isEmpty) {
+                                                        Flushbar(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          message:
+                                                              "${AppLocalizations.of(context)!.projectNameisEmpty}",
+                                                          icon: Icon(
+                                                            Icons.info_outline,
+                                                            size: 30.0,
+                                                            color: Colors.black,
+                                                          ),
+                                                          duration: Duration(
+                                                              seconds: 3),
+                                                          leftBarIndicatorColor:
+                                                              Colors.blue[300],
+                                                        )..show(context);
+                                                      } else if (projectDescription
+                                                          .text.isEmpty) {
+                                                        Flushbar(
+                                                          message:
+                                                              "${AppLocalizations.of(context)!.projectDescisEmpty}",
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          icon: Icon(
+                                                            Icons.info_outline,
+                                                            size: 30.0,
+                                                            color: Colors.black,
+                                                          ),
+                                                          duration: Duration(
+                                                              seconds: 3),
+                                                          leftBarIndicatorColor:
+                                                              Colors.blue[300],
+                                                        )..show(context);
+                                                      } else {
+                                                        Flushbar(
+                                                          message:
+                                                              "${AppLocalizations.of(context)!.project_error}",
+                                                          icon: Icon(
+                                                            Icons.info_outline,
+                                                            size: 30.0,
+                                                            color: Colors
+                                                                .blue[300],
+                                                          ),
+                                                          duration: Duration(
+                                                              seconds: 3),
+                                                          leftBarIndicatorColor:
+                                                              Colors.blue[300],
+                                                        )..show(context);
+                                                      }
+
+                                                      print(
+                                                          error.response.data);
+                                                    });
+                                                  },
+                                                  title:
+                                                      '${AppLocalizations.of(context)!.add}',
+                                                  color1: Colors.purple,
+                                                  color2: Colors.lightBlue,
+                                                )
+                                              : Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: Colors.indigo,
+                                                  ),
+                                                ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            );
+                          });
+                        },
+                      );
+                    },
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                    )),
+                IconButton(
+                    onPressed: () async {
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            //  title: const Text('Basic dialog title'),
+                            content:  Text(
+                              'Delete this project ?',
+                            ),
+                            actions: [
+                              Row(
+                                children: [
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      textStyle: Theme.of(context).textTheme.labelLarge,
+                                    ),
+                                    child:  Text('${AppLocalizations.of(context)!.yes}'),
+                                    onPressed: () async {
+                                      setState(() {
+
+                                      });
+                                      await DioHelper.deleteData(
+                                        url:
+                                        "api/organizations/${widget.organizationId}/projects/${pr.project_id}",
+                                      ).then((value) {
+                                        Navigator.pop(context);
+
+                                        setState(() {
+                                          projects.projectList?.removeAt(index);
+                                        });
+                                        print('mbroook');
+                                        Flushbar(
+                                          messageColor: Colors.black,
+                                          backgroundColor:
+                                          Colors.green,
+                                          message:
+                                          "Project deleted",
+                                          icon: Icon(
+                                            Icons.verified,
+                                            size: 30.0,
+                                            color: Colors.white,
+                                          ),
+                                          duration:
+                                          Duration(seconds: 3),
+                                          leftBarIndicatorColor:
+                                          Colors.blue[300],
+                                        )..show(context);
+                                      }).catchError((error){
+                                        Navigator.pop(context);
+                                        setState(() {
+
+                                        });
+                                        Flushbar(
+                                          message:
+                                          "${error.response.data['message']}",
+                                          icon: Icon(
+                                            Icons.info_outline,
+                                            size: 30.0,
+                                            color: Colors
+                                                .blue[300],
+                                          ),
+                                          duration: Duration(
+                                              seconds: 3),
+                                          leftBarIndicatorColor:
+                                          Colors.blue[300],
+                                        )..show(context);
+                                      });
+                                    },
+                                  ),
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      textStyle: Theme.of(context).textTheme.labelLarge,
+                                    ),
+                                    child:  Text('${AppLocalizations.of(context)!.no}'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                                // crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    )),
+              ],
+            ),
           ],
         ),
-
-
       ),
     );
-
   }
 }
