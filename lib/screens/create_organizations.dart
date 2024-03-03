@@ -413,7 +413,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                                 loadingSend = true;
                                                 await DioHelper.postData(
                                                   url: "api/join-organization",
-                                                  formData: {
+                                                  data: {
                                                     "code": bussinessCode.text,
                                                   },
                                                 ).then((value) {
@@ -1116,7 +1116,7 @@ class _CreateOrganizationsState extends State<CreateOrganizations> {
                                           }
                                           await DioHelper.postFormData(
                                             url: "api/organizations",
-                                            formData: {
+                                            data: {
                                               "name": organizationName.text,
                                               "name_ar":
                                                   organizationNameArabic.text,

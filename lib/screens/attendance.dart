@@ -341,7 +341,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                       await _getCurrentPosition();
                                       await DioHelper.postData(
                                         url: "api/organizations/${widget.organizationId}/attend",
-                                        formData: {
+                                        data: {
                                           "longitude":_currentPosition!.longitude,
                                           "latitude":_currentPosition!.latitude,
                                         },
@@ -431,7 +431,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                 await _getCurrentPosition();
                                 await DioHelper.postData(
                                   url: "api/organizations/${widget.organizationId}/attend",
-                                  formData: {
+                                  data: {
                                     "longitude":_currentPosition!.longitude,
                                     "latitude":_currentPosition!.latitude,
                                   },
@@ -522,7 +522,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                       await _getCurrentPosition();
                                       await DioHelper.postData(
                                         url: "api/organizations/${widget.organizationId}/leave",
-                                        formData: {
+                                        data: {
                                           "longitude":_currentPosition!.longitude,
                                           "latitude":_currentPosition!.latitude,
                                         },
@@ -599,7 +599,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                   await _getCurrentPosition();
                                   await DioHelper.postData(
                                     url: "api/organizations/${widget.organizationId}/leave",
-                                    formData: {
+                                    data: {
                                       "longitude":_currentPosition!.longitude,
                                       "latitude":_currentPosition!.latitude,
                                     },

@@ -447,6 +447,8 @@ class _ChooseListState extends State<ChooseList> {
                                         Navigator.push(context,
                                             MaterialPageRoute(builder: (context) =>  TaskTable(
                                               organizationId: widget.organizationId,
+                                              userId: widget.userId,
+
                                             )));
                                       },
                                     ),

@@ -30,47 +30,45 @@ class CloseTasks extends StatefulWidget {
   int? userId;
   late OrganizationsList oranizaionsList;
   String? organizationsName;
-  String?organizationsArabicName;
-  String?phaseName;
+  String? organizationsArabicName;
+  String? phaseName;
 
-
-  CloseTasks({
-    required this.projectId,
-    required this.organization_id,
-    required this.phase_id,
-    required this.userId,
-    required this.organizationsArabicName,
-    required this.organizationsName,
-    required this.oranizaionsList,
-    required this.phaseName
-  });
+  CloseTasks(
+      {required this.projectId,
+      required this.organization_id,
+      required this.phase_id,
+      required this.userId,
+      required this.organizationsArabicName,
+      required this.organizationsName,
+      required this.oranizaionsList,
+      required this.phaseName});
   @override
   State<CloseTasks> createState() => _CloseTasksState();
 }
 
 class _CloseTasksState extends State<CloseTasks> {
-  bool showLoading =false;
+  bool showLoading = false;
   late TasksList task_list;
   var taskName = TextEditingController();
   var taskDescription = TextEditingController();
   bool clickAdd = false;
 
-
   getTasks() async {
     showLoading = true;
     await DioHelper.getData(
-      url: "api/current-tasks?organization_id=${widget.organization_id}&phase_id=${widget.phase_id}",
+      url:
+          "api/current-tasks?organization_id=${widget.organization_id}&phase_id=${widget.phase_id}",
     ).then((response) {
       task_list = TasksList.fromJson(response.data);
       print(response.data);
       setState(() {
         showLoading = false;
       });
-    }).catchError((error){
+    }).catchError((error) {
       print(error.response.data);
     });
-
   }
+
   @override
   void initState() {
     print(widget.phase_id);
@@ -91,14 +89,14 @@ class _CloseTasksState extends State<CloseTasks> {
               child: Image.asset('assets/Backgrounds/Spline.png')),
           Positioned.fill(
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-              )),
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
+          )),
           const RiveAnimation.asset('assets/RiveAssets/shapes.riv'),
           Positioned.fill(
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-                child: const SizedBox(),
-              )),
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
+            child: const SizedBox(),
+          )),
           Container(
             width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
@@ -109,78 +107,93 @@ class _CloseTasksState extends State<CloseTasks> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("${AppLocalizations.of(context)!.tasks}",
+                        Text(
+                          AppLocalizations.of(context)!.tasks,
                           style: TextStyle(
                               fontSize: 40,
                               color: Colors.white,
-                              fontWeight: FontWeight.bold
-                          ),
+                              fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(width: 20,),
+                        SizedBox(
+                          width: 20,
+                        ),
                         CircleAvatar(
-                          child: IconButton(onPressed: (){
-                          /*  if(widget.phaseName!.isEmpty){
+                          child: IconButton(
+                              onPressed: () {
+                                /*  if(widget.phaseName!.isEmpty){
                               widget.phase_id =null;
                             }*/
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) =>  MultiScreenForTasks(
-                                  projectId: widget.projectId,
-                                  organization_id: widget.organization_id,
-                                  currentIndex: 2,
-                                  organizationsArabicName: widget.organizationsArabicName,
-                                  oranizaionsList: widget.oranizaionsList,
-                                  userId: widget.userId,
-                                  organizationsName: widget.organizationsName,
-                                  phaseName: widget.phaseName,
-                                  phaseId: widget.phase_id,
-
-                                )
-                                ));
-                          }
-                              , icon: Icon(Icons.add,color: Colors.white,)),
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MultiScreenForTasks(
+                                              projectId: widget.projectId,
+                                              organization_id:
+                                                  widget.organization_id,
+                                              currentIndex: 2,
+                                              organizationsArabicName: widget
+                                                  .organizationsArabicName,
+                                              oranizaionsList:
+                                                  widget.oranizaionsList,
+                                              userId: widget.userId,
+                                              organizationsName:
+                                                  widget.organizationsName,
+                                              phaseName: widget.phaseName,
+                                              phaseId: widget.phase_id,
+                                            )));
+                              },
+                              icon: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              )),
                           backgroundColor: Colors.black45,
                         )
                       ],
                     ),
                   ),
-                  Column(
-                      children: [
-                        showLoading==false?Column(
-                          children: [
-                            task_list.tasksList!.isNotEmpty ?
-                            SizedBox(
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: const ScrollPhysics(),
-                                scrollDirection: Axis.vertical,
-                                itemBuilder:
-                                    (BuildContext context, int index) =>
-                                    buildCloseTasks(
-                                      task: task_list.tasksList![index],
-                                      index: index, ),
-                                itemCount: task_list.tasksList!.length,
+                  Column(children: [
+                    showLoading == false
+                        ? Column(
+                            children: [
+                              task_list.tasksList!.isNotEmpty
+                                  ? SizedBox(
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: const ScrollPhysics(),
+                                        scrollDirection: Axis.vertical,
+                                        itemBuilder:
+                                            (BuildContext context, int index) =>
+                                                buildCloseTasks(
+                                          task: task_list.tasksList![index],
+                                          index: index,
+                                        ),
+                                        itemCount: task_list.tasksList!.length,
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 300),
+                                      child: Center(
+                                        child: Text(
+                                          AppLocalizations.of(context)!.noTask,
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                            ],
+                          )
+                        : const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 300),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.indigo,
                               ),
-                            ):  Padding(
-                              padding: EdgeInsets.symmetric(vertical: 300),
-                              child: Center(
-                                child: Text(
-                                  "${AppLocalizations.of(context)!.noTask}",
-                                  style: TextStyle(
-                                      fontSize: 20, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ):const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 300),
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.indigo,
                             ),
                           ),
-                        ),
-                      ]),
+                  ]),
                 ],
               ),
             ),
@@ -188,10 +201,12 @@ class _CloseTasksState extends State<CloseTasks> {
         ],
       ),
     );
-
   }
-  Widget buildCloseTasks({required TasksModel task, required int index, }) {
 
+  Widget buildCloseTasks({
+    required TasksModel task,
+    required int index,
+  }) {
     return Container(
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.all(20),
@@ -214,14 +229,13 @@ class _CloseTasksState extends State<CloseTasks> {
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.green,
-            
                     ),
                   ),
                 ),
                 Row(
                   children: [
                     Text(
-                      '${AppLocalizations.of(context)!.startTask}',
+                      AppLocalizations.of(context)!.startTask,
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -237,14 +251,13 @@ class _CloseTasksState extends State<CloseTasks> {
                         color: Colors.white,
                       ),
                       textAlign: TextAlign.center,
-
                     ),
                   ],
                 ),
                 Row(
                   children: [
                     Text(
-                      '${AppLocalizations.of(context)!.endDay}',
+                      AppLocalizations.of(context)!.endDay,
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -266,6 +279,8 @@ class _CloseTasksState extends State<CloseTasks> {
                   children: [
                     IconButton(
                         onPressed: () {
+                          taskName.text = task.task_name!;
+
                           showModalBottomSheet<void>(
                             isScrollControlled: true,
                             context: context,
@@ -277,13 +292,15 @@ class _CloseTasksState extends State<CloseTasks> {
                                       top: 20,
                                       right: 20,
                                       left: 20,
-                                      bottom:
-                                      MediaQuery.of(context).viewInsets.bottom),
+                                      bottom: MediaQuery.of(context)
+                                          .viewInsets
+                                          .bottom),
                                   child: Container(
                                       height:
-                                      MediaQuery.of(context).size.height / 2,
-                                      width:
-                                      MediaQuery.of(context).size.width / 1.1,
+                                          MediaQuery.of(context).size.height /
+                                              2,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.1,
                                       child: Column(
                                         children: [
                                           Padding(
@@ -296,26 +313,27 @@ class _CloseTasksState extends State<CloseTasks> {
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                            const EdgeInsets.only(bottom: 20),
+                                            padding: const EdgeInsets.only(
+                                                bottom: 20),
                                             child: Container(
                                               width: 300,
                                               child: TextFormField(
                                                 controller: taskName,
                                                 decoration: new InputDecoration(
-                                                  labelText:
-                                                  "New Task Name",
+                                                  labelText: "New Task Name",
                                                   fillColor: Colors.white,
-                                                  border: new OutlineInputBorder(
+                                                  border:
+                                                      new OutlineInputBorder(
                                                     borderRadius:
-                                                    new BorderRadius.circular(
-                                                        25.0),
-                                                    borderSide: new BorderSide(),
+                                                        new BorderRadius
+                                                            .circular(25.0),
+                                                    borderSide:
+                                                        new BorderSide(),
                                                   ),
                                                   //fillColor: Colors.green
                                                 ),
                                                 keyboardType:
-                                                TextInputType.emailAddress,
+                                                    TextInputType.emailAddress,
                                                 style: new TextStyle(
                                                   fontFamily: "Poppins",
                                                 ),
@@ -334,18 +352,18 @@ class _CloseTasksState extends State<CloseTasks> {
                                               controller: taskDescription,
                                               decoration: new InputDecoration(
                                                 labelText:
-                                                "New Task Description",
+                                                    "New Task Description",
                                                 fillColor: Colors.white,
                                                 border: new OutlineInputBorder(
                                                   borderRadius:
-                                                  new BorderRadius.circular(
-                                                      25.0),
+                                                      new BorderRadius.circular(
+                                                          25.0),
                                                   borderSide: new BorderSide(),
                                                 ),
                                                 //fillColor: Colors.green
                                               ),
                                               keyboardType:
-                                              TextInputType.emailAddress,
+                                                  TextInputType.emailAddress,
                                               style: new TextStyle(
                                                 fontFamily: "Poppins",
                                               ),
@@ -360,103 +378,100 @@ class _CloseTasksState extends State<CloseTasks> {
                                               width: 200,
                                               child: clickAdd == false
                                                   ? FancyContainer(
-                                                textColor: Colors.white,
-                                                onTap: () async {
-                                                  setState(() {
-                                                    clickAdd = true;
-                                                  });
-                                                  await DioHelper.patchData(
-                                                    url:
-                                                    "api/organizations/${widget.organization_id}/tasks/${task.task_id}",
-                                                    formData: {
-                                                      "name":
-                                                      "${taskName.text}",
-                                                      "description":
-                                                      "${taskDescription.text}",
-                                                    },
-                                                  ).then((value) {
-                                                    print(taskName.text);
-                                                    print(taskDescription
-                                                        .text);
-                                                    print(value.data);
-                                                    print(
-                                                        "Tmaaaaaaaaaaaaaaaaaaaaaaaaam");
-                                                    setState(() {});
-                                                    clickAdd = false;
-                                                    getTasks();
+                                                      textColor: Colors.white,
+                                                      onTap: () async {
+                                                        setState(() {
+                                                          clickAdd = true;
+                                                        });
+                                                        await DioHelper
+                                                            .patchData(
+                                                          url:
+                                                              "api/tasks/${task.task_id}",
+                                                          data: {
+                                                            "name":
+                                                                taskName.text,
+                                                            "description":
+                                                                taskDescription
+                                                                    .text,
+                                                          },
+                                                        ).then((value) {
+                                                          print(taskName.text);
+                                                          print(taskDescription
+                                                              .text);
+                                                          print(value.data);
+                                                          print(
+                                                              "Tmaaaaaaaaaaaaaaaaaaaaaaaaam");
+                                                          setState(() {});
+                                                          clickAdd = false;
+                                                          getTasks();
 
-                                                    Navigator.pop(context);
-                                                    print("Shaaaaaaaaatr");
-                                                  }).catchError((error) {
-                                                    clickAdd = false;
+                                                          Navigator.pop(
+                                                              context);
+                                                          print(
+                                                              "Shaaaaaaaaatr");
+                                                        }).catchError((error) {
+                                                          clickAdd = false;
 
-                                                    setState(() {});
-                                                    if (taskName
-                                                        .text.isEmpty) {
-                                                      Flushbar(
-                                                        backgroundColor:
-                                                        Colors.red,
-                                                        message:
-                                                        "${AppLocalizations.of(context)!.projectNameisEmpty}",
-                                                        icon: Icon(
-                                                          Icons.info_outline,
-                                                          size: 30.0,
-                                                          color: Colors.black,
-                                                        ),
-                                                        duration: Duration(
-                                                            seconds: 3),
-                                                        leftBarIndicatorColor:
-                                                        Colors.blue[300],
-                                                      )..show(context);
-                                                    } else if (taskDescription
-                                                        .text.isEmpty) {
-                                                      Flushbar(
-                                                        message:
-                                                        "${AppLocalizations.of(context)!.projectDescisEmpty}",
-                                                        backgroundColor:
-                                                        Colors.red,
-                                                        icon: Icon(
-                                                          Icons.info_outline,
-                                                          size: 30.0,
-                                                          color: Colors.black,
-                                                        ),
-                                                        duration: Duration(
-                                                            seconds: 3),
-                                                        leftBarIndicatorColor:
-                                                        Colors.blue[300],
-                                                      )..show(context);
-                                                    } else {
-                                                      Flushbar(
-                                                        message:
-                                                        "${AppLocalizations.of(context)!.project_error}",
-                                                        icon: Icon(
-                                                          Icons.info_outline,
-                                                          size: 30.0,
-                                                          color: Colors
-                                                              .blue[300],
-                                                        ),
-                                                        duration: Duration(
-                                                            seconds: 3),
-                                                        leftBarIndicatorColor:
-                                                        Colors.blue[300],
-                                                      )..show(context);
-                                                    }
+                                                          setState(() {});
+                                                          if (taskName
+                                                              .text.isEmpty) {
+                                                            Flushbar(
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              message: AppLocalizations
+                                                                      .of(context)!
+                                                                  .projectNameisEmpty,
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .info_outline,
+                                                                size: 30.0,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              duration:
+                                                                  Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              leftBarIndicatorColor:
+                                                                  Colors.blue[
+                                                                      300],
+                                                            )..show(context);
+                                                          }
+                                                          else {
+                                                            Flushbar(
+                                                              message: '${error.response.data['message']}',
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .info_outline,
+                                                                size: 30.0,
+                                                                color: Colors
+                                                                    .blue[300],
+                                                              ),
+                                                              duration:
+                                                                  Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              leftBarIndicatorColor:
+                                                                  Colors.blue[
+                                                                      300],
+                                                            )..show(context);
+                                                          }
 
-                                                    print(
-                                                        error.response.data);
-                                                  });
-                                                },
-                                                title:
-                                                '${AppLocalizations.of(context)!.add}',
-                                                color1: Colors.purple,
-                                                color2: Colors.lightBlue,
-                                              )
+                                                          print(error
+                                                              .response.data);
+                                                        });
+                                                      },
+                                                      title:
+                                                          'Save',
+                                                      color1: Colors.purple,
+                                                      color2: Colors.lightBlue,
+                                                    )
                                                   : Center(
-                                                child:
-                                                CircularProgressIndicator(
-                                                  color: Colors.indigo,
-                                                ),
-                                              ),
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color: Colors.indigo,
+                                                      ),
+                                                    ),
                                             ),
                                           ),
                                         ],
@@ -477,74 +492,70 @@ class _CloseTasksState extends State<CloseTasks> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 //  title: const Text('Basic dialog title'),
-                                content:  Text(
-                                  'Delete this project ?',
+                                content: Text(
+                                  'Delete this task ?',
                                 ),
                                 actions: [
                                   Row(
                                     children: [
                                       TextButton(
                                         style: TextButton.styleFrom(
-                                          textStyle: Theme.of(context).textTheme.labelLarge,
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge,
                                         ),
-                                        child:  Text('${AppLocalizations.of(context)!.yes}'),
+                                        child: Text(
+                                            AppLocalizations.of(context)!.yes),
                                         onPressed: () async {
-                                          setState(() {
-
-                                          });
+                                          setState(() {});
                                           await DioHelper.deleteData(
-                                            url:
-                                            "api/organizations/${widget.organization_id}/tasks/${task.task_id}",
+                                            url: "api/tasks/${task.task_id}",
                                           ).then((value) {
                                             Navigator.pop(context);
-
                                             setState(() {
-                                              task_list..tasksList?.removeAt(index);
+                                              task_list
+                                                ..tasksList?.removeAt(index);
                                             });
                                             print('mbroook');
                                             Flushbar(
                                               messageColor: Colors.black,
-                                              backgroundColor:
-                                              Colors.green,
-                                              message:
-                                              "Project deleted",
+                                              backgroundColor: Colors.green,
+                                              message: "Project deleted",
                                               icon: Icon(
                                                 Icons.verified,
                                                 size: 30.0,
                                                 color: Colors.white,
                                               ),
-                                              duration:
-                                              Duration(seconds: 3),
+                                              duration: Duration(seconds: 3),
                                               leftBarIndicatorColor:
-                                              Colors.blue[300],
+                                                  Colors.blue[300],
                                             )..show(context);
-                                          }).catchError((error){
+                                          }).catchError((error) {
                                             Navigator.pop(context);
-                                            setState(() {
-
-                                            });
+                                            setState(() {});
                                             Flushbar(
                                               message:
-                                              "${error.response.data['message']}",
+                                                  "${error.response.data['message']}",
                                               icon: Icon(
                                                 Icons.info_outline,
                                                 size: 30.0,
-                                                color: Colors
-                                                    .blue[300],
+                                                color: Colors.blue[300],
                                               ),
-                                              duration: Duration(
-                                                  seconds: 3),
+                                              duration: Duration(seconds: 3),
                                               leftBarIndicatorColor:
-                                              Colors.blue[300],
+                                                  Colors.blue[300],
                                             )..show(context);
                                           });
                                         },
                                       ),
                                       TextButton(
                                         style: TextButton.styleFrom(
-                                          textStyle: Theme.of(context).textTheme.labelLarge,
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge,
                                         ),
-                                        child:  Text('${AppLocalizations.of(context)!.no}'),
+                                        child: Text(
+                                            AppLocalizations.of(context)!.no),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
@@ -557,7 +568,6 @@ class _CloseTasksState extends State<CloseTasks> {
                               );
                             },
                           );
-
                         },
                         icon: Icon(
                           Icons.delete,
@@ -565,82 +575,74 @@ class _CloseTasksState extends State<CloseTasks> {
                         )),
                   ],
                 ),
-
               ],
             ),
           ),
           Checkbox(
             checkColor: Colors.black,
             fillColor: MaterialStateProperty.all(Colors.white),
-              value: task.close,
-              onChanged: (value) {
-                if (task.close = value!) {
-                  showDialog(
-                    context: (context),
-                    builder: (contextop) => AlertDialog(
-                      content:  Text(
-                        "${AppLocalizations.of(context)!.finishTask}",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      actions: [
-                        TextButton(
-                          child:  Text("${AppLocalizations.of(context)!.yes}"),
-                          onPressed: () {
-                            DioHelper.patchData(
-                                url: "api/organizations/${widget.organization_id}/tasks/${task.task_id}",
-                                formData: {
-                                  "status": "COMPLETED",
-                                }).then((v) {
-                              print("goooooooooooooooooood");
-                              setState(() {
-                                task_list.tasksList!.removeAt(index);
-                              });
-                            }).catchError((e) {
-                              print(e);
-                              setState(() {
-                                task.close = false;
-                              });
-                              showDialog(
-                                context: (context),
-                                builder: (contextotllp) =>  AlertDialog(
-                                  content: Text(
-                                    "${e.response.data['en']}",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              );
-
-
-                              // print('errrrrrrrrr');
-                            });
-
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child:  Text("${AppLocalizations.of(context)!.no}"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            task.close = false;
-                            setState(() {});
-                          },
-                        ),
-                      ],
+            value: task.close,
+            onChanged: (value) {
+              if (task.close = value!) {
+                showDialog(
+                  context: (context),
+                  builder: (contextop) => AlertDialog(
+                    content: Text(
+                      AppLocalizations.of(context)!.finishTask,
+                      style: TextStyle(fontSize: 20),
                     ),
-                  );
-                  setState(() {});
-                }
-              },
+                    actions: [
+                      TextButton(
+                        child: Text(AppLocalizations.of(context)!.yes),
+                        onPressed: () {
+                          DioHelper.patchData(
+                              url:
+                                  "api/tasks/${task.task_id}",
+                              data: {
+                                "status": "COMPLETED",
+                              }).then((v) {
+                            print("goooooooooooooooooood");
+                            setState(() {
+                              task_list.tasksList!.removeAt(index);
+                            });
+                          }).catchError((e) {
+                            print(e);
+                            setState(() {
+                              task.close = false;
+                            });
+                            showDialog(
+                              context: (context),
+                              builder: (contextotllp) => AlertDialog(
+                                content: Text(
+                                  "${e.response.data['en']}",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            );
 
-              ),
+                            // print('errrrrrrrrr');
+                          });
 
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: Text(AppLocalizations.of(context)!.no),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          task.close = false;
+                          setState(() {});
+                        },
+                      ),
+                    ],
+                  ),
+                );
+                setState(() {});
+              }
+            },
+          ),
         ],
       ),
-
-
     );
-
   }
-
-
 }

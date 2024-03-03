@@ -203,7 +203,7 @@ class _ShowpermitState extends State<Showpermit> {
                                 onPressed: () async {
                                   await DioHelper.postData(
                                     url: "api/update-status/${per.id}",
-                                    formData: {
+                                    data: {
                                       "status": true,
                                     },
                                   ).then((value) {
@@ -265,7 +265,7 @@ class _ShowpermitState extends State<Showpermit> {
                                 onPressed: () async {
                                   await DioHelper.postData(
                                     url: "api/update-status/${per.id}",
-                                    formData: {
+                                    data: {
                                       "status": false,
                                     },
                                   ).then((value) {

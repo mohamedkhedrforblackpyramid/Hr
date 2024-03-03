@@ -290,7 +290,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                   } else {
                                     await DioHelper.postData(
                                       url: "api/auth/register",
-                                      formData: {
+                                      data: {
                                         "name": userNameController.text,
                                         "email": emailController.text,
                                         "national_id":

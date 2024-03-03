@@ -26,23 +26,19 @@ class Addphase extends StatefulWidget {
   int? userId;
   late OrganizationsList oranizaionsList;
   String? organizationsName;
-  String?organizationsArabicName;
-  int?phaseId;
+  String? organizationsArabicName;
+  int? phaseId;
   String? phaseName;
 
-
-
-  Addphase({
-    required this.projectId,
-    required this.organization_id,
-    required this.userId,
-    required this.organizationsArabicName,
-    required this.organizationsName,
-    required this.oranizaionsList,
-    required this.phaseId,
-    required this.phaseName
-
-  });
+  Addphase(
+      {required this.projectId,
+      required this.organization_id,
+      required this.userId,
+      required this.organizationsArabicName,
+      required this.organizationsName,
+      required this.oranizaionsList,
+      required this.phaseId,
+      required this.phaseName});
   @override
   State<Addphase> createState() => _AddphaseState();
 }
@@ -55,18 +51,19 @@ class _AddphaseState extends State<Addphase> {
   var fromDateController = TextEditingController();
 
   bool clickAdd = false;
-  returnPage(){
+  returnPage() {
     Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) =>  Projects(
-          userId: widget.userId,
-          organizationId: widget.organization_id,
-          organizationsName: widget.organizationsName,
-          oranizaionsList: widget.oranizaionsList,
-          organizationsArabicName: widget.organizationsArabicName,
-        )
-        ));
+        MaterialPageRoute(
+            builder: (context) => Projects(
+                  userId: widget.userId,
+                  organizationId: widget.organization_id,
+                  organizationsName: widget.organizationsName,
+                  oranizaionsList: widget.oranizaionsList,
+                  organizationsArabicName: widget.organizationsArabicName,
+                )));
   }
+
   @override
   void initState() {
     super.initState();
@@ -75,7 +72,7 @@ class _AddphaseState extends State<Addphase> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         return returnPage();
       },
       child: Center(
@@ -86,11 +83,12 @@ class _AddphaseState extends State<Addphase> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(30.0),
-                  child: Text("${AppLocalizations.of(context)!.add_phase}",
-                    style: TextStyle(color: Colors.white70,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold
-                    ),
+                  child: Text(
+                    AppLocalizations.of(context)!.add_phase,
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
@@ -101,22 +99,22 @@ class _AddphaseState extends State<Addphase> {
                     child: TextField(
                       controller: phaseName,
                       autofocus: false,
-                      style: TextStyle(
-                          fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                      style:
+                          TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color(0xFCED3FF),
                         label: Padding(
                           padding: const EdgeInsets.all(10),
                           child: Text(
-                            '${AppLocalizations.of(context)!.phase_name}',
+                            AppLocalizations.of(context)!.phase_name,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
                         ),
                         contentPadding: const EdgeInsets.only(
-                            left: 14.0, bottom: 8.0, top: 8.0,right: 14),
+                            left: 14.0, bottom: 8.0, top: 8.0, right: 14),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                           borderRadius: BorderRadius.circular(25.7),
@@ -129,7 +127,6 @@ class _AddphaseState extends State<Addphase> {
                     ),
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.only(bottom: 40),
                   child: Theme(
@@ -138,22 +135,22 @@ class _AddphaseState extends State<Addphase> {
                     child: TextField(
                       controller: phasedesc,
                       autofocus: false,
-                      style: TextStyle(
-                          fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                      style:
+                          TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color(0xFCED3FF),
                         label: Padding(
                           padding: const EdgeInsets.all(10),
                           child: Text(
-                            '${AppLocalizations.of(context)!.phase_desc}',
+                            AppLocalizations.of(context)!.phase_desc,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
                         ),
                         contentPadding: const EdgeInsets.only(
-                            left: 14.0, bottom: 8.0, top: 8.0,right: 14),
+                            left: 14.0, bottom: 8.0, top: 8.0, right: 14),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                           borderRadius: BorderRadius.circular(25.7),
@@ -167,33 +164,28 @@ class _AddphaseState extends State<Addphase> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 40),
                   child: Theme(
-                    data: Theme.of(context).copyWith(
-                        splashColor:
-                        Colors.transparent),
+                    data: Theme.of(context)
+                        .copyWith(splashColor: Colors.transparent),
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         setState(() {
                           showDialog(
                             context: context,
-                            builder:
-                                (BuildContext context) {
+                            builder: (BuildContext context) {
                               return AlertDialog(
                                 //  backgroundColor: Color(0xff93D0FC),
                                 content: Container(
                                   width: 500,
                                   height: 450,
-                                  child: Calender(
-                                      onSubmit: (data) {
-                                        print("Heeeeeeloooooo");
-                                        print(data);
-                                        print("Heeeeeeloooooo");
-                                        fromDateController.text =
-                                            data;
-                                        setState(() {});
-                                      }),
+                                  child: Calender(onSubmit: (data) {
+                                    print("Heeeeeeloooooo");
+                                    print(data);
+                                    print("Heeeeeeloooooo");
+                                    fromDateController.text = data;
+                                    setState(() {});
+                                  }),
                                 ),
                               );
                             },
@@ -204,77 +196,58 @@ class _AddphaseState extends State<Addphase> {
                         enabled: false,
                         controller: fromDateController,
                         autofocus: false,
-                        style: TextStyle(
-                            fontSize: 22.0,
-                            color: Color(0xFFbdc6cf)),
+                        style:
+                            TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color(0xFCED3FF),
                           label: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
-                              '${AppLocalizations.of(context)!.dateFrom}',
+                              AppLocalizations.of(context)!.dateFrom,
                               style: TextStyle(
-                                  fontWeight:
-                                  FontWeight.bold,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
                           ),
-                          contentPadding:
-                          const EdgeInsets.only(
-                              left: 14.0,
-                              bottom: 8.0,
-                              top: 8.0),
-                          focusedBorder:
-                          OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.white),
-                            borderRadius:
-                            BorderRadius.circular(
-                                25.7),
+                          contentPadding: const EdgeInsets.only(
+                              left: 14.0, bottom: 8.0, top: 8.0),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(25.7),
                           ),
-                          enabledBorder:
-                          UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.white),
-                            borderRadius:
-                            BorderRadius.circular(
-                                25.7),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(25.7),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-
                 Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 40),
+                  padding: const EdgeInsets.only(bottom: 40),
                   child: Theme(
-                    data: Theme.of(context).copyWith(
-                        splashColor:
-                        Colors.transparent),
+                    data: Theme.of(context)
+                        .copyWith(splashColor: Colors.transparent),
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         setState(() {
                           showDialog(
                             context: context,
-                            builder:
-                                (BuildContext context) {
+                            builder: (BuildContext context) {
                               return AlertDialog(
                                 //  backgroundColor: Color(0xff93D0FC),
                                 content: Container(
                                   width: 500,
                                   height: 450,
-                                  child: Calender(
-                                      onSubmit: (data) {
-                                        print("Heeeeeeloooooo");
-                                        print(data);
-                                        print("Heeeeeeloooooo");
-                                        dueDateController.text =
-                                            data;
-                                        setState(() {});
-                                      }),
+                                  child: Calender(onSubmit: (data) {
+                                    print("Heeeeeeloooooo");
+                                    print(data);
+                                    print("Heeeeeeloooooo");
+                                    dueDateController.text = data;
+                                    setState(() {});
+                                  }),
                                 ),
                               );
                             },
@@ -286,209 +259,168 @@ class _AddphaseState extends State<Addphase> {
                         enabled: false,
                         controller: dueDateController,
                         autofocus: false,
-                        style: TextStyle(
-                            fontSize: 22.0,
-                            color: Color(0xFFbdc6cf)),
+                        style:
+                            TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color(0xFCED3FF),
                           label: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
-                              '${AppLocalizations.of(context)!.due_date}',
+                              AppLocalizations.of(context)!.due_date,
                               style: TextStyle(
-                                  fontWeight:
-                                  FontWeight.bold,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
                           ),
-                          contentPadding:
-                          const EdgeInsets.only(
-                              left: 14.0,
-                              bottom: 8.0,
-                              top: 8.0),
-                          focusedBorder:
-                          OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.white),
-                            borderRadius:
-                            BorderRadius.circular(
-                                25.7),
+                          contentPadding: const EdgeInsets.only(
+                              left: 14.0, bottom: 8.0, top: 8.0),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(25.7),
                           ),
-                          enabledBorder:
-                          UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.white),
-                            borderRadius:
-                            BorderRadius.circular(
-                                25.7),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(25.7),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-               clickAdd==false? Padding(
-                  padding: const EdgeInsets.only(bottom: 40),
-                  child: Center(
-                    child:  Container(
-                      height: 50,
-                      width: 200,
-                      child: FancyContainer(
-                        textColor: Colors.white,
-                        title: '${AppLocalizations.of(context)!.add}',
-                        color1: Colors.purple,
-                        color2: Colors.lightBlue,
-                        onTap: () async {
-                          setState(() {
+                clickAdd == false
+                    ? Padding(
+                        padding: const EdgeInsets.only(bottom: 40),
+                        child: Center(
+                          child: Container(
+                            height: 50,
+                            width: 200,
+                            child: FancyContainer(
+                              textColor: Colors.white,
+                              title: AppLocalizations.of(context)!.add,
+                              color1: Colors.purple,
+                              color2: Colors.lightBlue,
+                              onTap: () async {
+                                setState(() {});
+                                clickAdd = true;
+                                await DioHelper.postData(
+                                  url: "api/phases",
+                                  data: {
+                                    "name": phaseName.text,
+                                    "description": phasedesc.text,
+                                    "project_id": widget.projectId,
+                                    "due_date": dueDateController.text,
+                                    "from_date": fromDateController.text
+                                  },
+                                ).then((value) {
+                                  setState(() {});
+                                  clickAdd = false;
 
-                          });
-                          clickAdd = true;
-                          await DioHelper.postData(
-                            url: "api/organizations/${widget.organization_id}/phases",
-                            formData: {
-                              "name": "${phaseName.text}" ,
-                              "description": "${phasedesc.text}" ,
-                              "project_id": widget.projectId ,
-                              "due_date":"${dueDateController.text}",
-                              "from_date":"${fromDateController.text}"
-                            },
-                          ).then((value) {
-                            setState(() {
+                                  phaseName.text = '';
+                                  phasedesc.text = '';
+                                  dueDateController.text = '';
+                                  fromDateController.text = '';
 
-                            });
-                            clickAdd = false;
-
-                            phaseName.text='';
-                            phasedesc.text='';
-                            dueDateController.text = '';
-                            fromDateController.text = '';
-
-                            Flushbar(
-                              message: "${AppLocalizations.of(context)!.addedSuccessfully}",
-                              icon: Icon(
-                                Icons.verified_outlined,
-                                size: 30.0,
-                                color: Colors.green,
-                              ),
-                              duration: Duration(seconds: 3),
-                              leftBarIndicatorColor: Colors
-                                  .blue[300],
-                              backgroundColor: Colors.green,
-                            )
-                              ..show(context);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) =>  MultiScreenForTasks(
-                                  projectId: widget.projectId,
-                                  organization_id: widget.organization_id,
-                                  currentIndex: 0,
-                                  organizationsName: widget.organizationsName,
-                                  userId: widget.userId,
-                                  oranizaionsList: widget.oranizaionsList,
-                                  organizationsArabicName: widget.organizationsArabicName,
-                                  phaseName: '',
-                                  phaseId: widget.phaseId,
-                                )
-                                ));
-                          }).catchError((error){
-                            setState(() {
-
-                            });
-                            clickAdd=false;
-                            if(phaseName.text.isEmpty) {
-                              Flushbar(
-                                message: "${AppLocalizations.of(context)!.phaseName_isEmpty}",
-                                icon: Icon(
-                                  Icons.info_outline,
-                                  size: 30.0,
-                                  color: Colors.black,
-                                ),
-                                duration: Duration(seconds: 3),
-                                leftBarIndicatorColor: Colors
-                                    .blue[300],
-                                backgroundColor: Colors.red,
-
-                              )
-                                ..show(context);
-                            }
-                            else if(phasedesc.text.isEmpty){
-                              Flushbar(
-                                message: "${AppLocalizations.of(context)!.phaseDesc_isEmpty}",
-                                icon: Icon(
-                                  Icons.info_outline,
-                                  size: 30.0,
-                                  color: Colors.blue[300],
-                                ),
-                                duration: Duration(seconds: 3),
-                                leftBarIndicatorColor: Colors
-                                    .blue[300],
-                                backgroundColor: Colors.red,
-                              )
-                                ..show(context);
-
-                            }
-                            else if(fromDateController.text.isEmpty){
-                              Flushbar(
-                                message: "${AppLocalizations.of(context)!.datefromIsEmpty}",
-                                icon: Icon(
-                                  Icons.info_outline,
-                                  size: 30.0,
-                                  color: Colors.blue[300],
-                                ),
-                                duration: Duration(seconds: 3),
-                                leftBarIndicatorColor: Colors
-                                    .blue[300],
-                                backgroundColor: Colors.red,
-                              )
-                                ..show(context);
-
-                            }
-                            else if(dueDateController.text.isEmpty){
-                              Flushbar(
-                                message: "${AppLocalizations.of(context)!.due_dateIsEmpty}",
-                                icon: Icon(
-                                  Icons.info_outline,
-                                  size: 30.0,
-                                  color: Colors.blue[300],
-                                ),
-                                duration: Duration(seconds: 3),
-                                leftBarIndicatorColor: Colors
-                                    .blue[300],
-                                backgroundColor: Colors.red,
-                              )
-                                ..show(context);
-
-                            }
-
-
-                            else{
-                              Flushbar(
-                                message: "${AppLocalizations.of(context)!.project_error}",
-                                icon: Icon(
-                                  Icons.info_outline,
-                                  size: 30.0,
-                                  color: Colors.blue[300],
-                                ),
-                                duration: Duration(seconds: 3),
-                                leftBarIndicatorColor: Colors
-                                    .blue[300],
-                              )
-                                ..show(context);
-                            }
-                            print(error.response.data);
-                          });
-                        },
+                                  Flushbar(
+                                    message: AppLocalizations.of(context)!
+                                        .addedSuccessfully,
+                                    icon: Icon(
+                                      Icons.verified_outlined,
+                                      size: 30.0,
+                                      color: Colors.green,
+                                    ),
+                                    duration: Duration(seconds: 3),
+                                    leftBarIndicatorColor: Colors.blue[300],
+                                    backgroundColor: Colors.green,
+                                  )..show(context);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              MultiScreenForTasks(
+                                                projectId: widget.projectId,
+                                                organization_id:
+                                                    widget.organization_id,
+                                                currentIndex: 0,
+                                                organizationsName:
+                                                    widget.organizationsName,
+                                                userId: widget.userId,
+                                                oranizaionsList:
+                                                    widget.oranizaionsList,
+                                                organizationsArabicName: widget
+                                                    .organizationsArabicName,
+                                                phaseName: '',
+                                                phaseId: widget.phaseId,
+                                              )));
+                                }).catchError((error) {
+                                  setState(() {});
+                                  clickAdd = false;
+                                  if (phaseName.text.isEmpty) {
+                                    Flushbar(
+                                      message: AppLocalizations.of(context)!
+                                          .phaseName_isEmpty,
+                                      icon: Icon(
+                                        Icons.info_outline,
+                                        size: 30.0,
+                                        color: Colors.black,
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      leftBarIndicatorColor: Colors.blue[300],
+                                      backgroundColor: Colors.red,
+                                    )..show(context);
+                                  }
+                                  else if (fromDateController.text.isEmpty) {
+                                    Flushbar(
+                                      message: AppLocalizations.of(context)!
+                                          .datefromIsEmpty,
+                                      icon: Icon(
+                                        Icons.info_outline,
+                                        size: 30.0,
+                                        color: Colors.blue[300],
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      leftBarIndicatorColor: Colors.blue[300],
+                                      backgroundColor: Colors.red,
+                                    )..show(context);
+                                  }
+                                  else if (dueDateController.text.isEmpty) {
+                                    Flushbar(
+                                      message: AppLocalizations.of(context)!
+                                          .due_dateIsEmpty,
+                                      icon: Icon(
+                                        Icons.info_outline,
+                                        size: 30.0,
+                                        color: Colors.blue[300],
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      leftBarIndicatorColor: Colors.blue[300],
+                                      backgroundColor: Colors.red,
+                                    )..show(context);
+                                  }
+                                  else {
+                                    Flushbar(
+                                      message: '${error.response.data['message']}',
+                                      icon: Icon(
+                                        Icons.info_outline,
+                                        size: 30.0,
+                                        color: Colors.blue[300],
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      leftBarIndicatorColor: Colors.blue[300],
+                                    )..show(context);
+                                  }
+                                  print(error.response.data);
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.indigo,
+                        ),
                       ),
-                    ),
-                  ),
-                ):Center(
-                 child: CircularProgressIndicator(
-                   color: Colors.indigo,
-                 ),
-               ),
-
-
               ],
             ),
           ),

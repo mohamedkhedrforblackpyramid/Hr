@@ -541,7 +541,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
     print(notesController.text);
     await DioHelper.postData(
       url: "api/vacancies",
-      formData: {
+      data: {
         //"from": '${dateController.text} ${timeFromController.text}',
         "to": '${dateController.text} ${timeToController.text}',
         'is_permit': true,
@@ -553,7 +553,6 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
       },
     ).then((value) {
       print(widget.organizationId);
-
       print(value.data);
       print(widget.userId);
       if (dateController.text == '') {
@@ -645,7 +644,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
     print(notesController.text);
     await DioHelper.postData(
       url: "api/vacancies",
-      formData: {
+      data: {
         "from": '${dateController.text} ${timeFromController.text}',
         //  "to": '${dateController.text} ${timeToController.text}' ,
         'is_permit': true,
@@ -700,6 +699,9 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
       }
       loadingSend = false;
       setState(() {});
+      dateController.text='';
+      timeToController.text='';
+      timeFromController.text='';
     }).catchError((error) {
       print(error);
       if (dateController.text == '') {
@@ -758,7 +760,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
     print(notesController.text);
     await DioHelper.postData(
       url: "api/vacancies",
-      formData: {
+      data: {
         "from": '${dateController.text} ${timeFromController.text}',
         "to": '${dateController.text} ${timeToController.text}',
         'is_permit': true,
@@ -826,6 +828,9 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
       }
       loadingSend = false;
       setState(() {});
+      dateController.text='';
+      timeToController.text='';
+      timeFromController.text='';
     }).catchError((error) {
       if (dateController.text == '') {
         showDialog(

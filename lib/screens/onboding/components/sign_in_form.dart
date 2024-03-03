@@ -72,7 +72,7 @@ class _SignInFormState extends State<SignInForm> {
 
     await DioHelper.postData(
       url: "api/auth/login",
-      formData: {
+      data: {
         "name": name,
         "password": password,
       },

@@ -26,7 +26,6 @@ class WhoIsAttend extends StatefulWidget {
 
 class _WhoIsAttendState extends State<WhoIsAttend> {
   bool showLoading = false;
-  late TasksList task_list;
   var password = TextEditingController();
   var confirmPassword = TextEditingController();
   bool clickAdd = false;
@@ -35,15 +34,14 @@ class _WhoIsAttendState extends State<WhoIsAttend> {
   getAttendUser() async {
     showLoading = true;
     await DioHelper.getData(
-      url: "api/current-users/?organization_id=${widget.organizationId}",
-    ).then((response) {
+        url: "api/current-users",
+        query: {'organization_id': widget.organizationId}).then((response) {
       users = response.data;
       print(users);
       setState(() {
         showLoading = false;
       });
     }).catchError((error) {
-      print('kkkkkkkkkkkkkkkkkk');
       print(error.response.data);
     });
   }
@@ -81,15 +79,17 @@ class _WhoIsAttendState extends State<WhoIsAttend> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      Text('Attendance  today',
+                      Text(
+                        'Attendance  today',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
-                          color: Colors.white
-                        ),
+                            color: Colors.white),
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       ListView.builder(
                         itemCount: users.length,
                         shrinkWrap: true,
@@ -97,14 +97,13 @@ class _WhoIsAttendState extends State<WhoIsAttend> {
                         itemBuilder: (context, index) {
                           return ListTile(
                             title: Container(
-                              color: Colors.teal,
+                                color: Colors.teal,
                                 child: Text(
-                                    users[index],
+                                  users[index],
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 30,
-
                                   ),
                                 )),
                           );

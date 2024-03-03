@@ -435,7 +435,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
     print(translateType);
     await DioHelper.postData(
       url: "api/vacancies",
-      formData: {
+      data: {
         "from": '${dateFromController.text}',
         "to": '${dateToController.text}',
         'is_permit': false,

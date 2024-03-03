@@ -55,6 +55,8 @@ dependencies:
   fancy_containers: ^0.0.1
   another_flushbar: ^1.12.30
   data_table_2: ^2.5.10
+  zwidget: ^0.0.2
+
 
 
 

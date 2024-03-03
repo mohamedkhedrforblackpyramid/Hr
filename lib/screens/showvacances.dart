@@ -205,7 +205,7 @@ class _ShowVacancesState extends State<ShowVacances> {
                                 onPressed: () async {
                                   await DioHelper.postData(
                                     url: "api/update-status/${per.id}",
-                                    formData: {
+                                    data: {
                                       "status": true,
                                     },
                                   ).then((value) {
@@ -267,7 +267,7 @@ class _ShowVacancesState extends State<ShowVacances> {
                                 onPressed: () async {
                                   await DioHelper.postData(
                                     url: "api/update-status/${per.id}",
-                                    formData: {
+                                    data: {
                                       "status": false,
                                     },
                                   ).then((value) {
