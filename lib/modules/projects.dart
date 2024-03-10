@@ -1,19 +1,21 @@
 class ProjectsModel {
-  int? project_id;
-  String? name;
-  String? description;
-  ProjectsModel({
-    this.project_id,
-    this.name,
-    this.description
+  late int id;
+  late String name;
+  late String? description;
+  late List<int> assignees;
 
+  ProjectsModel({
+    required this.id,
+    required this.name,
+    this.description,
+    required this.assignees,
   });
   ProjectsModel.fromJson(Map<String, dynamic> json) {
-    project_id = json['id'];
+    id = json['id'];
     name = json['name'];
-    description=json['description'];
-
-
+    description= json['description'];
+    print(json['assignees']);
+    assignees = (json['assignees'] ?? []).cast<int>();
   }
 }
 

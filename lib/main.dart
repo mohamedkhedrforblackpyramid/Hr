@@ -45,47 +45,52 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool shouldPop = false;
+
   // This widget is the root of your application.
   @override
   void initState() {
     CacheHelper.getData(key: 'language');
-
-
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
      CacheHelper.saveData(key: 'language', value: '${widget.lang}');
      print(widget.lang);
-    return MaterialApp(
-      //locale:  Locale(CacheHelper.getData(key: 'language')),
-      locale: Locale(widget.lang),
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate
-      ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ar'),
-      ],
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xFFEEF1F8),
-        primarySwatch: Colors.blue,
-        fontFamily: "Intel",
-        inputDecorationTheme: const InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.white,
-          errorStyle: TextStyle(height: 0),
-          border: defaultInputBorder,
-          enabledBorder: defaultInputBorder,
-          focusedBorder: defaultInputBorder,
-          errorBorder: defaultInputBorder,
+    return WillPopScope(
+      onWillPop: () async {
+        return shouldPop;
+      },
+      child: MaterialApp(
+        //locale:  Locale(CacheHelper.getData(key: 'language')),
+        locale: Locale(widget.lang),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
+        ],
+        supportedLocales: const [
+          Locale('en'),
+          Locale('ar'),
+        ],
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: Color(0xFFEEF1F8),
+          primarySwatch: Colors.blue,
+          fontFamily: "Intel",
+          inputDecorationTheme: const InputDecorationTheme(
+            filled: true,
+            fillColor: Colors.white,
+            errorStyle: TextStyle(height: 0),
+            border: defaultInputBorder,
+            enabledBorder: defaultInputBorder,
+            focusedBorder: defaultInputBorder,
+            errorBorder: defaultInputBorder,
+          ),
         ),
+        home:OnboardingScreen(),
       ),
-      home:OnboardingScreen(),
     );
   }
 }

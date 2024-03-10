@@ -9,6 +9,7 @@ import 'package:hr/screens/multiscreen_tasks/multiscreenfortasks.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../modules/tasks.dart';
+import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
 
 class TaskTable extends StatefulWidget {
@@ -26,6 +27,7 @@ class _TaskTableState extends State<TaskTable> {
   String valueClosed = '0';
   bool isOpen = false;
   String permit_type = 'MY TASKS';
+  bool myTask = false;
 
   getTasksActive() async {
     showLoading = true;
@@ -55,6 +57,7 @@ class _TaskTableState extends State<TaskTable> {
       task_list = TasksList.fromJson(response.data);
       print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
       print(response.data);
+      print(response.data[0]['assignees']);
       print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
       setState(() {
@@ -113,7 +116,7 @@ class _TaskTableState extends State<TaskTable> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      tileColor: Colors.redAccent,
+                                      tileColor: Colors.teal,
                                       value: '0',
                                       groupValue: valueClosed,
                                       onChanged: (value) {
@@ -140,7 +143,7 @@ class _TaskTableState extends State<TaskTable> {
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        tileColor: Colors.teal,
+                                        tileColor: Colors.redAccent,
                                         value: '1',
                                         groupValue: valueClosed,
                                         onChanged: (value) {
@@ -316,7 +319,11 @@ class _TaskTableState extends State<TaskTable> {
           color: Colors.black45,
         ),
         children: [
-          TableRow(
+          TableRow(decoration: BoxDecoration(
+            color:
+            task.list!.contains(CacheHelper.getData(key: 'name'))?
+            Color(0xff117F83):Color(0xffd14847)
+          ),
               children: [
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
@@ -325,6 +332,7 @@ class _TaskTableState extends State<TaskTable> {
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 17),
               ),
             ),
             TableCell(
@@ -334,6 +342,8 @@ class _TaskTableState extends State<TaskTable> {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 17),
+
               ),
             ),
             TableCell(
@@ -343,9 +353,9 @@ class _TaskTableState extends State<TaskTable> {
                 textAlign: TextAlign.center,
               ),
             ),
-            Checkbox(
+            task.list!.contains(CacheHelper.getData(key: 'name'))?Checkbox(
               checkColor: Colors.indigo,
-              fillColor: MaterialStateProperty.all(Colors.transparent),
+              fillColor: MaterialStateProperty.all(Colors.white),
               value: task.close,
               onChanged: (value) {
                 if (task.close = value!) {
@@ -404,7 +414,7 @@ class _TaskTableState extends State<TaskTable> {
                   setState(() {});
                 }
               },
-            ),
+            ):SizedBox(),
           ]),
           /////////////////
         ],

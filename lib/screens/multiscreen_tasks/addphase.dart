@@ -180,6 +180,8 @@ class _AddphaseState extends State<Addphase> {
                                   width: 500,
                                   height: 450,
                                   child: Calender(onSubmit: (data) {
+                                    setState(() {
+                                    });
                                     print("Heeeeeeloooooo");
                                     print(data);
                                     print("Heeeeeeloooooo");
@@ -242,6 +244,9 @@ class _AddphaseState extends State<Addphase> {
                                   width: 500,
                                   height: 450,
                                   child: Calender(onSubmit: (data) {
+                                    setState(() {
+
+                                    });
                                     print("Heeeeeeloooooo");
                                     print(data);
                                     print("Heeeeeeloooooo");

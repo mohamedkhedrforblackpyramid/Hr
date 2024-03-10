@@ -1,3 +1,5 @@
+import '../network/local/cache_helper.dart';
+
 class TasksModel {
   int? task_id;
   int? phase_id;
@@ -7,6 +9,7 @@ class TasksModel {
   bool close = false;
   String? fromDate;
   String? toDate;
+  List?list;
   TasksModel({
     this.task_id,
     this.task_name,
@@ -15,6 +18,7 @@ class TasksModel {
     this.phase_id,
     this.fromDate,
     this.toDate,
+    this.list,
     required this.close,
 
   });
@@ -26,7 +30,8 @@ class TasksModel {
     project_name = json['project_name'];
     fromDate = json['from_date'];
     toDate = json['due_date'];
-
+     list = json['assignees'];
+    //list?.contains(CacheHelper.getData(key: 'name'));
 
 
 

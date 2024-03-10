@@ -520,7 +520,7 @@ class _CloseTasksState extends State<CloseTasks> {
                                             Flushbar(
                                               messageColor: Colors.black,
                                               backgroundColor: Colors.green,
-                                              message: "Project deleted",
+                                              message: "Task deleted",
                                               icon: Icon(
                                                 Icons.verified,
                                                 size: 30.0,
