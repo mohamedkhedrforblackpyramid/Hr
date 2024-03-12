@@ -59,8 +59,8 @@ class _CalenderState extends State<Calender> {
       selectedDayTextStyle: const TextStyle(
         color: Colors.yellow,
       ),
-      minSelectedDate: DateTime.now(),
-      maxSelectedDate: DateTime.now().add(const Duration(days: 30)),
+     // minSelectedDate: DateTime.now(),
+     // maxSelectedDate: DateTime.now().add(const Duration(days: 30)),
       prevDaysTextStyle: const TextStyle(
         fontSize: 16,
         color: Colors.pinkAccent,

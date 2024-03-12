@@ -303,8 +303,8 @@ class _CloseTasksState extends State<CloseTasks> {
                                           1.1,
                                       child: Column(
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(15.0),
+                                          const Padding(
+                                            padding: EdgeInsets.all(15.0),
                                             child: Text(
                                               "Edit Task Name",
                                               style: TextStyle(
@@ -315,65 +315,65 @@ class _CloseTasksState extends State<CloseTasks> {
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 20),
-                                            child: Container(
+                                            child: SizedBox(
                                               width: 300,
                                               child: TextFormField(
                                                 controller: taskName,
-                                                decoration: new InputDecoration(
+                                                decoration: InputDecoration(
                                                   labelText: "New Task Name",
                                                   fillColor: Colors.white,
                                                   border:
-                                                      new OutlineInputBorder(
+                                                      OutlineInputBorder(
                                                     borderRadius:
-                                                        new BorderRadius
+                                                        BorderRadius
                                                             .circular(25.0),
                                                     borderSide:
-                                                        new BorderSide(),
+                                                         const BorderSide(),
                                                   ),
                                                   //fillColor: Colors.green
                                                 ),
                                                 keyboardType:
                                                     TextInputType.emailAddress,
-                                                style: new TextStyle(
+                                                style: const TextStyle(
                                                   fontFamily: "Poppins",
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          const SizedBox(
                                             height: 10,
                                           ),
                                           SizedBox(
-                                            height: 10,
-                                          ),
-                                          Container(
                                             width: 300,
                                             child: TextFormField(
                                               controller: taskDescription,
-                                              decoration: new InputDecoration(
+                                              decoration: InputDecoration(
                                                 labelText:
                                                     "New Task Description",
                                                 fillColor: Colors.white,
-                                                border: new OutlineInputBorder(
+                                                border: OutlineInputBorder(
                                                   borderRadius:
-                                                      new BorderRadius.circular(
+                                                      BorderRadius.circular(
                                                           25.0),
-                                                  borderSide: new BorderSide(),
+                                                  borderSide: BorderSide(),
                                                 ),
                                                 //fillColor: Colors.green
                                               ),
                                               keyboardType:
                                                   TextInputType.emailAddress,
-                                              style: new TextStyle(
+                                              style: const TextStyle(
                                                 fontFamily: "Poppins",
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 20,
                                           ),
                                           Center(
-                                            child: Container(
+                                            child: SizedBox(
                                               height: 50,
                                               width: 200,
                                               child: clickAdd == false
@@ -435,7 +435,7 @@ class _CloseTasksState extends State<CloseTasks> {
                                                               leftBarIndicatorColor:
                                                                   Colors.blue[
                                                                       300],
-                                                            )..show(context);
+                                                            ).show(context);
                                                           }
                                                           else {
                                                             Flushbar(
@@ -454,7 +454,7 @@ class _CloseTasksState extends State<CloseTasks> {
                                                               leftBarIndicatorColor:
                                                                   Colors.blue[
                                                                       300],
-                                                            )..show(context);
+                                                            ).show(context);
                                                           }
 
                                                           print(error
