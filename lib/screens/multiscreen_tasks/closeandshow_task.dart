@@ -33,6 +33,8 @@ class CloseTasks extends StatefulWidget {
   String? organizationsArabicName;
   String? phaseName;
 
+
+
   CloseTasks(
       {required this.projectId,
       required this.organization_id,
@@ -47,6 +49,8 @@ class CloseTasks extends StatefulWidget {
 }
 
 class _CloseTasksState extends State<CloseTasks> {
+  late ChooseUserList chooseList;
+  List<int?> users = [];
   bool showLoading = false;
   late TasksList task_list;
   var taskName = TextEditingController();
@@ -68,11 +72,23 @@ class _CloseTasksState extends State<CloseTasks> {
       print(error.response.data);
     });
   }
-
+  getUsers() {
+    DioHelper.getData(
+      url: "api/organizations/${widget.organization_id}/employees",
+    ).then((response) {
+      chooseList = ChooseUserList.fromJson(response.data['data']);
+      print(response.data);
+      setState(() {});
+    }).catchError((error) {
+      print('hhhhhhhhhhhhhhhh');
+      print(error);
+    });
+  }
   @override
   void initState() {
     print(widget.phase_id);
     getTasks();
+    getUsers();
     super.initState();
   }
 
@@ -279,8 +295,13 @@ class _CloseTasksState extends State<CloseTasks> {
                   children: [
                     IconButton(
                         onPressed: () {
+                          users = task.assignees as List<int>;
                           taskName.text = task.task_name!;
-
+                          if (task.description == null) {
+                            taskDescription.text = '';
+                          } else {
+                            taskDescription.text = task.description!;
+                          }
                           showModalBottomSheet<void>(
                             isScrollControlled: true,
                             context: context,
@@ -301,34 +322,65 @@ class _CloseTasksState extends State<CloseTasks> {
                                               2,
                                       width: MediaQuery.of(context).size.width /
                                           1.1,
-                                      child: Column(
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.all(15.0),
-                                            child: Text(
-                                              "Edit Task Name",
-                                              style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold),
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.all(15.0),
+                                              child: Text(
+                                                "Edit Task Name",
+                                                style: TextStyle(
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 20),
-                                            child: SizedBox(
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 20),
+                                              child: SizedBox(
+                                                width: 300,
+                                                child: TextFormField(
+                                                  controller: taskName,
+                                                  decoration: InputDecoration(
+                                                    labelText: "New Task Name",
+                                                    fillColor: Colors.white,
+                                                    border:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius
+                                                              .circular(25.0),
+                                                      borderSide:
+                                                           const BorderSide(),
+                                                    ),
+                                                    //fillColor: Colors.green
+                                                  ),
+                                                  keyboardType:
+                                                      TextInputType.emailAddress,
+                                                  style: const TextStyle(
+                                                    fontFamily: "Poppins",
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            SizedBox(
                                               width: 300,
                                               child: TextFormField(
-                                                controller: taskName,
+                                                controller: taskDescription,
                                                 decoration: InputDecoration(
-                                                  labelText: "New Task Name",
+                                                  labelText:
+                                                      "Task Description",
                                                   fillColor: Colors.white,
-                                                  border:
-                                                      OutlineInputBorder(
+                                                  border: OutlineInputBorder(
                                                     borderRadius:
-                                                        BorderRadius
-                                                            .circular(25.0),
-                                                    borderSide:
-                                                         const BorderSide(),
+                                                        BorderRadius.circular(
+                                                            25.0),
+                                                    borderSide: BorderSide(),
                                                   ),
                                                   //fillColor: Colors.green
                                                 ),
@@ -339,142 +391,235 @@ class _CloseTasksState extends State<CloseTasks> {
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          SizedBox(
-                                            width: 300,
-                                            child: TextFormField(
-                                              controller: taskDescription,
-                                              decoration: InputDecoration(
-                                                labelText:
-                                                    "New Task Description",
-                                                fillColor: Colors.white,
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          25.0),
-                                                  borderSide: BorderSide(),
-                                                ),
-                                                //fillColor: Colors.green
-                                              ),
-                                              keyboardType:
-                                                  TextInputType.emailAddress,
-                                              style: const TextStyle(
-                                                fontFamily: "Poppins",
-                                              ),
+                                            const SizedBox(
+                                              height: 20,
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Center(
-                                            child: SizedBox(
-                                              height: 50,
-                                              width: 200,
-                                              child: clickAdd == false
-                                                  ? FancyContainer(
-                                                      textColor: Colors.white,
-                                                      onTap: () async {
-                                                        setState(() {
-                                                          clickAdd = true;
-                                                        });
-                                                        await DioHelper
-                                                            .patchData(
-                                                          url:
-                                                              "api/tasks/${task.task_id}",
-                                                          data: {
-                                                            "name":
-                                                                taskName.text,
-                                                            "description":
-                                                                taskDescription
-                                                                    .text,
-                                                          },
-                                                        ).then((value) {
-                                                          print(taskName.text);
-                                                          print(taskDescription
-                                                              .text);
-                                                          print(value.data);
-                                                          print(
-                                                              "Tmaaaaaaaaaaaaaaaaaaaaaaaaam");
-                                                          setState(() {});
-                                                          clickAdd = false;
-                                                          getTasks();
-
-                                                          Navigator.pop(
-                                                              context);
-                                                          print(
-                                                              "Shaaaaaaaaatr");
-                                                        }).catchError((error) {
-                                                          clickAdd = false;
-
-                                                          setState(() {});
-                                                          if (taskName
-                                                              .text.isEmpty) {
-                                                            Flushbar(
-                                                              backgroundColor:
-                                                                  Colors.red,
-                                                              message: AppLocalizations
-                                                                      .of(context)!
-                                                                  .projectNameisEmpty,
-                                                              icon: Icon(
-                                                                Icons
-                                                                    .info_outline,
-                                                                size: 30.0,
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                              duration:
-                                                                  Duration(
-                                                                      seconds:
-                                                                          3),
-                                                              leftBarIndicatorColor:
-                                                                  Colors.blue[
-                                                                      300],
-                                                            ).show(context);
-                                                          }
-                                                          else {
-                                                            Flushbar(
-                                                              message: '${error.response.data['message']}',
-                                                              icon: Icon(
-                                                                Icons
-                                                                    .info_outline,
-                                                                size: 30.0,
-                                                                color: Colors
-                                                                    .blue[300],
-                                                              ),
-                                                              duration:
-                                                                  Duration(
-                                                                      seconds:
-                                                                          3),
-                                                              leftBarIndicatorColor:
-                                                                  Colors.blue[
-                                                                      300],
-                                                            ).show(context);
-                                                          }
-
-                                                          print(error
-                                                              .response.data);
-                                                        });
-                                                      },
-                                                      title:
-                                                          'Save',
-                                                      color1: Colors.purple,
-                                                      color2: Colors.lightBlue,
-                                                    )
-                                                  : Center(
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color: Colors.indigo,
+                                            GestureDetector(
+                                              onTap: () {
+                                                chooseList
+                                                    .chooseuserList!.isNotEmpty
+                                                    ? showModalBottomSheet<void>(
+                                                  context: context,
+                                                  backgroundColor:
+                                                  Color(0xffFAACB4),
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Padding(
+                                                      padding:
+                                                      const EdgeInsets
+                                                          .all(20.0),
+                                                      child: ListView.builder(
+                                                        shrinkWrap: true,
+                                                        itemBuilder: (BuildContext
+                                                        context,
+                                                            int index) =>
+                                                            buildChooseUsers(
+                                                                user: chooseList
+                                                                    .chooseuserList![
+                                                                index],
+                                                                index: index),
+                                                        itemCount: chooseList
+                                                            .chooseuserList!
+                                                            .length,
+                                                      ),
+                                                    );
+                                                  },
+                                                ).whenComplete(() {
+                                                  setState(() {});
+                                                })
+                                                    : Flushbar(
+                                                  message:
+                                                  AppLocalizations.of(
+                                                      context)!
+                                                      .noEmployee,
+                                                  icon: Icon(
+                                                    Icons.info_outline,
+                                                    size: 30.0,
+                                                    color: Colors.black,
+                                                  ),
+                                                  duration:
+                                                  Duration(seconds: 3),
+                                                  leftBarIndicatorColor:
+                                                  Colors.blue[300],
+                                                  backgroundColor: Colors.red,
+                                                ).show(context);
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 40),
+                                                child: Theme(
+                                                  data: Theme.of(context).copyWith(
+                                                      splashColor:
+                                                      Colors.transparent),
+                                                  child: TextField(
+                                                    enabled: false,
+                                                    autofocus: false,
+                                                    style: TextStyle(
+                                                        fontSize: 22.0,
+                                                        color: Color(0xFFbdc6cf)),
+                                                    decoration: InputDecoration(
+                                                      filled: true,
+                                                      fillColor: Color(0xFCED3FF),
+                                                      label: Padding(
+                                                        padding:
+                                                        const EdgeInsets.all(
+                                                            10),
+                                                        child: users.isEmpty
+                                                            ? Text(
+                                                          "Add this project to",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold,
+                                                              color: Colors
+                                                                  .black45),
+                                                        )
+                                                            : Text(
+                                                          'You Selected ${users.length} Employee',
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold,
+                                                              color: Colors
+                                                                  .green),
+                                                        ),
+                                                      ),
+                                                      contentPadding:
+                                                      const EdgeInsets.only(
+                                                          left: 14.0,
+                                                          bottom: 8.0,
+                                                          top: 8.0,
+                                                          right: 14),
+                                                      focusedBorder:
+                                                      OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Colors.white),
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                            25.7),
+                                                      ),
+                                                      enabledBorder:
+                                                      UnderlineInputBorder(
+                                                        borderSide:
+                                                        const BorderSide(
+                                                            color:
+                                                            Colors.white),
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                            25.7),
                                                       ),
                                                     ),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                        
+                                            Center(
+                                              child: SizedBox(
+                                                height: 50,
+                                                width: 200,
+                                                child: clickAdd == false
+                                                    ? FancyContainer(
+                                                        textColor: Colors.white,
+                                                        onTap: () async {
+                                                          setState(() {
+                                                            clickAdd = true;
+                                                          });
+                                                          await DioHelper
+                                                              .patchData(
+                                                            url:
+                                                                "api/tasks/${task.task_id}",
+                                                            data: {
+                                                              "name":
+                                                                  taskName.text,
+                                                              "description":
+                                                                  taskDescription
+                                                                      .text,
+                                                              "assignees": users,
+
+                                                            },
+                                                          ).then((value) {
+                                                            print(taskName.text);
+                                                            print(taskDescription
+                                                                .text);
+                                                            print(value.data);
+                                                            print(
+                                                                "Tmaaaaaaaaaaaaaaaaaaaaaaaaam");
+                                                            setState(() {});
+                                                            clickAdd = false;
+                                                            getTasks();
+                                        
+                                                            Navigator.pop(
+                                                                context);
+                                                            print(
+                                                                "Shaaaaaaaaatr");
+                                                          }).catchError((error) {
+                                                            clickAdd = false;
+                                        
+                                                            setState(() {});
+                                                            if (taskName
+                                                                .text.isEmpty) {
+                                                              Flushbar(
+                                                                backgroundColor:
+                                                                    Colors.red,
+                                                                message: AppLocalizations
+                                                                        .of(context)!
+                                                                    .projectNameisEmpty,
+                                                                icon: Icon(
+                                                                  Icons
+                                                                      .info_outline,
+                                                                  size: 30.0,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                                duration:
+                                                                    Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                leftBarIndicatorColor:
+                                                                    Colors.blue[
+                                                                        300],
+                                                              ).show(context);
+                                                            }
+                                                            else {
+                                                              Flushbar(
+                                                                message: '${error.response.data['message']}',
+                                                                icon: Icon(
+                                                                  Icons
+                                                                      .info_outline,
+                                                                  size: 30.0,
+                                                                  color: Colors
+                                                                      .blue[300],
+                                                                ),
+                                                                duration:
+                                                                    Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                leftBarIndicatorColor:
+                                                                    Colors.blue[
+                                                                        300],
+                                                              ).show(context);
+                                                            }
+                                        
+                                                            print(error
+                                                                .response.data);
+                                                          });
+                                                        },
+                                                        title:
+                                                            'Save',
+                                                        color1: Colors.purple,
+                                                        color2: Colors.lightBlue,
+                                                      )
+                                                    : Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: Colors.indigo,
+                                                        ),
+                                                      ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       )),
                                 );
                               });
@@ -645,4 +790,46 @@ class _CloseTasksState extends State<CloseTasks> {
       ),
     );
   }
+  Widget buildChooseUsers({required ChooseUserModel user, required int index}) {
+    return StatefulBuilder(builder:
+        (BuildContext context, void Function(void Function()) setState) {
+      return Row(
+        children: [
+          Expanded(
+            child: Text(
+              "${user.name}",
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Expanded(
+            child: Checkbox(
+              checkColor: Colors.white,
+              value: users.contains(user.userId),
+              onChanged: (bool? value) {
+                if (!users.contains(user.userId)) {
+                  setState(
+                        () {
+                      users.add(user.userId);
+                    },
+                  );
+                } else {
+                  setState(
+                        () {
+                      users.remove(user.userId);
+                    },
+                  );
+                }
+                print(users);
+              },
+            ),
+          ),
+        ],
+      );
+    });
+  }
+
 }

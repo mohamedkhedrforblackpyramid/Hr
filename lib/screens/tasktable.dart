@@ -57,7 +57,7 @@ class _TaskTableState extends State<TaskTable> {
       task_list = TasksList.fromJson(response.data);
       print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
       print(response.data);
-      print(response.data[0]['assignees']);
+     // print(response.data[0]['assignees']);
       print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
       setState(() {
@@ -321,7 +321,7 @@ class _TaskTableState extends State<TaskTable> {
         children: [
           TableRow(decoration: BoxDecoration(
             color:
-            task.list!.contains(CacheHelper.getData(key: 'name'))?
+            task.assignees_names!.contains(CacheHelper.getData(key: 'name'))?
             Color(0xff117F83):Color(0xffd14847)
           ),
               children: [
@@ -353,7 +353,7 @@ class _TaskTableState extends State<TaskTable> {
                 textAlign: TextAlign.center,
               ),
             ),
-            task.list!.contains(CacheHelper.getData(key: 'name'))?Checkbox(
+            task.assignees_names!.contains(CacheHelper.getData(key: 'name'))?Checkbox(
               checkColor: Colors.indigo,
               fillColor: MaterialStateProperty.all(Colors.white),
               value: task.close,

@@ -9,7 +9,10 @@ class TasksModel {
   bool close = false;
   String? fromDate;
   String? toDate;
-  List?list;
+  String? description;
+  List?assignees_names;
+  late List<int> assignees;
+
   TasksModel({
     this.task_id,
     this.task_name,
@@ -18,8 +21,11 @@ class TasksModel {
     this.phase_id,
     this.fromDate,
     this.toDate,
-    this.list,
+    this.assignees_names,
     required this.close,
+    required this.assignees,
+    required this.description,
+
 
   });
   TasksModel.fromJson(Map<String, dynamic> json) {
@@ -30,7 +36,10 @@ class TasksModel {
     project_name = json['project_name'];
     fromDate = json['from_date'];
     toDate = json['due_date'];
-     list = json['assignees'];
+    description = json['description'];
+     assignees_names = json['assignees_names'];
+    assignees = (json['assignees'] ?? []).cast<int>();
+
     //list?.contains(CacheHelper.getData(key: 'name'));
 
 
