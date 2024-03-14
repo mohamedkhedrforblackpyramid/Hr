@@ -941,6 +941,7 @@ class _ProjectsState extends State<Projects> {
                       Icons.delete,
                       color: Colors.white,
                     )),
+
               ],
             ),
           ],

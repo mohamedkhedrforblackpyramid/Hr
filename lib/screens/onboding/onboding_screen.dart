@@ -121,6 +121,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     height: 1.2,
                                     color: Colors.white),
                               ),
+
                               SizedBox(
                                 height: 16,
                               ),
@@ -131,6 +132,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               )
+
                             ]),
                           ),
                           const Spacer(
@@ -153,13 +155,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             },
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 40.0),
+                            padding: EdgeInsets.symmetric(vertical: 20.0),
                             child: Text(
                               '${AppLocalizations.of(context)!.companyInfo}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
-                          )
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                "14/3/2024",
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    fontFamily: "Poppins",
+                                    height: 1.2,
+                                    color: Colors.black,fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                          ),
                         ]),
                   ),
                 ),

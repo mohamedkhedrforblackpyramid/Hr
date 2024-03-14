@@ -268,6 +268,19 @@ class _ProfileState extends State<Profile> {
                                                                   '';
                                                               Navigator.pop(
                                                                   context);
+                                                              Flushbar(
+                                                                messageColor: Colors.black,
+                                                                backgroundColor: Colors.green,
+                                                                message: "Password changed",
+                                                                icon: Icon(
+                                                                  Icons.verified,
+                                                                  size: 30.0,
+                                                                  color: Colors.white,
+                                                                ),
+                                                                duration: Duration(seconds: 3),
+                                                                leftBarIndicatorColor:
+                                                                Colors.blue[300],
+                                                              )..show(context);
                                                             }).catchError(
                                                                 (error) {
                                                               clickAdd = false;
@@ -465,6 +478,19 @@ class _ProfileState extends State<Profile> {
                                                                 context);
                                                             changeName.text =
                                                                 '';
+                                                            Flushbar(
+                                                              messageColor: Colors.black,
+                                                              backgroundColor: Colors.green,
+                                                              message: "Name changed",
+                                                              icon: Icon(
+                                                                Icons.verified,
+                                                                size: 30.0,
+                                                                color: Colors.white,
+                                                              ),
+                                                              duration: Duration(seconds: 3),
+                                                              leftBarIndicatorColor:
+                                                              Colors.blue[300],
+                                                            )..show(context);
                                                           }).catchError(
                                                               (error) {
                                                             clickAdd = false;

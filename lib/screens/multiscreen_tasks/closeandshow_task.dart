@@ -718,6 +718,21 @@ class _CloseTasksState extends State<CloseTasks> {
                           Icons.delete,
                           color: Colors.white,
                         )),
+                    task.description!=null?IconButton(onPressed: (){
+                      showDialog(
+                        context: (context),
+                        builder: (context) =>  AlertDialog(
+                          content: Text(
+                            "${task.description}",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      );
+                    },
+                        icon: Icon(Icons.notes,
+                          color: Colors.white,
+                        )):SizedBox()
                   ],
                 ),
               ],

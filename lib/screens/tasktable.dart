@@ -8,6 +8,7 @@ import 'package:hr/modules/projects.dart';
 import 'package:hr/screens/multiscreen_tasks/multiscreenfortasks.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../modules/phases.dart';
 import '../modules/tasks.dart';
 import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
@@ -26,14 +27,32 @@ class _TaskTableState extends State<TaskTable> {
   late TasksList task_list;
   String valueClosed = '0';
   bool isOpen = false;
-  String permit_type = 'MY TASKS';
+  String permit_type = 'myTasks';
   bool myTask = false;
-
-  getTasksActive() async {
+  late PhaseList phase_list;
+  int?phaseId;
+  int?projectId;
+  late ProjectsList projects;
+  bool projectLoading = false;
+  getMyTasks() async {
     showLoading = true;
+    Map<String, dynamic> query = {};
+    if(widget.organizationId !=null){
+      query['organization_id']=widget.organizationId;
+    }
+    if(widget.userId !=null){
+      query['user_id']=widget.userId;
+    }
+    if(phaseId !=null){
+      query['phase_id'] = phaseId;
+    }
+    if(projectId !=null){
+      query['project_id'] = projectId;
+    }
     await DioHelper.getData(
       url:
-          "api/current-tasks?organization_id=${widget.organizationId}&user_id=${widget.userId}",
+          "api/current-tasks",query: query
+
     ).then((response) {
       task_list = TasksList.fromJson(response.data);
       print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
@@ -49,10 +68,21 @@ class _TaskTableState extends State<TaskTable> {
     });
   }
 
-  getTasksInActive() async {
+  getAllTasks() async {
     showLoading = true;
+    Map<String, dynamic> query = {};
+    if(widget.organizationId !=null){
+      query['organization_id']=widget.organizationId;
+    }
+    if(phaseId !=null){
+      query['phase_id'] = phaseId;
+    }
+    if(projectId !=null){
+      query['project_id'] = projectId;
+    }
     await DioHelper.getData(
-      url: "api/current-tasks?organization_id=${widget.organizationId}",
+      url: "api/current-tasks",query: query
+
     ).then((response) {
       task_list = TasksList.fromJson(response.data);
       print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
@@ -68,10 +98,41 @@ class _TaskTableState extends State<TaskTable> {
       print(error.response.data);
     });
   }
+  getPhases() {
+    DioHelper.getData(url: "api/phases", query: {
+      'organization_id': widget.organizationId,
+    }).then((response) {
+      phase_list = PhaseList.fromJson(response.data);
+
+      print(response.data);
+      setState(() {});
+    }).catchError((error) {
+      print('hhhhhhhhhhhhhhhh');
+      print(error.response.data);
+    });
+  }
+
+  getProjects() async {
+    projectLoading = true;
+    await DioHelper.getData(
+        url: "api/projects",
+        query: {'organization_id': widget.organizationId}).then((response) {
+      // print(response.data);
+      projects = ProjectsList.fromJson(response.data);
+      //  print(projects);
+      setState(() {
+        projectLoading = false;
+      });
+    }).catchError((error) {
+      print(error);
+    });
+  }
 
   @override
   void initState() {
-    getTasksActive();
+    getMyTasks();
+    getPhases();
+    getProjects();
     super.initState();
   }
 
@@ -101,9 +162,7 @@ class _TaskTableState extends State<TaskTable> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SingleChildScrollView(
-                child: showLoading == false
-                    ? task_list.tasksList!.isNotEmpty
-                        ? Column(
+                child:  Column(
                             children: [
                               Row(
                                 children: [
@@ -120,9 +179,9 @@ class _TaskTableState extends State<TaskTable> {
                                       value: '0',
                                       groupValue: valueClosed,
                                       onChanged: (value) {
-                                        getTasksActive();
+                                        getMyTasks();
                                         setState(() {});
-                                        permit_type = 'active';
+                                        permit_type = 'myTasks';
                                         isOpen = false;
                                         valueClosed = value.toString();
                                         setState(() {
@@ -147,10 +206,9 @@ class _TaskTableState extends State<TaskTable> {
                                         value: '1',
                                         groupValue: valueClosed,
                                         onChanged: (value) {
-                                          getTasksInActive();
+                                          getAllTasks();
                                           setState(() {});
-
-                                          permit_type = 'INACTIVE';
+                                          permit_type = 'allTasks';
                                           isOpen = false;
                                           valueClosed = value.toString();
                                           setState(() {
@@ -180,22 +238,68 @@ class _TaskTableState extends State<TaskTable> {
                                           color: Colors.indigo,
                                         ),
                                       )),
-                                      Center(
-                                          child: Text(
-                                        'Phase',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.indigo,
-                                        ),
-                                      )),
-                                      Center(
-                                          child: Text(
-                                        'Project',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.indigo,
-                                        ),
-                                      )),
+                                      GestureDetector(
+                                        onTap: (){
+                                           showModalBottomSheet<void>(
+                                            context: context,
+                                            backgroundColor: Color(0xffFAACB4),
+                                            builder: (BuildContext context) {
+                                              return Padding(
+                                                padding: const EdgeInsets.all(20.0),
+                                                child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemBuilder: (BuildContext context,
+                                                      int index) =>
+                                                      buildChoosePhaes(
+                                                          phase: phase_list.phaseList![index],
+                                                          index: index),
+                                                  itemCount: phase_list.phaseList!.length,
+                                                ),
+                                              );
+                                            },
+                                          );
+
+                                        },
+                                        child: Center(
+                                            child: Text(
+                                          'Phase',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.indigo,
+                                          ),
+                                        )),
+                                      ),
+                                      GestureDetector(
+                                        onTap: (){
+                                          showModalBottomSheet<void>(
+                                            context: context,
+                                            backgroundColor: Color(0xffFAACB4),
+                                            builder: (BuildContext context) {
+                                              return Padding(
+                                                padding: const EdgeInsets.all(20.0),
+                                                child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemBuilder: (BuildContext context,
+                                                      int index) =>
+                                                      buildProjects(
+                                                          pr: projects.projectList![index],
+                                                          index: index),
+                                                  itemCount: projects.projectList!.length,
+                                                ),
+                                              );
+                                            },
+                                          );
+
+                                        },
+                                        child: Center(
+                                            child: Text(
+                                          'Project',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.indigo,
+                                          ),
+                                        )),
+                                      ),
                                       Center(
                                           child: Text(
                                         'Done',
@@ -209,7 +313,9 @@ class _TaskTableState extends State<TaskTable> {
                                   ],
                                 ),
                               ),
-                              SizedBox(
+                              showLoading == false
+                                  ? task_list.tasksList!.isNotEmpty
+                                  ?SizedBox(
                                 child: ListView.separated(
                                   shrinkWrap: true,
                                   physics: const ScrollPhysics(),
@@ -227,27 +333,27 @@ class _TaskTableState extends State<TaskTable> {
                                     height: 10,
                                   ),
                                 ),
+                              ) : Padding(
+                                padding: EdgeInsets.symmetric(vertical: 300),
+                                child: Center(
+                                  child: Text(
+                                    "${AppLocalizations.of(context)!.noTask}",
+                                    style: TextStyle(
+                                        fontSize: 20, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                               )
+                                  : const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 300),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.indigo,
+                                  ),
+                                ),
+                              ),
                             ],
                           )
-                        : Padding(
-                            padding: EdgeInsets.symmetric(vertical: 300),
-                            child: Center(
-                              child: Text(
-                                "${AppLocalizations.of(context)!.noTask}",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          )
-                    : const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 300),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.indigo,
-                          ),
-                        ),
-                      ),
+
               ),
             ),
           )
@@ -421,4 +527,63 @@ class _TaskTableState extends State<TaskTable> {
       ),
     );
   }
+  Widget buildChoosePhaes({required PhasesModel phase, required int index}) {
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () {
+            //phaseController.text = phase.phaseName!;
+            phaseId = phase.phase_id;
+            projectId=null;
+            if(permit_type == 'myTasks') {
+              getMyTasks();
+            }
+            if(permit_type == 'allTasks'){
+              getAllTasks();
+            }
+           // print(phaseID);
+            Navigator.pop(context);
+          },
+          child: Text(
+            "${phase.phaseName}",
+            style: TextStyle(
+                color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildProjects({required ProjectsModel pr, required int index}) {
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () {
+            //phaseController.text = phase.phaseName!;
+            projectId = pr.id;
+            phaseId = null;
+            print(projectId);
+            if(permit_type == 'myTasks') {
+              getMyTasks();
+            }
+            if(permit_type == 'allTasks'){
+              getAllTasks();
+            }
+            // print(phaseID);
+            Navigator.pop(context);
+          },
+          child: Text(
+            "${pr.name}",
+            style: TextStyle(
+                color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+
+
+
 }
