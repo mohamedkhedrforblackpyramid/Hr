@@ -189,6 +189,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   if (Platform.isIOS) {
 
   try {
+
   exit(0);
   } catch (e) {
   SystemNavigator.pop(); // for IOS, not true this, you can make comment this :)

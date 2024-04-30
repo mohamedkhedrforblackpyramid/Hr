@@ -9,6 +9,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:unique_identifier/unique_identifier.dart';
 
 import '../../../network/local/cache_helper.dart';
 import '../../../network/remote/dio_helper.dart';
@@ -27,6 +28,8 @@ class SignInForm extends StatefulWidget {
 }
 
 class _SignInFormState extends State<SignInForm> {
+  String _identifier = 'Unknown';
+
   bool? _jailbroken;
   bool? _developerMode;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -57,6 +60,18 @@ class _SignInFormState extends State<SignInForm> {
     artboard.addController(controller!);
     return controller;
   }
+  Future<void> initUniqueIdentifierState() async {
+    String? identifier;
+    try {
+      identifier = await UniqueIdentifier.serial;
+    } on PlatformException {
+      identifier = 'Failed to get Unique Identifier';
+    }
+    if (!mounted) return;
+    setState(() {
+      _identifier = identifier!;
+    });
+  }
 
   Future? userLogin({
     required String name,
@@ -75,9 +90,10 @@ class _SignInFormState extends State<SignInForm> {
       data: {
         "name": name,
         "password": password,
+        'fcm_token':_identifier
       },
     ).then((Response response) {
-
+      print(_identifier);
       name = response.data['data']['user']['name'];
       CacheHelper.saveData(
           key: "name", value: response.data['data']['user']['name']);
@@ -188,6 +204,7 @@ class _SignInFormState extends State<SignInForm> {
   void initState() {
     initPlatformState();
     loadUserEmailPassword();
+    initUniqueIdentifierState();
     super.initState();
   }
 

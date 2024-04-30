@@ -54,7 +54,6 @@ class _ProjectsState extends State<Projects> {
                   organizationsArabicName: widget.organizationsArabicName,
                 )));
   }
-
   getProjects() async {
     projectLoading = true;
     await DioHelper.getData(
@@ -70,7 +69,6 @@ class _ProjectsState extends State<Projects> {
       print(error);
     });
   }
-
   getUsers() {
     DioHelper.getData(
       url: "api/organizations/${widget.organizationId}/employees",

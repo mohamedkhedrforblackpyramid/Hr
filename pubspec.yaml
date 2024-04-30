@@ -57,6 +57,7 @@ dependencies:
   data_table_2: ^2.5.10
   zwidget: ^0.0.2
   text_neon_widget: ^1.0.6
+  unique_identifier: ^0.3.0
 
 
 
