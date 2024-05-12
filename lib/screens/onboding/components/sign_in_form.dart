@@ -90,7 +90,8 @@ class _SignInFormState extends State<SignInForm> {
       data: {
         "name": name,
         "password": password,
-        'fcm_token':_identifier
+        'fcm_token':CacheHelper.getData(
+            key: 'fcm_token')
       },
     ).then((Response response) {
       print(_identifier);
@@ -115,6 +116,8 @@ class _SignInFormState extends State<SignInForm> {
                     )));
       }
       else{
+        print(CacheHelper.getData(
+            key: 'fcm_token'));
         CacheHelper.getData(key: 'token');
       organizationsName = response.data['data']['organizations'][0]['name'];
       organizationsArabicName =

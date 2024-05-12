@@ -58,6 +58,8 @@ dependencies:
   zwidget: ^0.0.2
   text_neon_widget: ^1.0.6
   unique_identifier: ^0.3.0
+  firebase_messaging: ^14.9.1
+  firebase_core: ^2.30.1
 
 
 

@@ -1,5 +1,7 @@
 import 'dart:io';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hr/modules/organizationmodel.dart';
@@ -27,12 +29,18 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
+
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DioHelper.init();
   await CacheHelper.init();
   HttpOverrides.global = MyHttpOverrides();
-  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  CacheHelper.saveData(key: 'fcm_token', value: fcmToken);
   runApp( MyApp(lang: '${CacheHelper.getData(key: 'language')}',));
 }
 

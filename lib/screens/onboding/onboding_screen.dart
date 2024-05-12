@@ -100,7 +100,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                       }));
                                       // AppLocalizations.of(context).localeName = 'en';
                                       getOutOfApp();
-
                                     },
                                     child: Text(
                                       'عربي',
@@ -121,7 +120,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     height: 1.2,
                                     color: Colors.white),
                               ),
-
                               SizedBox(
                                 height: 16,
                               ),
@@ -131,8 +129,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     fontSize: 18,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
-                              )
-
+                              ),
+                              /*TextButton(
+                                  onPressed: () async {
+                                    await Clipboard.setData(ClipboardData(
+                                        text: CacheHelper.getData(
+                                            key: 'fcm_token')));
+                                  },
+                                  child: const Text('Clic to copy your fcm token')),*/
                             ]),
                           ),
                           const Spacer(
@@ -171,8 +175,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     fontSize: 17,
                                     fontFamily: "Poppins",
                                     height: 1.2,
-                                    color: Colors.black,fontWeight: FontWeight.bold
-                                ),
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
@@ -184,25 +188,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           )),
     );
   }
+
   void getOutOfApp() {
-
-  if (Platform.isIOS) {
-
-  try {
-
-  exit(0);
-  } catch (e) {
-  SystemNavigator.pop(); // for IOS, not true this, you can make comment this :)
+    if (Platform.isIOS) {
+      try {
+        exit(0);
+      } catch (e) {
+        SystemNavigator
+            .pop(); // for IOS, not true this, you can make comment this :)
+      }
+    } else {
+      try {
+        SystemNavigator.pop(); // sometimes it cant exit app
+      } catch (e) {
+        exit(0); // so i am giving crash to app ... sad :(
+      }
+    }
   }
-
-  } else {
-
-  try {
-  SystemNavigator.pop(); // sometimes it cant exit app
-  } catch (e) {
-  exit(0); // so i am giving crash to app ... sad :(
-  }
-
-  }
-}
 }
