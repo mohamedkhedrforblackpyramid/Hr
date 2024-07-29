@@ -115,7 +115,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               Text(
                                 "${AppLocalizations.of(context)!.alexforProg}",
                                 style: TextStyle(
-                                    fontSize: 35,
+                                    fontSize: 25,
                                     fontFamily: "Poppins",
                                     height: 1.2,
                                     color: Colors.white),
@@ -126,7 +126,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               Text(
                                 "${AppLocalizations.of(context)!.nowYouCan}",
                                 style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 17,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -140,7 +140,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ]),
                           ),
                           const Spacer(
-                            flex: 2,
+                            flex: 5,
                           ),
                           AnimatedBtn(
                             btnAnimationController: _btnAnimationController,
@@ -161,21 +161,61 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 20.0),
                             child: Text(
-                              '${AppLocalizations.of(context)!.companyInfo}',
+                              '- Mobile Applications',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10.0),
+                            child: Text(
+                              '- Web Applications',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10.0),
+                            child: Text(
+                              '- Desktop  Applications',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10.0),
+                            child: Text(
+                              '- Networking and Security',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+
+                          SizedBox(height: 100,),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                "Version Date : 28/07/2024",
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    fontFamily: "Poppins",
+                                    height: 1.2,
+                                    color: Colors.white70,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Center(
                               child: Text(
-                                "14/3/2024",
+                                "Version: 1.0.0",
                                 style: TextStyle(
                                     fontSize: 17,
                                     fontFamily: "Poppins",
                                     height: 1.2,
-                                    color: Colors.black,
+                                    color: Colors.white70,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),

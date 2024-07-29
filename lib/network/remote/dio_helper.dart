@@ -100,6 +100,7 @@ class DioHelper {
     print(url);
     if (CacheHelper.getData(key: "token") != null) {
       dio.options.headers['Authorization'] = "Bearer ${CacheHelper.getData(key: "token")}";
+
     }
     return await dio.delete(url, queryParameters: query);
   }

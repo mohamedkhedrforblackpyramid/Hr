@@ -8,6 +8,7 @@ import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/screens/excusepermission.dart';
 import 'package:hr/screens/projects.dart';
 import 'package:hr/screens/switchpermitandvacan.dart';
+import 'package:hr/screens/taskmanagement.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
@@ -55,13 +56,13 @@ class _AddphaseState extends State<Addphase> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => Projects(
-                  userId: widget.userId,
-                  organizationId: widget.organization_id,
-                  organizationsName: widget.organizationsName,
-                  oranizaionsList: widget.oranizaionsList,
-                  organizationsArabicName: widget.organizationsArabicName,
-                )));
+            builder: (context) => TaskManagement(
+              userId: widget.userId,
+              organizationId: widget.organization_id,
+              organizationsName: widget.organizationsName,
+              oranizaionsList: widget.oranizaionsList,
+              organizationsArabicName: widget.organizationsArabicName,
+            )));
   }
 
   @override
@@ -341,22 +342,13 @@ class _AddphaseState extends State<Addphase> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              MultiScreenForTasks(
-                                                projectId: widget.projectId,
-                                                organization_id:
-                                                    widget.organization_id,
-                                                currentIndex: 0,
-                                                organizationsName:
-                                                    widget.organizationsName,
-                                                userId: widget.userId,
-                                                oranizaionsList:
-                                                    widget.oranizaionsList,
-                                                organizationsArabicName: widget
-                                                    .organizationsArabicName,
-                                                phaseName: '',
-                                                phaseId: widget.phaseId,
-                                              )));
+                                          builder: (context) => TaskManagement(
+                                            userId: widget.userId,
+                                            organizationId: widget.organization_id,
+                                            organizationsName: widget.organizationsName,
+                                            oranizaionsList: widget.oranizaionsList,
+                                            organizationsArabicName: widget.organizationsArabicName,
+                                          )));
                                 }).catchError((error) {
                                   setState(() {});
                                   clickAdd = false;

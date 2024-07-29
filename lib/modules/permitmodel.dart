@@ -1,4 +1,5 @@
 class PermitModel {
+
    int? id;
    int? organization_id;
    String? from;

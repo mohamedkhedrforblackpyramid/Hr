@@ -3,12 +3,14 @@ class ProjectsModel {
   late String name;
   late String? description;
   late List<int> assignees;
+  bool isSlected =false;
 
   ProjectsModel({
     required this.id,
     required this.name,
     this.description,
     required this.assignees,
+    required this.isSlected
   });
   ProjectsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

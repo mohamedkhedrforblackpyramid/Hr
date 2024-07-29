@@ -51,6 +51,7 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
 
   @override
   void initState() {
+    print(widget.phaseName);
     super.initState();
   }
 
@@ -93,7 +94,7 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
     ];
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      bottomNavigationBar: BottomNavigationBar(
+     /* bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.black,
         selectedItemColor: Colors.pinkAccent,
         currentIndex:widget.currentIndex,
@@ -124,7 +125,7 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
           ),
 
         ],
-      ),
+      ),*/
         backgroundColor: Color(0xff1A6293),
 
         body: Stack(

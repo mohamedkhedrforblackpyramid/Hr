@@ -28,13 +28,14 @@ class AnimatedBtn extends StatelessWidget {
           RiveAnimation.asset(
             "assets/RiveAssets/button.riv",
             controllers: [_btnAnimationController],
+
           ),
            Positioned.fill(
               top: 8,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(AppLocalizations.of(context)!.localeName == 'ar' ? CupertinoIcons.arrow_right : CupertinoIcons.arrow_left),
+                // Icon(AppLocalizations.of(context)!.localeName == 'ar' ? CupertinoIcons.arrow_right : CupertinoIcons.arrow_left),
                   SizedBox(
                     width: 8,
                   ),

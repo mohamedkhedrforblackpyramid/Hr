@@ -80,7 +80,7 @@ class _WhoIsAttendState extends State<WhoIsAttend> {
                   child: Column(
                     children: [
                       Text(
-                        'Attendance  today',
+                        'Attending Today',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -97,7 +97,7 @@ class _WhoIsAttendState extends State<WhoIsAttend> {
                         itemBuilder: (context, index) {
                           return ListTile(
                             title: Container(
-                                color: Colors.teal,
+                                color: Colors.white70,
                                 child: Text(
                                   users[index],
                                   textAlign: TextAlign.center,

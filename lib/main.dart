@@ -22,10 +22,12 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
+
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
+
   }
 }
 
@@ -60,9 +62,11 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     CacheHelper.getData(key: 'language');
     super.initState();
+
   }
   @override
   Widget build(BuildContext context) {
+
      CacheHelper.saveData(key: 'language', value: '${widget.lang}');
      print(widget.lang);
     return WillPopScope(

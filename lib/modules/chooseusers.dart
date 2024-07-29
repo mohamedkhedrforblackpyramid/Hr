@@ -9,7 +9,7 @@ class ChooseUserModel {
 
   });
   ChooseUserModel.fromJson(Map<String, dynamic> json) {
-    userId = json['id'];
+    userId = json['user_id'];
     name = json['name'];
   }
 }

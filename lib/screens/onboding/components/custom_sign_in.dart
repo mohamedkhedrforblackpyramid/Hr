@@ -6,12 +6,12 @@ import '../../sign_up.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
-
 Future<Object?> customSigninDialog(BuildContext context,
     {required ValueChanged onClosed}) {
   return showGeneralDialog(
       barrierDismissible: true,
       barrierLabel: "Sign up",
+
       context: context,
       transitionDuration: const Duration(milliseconds: 400),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -29,6 +29,7 @@ Future<Object?> customSigninDialog(BuildContext context,
               decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.95),
                   borderRadius: const BorderRadius.all(Radius.circular(40))),
+
               child: Scaffold(
                 backgroundColor: Colors.transparent,
                 resizeToAvoidBottomInset:

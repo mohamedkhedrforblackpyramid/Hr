@@ -9,6 +9,7 @@ import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/projects.dart';
 import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:hr/screens/tasktable.dart';
+import 'package:hr/screens/taskmanagement.dart';
 import 'package:hr/screens/whoisattend.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
@@ -87,7 +88,7 @@ class _ChooseListState extends State<ChooseList> {
     List<String> list =[
       'Profile Setting',
       'LogOut',
-      'Who is Attend'
+      'Attending today'
 
 
     ];
@@ -129,7 +130,7 @@ class _ChooseListState extends State<ChooseList> {
 
                          )));
                   }
-                  if(dropdownValue == 'Who is Attend'){
+                  if(dropdownValue == 'Attending today'){
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => WhoIsAttend(
                         organizationId: widget.organizationId,
@@ -413,13 +414,22 @@ class _ChooseListState extends State<ChooseList> {
                                         height: 120,
                                       ),
                                       onTap: (){
-                                        Navigator.push(context,
+                                        /*Navigator.push(context,
                                             MaterialPageRoute(builder: (context) =>  Projects(
                                               userId: widget.userId,
                                               organizationId: widget.organizationId,
                                               organizationsName: widget.organizationsName,
                                               oranizaionsList: widget.oranizaionsList,
                                               organizationsArabicName: widget.organizationsArabicName,
+                                            )));*/
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) =>  TaskManagement(
+                                              userId: widget.userId,
+                                              organizationId: widget.organizationId,
+                                              organizationsName: widget.organizationsName,
+                                              oranizaionsList: widget.oranizaionsList,
+                                              organizationsArabicName: widget.organizationsArabicName,
+
                                             )));
                                       },
                                     ),
