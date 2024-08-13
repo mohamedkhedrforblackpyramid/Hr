@@ -1,8 +1,10 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hr/modules/permitmodel.dart';
+import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
@@ -60,24 +62,9 @@ class _ShowpermitState extends State<Showpermit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xff1A6293),
         body: Stack(
           children: [
-            Positioned(
-                width: MediaQuery.of(context).size.width * 1.7,
-                bottom: 200,
-                left: 100,
-                child: Image.asset('assets/Backgrounds/Spline.png')),
-            Positioned.fill(
-                child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-            )),
-            const RiveAnimation.asset('assets/RiveAssets/shapes.riv'),
-            Positioned.fill(
-                child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-              child: const SizedBox(),
-            )),
+
             AnimatedPositioned(
               duration: Duration(milliseconds: 240),
               top: isSignInDialogShown ? -50 : 0,
@@ -95,7 +82,7 @@ class _ShowpermitState extends State<Showpermit> {
                                 scrollDirection: Axis.vertical,
                                 itemBuilder:
                                     (BuildContext context, int index) =>
-                                        buildpermitList(
+                                        buildPermitList(
                                             per: permits.permitList![index],
                                             index: index, context: context),
                                 itemCount: permits.permitList!.length,
@@ -127,16 +114,23 @@ class _ShowpermitState extends State<Showpermit> {
           ],
         ));
   }
-  Widget buildpermitList({required PermitModel per, required int index, required BuildContext context, }) {
-    print('naaaaaaaaaaaaaaaaaaaaaaame');
-    print(per.name);
-    print('naaaaaaaaaaaaaaaaaaaaaaame');
+  Widget buildPermitList({
+    required PermitModel per,
+    required int index,
+    required BuildContext context,
+  }) {
+    // Define date format
+    final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
+
+    // Format date and time
+    String formattedFrom = per.from != null ? dateFormat.format(DateTime.parse(per.from!)) : '____';
+    String formattedTo = per.to != null ? dateFormat.format(DateTime.parse(per.to!)) : '____';
 
     return Container(
       margin: EdgeInsets.all(20),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.deepOrangeAccent[200],
+        color: Colors.green.shade100,
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(40.0),
           bottomLeft: Radius.circular(40.0),
@@ -148,25 +142,29 @@ class _ShowpermitState extends State<Showpermit> {
           Text(
             '${AppLocalizations.of(context)!.userName} : ${per.name} ',
             style: TextStyle(
-                fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
+              fontSize: 15,
+              color: Colors.black45,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Text(
-            '${AppLocalizations.of(context)!.timeFrom} : ${per.from}',
+            '${AppLocalizations.of(context)!.timeFrom} : $formattedFrom',
             style: TextStyle(
-                fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
+              fontSize: 15,
+              color: Colors.black45,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Text(
-            '${AppLocalizations.of(context)!.timeTo} :${per.to}',
+            '${AppLocalizations.of(context)!.timeTo} : $formattedTo',
             style: TextStyle(
-                fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
+              fontSize: 15,
+              color: Colors.black45,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-      /*    Text(
-            'Status : ${per.status}',
-            style: TextStyle(
-                fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
-          ),*/
           Text(
-            '${AppLocalizations.of(context)!.notesView} : ${per.notes==null?'____':per.notes}',
+            '${AppLocalizations.of(context)!.notesView} : ${per.notes == null ? '____' : per.notes}',
             style: TextStyle(
               fontSize: 15,
               color: Colors.black45,
@@ -180,126 +178,132 @@ class _ShowpermitState extends State<Showpermit> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.indigo,
-                    borderRadius: BorderRadius.circular(30)
+                  color: Colors.brown.shade300,
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                child: TextButton(onPressed: (){
-                  showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        //  title: const Text('Basic dialog title'),
-                        content:  Text(
-                          '${AppLocalizations.of(context)!.accept_permission}',
-                        ),
-                        actions:[
-                          Row(
-                            children: [
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  textStyle: Theme.of(context).textTheme.labelLarge,
-                                ),
-                                child:  Text('${AppLocalizations.of(context)!.yes}'),
-                                onPressed: () async {
-                                  await DioHelper.postData(
-                                    url: "api/update-status/${per.id}",
-                                    data: {
-                                      "status": true,
-                                    },
-                                  ).then((value) {
-                                    setState(() {
-                                      permits.permitList?.removeAt(index);
-                                    });
-                                    print('mbroook');
-                                  }).catchError((error){});
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  textStyle: Theme.of(context).textTheme.labelLarge,
-                                ),
-                                child:  Text('${AppLocalizations.of(context)!.no}'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                            mainAxisAlignment: MainAxisAlignment.center,
-
+                child: TextButton(
+                  onPressed: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text(
+                            '${AppLocalizations.of(context)!.accept_permission}',
                           ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                    child: Text('${AppLocalizations.of(context)!.accept}',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    )),
+                          actions: [
+                            Row(
+                              children: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    textStyle: Theme.of(context).textTheme.labelLarge,
+                                  ),
+                                  child: Text('${AppLocalizations.of(context)!.yes}'),
+                                  onPressed: () async {
+                                    await DioHelper.postData(
+                                      url: "api/update-status/${per.id}",
+                                      data: {
+                                        "status": true,
+                                      },
+                                    ).then((value) {
+                                      setState(() {
+                                        permits.permitList?.removeAt(index);
+                                      });
+                                      print('Accepted');
+                                    }).catchError((error) {
+                                      print('Error: $error');
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    textStyle: Theme.of(context).textTheme.labelLarge,
+                                  ),
+                                  child: Text('${AppLocalizations.of(context)!.no}'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Text(
+                    '${AppLocalizations.of(context)!.accept}',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
               SizedBox(width: 10,),
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.indigo,
-                    borderRadius: BorderRadius.circular(30)
+                  color: Colors.brown.shade300,
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                child: TextButton(onPressed: (){
-                  showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        //  title: const Text('Basic dialog title'),
-                        content:  Text(
-                          '${AppLocalizations.of(context)!.are_denyPermission}',
-                        ),
-                        actions: [
-                          Row(
-                            children: [
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  textStyle: Theme.of(context).textTheme.labelLarge,
-                                ),
-                                child:  Text('${AppLocalizations.of(context)!.yes}'),
-                                onPressed: () async {
-                                  await DioHelper.postData(
-                                    url: "api/update-status/${per.id}",
-                                    data: {
-                                      "status": false,
-                                    },
-                                  ).then((value) {
-                                    setState(() {
-                                      permits.permitList?.removeAt(index);
-                                    });
-                                    print('mbroook');
-                                  }).catchError((error){});
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  textStyle: Theme.of(context).textTheme.labelLarge,
-                                ),
-                                child:  Text('${AppLocalizations.of(context)!.no}'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                            // crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                child: TextButton(
+                  onPressed: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text(
+                            '${AppLocalizations.of(context)!.are_denyPermission}',
                           ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                    child: Text('${AppLocalizations.of(context)!.refuse}',
-                      style: TextStyle(
-                          color: Colors.white
-                      ),
-                    )),
+                          actions: [
+                            Row(
+                              children: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    textStyle: Theme.of(context).textTheme.labelLarge,
+                                  ),
+                                  child: Text('${AppLocalizations.of(context)!.yes}'),
+                                  onPressed: () async {
+                                    await DioHelper.postData(
+                                      url: "api/update-status/${per.id}",
+                                      data: {
+                                        "status": false,
+                                      },
+                                    ).then((value) {
+                                      setState(() {
+                                        permits.permitList?.removeAt(index);
+                                      });
+                                      print('Rejected');
+                                    }).catchError((error) {
+                                      print('Error: $error');
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    textStyle: Theme.of(context).textTheme.labelLarge,
+                                  ),
+                                  child: Text('${AppLocalizations.of(context)!.no}'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Text(
+                    '${AppLocalizations.of(context)!.refuse}',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
             ],
           )
@@ -307,6 +311,5 @@ class _ShowpermitState extends State<Showpermit> {
       ),
     );
   }
-
 }
 

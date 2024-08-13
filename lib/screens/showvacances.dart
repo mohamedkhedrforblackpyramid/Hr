@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hr/modules/permitmodel.dart';
+import 'package:intl/intl.dart';
 import 'package:rive/rive.dart';
 
 import '../network/local/cache_helper.dart';
@@ -60,24 +61,9 @@ class _ShowVacancesState extends State<ShowVacances> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xff1A6293),
         body: Stack(
           children: [
-            Positioned(
-                width: MediaQuery.of(context).size.width * 1.7,
-                bottom: 200,
-                left: 100,
-                child: Image.asset('assets/Backgrounds/Spline.png')),
-            Positioned.fill(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-                )),
-            const RiveAnimation.asset('assets/RiveAssets/shapes.riv'),
-            Positioned.fill(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-                  child: const SizedBox(),
-                )),
+
             AnimatedPositioned(
               duration: Duration(milliseconds: 240),
               top: isSignInDialogShown ? -50 : 0,
@@ -130,6 +116,11 @@ class _ShowVacancesState extends State<ShowVacances> {
         ));
   }
   Widget buildpermitList({required PermitModel per, required int index, required BuildContext context, }) {
+    final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+
+    // Format date and time
+    String formattedFrom = per.from != null ? dateFormat.format(DateTime.parse(per.from!)) : '____';
+    String formattedTo = per.to != null ? dateFormat.format(DateTime.parse(per.to!)) : '____';
     print('naaaaaaaaaaaaaaaaaaaaaaame');
     print(per.name);
     print('naaaaaaaaaaaaaaaaaaaaaaame');
@@ -138,7 +129,7 @@ class _ShowVacancesState extends State<ShowVacances> {
       margin: EdgeInsets.all(20),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.deepOrangeAccent[200],
+        color: Colors.green.shade100,
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(40.0),
           bottomLeft: Radius.circular(40.0),
@@ -153,12 +144,12 @@ class _ShowVacancesState extends State<ShowVacances> {
                 fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
           ),
           Text(
-            '${AppLocalizations.of(context)!.timeFrom} : ${per.from}',
+            '${AppLocalizations.of(context)!.timeFrom} : ${formattedFrom}',
             style: TextStyle(
                 fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
           ),
           Text(
-            '${AppLocalizations.of(context)!.timeTo} :${per.to}',
+            '${AppLocalizations.of(context)!.timeTo} :${formattedTo}',
             style: TextStyle(
                 fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
           ),
@@ -182,7 +173,7 @@ class _ShowVacancesState extends State<ShowVacances> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.indigo,
+                    color: Colors.brown.shade300,
                     borderRadius: BorderRadius.circular(30)
                 ),
                 child: TextButton(onPressed: (){
@@ -244,7 +235,7 @@ class _ShowVacancesState extends State<ShowVacances> {
               SizedBox(width: 10,),
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.indigo,
+                    color: Colors.brown.shade300,
                     borderRadius: BorderRadius.circular(30)
                 ),
                 child: TextButton(onPressed: (){

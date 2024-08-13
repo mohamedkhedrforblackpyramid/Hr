@@ -47,10 +47,10 @@ class _HolidayPermissionState extends State<HolidayPermission> {
       '${AppLocalizations.of(context)!.sick}',
     ];
     return Scaffold(
-        backgroundColor: Color(0xff1A6293),
+        backgroundColor: Color(0xffFBDBA1),
         body: Stack(
           children: [
-            Positioned(
+/*            Positioned(
                 width: MediaQuery.of(context).size.width * 1.7,
                 bottom: 200,
                 left: 100,
@@ -64,7 +64,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                 child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
               child: const SizedBox(),
-            )),
+            )),*/
             AnimatedPositioned(
               duration: Duration(milliseconds: 240),
               top: isSignInDialogShown ? -50 : 0,
@@ -85,8 +85,8 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                     "${AppLocalizations.of(context)!.vacationRequest}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 30,
-                                        color: Colors.grey),
+                                        fontSize: 20,
+                                        color: Color(0xff7D5060)),
                                   ),
                                 ),
                               ),
@@ -125,7 +125,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                       autofocus: false,
                                       style: TextStyle(
                                           fontSize: 22.0,
-                                          color: Color(0xFFbdc6cf)),
+                                          color: Colors.green),
                                       decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Color(0xFCED3FF),
@@ -135,7 +135,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                             '${AppLocalizations.of(context)!.dateFrom}',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.white),
+                                                color: Colors.black),
                                           ),
                                         ),
                                         contentPadding: const EdgeInsets.only(
@@ -191,7 +191,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                       autofocus: false,
                                       style: TextStyle(
                                           fontSize: 22.0,
-                                          color: Color(0xFFbdc6cf)),
+                                          color: Colors.green),
                                       decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Color(0xFCED3FF),
@@ -201,7 +201,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                             '${AppLocalizations.of(context)!.dateTo}',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.white),
+                                                color: Colors.black),
                                           ),
                                         ),
                                         contentPadding: const EdgeInsets.only(
@@ -239,7 +239,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                           autofocus: false,
                                           style: TextStyle(
                                               fontSize: 22.0,
-                                              color: Color(0xFFbdc6cf)),
+                                              color: Colors.green),
                                           decoration: InputDecoration(
                                             filled: true,
                                             fillColor: Color(0xFCED3FF),
@@ -250,7 +250,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                                 '${AppLocalizations.of(context)!.vacationType}',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
+                                                    color: Colors.black,
                                                     fontSize: 20),
                                               ),
                                             ),
@@ -337,7 +337,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                       autofocus: false,
                                       style: TextStyle(
                                           fontSize: 22.0,
-                                          color: Color(0xFFbdc6cf)),
+                                          color: Colors.green),
                                       decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Color(0xFCED3FF),
@@ -347,7 +347,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                             '${AppLocalizations.of(context)!.notes}',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.white),
+                                                color: Colors.black),
                                           ),
                                         ),
                                         contentPadding: const EdgeInsets.only(
@@ -392,7 +392,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                         },
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor:
-                                                const Color(0xFF9397B7),
+                                                 Colors.white,
                                             minimumSize:
                                                 const Size(double.infinity, 56),
                                             shape: const RoundedRectangleBorder(
@@ -405,16 +405,15 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                                         Radius.circular(25),
                                                     bottomLeft:
                                                         Radius.circular(25)))),
-                                        icon: Icon(
-                                          AppLocalizations.of(context)!
-                                                      .localeName ==
-                                                  'en'
-                                              ? CupertinoIcons.arrow_right
-                                              : CupertinoIcons.arrow_left,
-                                          color: Color(0xFFFE0037),
-                                        ),
+
                                         label: Text(
-                                            "${AppLocalizations.of(context)!.send}")),
+                                            "${AppLocalizations.of(context)!.send}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 20
+                                          ),
+                                        )),
                                   ),
                                 ),
                               )
@@ -432,6 +431,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
   }
 
   sendVacation() async {
+
     print(translateType);
     await DioHelper.postData(
       url: "api/vacancies",
@@ -492,7 +492,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                '${value.data['message']}',
+                'Sent Successfully',
                 textAlign: TextAlign.center,
               ),
             );

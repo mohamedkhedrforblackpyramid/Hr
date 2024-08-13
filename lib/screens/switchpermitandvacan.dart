@@ -85,7 +85,7 @@ class _SwitchShowpermitAndVacanState extends State<SwitchShowpermitAndVacan> {
                                             )));
 
                                     },
-                                        child: Text('${AppLocalizations.of(context)!.permissions}',
+                                        child: Text('${AppLocalizations.of(context)!.excuse}',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 35

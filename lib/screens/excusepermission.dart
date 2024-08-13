@@ -51,10 +51,10 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xff1A6293),
+        backgroundColor: Color(0xffFBDBA1),
         body: Stack(
           children: [
-            Positioned(
+        /*    Positioned(
                 width: MediaQuery.of(context).size.width * 1.7,
                 bottom: 200,
                 left: 100,
@@ -68,7 +68,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                 child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
               child: const SizedBox(),
-            )),
+            )),*/
             AnimatedPositioned(
               duration: Duration(milliseconds: 240),
               top: isSignInDialogShown ? -50 : 0,
@@ -87,11 +87,11 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 30),
                                     child: Text(
-                                      "${AppLocalizations.of(context)!.excuseRequest}",
+                                      "Permissions Requests",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 30,
-                                          color: Colors.grey),
+                                          fontSize: 20,
+                                          color: Color(0xff7D5060)),
                                     ),
                                   ),
                                   SizedBox(
@@ -121,7 +121,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                       });
                                     },
                                     fillColor: MaterialStateProperty.all(
-                                        Colors.white),
+                                        Colors.green),
                                   ),
                                   RadioListTile(
                                     title: Text(
@@ -145,7 +145,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                       });
                                     },
                                     fillColor: MaterialStateProperty.all(
-                                        Colors.white),
+                                        Colors.green),
                                   ),
                                   RadioListTile(
                                     title: Text(
@@ -169,7 +169,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                       });
                                     },
                                     fillColor:
-                                        MaterialStateProperty.all(Colors.white),
+                                        MaterialStateProperty.all(Colors.green),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -212,7 +212,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                           autofocus: false,
                                           style: TextStyle(
                                               fontSize: 22.0,
-                                              color: Color(0xFFbdc6cf)),
+                                              color: Colors.green),
                                           decoration: InputDecoration(
                                             filled: true,
                                             fillColor: Color(0xFCED3FF),
@@ -223,7 +223,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                                 style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.bold,
-                                                    color: Colors.white),
+                                                    color: Colors.black),
                                               ),
                                             ),
                                             contentPadding:
@@ -287,7 +287,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                               style: TextStyle(
                                                   fontSize: 22.0,
                                                   color:
-                                                      Color(0xFFbdc6cf)),
+                                                      Colors.green),
                                               decoration: InputDecoration(
                                                 filled: true,
                                                 fillColor:
@@ -300,7 +300,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color:
-                                                            Colors.white),
+                                                            Colors.black),
                                                   ),
                                                 ),
                                                 contentPadding:
@@ -351,15 +351,15 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                                   return AlertDialog(
                                                     //  backgroundColor: Color(0xff93D0FC),
                                                     content: TimePicker(
-                                                        onPressed: (data) {
-                                                          print(data);
+                                                        onPressed: (date) {
+                                                          print(date);
                                                           print(
                                                               "Heeeeeeloooooo");
-                                                          print(data);
+                                                          print(date);
                                                           print(
                                                               "Heeeeeeloooooo");
                                                           timeToController
-                                                              .text = data;
+                                                              .text = date;
                                                           setState(() {});
                                                         }),
                                                   );
@@ -374,7 +374,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                               style: TextStyle(
                                                   fontSize: 22.0,
                                                   color:
-                                                      Color(0xFFbdc6cf)),
+                                                      Colors.green),
                                               decoration: InputDecoration(
                                                 filled: true,
                                                 fillColor:
@@ -387,7 +387,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color:
-                                                            Colors.white),
+                                                            Colors.black),
                                                   ),
                                                 ),
                                                 contentPadding:
@@ -430,7 +430,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                         autofocus: false,
                                         style: TextStyle(
                                             fontSize: 22.0,
-                                            color: Color(0xFFbdc6cf)),
+                                            color: Colors.green),
                                         decoration: InputDecoration(
                                           filled: true,
                                           fillColor: Color(0xFCED3FF),
@@ -440,7 +440,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                               '${AppLocalizations.of(context)!.notes}',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.white),
+                                                  color: Colors.black),
                                             ),
                                           ),
                                           contentPadding: const EdgeInsets.only(
@@ -494,7 +494,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                           },
                                           style: ElevatedButton.styleFrom(
                                               backgroundColor:
-                                                  const Color(0xFF9397B7),
+                                                   Colors.white,
                                               minimumSize: const Size(
                                                   double.infinity, 56),
                                               shape: const RoundedRectangleBorder(
@@ -512,12 +512,14 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                                           bottomLeft:
                                                               Radius.circular(
                                                                   25)))),
-                                          icon:  Icon(
-                                            AppLocalizations.of(context)!.localeName=='en'?
-                                            CupertinoIcons.arrow_right:CupertinoIcons.arrow_left,
-                                            color: Color(0xFFFE0037),
-                                          ),
-                                          label:  Text("${AppLocalizations.of(context)!.send}")),
+
+                                          label:  Text("${AppLocalizations.of(context)!.send}",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold
+                                            ),
+                                          )),
                                     ),
                                   )
                                 ]),
@@ -536,14 +538,19 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
   }
 
   sendExcuseNullFrom() async {
-    print(widget.userId);
+    print('${dateController.text} ${timeToController.text}');
 
+    print(widget.userId);
+    DateTime localDatetime = DateTime.now();
+    int timezoneOffset = localDatetime.timeZoneOffset.inHours;
+
+    String parsedTimezoneOffset = timezoneOffset >= 0 ? '+${timezoneOffset}' : timezoneOffset.toString();
     print(notesController.text);
     await DioHelper.postData(
       url: "api/vacancies",
       data: {
-        //"from": '${dateController.text} ${timeFromController.text}',
-        "to": '${dateController.text} ${timeToController.text}',
+        //"from": '${dateController.text} ${timeFromController.text}${parsedTimezoneOffset}',
+        "to": '${dateController.text} ${timeToController.text}${parsedTimezoneOffset}',
         'is_permit': true,
         "notes": notesController.text,
         'type': permit_type,
@@ -588,7 +595,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                '${value.data['message']}',
+                'Sent Successfully',
                 textAlign: TextAlign.center,
               ),
             );
@@ -641,11 +648,15 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
     setState(() {
       print(widget.userId);
     });
+    DateTime localDatetime = DateTime.now();
+    int timezoneOffset = localDatetime.timeZoneOffset.inHours;
+
+    String parsedTimezoneOffset = timezoneOffset >= 0 ? '+${timezoneOffset}' : timezoneOffset.toString();
     print(notesController.text);
     await DioHelper.postData(
       url: "api/vacancies",
       data: {
-        "from": '${dateController.text} ${timeFromController.text}',
+        "from": '${dateController.text} ${timeFromController.text}${parsedTimezoneOffset}',
         //  "to": '${dateController.text} ${timeToController.text}' ,
         'is_permit': true,
         "notes": notesController.text,
@@ -690,7 +701,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                '${value.data['message']}',
+                'Sent Successfully',
                 textAlign: TextAlign.center,
               ),
             );
@@ -757,12 +768,16 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
     setState(() {
 
     });
+    DateTime localDatetime = DateTime.now();
+    int timezoneOffset = localDatetime.timeZoneOffset.inHours;
+
+    String parsedTimezoneOffset = timezoneOffset >= 0 ? '+${timezoneOffset}' : timezoneOffset.toString();
     print(notesController.text);
     await DioHelper.postData(
       url: "api/vacancies",
       data: {
-        "from": '${dateController.text} ${timeFromController.text}',
-        "to": '${dateController.text} ${timeToController.text}',
+        "from": '${dateController.text} ${timeFromController.text}${parsedTimezoneOffset}',
+        "to": '${dateController.text} ${timeToController.text}${parsedTimezoneOffset}',
         'is_permit': true,
         "notes": notesController.text,
         'type': permit_type,
@@ -819,7 +834,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
             return AlertDialog(
               backgroundColor: Color(0xff93D0FC),
               content: Text(
-                '${value.data['message']}',
+                'Sent Successfully',
                 textAlign: TextAlign.center,
               ),
             );
