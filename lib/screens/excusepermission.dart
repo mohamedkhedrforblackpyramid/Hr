@@ -268,14 +268,21 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                                 context: context,
                                                 builder:
                                                     (BuildContext context) {
-                                                  return AlertDialog(
-                                                    content: TimePicker(
-                                                        onPressed: (data) {
+                                                  return
+                                                    //  backgroundColor: Color(0xff93D0FC),
+                                                     TimePicker(
+                                                        onPressed: (date) {
+                                                          print(date);
+                                                          print(
+                                                              "Heeeeeeloooooo");
+                                                          print(date);
+                                                          print(
+                                                              "Heeeeeeloooooo");
                                                           timeFromController
-                                                              .text = data;
+                                                              .text = date;
                                                           setState(() {});
-                                                        }),
-                                                  );
+                                                        });
+
                                                 },
                                               );
                                             },

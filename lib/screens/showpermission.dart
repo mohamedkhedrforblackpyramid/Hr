@@ -113,8 +113,7 @@ class _ShowpermitState extends State<Showpermit> {
             )
           ],
         ));
-  }
-  Widget buildPermitList({
+  }Widget buildPermitList({
     required PermitModel per,
     required int index,
     required BuildContext context,
@@ -122,9 +121,13 @@ class _ShowpermitState extends State<Showpermit> {
     // Define date format
     final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
-    // Format date and time
-    String formattedFrom = per.from != null ? dateFormat.format(DateTime.parse(per.from!)) : '____';
-    String formattedTo = per.to != null ? dateFormat.format(DateTime.parse(per.to!)) : '____';
+    // Format date and time with added 3 hours
+    String formattedFrom = per.from != null
+        ? dateFormat.format(DateTime.parse(per.from!).add(Duration(hours: 3)))
+        : '____';
+    String formattedTo = per.to != null
+        ? dateFormat.format(DateTime.parse(per.to!).add(Duration(hours: 3)))
+        : '____';
 
     return Container(
       margin: EdgeInsets.all(20),
@@ -311,5 +314,6 @@ class _ShowpermitState extends State<Showpermit> {
       ),
     );
   }
+
 }
 

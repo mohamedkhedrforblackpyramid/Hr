@@ -510,7 +510,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                             child: GradientSlideToAct(
                                     key: depKey,
                                     text: AppLocalizations.of(context)!.localeName == 'ar'?"اسحب الى اليمين للإنصراف":
-                                    'Slide to Confirm Departure',
+                                    'Slide to Confirm Leave',
                                     width: 300,
                                     textStyle: const TextStyle(
                                         color: Colors.white, fontSize: 15),

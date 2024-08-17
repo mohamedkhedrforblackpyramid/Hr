@@ -30,9 +30,9 @@ class _TimePickerState extends State<TimePicker> {
            mode: CupertinoDatePickerMode.time,
            minuteInterval: 1,
            textStyle: TextStyle(
-             fontSize: 50,
+             fontSize: 40,
              fontWeight: FontWeight.bold,
-             color: Colors.blueAccent
+             color: Colors.green
 
            ),
 

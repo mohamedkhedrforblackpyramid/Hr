@@ -445,6 +445,7 @@ class _HolidayPermissionState extends State<HolidayPermission> {
         'user_id': widget.userId
       },
     ).then((value) {
+
       print(translateType);
       if (dateFromController.text == '') {
         showDialog(
@@ -498,6 +499,10 @@ class _HolidayPermissionState extends State<HolidayPermission> {
             );
           },
         );
+        dateFromController.text='';
+        dateToController.text='';
+        vacationtype.text='';
+        noteController.text='';
       }
       loadingSend = false;
       setState(() {});
