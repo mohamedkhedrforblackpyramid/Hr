@@ -19,18 +19,14 @@ import 'network/local/cache_helper.dart';
 import 'network/remote/dio_helper.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
-
 class MyHttpOverrides extends HttpOverrides {
   @override
-
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
-
   }
 }
-
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,17 +34,23 @@ main() async {
   await CacheHelper.init();
   HttpOverrides.global = MyHttpOverrides();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  CacheHelper.saveData(key: 'fcm_token', value: fcmToken);
-  runApp( MyApp(lang: '${CacheHelper.getData(key: 'language')}',));
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    CacheHelper.saveData(key: 'fcm_token', value: fcmToken);
+  } catch (e) {
+    print("Failed to initialize Firebase: $e");
+    CacheHelper.saveData(key: 'fcm_token', value: 'No Firebase Token');
+  }
+
+  runApp(MyApp(lang: '${CacheHelper.getData(key: 'language')}',));
 }
 
 class MyApp extends StatefulWidget {
-  String lang ;
-   MyApp({required this.lang});
+  String lang;
+  MyApp({required this.lang});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -57,30 +59,28 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool shouldPop = false;
 
-  // This widget is the root of your application.
   @override
   void initState() {
     CacheHelper.getData(key: 'language');
     super.initState();
-
   }
+
   @override
   Widget build(BuildContext context) {
+    CacheHelper.saveData(key: 'language', value: '${widget.lang}');
+    print(widget.lang);
 
-     CacheHelper.saveData(key: 'language', value: '${widget.lang}');
-     print(widget.lang);
     return WillPopScope(
       onWillPop: () async {
         return shouldPop;
       },
       child: MaterialApp(
-        //locale:  Locale(CacheHelper.getData(key: 'language')),
         locale: Locale(widget.lang),
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate
+          GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const [
           Locale('en'),
@@ -101,11 +101,12 @@ class _MyAppState extends State<MyApp> {
             errorBorder: defaultInputBorder,
           ),
         ),
-        home:OnboardingScreen(),
+        home: OnboardingScreen(),
       ),
     );
   }
 }
+
 
 const defaultInputBorder = OutlineInputBorder(
   borderRadius: BorderRadius.all(Radius.circular(16)),

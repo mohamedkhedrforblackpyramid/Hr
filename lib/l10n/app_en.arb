@@ -44,7 +44,7 @@
   "accept": "Accept",
   "refuse": "Refuse",
   "are_denyPermission":"Are you sure refuse the permission?",
-  "accept_permission": "Are you sure accepting the permission?",
+  "accept_permission": "Are you sure accept the permission?",
   "are_denyExcuse":"Are you sure you refuse  the vacation?",
   "accept_excuse": "Are you sure accept the vacation?",
   "yes": "Yes",

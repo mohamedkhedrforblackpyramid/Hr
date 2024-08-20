@@ -47,24 +47,8 @@ class _HolidayPermissionState extends State<HolidayPermission> {
       '${AppLocalizations.of(context)!.sick}',
     ];
     return Scaffold(
-        backgroundColor: Color(0xffFBDBA1),
         body: Stack(
           children: [
-/*            Positioned(
-                width: MediaQuery.of(context).size.width * 1.7,
-                bottom: 200,
-                left: 100,
-                child: Image.asset('assets/Backgrounds/Spline.png')),
-            Positioned.fill(
-                child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-            )),
-            const RiveAnimation.asset('assets/RiveAssets/shapes.riv'),
-            Positioned.fill(
-                child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-              child: const SizedBox(),
-            )),*/
             AnimatedPositioned(
               duration: Duration(milliseconds: 240),
               top: isSignInDialogShown ? -50 : 0,
@@ -223,54 +207,52 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                   ),
                                 ),
                               ),
-                              Row(
+                              Stack(
                                 children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 10,
-                                      ),
-                                      child: Theme(
-                                        data: Theme.of(context).copyWith(
-                                            splashColor: Colors.transparent),
-                                        child: TextField(
-                                          enabled: false,
-                                          controller: vacationtype,
-                                          autofocus: false,
-                                          style: TextStyle(
-                                              fontSize: 22.0,
-                                              color: Colors.green),
-                                          decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: Color(0xFCED3FF),
-                                            label: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Text(
-                                                '${AppLocalizations.of(context)!.vacationType}',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
-                                                    fontSize: 20),
-                                              ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                    ),
+                                    child: Theme(
+                                      data: Theme.of(context).copyWith(
+                                          splashColor: Colors.transparent),
+                                      child: TextField(
+                                        enabled: false,
+                                        controller: vacationtype,
+                                        autofocus: false,
+                                        style: TextStyle(
+                                            fontSize: 22.0,
+                                            color: Colors.green),
+                                        decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: Color(0xFCED3FF),
+                                          label: Padding(
+                                            padding:
+                                                const EdgeInsets.all(10.0),
+                                            child: Text(
+                                              '${AppLocalizations.of(context)!.vacationType}',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                  fontSize: 20),
                                             ),
-                                            contentPadding:
-                                                const EdgeInsets.only(
-                                                    left: 14.0,
-                                                    bottom: 8.0,
-                                                    top: 8.0),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white),
-                                              borderRadius:
-                                                  BorderRadius.circular(25.7),
-                                            ),
-                                            enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white),
-                                              borderRadius:
-                                                  BorderRadius.circular(25.7),
-                                            ),
+                                          ),
+                                          contentPadding:
+                                              const EdgeInsets.only(
+                                                  left: 14.0,
+                                                  bottom: 8.0,
+                                                  top: 8.0),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(25.7),
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(25.7),
                                           ),
                                         ),
                                       ),
@@ -278,49 +260,55 @@ class _HolidayPermissionState extends State<HolidayPermission> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: DropdownButton<String>(
-                                      dropdownColor: Color(0xffFAACB4),
-                                      icon: const Icon(
-                                        Icons.add,
-                                        color: Colors.black,
-                                        size: 30,
-                                      ),
-                                      elevation: 16,
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                      underline: Container(
-                                        color: Colors.deepPurpleAccent,
-                                      ),
-                                      onChanged: (String? value) {
-                                        // This is called when the user selects an item.
-                                        setState(() {
-                                          dropdownValue = value!;
-                                          vacationtype.text =
-                                              dropdownValue.toString();
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: DropdownButton<String>(
+                                        dropdownColor: Colors.yellow.shade100,
+                                        icon: Container(
+                                          width: MediaQuery.sizeOf(context).width,
+                                          child: const Icon(
+                                            Icons.add,
+                                            color: Colors.transparent,
+                                            size: 30,
+                                          ),
+                                        ),
+                                        elevation: 16,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                        underline: Container(
+                                          color: Colors.deepPurpleAccent,
+                                        ),
+                                        onChanged: (String? value) {
+                                          // This is called when the user selects an item.
+                                          setState(() {
+                                            dropdownValue = value!;
+                                            vacationtype.text =
+                                                dropdownValue.toString();
 
-                                          if (vacationtype.text == "اعتيادي" ||
-                                              vacationtype.text == "ORDINARY") {
-                                            translateType = "ORDINARY";
-                                          } else if (vacationtype.text ==
-                                                  "عارضة" ||
-                                              vacationtype.text == "CASUAL") {
-                                            translateType = "CASUAL";
-                                          } else if (vacationtype.text ==
-                                                  "مرضي" ||
-                                              vacationtype.text == "SICK") {
-                                            translateType = 'SICK';
-                                          }
-                                        });
-                                      },
-                                      items: list.map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
+                                            if (vacationtype.text == "اعتيادي" ||
+                                                vacationtype.text == "ORDINARY") {
+                                              translateType = "ORDINARY";
+                                            } else if (vacationtype.text ==
+                                                "عارضة" ||
+                                                vacationtype.text == "CASUAL") {
+                                              translateType = "CASUAL";
+                                            } else if (vacationtype.text ==
+                                                "مرضي" ||
+                                                vacationtype.text == "SICK") {
+                                              translateType = 'SICK';
+                                            }
+                                          });
+                                        },
+                                        items: list.map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(value),
+                                              );
+                                            }).toList(),
+                                      ),
                                     ),
                                   )
                                 ],

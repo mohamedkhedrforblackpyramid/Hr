@@ -51,7 +51,7 @@ class _ProjectsState extends State<Projects> {
               organizationId: widget.organizationId,
               organizationsName: widget.organizationsName,
               oranizaionsList: widget.oranizaionsList,
-              organizationsArabicName: widget.organizationsArabicName,
+              organizationsArabicName: widget.organizationsArabicName, personType: '',
             )));
   }
   getProjects() async {

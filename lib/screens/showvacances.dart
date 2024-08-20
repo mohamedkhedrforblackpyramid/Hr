@@ -93,7 +93,7 @@ class _ShowVacancesState extends State<ShowVacances> {
                         padding: const EdgeInsets.symmetric(vertical: 300),
                         child: Center(
                           child: Text(
-                            "No Requests permissions",
+                            "No Requests Vacances",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),

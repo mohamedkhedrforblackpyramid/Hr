@@ -81,7 +81,7 @@ class _SwitchShowpermitAndVacanState extends State<SwitchShowpermitAndVacan> {
                                      await   Navigator.push(context,
                                             MaterialPageRoute(builder: (context) =>  Showpermit(
                                               organizationId: widget.organizationId,
-                                              userId: widget.userId,
+                                              userId: widget.userId, personType: '',
                                             )));
 
                                     },

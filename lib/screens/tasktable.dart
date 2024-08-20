@@ -109,6 +109,7 @@ class _TaskTableState extends State<TaskTable> {
 
   @override
   void initState() {
+    print(CacheHelper.getData(key: 'name'));
     getMyTasks();
     getPhases();
     getProjects();
@@ -156,6 +157,9 @@ class _TaskTableState extends State<TaskTable> {
                                 value: '0',
                                 groupValue: valueClosed,
                                 onChanged: (value) {
+                                  setState(() {
+
+                                  });
                                   getMyTasks();
                                   setState(() {
                                     permit_type = 'myTasks';
@@ -199,6 +203,9 @@ class _TaskTableState extends State<TaskTable> {
                                 value: '1',
                                 groupValue: valueClosed,
                                 onChanged: (value) {
+                                  setState(() {
+
+                                  });
                                   getAllTasks();
                                   setState(() {
                                     permit_type = 'allTasks';
@@ -300,7 +307,7 @@ class _TaskTableState extends State<TaskTable> {
       title: Text('${task.task_name}'),
       trailing: Transform.scale(
         scale: 1.2,
-        child: CircleAvatar(
+        child:task.assignees_names!.contains(CacheHelper.getData(key: 'name'))? CircleAvatar(
           child: Checkbox(
             checkColor: Colors.black,
             fillColor: MaterialStateProperty.all(Colors.white),
@@ -362,7 +369,7 @@ class _TaskTableState extends State<TaskTable> {
               }
             },
           ),
-        ),
+        ):SizedBox(),
       ),
     );
   }

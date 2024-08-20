@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
+import 'package:hr/mainchooseList.dart';
 import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/screens/create_organizations.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -52,6 +53,7 @@ class _SignInFormState extends State<SignInForm> {
   OrganizationsList? orgList;
   late int organizationsId;
   String organizationsName = '';
+  String personType = '';
   String organizationsArabicName = '';
   bool _isChecked = false;
   StateMachineController getRiveController(Artboard artboard) {
@@ -102,7 +104,6 @@ class _SignInFormState extends State<SignInForm> {
       userID = response.data['data']['user']['id'];
       CacheHelper.saveData(key: "token", value: response.data['token']);
       print(response.data['data']['organizations']);
-      print(response.data);
 
       orgList =
           OrganizationsList.fromJson(response.data['data']['organizations']);
@@ -123,6 +124,8 @@ class _SignInFormState extends State<SignInForm> {
       organizationsArabicName =
           response.data['data']['organizations'][0]['name_ar'];
       organizationsId = response.data['data']['organizations'][0]['id'];
+      personType = response.data['data']['organizations'][0]['type'];
+      print(personType);
 
       // print(userID);
       //  print(response.data);
@@ -139,12 +142,12 @@ class _SignInFormState extends State<SignInForm> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ChooseList(
+                    builder: (context) => MainPage(
                         userId: userID,
                         oranizaionsList: orgList!,
                         organizationId: organizationsId,
                         organizationsName: organizationsName,
-                        organizationsArabicName: organizationsArabicName)));
+                        organizationsArabicName: organizationsArabicName, personType: personType,)));
           });
         }
       });

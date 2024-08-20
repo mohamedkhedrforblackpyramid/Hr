@@ -24,6 +24,8 @@ class Attendance extends StatefulWidget {
   String? organizationsName;
   late OrganizationsList oranizaionsList;
   String?organizationsArabicName;
+  String?personType;
+
 
 
   Attendance({
@@ -31,7 +33,9 @@ class Attendance extends StatefulWidget {
     required this.organizationId,
     required this.organizationsName,
     required this.oranizaionsList,
-    required this.organizationsArabicName
+    required this.organizationsArabicName,
+    required this.personType
+
   });
   @override
   State<Attendance> createState() => _AttendanceState();
@@ -370,7 +374,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                                     oranizaionsList: widget.oranizaionsList,
                                                     organizationId: widget.organizationId,
                                                     organizationsName: widget.organizationsName,
-                                                    organizationsArabicName: widget.organizationsArabicName,
+                                                    organizationsArabicName: widget.organizationsArabicName, personType: widget.personType,
 
                                                   )));
                                               setState(() {
@@ -455,7 +459,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                           oranizaionsList: widget.oranizaionsList,
                                           organizationId: widget.organizationId,
                                             organizationsName: widget.organizationsName,
-                                          organizationsArabicName: widget.organizationsArabicName,
+                                          organizationsArabicName: widget.organizationsArabicName, personType: widget.personType,
                                         )));
                                     setState(() {
 
@@ -549,7 +553,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
 
                                                 organizationId: widget.organizationId,
                                                   organizationsName: widget.organizationsName,
-                                                organizationsArabicName: widget.organizationsArabicName,
+                                                organizationsArabicName: widget.organizationsArabicName, personType: widget.personType,
                                               )));
                                           setState(() {
 
@@ -624,7 +628,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                             oranizaionsList: widget.oranizaionsList,
                                             organizationId: widget.organizationId,
                                             organizationsName: widget.organizationsName,
-                                            organizationsArabicName: widget.organizationsArabicName,
+                                            organizationsArabicName: widget.organizationsArabicName, personType: widget.personType,
 
                                           )));
                                       setState(() {

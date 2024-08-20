@@ -7,6 +7,7 @@ import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/screens/excusepermission.dart';
 import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/projects.dart';
+import 'package:hr/screens/showpermission.dart';
 import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:hr/screens/tasktable.dart';
 import 'package:hr/screens/taskmanagement.dart';
@@ -24,15 +25,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChooseList extends StatefulWidget {
   int? userId;
-  late OrganizationsList oranizaionsList;
+   dynamic oranizaionsList;
   int?organizationId;
   String? organizationsName;
   String?organizationsArabicName;
+  String?personType;
    ChooseList({required this.userId,
      required this.oranizaionsList,
      required this.organizationId,
      required this.organizationsName,
-     required this.organizationsArabicName
+     required this.organizationsArabicName,
+     required this.personType
    });
 
   @override
@@ -225,7 +228,7 @@ class _ChooseListState extends State<ChooseList> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(
+                              /*Expanded(
                                 child: Text(AppLocalizations.of(context)!.localeName == 'ar'?widget.organizationsArabicName!:
                                     widget.organizationsName!
                                   ,
@@ -236,7 +239,7 @@ class _ChooseListState extends State<ChooseList> {
                                   ),
                                 ),
                                 flex: 3,
-                              ),
+                              ),*/
                               Expanded(
                                 child: CircleAvatar(
                                   backgroundColor: Colors.black45,
@@ -292,6 +295,7 @@ class _ChooseListState extends State<ChooseList> {
                                                     organizationsName: widget.organizationsName,
                                                     oranizaionsList: widget.oranizaionsList,
                                                     organizationsArabicName: widget.organizationsArabicName,
+                                                    personType: widget.personType,
                                                   );
                                                 }));
                                       }
@@ -320,9 +324,9 @@ class _ChooseListState extends State<ChooseList> {
                                       ),
                                       onTap:(){
                                         Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) =>  SwitchShowpermitAndVacan(
-                                              userId: widget.userId,
+                                            MaterialPageRoute(builder: (context) =>  Showpermit(
                                               organizationId: widget.organizationId,
+                                              userId: widget.userId, personType: widget.personType,
                                             )));
                                       }
                                       ,

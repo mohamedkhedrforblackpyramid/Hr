@@ -51,24 +51,8 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xffFBDBA1),
         body: Stack(
           children: [
-        /*    Positioned(
-                width: MediaQuery.of(context).size.width * 1.7,
-                bottom: 200,
-                left: 100,
-                child: Image.asset('assets/Backgrounds/Spline.png')),
-            Positioned.fill(
-                child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-            )),
-            const RiveAnimation.asset('assets/RiveAssets/shapes.riv'),
-            Positioned.fill(
-                child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-              child: const SizedBox(),
-            )),*/
             AnimatedPositioned(
               duration: Duration(milliseconds: 240),
               top: isSignInDialogShown ? -50 : 0,
@@ -270,18 +254,22 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                                     (BuildContext context) {
                                                   return
                                                     //  backgroundColor: Color(0xff93D0FC),
-                                                     TimePicker(
-                                                        onPressed: (date) {
-                                                          print(date);
-                                                          print(
-                                                              "Heeeeeeloooooo");
-                                                          print(date);
-                                                          print(
-                                                              "Heeeeeeloooooo");
-                                                          timeFromController
-                                                              .text = date;
-                                                          setState(() {});
-                                                        });
+                                                     AlertDialog(
+                                                       content: TimePicker(
+                                                          onPressed: (date) {
+                                                            print(date);
+                                                            print(
+                                                                "Heeeeeeloooooo");
+                                                            print(date);
+                                                            print(
+                                                                "Heeeeeeloooooo");
+                                                            timeFromController
+                                                                .text = date;
+                                                            setState(() {});
+                                                          },
+
+                                                       ),
+                                                     );
 
                                                 },
                                               );

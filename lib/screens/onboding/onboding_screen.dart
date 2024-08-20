@@ -196,7 +196,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Center(
                               child: Text(
-                                "Version Date : 14/08/2024",
+                                "Version Date : 18/08/2024",
                                 style: TextStyle(
                                     fontSize: 17,
                                     fontFamily: "Poppins",
@@ -210,7 +210,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Center(
                               child: Text(
-                                "Version: 1.0.1",
+                                "Version: 1.0.2",
                                 style: TextStyle(
                                     fontSize: 17,
                                     fontFamily: "Poppins",

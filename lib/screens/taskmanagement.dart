@@ -148,7 +148,7 @@ class _HomeScreenState extends State<TaskManagement> {
           oranizaionsList: widget.oranizaionsList,
           organizationId: widget.organizationId,
           organizationsName: widget.organizationsName,
-          organizationsArabicName: widget.organizationsArabicName,
+          organizationsArabicName: widget.organizationsArabicName, personType: '',
 
         )));
   }
@@ -579,7 +579,7 @@ class _HomeScreenState extends State<TaskManagement> {
                         phase_list.phaseList!.isNotEmpty
                             ? GestureDetector(
                             child: SizedBox(
-                              height: 150,
+                              height: 130,
                               child: ListView.separated(
                                 shrinkWrap: true,
                                 physics: const ScrollPhysics(),
@@ -760,73 +760,111 @@ class _HomeScreenState extends State<TaskManagement> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  '${task.name}',
-                  style: TextStyle(color: Colors.grey[700], fontSize: 20),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    overflow:TextOverflow.ellipsis ,
+                    maxLines: 2,
+                    '${task.name}',
+                    style: TextStyle(color: Colors.grey[700], fontSize: 20),
+                  ),
                 ),
-                Text(
+                /*Text(
                   maxLines: 5,
                   '${task.description}',
                   style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold),
-                ),
+                ),*/
+                SizedBox(height: 10,),
                 const SizedBox(height: 20),
                 LinearProgressIndicator(
                   value: .5,
                   backgroundColor: Colors.grey[300],
                   color: Colors.blue,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          projectName.text = task.name;
-                          users = task.assignees as List<int>;
-                          if (task.description == null) {
-                            projectDescription.text = '';
-                          } else {
-                            projectDescription.text = task.description!;
-                          }
-                          showModalBottomSheet<void>(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return StatefulBuilder(builder:
-                                  (BuildContext context, StateSetter setState) {
-                                return Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 20,
-                                      right: 20,
-                                      left: 20,
-                                      bottom:
-                                      MediaQuery.of(context).viewInsets.bottom),
-                                  child: Container(
-                                      height:
-                                      MediaQuery.of(context).size.height / 2,
-                                      width:
-                                      MediaQuery.of(context).size.width / 1.1,
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.all(15.0),
-                                              child: Text(
-                                                "Edit Project Name",
-                                                style: TextStyle(
-                                                    fontSize: 30,
-                                                    fontWeight: FontWeight.bold),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            projectName.text = task.name;
+                            users = task.assignees as List<int>;
+                            if (task.description == null) {
+                              projectDescription.text = '';
+                            } else {
+                              projectDescription.text = task.description!;
+                            }
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return StatefulBuilder(builder:
+                                    (BuildContext context, StateSetter setState) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 20,
+                                        right: 20,
+                                        left: 20,
+                                        bottom:
+                                        MediaQuery.of(context).viewInsets.bottom),
+                                    child: Container(
+                                        height:
+                                        MediaQuery.of(context).size.height / 2,
+                                        width:
+                                        MediaQuery.of(context).size.width / 1.1,
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              const Padding(
+                                                padding: EdgeInsets.all(15.0),
+                                                child: Text(
+                                                  "Edit Project Name",
+                                                  style: TextStyle(
+                                                      fontSize: 30,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.only(bottom: 20),
-                                              child: Container(
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.only(bottom: 20),
+                                                child: Container(
+                                                  width: 300,
+                                                  child: TextFormField(
+                                                    controller: projectName,
+                                                    decoration: new InputDecoration(
+                                                      labelText: "Project Name",
+                                                      fillColor: Colors.white,
+                                                      border: new OutlineInputBorder(
+                                                        borderRadius:
+                                                        new BorderRadius.circular(
+                                                            25.0),
+                                                        borderSide: new BorderSide(),
+                                                      ),
+                                                      //fillColor: Colors.green
+                                                    ),
+                                                    keyboardType:
+                                                    TextInputType.emailAddress,
+                                                    style: new TextStyle(
+                                                      fontFamily: "Poppins",
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Container(
                                                 width: 300,
                                                 child: TextFormField(
-                                                  controller: projectName,
+                                                  controller: projectDescription,
                                                   decoration: new InputDecoration(
-                                                    labelText: "Project Name",
+                                                    labelText: "Project Description",
                                                     fillColor: Colors.white,
                                                     border: new OutlineInputBorder(
                                                       borderRadius:
@@ -843,371 +881,343 @@ class _HomeScreenState extends State<TaskManagement> {
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Container(
-                                              width: 300,
-                                              child: TextFormField(
-                                                controller: projectDescription,
-                                                decoration: new InputDecoration(
-                                                  labelText: "Project Description",
-                                                  fillColor: Colors.white,
-                                                  border: new OutlineInputBorder(
-                                                    borderRadius:
-                                                    new BorderRadius.circular(
-                                                        25.0),
-                                                    borderSide: new BorderSide(),
-                                                  ),
-                                                  //fillColor: Colors.green
-                                                ),
-                                                keyboardType:
-                                                TextInputType.emailAddress,
-                                                style: new TextStyle(
-                                                  fontFamily: "Poppins",
-                                                ),
+                                              const SizedBox(
+                                                height: 20,
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                chooseList
-                                                    .chooseuserList!.isNotEmpty
-                                                    ? showModalBottomSheet<void>(
-                                                  context: context,
+                                              GestureDetector(
+                                                onTap: () {
+                                                  chooseList
+                                                      .chooseuserList!.isNotEmpty
+                                                      ? showModalBottomSheet<void>(
+                                                    context: context,
 
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return Padding(
-                                                      padding:
-                                                      const EdgeInsets
-                                                          .all(20.0),
-                                                      child: ListView.builder(
-                                                        shrinkWrap: true,
-                                                        itemBuilder: (BuildContext
-                                                        context,
-                                                            int index) =>
-                                                            buildChooseUsers(
-                                                                user: chooseList
-                                                                    .chooseuserList![
-                                                                index],
-                                                                index: index),
-                                                        itemCount: chooseList
-                                                            .chooseuserList!
-                                                            .length,
-                                                      ),
-                                                    );
-                                                  },
-                                                ).whenComplete(() {
-                                                  setState(() {});
-                                                })
-                                                    : Flushbar(
-                                                  message:
-                                                  'No Employee',
-                                                  icon: const Icon(
-                                                    Icons.info_outline,
-                                                    size: 30.0,
-                                                    color: Colors.black,
-                                                  ),
-                                                  duration:
-                                                  const Duration(seconds: 3),
-                                                  leftBarIndicatorColor:
-                                                  Colors.blue[300],
-                                                  backgroundColor: Colors.red,
-                                                ).show(context);
-                                              },
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 40),
-                                                child: Theme(
-                                                  data: Theme.of(context).copyWith(
-                                                      splashColor:
-                                                      Colors.transparent),
-                                                  child: TextField(
-                                                    enabled: false,
-                                                    autofocus: false,
-                                                    style: const TextStyle(
-                                                        fontSize: 22.0,
-                                                        color: Color(0xFFbdc6cf)),
-                                                    decoration: InputDecoration(
-                                                      filled: true,
-                                                      fillColor: const Color(0xFCED3FF),
-                                                      label: Padding(
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return Padding(
                                                         padding:
-                                                        const EdgeInsets.all(
-                                                            10),
-                                                        child: users.isEmpty
-                                                            ? const Text(
-                                                          "Add this project to",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .bold,
-                                                              color: Colors
-                                                                  .black45),
-                                                        )
-                                                            : Text(
-                                                          'You Selected ${users.length} Employee',
-                                                          style: const TextStyle(
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .bold,
-                                                              color: Colors
-                                                                  .green),
+                                                        const EdgeInsets
+                                                            .all(20.0),
+                                                        child: ListView.builder(
+                                                          shrinkWrap: true,
+                                                          itemBuilder: (BuildContext
+                                                          context,
+                                                              int index) =>
+                                                              buildChooseUsers(
+                                                                  user: chooseList
+                                                                      .chooseuserList![
+                                                                  index],
+                                                                  index: index),
+                                                          itemCount: chooseList
+                                                              .chooseuserList!
+                                                              .length,
                                                         ),
-                                                      ),
-                                                      contentPadding:
-                                                      const EdgeInsets.only(
-                                                          left: 14.0,
-                                                          bottom: 8.0,
-                                                          top: 8.0,
-                                                          right: 14),
-                                                      focusedBorder:
-                                                      OutlineInputBorder(
-                                                        borderSide: const BorderSide(
-                                                            color: Colors.white),
-                                                        borderRadius:
-                                                        BorderRadius.circular(
-                                                            25.7),
-                                                      ),
-                                                      enabledBorder:
-                                                      UnderlineInputBorder(
-                                                        borderSide:
-                                                        const BorderSide(
-                                                            color:
-                                                            Colors.white),
-                                                        borderRadius:
-                                                        BorderRadius.circular(
-                                                            25.7),
+                                                      );
+                                                    },
+                                                  ).whenComplete(() {
+                                                    setState(() {});
+                                                  })
+                                                      : Flushbar(
+                                                    message:
+                                                    'No Employee',
+                                                    icon: const Icon(
+                                                      Icons.info_outline,
+                                                      size: 30.0,
+                                                      color: Colors.black,
+                                                    ),
+                                                    duration:
+                                                    const Duration(seconds: 3),
+                                                    leftBarIndicatorColor:
+                                                    Colors.blue[300],
+                                                    backgroundColor: Colors.red,
+                                                  ).show(context);
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      bottom: 40),
+                                                  child: Theme(
+                                                    data: Theme.of(context).copyWith(
+                                                        splashColor:
+                                                        Colors.transparent),
+                                                    child: TextField(
+                                                      enabled: false,
+                                                      autofocus: false,
+                                                      style: const TextStyle(
+                                                          fontSize: 22.0,
+                                                          color: Color(0xFFbdc6cf)),
+                                                      decoration: InputDecoration(
+                                                        filled: true,
+                                                        fillColor: const Color(0xFCED3FF),
+                                                        label: Padding(
+                                                          padding:
+                                                          const EdgeInsets.all(
+                                                              10),
+                                                          child: users.isEmpty
+                                                              ? const Text(
+                                                            "Add this project to",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                                color: Colors
+                                                                    .black45),
+                                                          )
+                                                              : Text(
+                                                            'You Selected ${users.length} Employee',
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                                color: Colors
+                                                                    .green),
+                                                          ),
+                                                        ),
+                                                        contentPadding:
+                                                        const EdgeInsets.only(
+                                                            left: 14.0,
+                                                            bottom: 8.0,
+                                                            top: 8.0,
+                                                            right: 14),
+                                                        focusedBorder:
+                                                        OutlineInputBorder(
+                                                          borderSide: const BorderSide(
+                                                              color: Colors.white),
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              25.7),
+                                                        ),
+                                                        enabledBorder:
+                                                        UnderlineInputBorder(
+                                                          borderSide:
+                                                          const BorderSide(
+                                                              color:
+                                                              Colors.white),
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              25.7),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            Center(
-                                              child: Container(
-                                                height: 50,
-                                                width: 200,
-                                                child: clickAddProject == false
-                                                    ? FancyContainer(
-                                                  textColor: Colors.white,
-                                                  onTap: () async {
-                                                    setState(() {
-                                                      clickAddProject = true;
-                                                    });
-                                                    await DioHelper.patchData(
-                                                      url:
-                                                      "api/projects/${task.id}",
-                                                      data: {
-                                                        "name":
-                                                        projectName.text,
-                                                        "description":
-                                                        projectDescription
-                                                            .text,
-                                                        "assignees": users,
-                                                      },
-                                                    ).then((value) {
-                                                      print(projectName.text);
-                                                      print(projectDescription
-                                                          .text);
-                                                      print(value.data);
-                                                      print(
-                                                          "Tmaaaaaaaaaaaaaaaaaaaaaaaaam");
-                                                      setState(() {});
-                                                      clickAddProject = false;
-                                                      getProjects();
+                                              Center(
+                                                child: Container(
+                                                  height: 50,
+                                                  width: 200,
+                                                  child: clickAddProject == false
+                                                      ? FancyContainer(
+                                                    textColor: Colors.white,
+                                                    onTap: () async {
+                                                      setState(() {
+                                                        clickAddProject = true;
+                                                      });
+                                                      await DioHelper.patchData(
+                                                        url:
+                                                        "api/projects/${task.id}",
+                                                        data: {
+                                                          "name":
+                                                          projectName.text,
+                                                          "description":
+                                                          projectDescription
+                                                              .text,
+                                                          "assignees": users,
+                                                        },
+                                                      ).then((value) {
+                                                        print(projectName.text);
+                                                        print(projectDescription
+                                                            .text);
+                                                        print(value.data);
+                                                        print(
+                                                            "Tmaaaaaaaaaaaaaaaaaaaaaaaaam");
+                                                        setState(() {});
+                                                        clickAddProject = false;
+                                                        getProjects();
 
-                                                      Navigator.pop(context);
-                                                      print("Shaaaaaaaaatr");
-                                                    }).catchError((error) {
-                                                      clickAddProject = false;
+                                                        Navigator.pop(context);
+                                                        print("Shaaaaaaaaatr");
+                                                      }).catchError((error) {
+                                                        clickAddProject = false;
 
-                                                      setState(() {});
-                                                      if (projectName
-                                                          .text.isEmpty) {
-                                                        Flushbar(
-                                                          backgroundColor:
-                                                          Colors.red,
-                                                          message:
-                                                          "Project Name Is Empty",
-                                                          icon: const Icon(
-                                                            Icons
-                                                                .info_outline,
-                                                            size: 30.0,
-                                                            color:
-                                                            Colors.black,
-                                                          ),
-                                                          duration: const Duration(
-                                                              seconds: 3),
-                                                          leftBarIndicatorColor:
-                                                          Colors
-                                                              .blue[300],
-                                                        )..show(context);
-                                                      } else if (projectDescription
-                                                          .text.isEmpty) {
-                                                        Flushbar(
-                                                          message:
-                                                          "Project Description id Empty",
-                                                          backgroundColor:
-                                                          Colors.red,
-                                                          icon: const Icon(
-                                                            Icons
-                                                                .info_outline,
-                                                            size: 30.0,
-                                                            color:
-                                                            Colors.black,
-                                                          ),
-                                                          duration: const Duration(
-                                                              seconds: 3),
-                                                          leftBarIndicatorColor:
-                                                          Colors
-                                                              .blue[300],
-                                                        )..show(context);
-                                                      } else {
-                                                        Flushbar(
-                                                          message:
-                                                          "error",
-                                                          icon: Icon(
-                                                            Icons
-                                                                .info_outline,
-                                                            size: 30.0,
-                                                            color: Colors
+                                                        setState(() {});
+                                                        if (projectName
+                                                            .text.isEmpty) {
+                                                          Flushbar(
+                                                            backgroundColor:
+                                                            Colors.red,
+                                                            message:
+                                                            "Project Name Is Empty",
+                                                            icon: const Icon(
+                                                              Icons
+                                                                  .info_outline,
+                                                              size: 30.0,
+                                                              color:
+                                                              Colors.black,
+                                                            ),
+                                                            duration: const Duration(
+                                                                seconds: 3),
+                                                            leftBarIndicatorColor:
+                                                            Colors
                                                                 .blue[300],
-                                                          ),
-                                                          duration: const Duration(
-                                                              seconds: 3),
-                                                          leftBarIndicatorColor:
-                                                          Colors
-                                                              .blue[300],
-                                                        )..show(context);
-                                                      }
+                                                          )..show(context);
+                                                        } else if (projectDescription
+                                                            .text.isEmpty) {
+                                                          Flushbar(
+                                                            message:
+                                                            "Project Description id Empty",
+                                                            backgroundColor:
+                                                            Colors.red,
+                                                            icon: const Icon(
+                                                              Icons
+                                                                  .info_outline,
+                                                              size: 30.0,
+                                                              color:
+                                                              Colors.black,
+                                                            ),
+                                                            duration: const Duration(
+                                                                seconds: 3),
+                                                            leftBarIndicatorColor:
+                                                            Colors
+                                                                .blue[300],
+                                                          )..show(context);
+                                                        } else {
+                                                          Flushbar(
+                                                            message:
+                                                            "error",
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .info_outline,
+                                                              size: 30.0,
+                                                              color: Colors
+                                                                  .blue[300],
+                                                            ),
+                                                            duration: const Duration(
+                                                                seconds: 3),
+                                                            leftBarIndicatorColor:
+                                                            Colors
+                                                                .blue[300],
+                                                          )..show(context);
+                                                        }
 
-                                                      print(error
-                                                          .response.data);
-                                                    });
-                                                  },
-                                                  title: 'Save',
-                                                  color1: Colors.purple,
-                                                  color2: Colors.lightBlue,
-                                                )
-                                                    : const Center(
-                                                  child:
-                                                  CircularProgressIndicator(
-                                                    color: Colors.indigo,
+                                                        print(error
+                                                            .response.data);
+                                                      });
+                                                    },
+                                                    title: 'Save',
+                                                    color1: Colors.purple,
+                                                    color2: Colors.lightBlue,
+                                                  )
+                                                      : const Center(
+                                                    child:
+                                                    CircularProgressIndicator(
+                                                      color: Colors.indigo,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                );
-                              });
-                            },
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.edit,
-                          color: Colors.black54,
-                        )),
-                    IconButton(
-                        onPressed: () async {
-                          showDialog<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                //  title: const Text('Basic dialog title'),
-                                content: const Text(
-                                  'Delete this project ?',
-                                  textAlign: TextAlign.center,
-                                ),
-                                actions: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .labelLarge,
-                                        ),
-                                        child: const Text(
-                                            'yes'),
-                                        onPressed: () async {
-                                          setState(() {});
-                                          await DioHelper.deleteData(
-                                            url: "api/projects/${task.id}",
-                                          ).then((value) {
-                                            Navigator.pop(context);
-
-                                            setState(() {
-                                              projectsNew.projectList?.removeAt(index);
-                                            });
-                                            print('mbroook');
-                                            Flushbar(
-                                              messageColor: Colors.black,
-                                              backgroundColor: Colors.green,
-                                              message: "Project deleted",
-                                              icon: const Icon(
-                                                Icons.verified,
-                                                size: 30.0,
-                                                color: Colors.white,
-                                              ),
-                                              duration: const Duration(seconds: 3),
-                                              leftBarIndicatorColor:
-                                              Colors.blue[300],
-                                            )..show(context);
-                                          }).catchError((error) {
-                                            Navigator.pop(context);
-                                            setState(() {});
-                                            Flushbar(
-                                              message:
-                                              "${error.response.data['message']}",
-                                              backgroundColor: Colors.red,
-                                              icon: Icon(
-                                                Icons.info_outline,
-                                                size: 30.0,
-                                                color: Colors.blue[300],
-                                              ),
-                                              duration: const Duration(seconds: 3),
-                                              leftBarIndicatorColor:
-                                              Colors.blue[300],
-                                            )..show(context);
-                                          });
-                                        },
-                                      ),
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .labelLarge,
-                                        ),
-                                        child: const Text(
-                                            'No'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
+                                            ],
+                                          ),
+                                        )),
+                                  );
+                                });
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.black54,
+                          )),
+                      IconButton(
+                          onPressed: () async {
+                            showDialog<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  //  title: const Text('Basic dialog title'),
+                                  content: const Text(
+                                    'Delete this project ?',
+                                    textAlign: TextAlign.center,
                                   ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.black54,
-                        )),
+                                  actions: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .labelLarge,
+                                          ),
+                                          child: const Text(
+                                              'yes'),
+                                          onPressed: () async {
+                                            setState(() {});
+                                            await DioHelper.deleteData(
+                                              url: "api/projects/${task.id}",
+                                            ).then((value) {
+                                              Navigator.pop(context);
 
-                  ],
+                                              setState(() {
+                                                projectsNew.projectList?.removeAt(index);
+                                              });
+                                              print('mbroook');
+                                              Flushbar(
+                                                messageColor: Colors.black,
+                                                backgroundColor: Colors.green,
+                                                message: "Project deleted",
+                                                icon: const Icon(
+                                                  Icons.verified,
+                                                  size: 30.0,
+                                                  color: Colors.white,
+                                                ),
+                                                duration: const Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )..show(context);
+                                            }).catchError((error) {
+                                              Navigator.pop(context);
+                                              setState(() {});
+                                              Flushbar(
+                                                message:
+                                                "${error.response.data['message']}",
+                                                backgroundColor: Colors.red,
+                                                icon: Icon(
+                                                  Icons.info_outline,
+                                                  size: 30.0,
+                                                  color: Colors.blue[300],
+                                                ),
+                                                duration: const Duration(seconds: 3),
+                                                leftBarIndicatorColor:
+                                                Colors.blue[300],
+                                              )..show(context);
+                                            });
+                                          },
+                                        ),
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .labelLarge,
+                                          ),
+                                          child: const Text(
+                                              'No'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.black54,
+                          )),
+
+                    ],
+                  ),
                 )
               ],
             ),
