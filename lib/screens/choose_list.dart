@@ -228,7 +228,7 @@ class _ChooseListState extends State<ChooseList> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              /*Expanded(
+                              Expanded(
                                 child: Text(AppLocalizations.of(context)!.localeName == 'ar'?widget.organizationsArabicName!:
                                     widget.organizationsName!
                                   ,
@@ -239,7 +239,7 @@ class _ChooseListState extends State<ChooseList> {
                                   ),
                                 ),
                                 flex: 3,
-                              ),*/
+                              ),
                               Expanded(
                                 child: CircleAvatar(
                                   backgroundColor: Colors.black45,

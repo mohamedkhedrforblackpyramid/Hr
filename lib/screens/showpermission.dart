@@ -193,10 +193,10 @@ class _ShowpermitState extends State<Showpermit> {
                               ),
                             )
                           : Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 300),
+                            padding: const EdgeInsets.symmetric(vertical: 200),
                             child: Center(
                               child: Text(
-                                  "No Requests permissions",
+                                  "No Requests ",
                                   style: TextStyle(
                                       fontSize: 20, fontWeight: FontWeight.bold),
                                 ),

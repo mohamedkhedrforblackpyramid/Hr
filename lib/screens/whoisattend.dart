@@ -1,14 +1,7 @@
 import 'dart:ui';
 
-import 'package:another_flushbar/flushbar.dart';
-import 'package:fancy_containers/fancy_containers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hr/modules/projects.dart';
-import 'package:hr/screens/multiscreen_tasks/multiscreenfortasks.dart';
-import 'package:rive/rive.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../modules/tasks.dart';
 import '../network/remote/dio_helper.dart';
 
 class WhoIsAttend extends StatefulWidget {
@@ -55,66 +48,120 @@ class _WhoIsAttendState extends State<WhoIsAttend> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xff1A6293),
-        body: SafeArea(
-          child: Stack(
-            children: [
-              Positioned(
-                  width: MediaQuery.of(context).size.width * 1.7,
-                  bottom: 200,
-                  left: 100,
-                  child: Image.asset('assets/Backgrounds/Spline.png')),
-              Positioned.fill(
-                  child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-              )),
-              const RiveAnimation.asset('assets/RiveAssets/shapes.riv'),
-              Positioned.fill(
-                  child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
+      backgroundColor: const Color(0xff0E1D36),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // الخلفية المتدرجة مع الألوان المتناسقة
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xff0F2027), Color(0xff203A43), Color(0xff2C5364)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+            // إضافة أشكال خفيفة للإضاءة وزيادة التباين
+            Positioned(
+              top: -50,
+              left: -50,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.05),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: -50,
+              right: -50,
+              child: Container(
+                width: 300,
+                height: 300,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.03),
+                ),
+              ),
+            ),
+            // الخلفية الضبابية الناعمة
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                 child: const SizedBox(),
-              )),
-              SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Attending Today',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.white),
+              ),
+            ),
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    Text(
+                      'Attending Today',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 36, // زيادة حجم النص
+                        foreground: Paint()..shader = LinearGradient(
+                          colors: <Color>[Colors.white, Colors.white],
+                        ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                        shadows: [
+                          Shadow(
+                            blurRadius: 10.0,
+                            color: Colors.black,
+                            offset: Offset(2.0, 2.0),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      ListView.builder(
+                    ),
+                    SizedBox(height: 20),
+                    Expanded(
+                      child: ListView.builder(
                         itemCount: users.length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Container(
-                                color: Colors.white70,
-                                child: Text(
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Card(
+                              elevation: 8,
+                              shadowColor: Colors.black54,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: ListTile(
+                                leading: Icon(
+                                  CupertinoIcons.person_alt_circle,
+                                  color: Colors.blueAccent,
+                                  size: 40,
+                                ),
+                                title: Text(
                                   users[index],
-                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 30,
+                                    fontSize: 22,
+                                    color: Colors.black87,
                                   ),
-                                )),
+                                ),
+                                trailing: Icon(
+                                  CupertinoIcons.checkmark_seal_fill,
+                                  color: Colors.green,
+                                  size: 30,
+                                ),
+                              ),
+                            ),
                           );
                         },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              )
-            ],
-          ),
-        ));
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

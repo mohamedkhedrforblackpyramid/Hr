@@ -8,7 +8,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gradient_slide_to_act/gradient_slide_to_act.dart';
 import 'package:hr/modules/organizationmodel.dart';
-import 'package:hr/screens/choose_list.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
@@ -16,6 +15,7 @@ import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'hr.dart';
 import 'onboding/onboding_screen.dart';
 
 class Attendance extends StatefulWidget {
@@ -369,7 +369,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                             else{
                                               Navigator.push(
                                                   context,
-                                                  MaterialPageRoute(builder: (context) =>  ChooseList(
+                                                  MaterialPageRoute(builder: (context) =>  Hr(
                                                     userId: widget.userId,
                                                     oranizaionsList: widget.oranizaionsList,
                                                     organizationId: widget.organizationId,
@@ -455,7 +455,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                   }else{
                                     Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
+                                        MaterialPageRoute(builder: (context) =>  Hr(userId: widget.userId,
                                           oranizaionsList: widget.oranizaionsList,
                                           organizationId: widget.organizationId,
                                             organizationsName: widget.organizationsName,
@@ -548,7 +548,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                         }else{
                                           Navigator.push(
                                               context,
-                                              MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
+                                              MaterialPageRoute(builder: (context) =>  Hr(userId: widget.userId,
                                                 oranizaionsList: widget.oranizaionsList,
 
                                                 organizationId: widget.organizationId,
@@ -624,7 +624,7 @@ class _AttendanceState extends State<Attendance> with WidgetsBindingObserver {
                                     }else{
                                       Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) =>  ChooseList(userId: widget.userId,
+                                          MaterialPageRoute(builder: (context) =>  Hr(userId: widget.userId,
                                             oranizaionsList: widget.oranizaionsList,
                                             organizationId: widget.organizationId,
                                             organizationsName: widget.organizationsName,
