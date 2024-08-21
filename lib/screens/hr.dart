@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart'; // استيراد flutter_spinkit
 import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/showpermission.dart';
 import 'package:hr/screens/whoisattend.dart';
@@ -10,6 +11,7 @@ import '../network/remote/dio_helper.dart';
 import 'attendance.dart';
 import 'excusepermission.dart';
 import 'holiday_permission.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Hr extends StatefulWidget {
   final int? userId;
@@ -34,7 +36,7 @@ class Hr extends StatefulWidget {
 
 class _HrState extends State<Hr> {
   String status = '';
-  bool _isLoading = false;
+  bool isLoading = false;
 
   Future<void> checkAttendace() async {
     await DioHelper.getData(
@@ -70,18 +72,17 @@ class _HrState extends State<Hr> {
     checkAttendace();
   }
 
-  Future<void> _navigateToPage(Widget page) async {
+  void _startLoading(VoidCallback action) {
     setState(() {
-      _isLoading = true;
+      isLoading = true;
     });
-    await Future.delayed(Duration(seconds: 1)); // Simulate a delay
-    setState(() {
-      _isLoading = false;
+
+    Future.delayed(Duration(seconds: 2), () {
+      action();
+      setState(() {
+        isLoading = false;
+      });
     });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
   }
 
   @override
@@ -109,8 +110,7 @@ class _HrState extends State<Hr> {
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Text(
-                  (CacheHelper.getData(key: 'name') ??
-                      'U')[0], // Display the first letter of the name
+                  (CacheHelper.getData(key: 'name') ?? 'U')[0],
                   style: TextStyle(
                     color: Colors.teal,
                     fontSize: 40,
@@ -136,8 +136,7 @@ class _HrState extends State<Hr> {
                   builder: (BuildContext context) {
                     return ListView.builder(
                       shrinkWrap: true,
-                      itemBuilder: (BuildContext context,
-                          int index) =>
+                      itemBuilder: (BuildContext context, int index) =>
                           buildOranizationsList(
                               organizations: widget
                                   .oranizaionsList
@@ -154,44 +153,50 @@ class _HrState extends State<Hr> {
               leading: Icon(Icons.person),
               title: Text('Profile Setting'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Profile(
-                      organizationId: widget.organizationId,
-                      userId: widget.userId,
+                _startLoading(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Profile(
+                        organizationId: widget.organizationId,
+                        userId: widget.userId,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                });
               },
             ),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text('Log Out'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyApp(
-                      lang: '${CacheHelper.getData(key: 'language')}',
+                _startLoading(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyApp(
+                        lang: '${CacheHelper.getData(key: 'language')}',
+                      ),
                     ),
-                  ),
-                );
+                  );
+                });
               },
             ),
             ListTile(
               leading: Icon(Icons.event_available),
               title: Text('Attending Today'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WhoIsAttend(
-                      organizationId: widget.organizationId,
-                      userId: widget.userId,
+                _startLoading(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WhoIsAttend(
+                        organizationId: widget.organizationId,
+                        userId: widget.userId,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                });
               },
             ),
           ],
@@ -213,12 +218,18 @@ class _HrState extends State<Hr> {
                     icon: Icons.beach_access,
                     color: Colors.orange.shade200,
                     onTap: () {
-                      _navigateToPage(
-                          HolidayPermission(userId: widget.userId,
-                            organizationId: widget.organizationId,
-                          )
-                      );
+    _startLoading(() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>  HolidayPermission(
+            userId: widget.userId,
+            organizationId: widget.organizationId,
+          )
+        ),
+      );
 
+    });
                     },
                   ),
                   DashboardCard(
@@ -226,13 +237,18 @@ class _HrState extends State<Hr> {
                     icon: Icons.access_time,
                     color: Colors.blue.shade200,
                     onTap: () {
-                      _navigateToPage(
-                          ExcusePrmission(userId: widget.userId,
-                            organizationId: widget.organizationId,
-                          )
+    _startLoading(() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>  ExcusePrmission(
+            userId: widget.userId,
+            organizationId: widget.organizationId,
+          )
+        ),
+      );
 
-                      );
-
+    });
                     },
                   ),
                   DashboardCard(
@@ -248,22 +264,28 @@ class _HrState extends State<Hr> {
                         ).show();
                       } else {
                         setState(() {
-                          _isLoading = true;
+                          isLoading = true;
                         });
                         await Future.delayed(Duration(seconds: 1));
                         setState(() {
-                          _isLoading = false;
+                          isLoading = false;
                         });
-                        _navigateToPage(
-                          Attendance(
-                            userId: widget.userId,
-                            organizationId: widget.organizationId,
-                            organizationsName: widget.organizationsName,
-                            oranizaionsList: widget.oranizaionsList,
-                            organizationsArabicName: widget.organizationsArabicName,
-                            personType: widget.personType,
-                          ),
-                        );
+    _startLoading(() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>               Attendance(
+            userId: widget.userId,
+            organizationId: widget.organizationId,
+            organizationsName: widget.organizationsName,
+            oranizaionsList: widget.oranizaionsList,
+            organizationsArabicName: widget.organizationsArabicName,
+            personType: widget.personType,
+          )
+
+        ),
+      );
+    });
                       }
                     },
                   ),
@@ -272,26 +294,34 @@ class _HrState extends State<Hr> {
                     icon: Icons.request_page,
                     color: Colors.red.shade200,
                     onTap: () {
-                      _navigateToPage(
-                        Showpermit(
-                          organizationId: widget.organizationId,
-                          userId: widget.userId,
-                          personType: widget.personType,
-                        ),
-                      );
+    _startLoading(() {
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Showpermit(
+            organizationId: widget.organizationId,
+            userId: widget.userId,
+            personType: widget.personType,
+          )
+        ),
+      );
+
+    });
                     },
                   ),
                 ],
               ),
             ),
           ),
-          if (_isLoading)
-            Center(
-              child: AnimatedSwitcher(
-                duration: Duration(milliseconds: 300),
-                child: _isLoading
-                    ? CircularProgressIndicator()
-                    : Container(),
+          if (isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: Center(
+                child: SpinKitCircle(
+                  color: Colors.white,
+                  size: 80.0,
+                ),
               ),
             ),
         ],

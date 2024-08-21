@@ -32,6 +32,8 @@ class _ShowpermitState extends State<Showpermit> {
   bool isSignInDialogShown = false;
   late RiveAnimationController _btnAnimationController;
    late PermitList permits;
+   late PermitList permitsPermissionsCount;
+   late PermitList permitsVacancesCount;
   bool permitLoading = false;
   String valueClosed = '0';
   bool isOpen = false;
@@ -76,7 +78,6 @@ class _ShowpermitState extends State<Showpermit> {
   @override
   void initState() {
     print(CacheHelper.getData(key: 'token'));
-
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
     getPermissions();
 
@@ -180,8 +181,8 @@ class _ShowpermitState extends State<Showpermit> {
                           ? SizedBox(
                               height: MediaQuery.of(context).size.height,
                               child: ListView.builder(
-                                // shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
+                                 shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
                                 itemBuilder:
                                     (BuildContext context, int index) =>
                                        clickPermission==true? buildPermitList(

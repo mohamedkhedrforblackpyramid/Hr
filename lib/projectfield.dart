@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hr/mainchooseList.dart';
 import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/showpermission.dart';
@@ -10,7 +11,6 @@ import '../main.dart';
 import '../modules/organizationmodel.dart';
 import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
-
 
 class ProjectsField extends StatefulWidget {
   final int? userId;
@@ -35,19 +35,34 @@ class ProjectsField extends StatefulWidget {
 
 class _ProjectsFieldState extends State<ProjectsField> {
   String status = '';
-  bool _isLoading = false;
+  bool isLoading = false;
   returnPage() {
     Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) =>  MainPage(
-          userId: widget.userId,
-          oranizaionsList: widget.oranizaionsList,
-          organizationId: widget.organizationId,
-          organizationsName: widget.organizationsName,
-          organizationsArabicName: widget.organizationsArabicName, personType: '',
-
-        )));
+        MaterialPageRoute(
+            builder: (context) => MainPage(
+                  userId: widget.userId,
+                  oranizaionsList: widget.oranizaionsList,
+                  organizationId: widget.organizationId,
+                  organizationsName: widget.organizationsName,
+                  organizationsArabicName: widget.organizationsArabicName,
+                  personType: '',
+                )));
   }
+
+  void _startLoading(VoidCallback action) {
+    setState(() {
+      isLoading = true;
+    });
+
+    Future.delayed(Duration(seconds: 2), () {
+      action();
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
   Future<void> checkAttendace() async {
     await DioHelper.getData(
       url: "api/organizations/${widget.organizationId}/attendance/check",
@@ -82,20 +97,6 @@ class _ProjectsFieldState extends State<ProjectsField> {
     checkAttendace();
   }
 
-  Future<void> _navigateToPage(Widget page) async {
-    setState(() {
-      _isLoading = true;
-    });
-    await Future.delayed(Duration(seconds: 1)); // Simulate a delay
-    setState(() {
-      _isLoading = false;
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -125,7 +126,8 @@ class _ProjectsFieldState extends State<ProjectsField> {
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.white,
                   child: Text(
-                    (CacheHelper.getData(key: 'name') ?? 'U')[0], // Display the first letter of the name
+                    (CacheHelper.getData(key: 'name') ??
+                        'U')[0], // Display the first letter of the name
                     style: TextStyle(
                       color: Colors.teal,
                       fontSize: 40,
@@ -151,15 +153,13 @@ class _ProjectsFieldState extends State<ProjectsField> {
                     builder: (BuildContext context) {
                       return ListView.builder(
                         shrinkWrap: true,
-                        itemBuilder: (BuildContext context,
-                            int index) =>
+                        itemBuilder: (BuildContext context, int index) =>
                             buildOranizationsList(
                                 organizations: widget
-                                    .oranizaionsList
-                                    .organizationsListt![index],
+                                    .oranizaionsList.organizationsListt![index],
                                 index: index),
-                        itemCount: widget.oranizaionsList
-                            .organizationsListt!.length,
+                        itemCount:
+                            widget.oranizaionsList.organizationsListt!.length,
                       );
                     },
                   );
@@ -227,15 +227,20 @@ class _ProjectsFieldState extends State<ProjectsField> {
                       icon: Icons.work,
                       color: Colors.teal.shade200,
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) =>  TaskManagement(
-                              userId: widget.userId,
-                              organizationId: widget.organizationId,
-                              organizationsName: widget.organizationsName,
-                              oranizaionsList: widget.oranizaionsList,
-                              organizationsArabicName: widget.organizationsArabicName,
-
-                            )));
+                        _startLoading(() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TaskManagement(
+                                        userId: widget.userId,
+                                        organizationId: widget.organizationId,
+                                        organizationsName:
+                                            widget.organizationsName,
+                                        oranizaionsList: widget.oranizaionsList,
+                                        organizationsArabicName:
+                                            widget.organizationsArabicName,
+                                      )));
+                        });
                       },
                     ),
                     DashboardCard(
@@ -243,25 +248,29 @@ class _ProjectsFieldState extends State<ProjectsField> {
                       icon: Icons.task,
                       color: Colors.purple.shade200,
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) =>  TaskTable(
-                              organizationId: widget.organizationId,
-                              userId: widget.userId,
-
-                            )));
+                        _startLoading(() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TaskTable(
+                                        organizationId: widget.organizationId,
+                                        userId: widget.userId,
+                                      )));
+                        });
                       },
                     ),
                   ],
                 ),
               ),
             ),
-            if (_isLoading)
-              Center(
-                child: AnimatedSwitcher(
-                  duration: Duration(milliseconds: 300),
-                  child: _isLoading
-                      ? CircularProgressIndicator()
-                      : Container(),
+            if (isLoading)
+              Container(
+                color: Colors.black.withOpacity(0.5),
+                child: Center(
+                  child: SpinKitCircle(
+                    color: Colors.white,
+                    size: 80.0,
+                  ),
                 ),
               ),
           ],

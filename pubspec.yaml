@@ -63,6 +63,8 @@ dependencies:
   agconnect_crash: ^1.9.0+300
   firebase_crashlytics: ^3.5.7
   local_auth: ^2.2.0
+  flutter_spinkit: ^5.2.1
+
 
 
 

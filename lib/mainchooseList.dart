@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hr/projectfield.dart';
 import 'package:hr/screens/hr.dart';
 import 'package:hr/screens/profile.dart';
@@ -17,7 +18,6 @@ class MainPage extends StatefulWidget {
   String? organizationsArabicName;
   final String? personType;
 
-
   MainPage({
     required this.userId,
     required this.oranizaionsList,
@@ -33,6 +33,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   bool shouldPop = false;
+  bool isLoading = false;
 
   getOrganizations() {
     DioHelper.getData(
@@ -49,6 +50,19 @@ class _MainPageState extends State<MainPage> {
     getOrganizations();
 
     super.initState();
+  }
+
+  void _startLoading(VoidCallback action) {
+    setState(() {
+      isLoading = true;
+    });
+
+    Future.delayed(Duration(seconds: 2), () {
+      action();
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   @override
@@ -80,8 +94,7 @@ class _MainPageState extends State<MainPage> {
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.white,
                   child: Text(
-                    (CacheHelper.getData(key: 'name') ??
-                        'U')[0], // Display the first letter of the name
+                    (CacheHelper.getData(key: 'name') ?? 'U')[0],
                     style: TextStyle(
                       color: Colors.teal,
                       fontSize: 40,
@@ -107,8 +120,7 @@ class _MainPageState extends State<MainPage> {
                     builder: (BuildContext context) {
                       return ListView.builder(
                         shrinkWrap: true,
-                        itemBuilder: (BuildContext context,
-                            int index) =>
+                        itemBuilder: (BuildContext context, int index) =>
                             buildOranizationsList(
                                 organizations: widget
                                     .oranizaionsList
@@ -125,115 +137,142 @@ class _MainPageState extends State<MainPage> {
                 leading: Icon(Icons.person),
                 title: Text('Profile Setting'),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Profile(
-                        organizationId: widget.organizationId,
-                        userId: widget.userId,
+                  _startLoading(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Profile(
+                          organizationId: widget.organizationId,
+                          userId: widget.userId,
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  });
                 },
               ),
               ListTile(
                 leading: Icon(Icons.logout),
                 title: Text('Log Out'),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyApp(
-                        lang: '${CacheHelper.getData(key: 'language')}',
+                  _startLoading(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyApp(
+                          lang: '${CacheHelper.getData(key: 'language')}',
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  });
                 },
               ),
               ListTile(
                 leading: Icon(Icons.event_available),
                 title: Text('Attending Today'),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WhoIsAttend(
-                        organizationId: widget.organizationId,
-                        userId: widget.userId,
+                  _startLoading(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WhoIsAttend(
+                          organizationId: widget.organizationId,
+                          userId: widget.userId,
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  });
                 },
               ),
             ],
           ),
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 16.0,
-              mainAxisSpacing: 16.0,
-              children: <Widget>[
-                DashboardCard(
-                  title: 'HR',
-                  icon: Icons.people,
-                  color: Colors.red.shade200,
-                  onTap: () {
-                    print('jfioejiejr');
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Hr(
-                                  userId: widget.userId,
-                                  oranizaionsList: widget.oranizaionsList!,
-                                  organizationId: widget.organizationId,
-                                  organizationsName: widget.organizationsName,
-                                  organizationsArabicName:
-                                      widget.organizationsArabicName,
-                                  personType: widget.personType,
-                                )));
-                  },
+        body: Stack(
+          children: [
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  children: <Widget>[
+                    DashboardCard(
+                      title: 'HR',
+                      icon: Icons.people,
+                      color: Colors.red.shade200,
+                      onTap: () {
+                        _startLoading(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Hr(
+                                userId: widget.userId,
+                                oranizaionsList: widget.oranizaionsList!,
+                                organizationId: widget.organizationId,
+                                organizationsName: widget.organizationsName,
+                                organizationsArabicName:
+                                widget.organizationsArabicName,
+                                personType: widget.personType,
+                              ),
+                            ),
+                          );
+                        });
+                      },
+                    ),
+                    DashboardCard(
+                      title: 'Project Management',
+                      icon: Icons.assignment,
+                      color: Colors.blue.shade200,
+                      onTap: () {
+                        _startLoading(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProjectsField(
+                                userId: widget.userId,
+                                oranizaionsList: widget.oranizaionsList!,
+                                organizationId: widget.organizationId,
+                                organizationsName: widget.organizationsName,
+                                organizationsArabicName:
+                                widget.organizationsArabicName,
+                                personType: widget.personType,
+                              ),
+                            ),
+                          );
+                        });
+                      },
+                    ),
+                    DashboardCard(
+                      title: 'Marketing',
+                      icon: Icons.trending_up,
+                      color: Colors.green.shade200,
+                      onTap: () {
+                        // Handle tap
+                      },
+                    ),
+                    DashboardCard(
+                      title: 'Accounting',
+                      icon: Icons.account_balance,
+                      color: Colors.orange.shade200,
+                      onTap: () {
+                        // Handle tap
+                      },
+                    ),
+                  ],
                 ),
-                DashboardCard(
-                  title: 'Project Management',
-                  icon: Icons.assignment,
-                  color: Colors.blue.shade200,
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProjectsField(
-                              userId: widget.userId,
-                              oranizaionsList: widget.oranizaionsList!,
-                              organizationId: widget.organizationId,
-                              organizationsName: widget.organizationsName,
-                              organizationsArabicName:
-                              widget.organizationsArabicName,
-                              personType: widget.personType,
-                            )));
-                  },
-                ),
-                DashboardCard(
-                  title: 'Marketing',
-                  icon: Icons.trending_up,
-                  color: Colors.green.shade200,
-                  onTap: () {
-                    // Handle tap
-                  },
-                ),
-                DashboardCard(
-                  title: 'Accounting',
-                  icon: Icons.account_balance,
-                  color: Colors.orange.shade200,
-                  onTap: () {
-                    // Handle tap
-                  },
-                ),
-              ],
+              ),
             ),
-          ),
+            if (isLoading)
+              Container(
+                color: Colors.black.withOpacity(0.5),
+                child: Center(
+                  child: SpinKitCircle(
+                    color: Colors.white,
+                    size: 80.0,
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );
