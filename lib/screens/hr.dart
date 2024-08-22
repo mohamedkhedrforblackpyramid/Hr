@@ -1,17 +1,19 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart'; // استيراد flutter_spinkit
-import 'package:hr/screens/profile.dart';
-import 'package:hr/screens/showpermission.dart';
-import 'package:hr/screens/whoisattend.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../main.dart';
 import '../modules/organizationmodel.dart';
+import '../modules/permitmodel.dart';
 import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
 import 'attendance.dart';
 import 'excusepermission.dart';
 import 'holiday_permission.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'profile.dart';
+import 'showpermission.dart';
+import 'whoisattend.dart';
 
 class Hr extends StatefulWidget {
   final int? userId;
@@ -20,6 +22,8 @@ class Hr extends StatefulWidget {
   String? organizationsName;
   String? organizationsArabicName;
   final String? personType;
+  int? vacancesCount;
+  int? permitsPermission;
 
   Hr({
     required this.userId,
@@ -28,6 +32,8 @@ class Hr extends StatefulWidget {
     required this.organizationsName,
     required this.organizationsArabicName,
     required this.personType,
+    this.permitsPermission,
+    this.vacancesCount,
   });
 
   @override
@@ -37,6 +43,35 @@ class Hr extends StatefulWidget {
 class _HrState extends State<Hr> {
   String status = '';
   bool isLoading = false;
+  bool permitLoading = false;
+  PermitList? permitsVacancesCount;
+  PermitList? permitsPermission;
+  int? permissionCount;
+  int? vacancesCount;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  XFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+  void _handleDrawerItemSelection(VoidCallback action) {
+    if (isLoading) {
+      // Optionally stop loading if it's active
+      setState(() {
+        isLoading = false;
+      });
+    }
+    action();
+  }
+  void _pickImage() async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = pickedFile;
+        });
+      }
+    } catch (e) {
+      print("Error picking image: $e");
+    }
+  }
 
   Future<void> checkAttendace() async {
     await DioHelper.getData(
@@ -55,7 +90,47 @@ class _HrState extends State<Hr> {
     });
   }
 
-  getOrganizations() {
+  void getPermissions() {
+    setState(() {
+      permitLoading = true;
+    });
+    DioHelper.getData(
+      url: "api/organizations/${widget.organizationId}/vacancies?is_permit=1&status=1",
+    ).then((response) {
+      permitsPermission = PermitList.fromJson(response.data);
+      permissionCount = permitsPermission?.permitList?.length;
+      setState(() {
+        permitLoading = false;
+      });
+    }).catchError((error) {
+      print(error);
+      setState(() {
+        permitLoading = false;
+      });
+    });
+  }
+
+  void getVecan() {
+    setState(() {
+      permitLoading = true;
+    });
+    DioHelper.getData(
+      url: "api/organizations/${widget.organizationId}/vacancies?is_permit=0&status=1",
+    ).then((response) {
+      permitsVacancesCount = PermitList.fromJson(response.data);
+      vacancesCount = permitsVacancesCount?.permitList?.length;
+      setState(() {
+        permitLoading = false;
+      });
+    }).catchError((error) {
+      print(error.response);
+      setState(() {
+        permitLoading = false;
+      });
+    });
+  }
+
+  void getOrganizations() {
     DioHelper.getData(
       url: "api/organizations",
     ).then((response) {
@@ -70,6 +145,8 @@ class _HrState extends State<Hr> {
     print(CacheHelper.getData(key: 'token'));
     getOrganizations();
     checkAttendace();
+    getVecan();
+    getPermissions();
   }
 
   void _startLoading(VoidCallback action) {
@@ -88,6 +165,17 @@ class _HrState extends State<Hr> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      key: _scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.menu, size: 30),
+          onPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
+        ),
+      ),
       drawer: Drawer(
         child: Column(
           children: <Widget>[
@@ -107,15 +195,40 @@ class _HrState extends State<Hr> {
                   fontSize: 16,
                 ),
               ),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Text(
-                  (CacheHelper.getData(key: 'name') ?? 'U')[0],
-                  style: TextStyle(
-                    color: Colors.teal,
-                    fontSize: 40,
+              currentAccountPicture: Stack(
+                alignment: Alignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 40,
+                    child: _imageFile != null
+                        ? ClipOval(
+                      child: Image.file(
+                        File(_imageFile!.path),
+                        fit: BoxFit.cover,
+                        width: 80,
+                        height: 80,
+                      ),
+                    )
+                        : Text(
+                      (CacheHelper.getData(key: 'name') ?? 'U')[0],
+                      style: TextStyle(
+                        color: Colors.teal,
+                        fontSize: 40,
+                      ),
+                    ),
                   ),
-                ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    top: 40,
+                    left: 40,
+                    child: IconButton(
+                      icon: Icon(Icons.edit, color: Colors.black, size: 20),
+                      onPressed: _pickImage,
+                    ),
+                  ),
+                ],
               ),
               decoration: BoxDecoration(
                 color: Colors.blue,
@@ -131,6 +244,7 @@ class _HrState extends State<Hr> {
                     fontSize: 22),
               ),
               onTap: () {
+                Navigator.pop(context); // Close the drawer
                 showModalBottomSheet<void>(
                   context: context,
                   builder: (BuildContext context) {
@@ -153,16 +267,19 @@ class _HrState extends State<Hr> {
               leading: Icon(Icons.person),
               title: Text('Profile Setting'),
               onTap: () {
-                _startLoading(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Profile(
-                        organizationId: widget.organizationId,
-                        userId: widget.userId,
+                Navigator.pop(context); // Close the drawer
+                _handleDrawerItemSelection(() {
+                  _startLoading(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Profile(
+                          organizationId: widget.organizationId,
+                          userId: widget.userId,
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  });
                 });
               },
             ),
@@ -170,15 +287,18 @@ class _HrState extends State<Hr> {
               leading: Icon(Icons.logout),
               title: Text('Log Out'),
               onTap: () {
-                _startLoading(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyApp(
-                        lang: '${CacheHelper.getData(key: 'language')}',
+                Navigator.pop(context); // Close the drawer
+                _handleDrawerItemSelection(() {
+                  _startLoading(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyApp(
+                          lang: '${CacheHelper.getData(key: 'language')}',
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  });
                 });
               },
             ),
@@ -186,23 +306,25 @@ class _HrState extends State<Hr> {
               leading: Icon(Icons.event_available),
               title: Text('Attending Today'),
               onTap: () {
-                _startLoading(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WhoIsAttend(
-                        organizationId: widget.organizationId,
-                        userId: widget.userId,
+                Navigator.pop(context); // Close the drawer
+                _handleDrawerItemSelection(() {
+                  _startLoading(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WhoIsAttend(
+                          organizationId: widget.organizationId,
+                          userId: widget.userId,
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  });
                 });
               },
             ),
           ],
         ),
       ),
-
       body: Stack(
         children: [
           SafeArea(
@@ -218,18 +340,17 @@ class _HrState extends State<Hr> {
                     icon: Icons.beach_access,
                     color: Colors.orange.shade200,
                     onTap: () {
-    _startLoading(() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>  HolidayPermission(
-            userId: widget.userId,
-            organizationId: widget.organizationId,
-          )
-        ),
-      );
-
-    });
+                      _startLoading(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HolidayPermission(
+                              userId: widget.userId,
+                              organizationId: widget.organizationId,
+                            ),
+                          ),
+                        );
+                      });
                     },
                   ),
                   DashboardCard(
@@ -237,18 +358,17 @@ class _HrState extends State<Hr> {
                     icon: Icons.access_time,
                     color: Colors.blue.shade200,
                     onTap: () {
-    _startLoading(() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>  ExcusePrmission(
-            userId: widget.userId,
-            organizationId: widget.organizationId,
-          )
-        ),
-      );
-
-    });
+                      _startLoading(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ExcusePrmission(
+                              userId: widget.userId,
+                              organizationId: widget.organizationId,
+                            ),
+                          ),
+                        );
+                      });
                     },
                   ),
                   DashboardCard(
@@ -270,22 +390,21 @@ class _HrState extends State<Hr> {
                         setState(() {
                           isLoading = false;
                         });
-    _startLoading(() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>               Attendance(
-            userId: widget.userId,
-            organizationId: widget.organizationId,
-            organizationsName: widget.organizationsName,
-            oranizaionsList: widget.oranizaionsList,
-            organizationsArabicName: widget.organizationsArabicName,
-            personType: widget.personType,
-          )
-
-        ),
-      );
-    });
+                        _startLoading(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Attendance(
+                                userId: widget.userId,
+                                organizationId: widget.organizationId,
+                                organizationsName: widget.organizationsName,
+                                oranizaionsList: widget.oranizaionsList,
+                                organizationsArabicName: widget.organizationsArabicName,
+                                personType: widget.personType,
+                              ),
+                            ),
+                          );
+                        });
                       }
                     },
                   ),
@@ -294,20 +413,26 @@ class _HrState extends State<Hr> {
                     icon: Icons.request_page,
                     color: Colors.red.shade200,
                     onTap: () {
-    _startLoading(() {
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Showpermit(
-            organizationId: widget.organizationId,
-            userId: widget.userId,
-            personType: widget.personType,
-          )
-        ),
-      );
-
-    });
+                      getPermissions();
+                      getVecan();
+                      setState(() {});
+                      _startLoading(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Showpermit(
+                              organizationId: widget.organizationId,
+                              userId: widget.userId,
+                              personType: widget.personType,
+                              vacancesCount: vacancesCount,
+                              permitsPermission: permissionCount,
+                              oranizaionsList: widget.oranizaionsList,
+                              organizationsName: widget.organizationsName,
+                              organizationsArabicName: widget.organizationsArabicName,
+                            ),
+                          ),
+                        );
+                      });
                     },
                   ),
                 ],
@@ -329,8 +454,10 @@ class _HrState extends State<Hr> {
     );
   }
 
-  Widget buildOranizationsList(
-      {required OrganizationsModel organizations, required int index}) {
+  Widget buildOranizationsList({
+    required OrganizationsModel organizations,
+    required int index,
+  }) {
     return Column(
       children: [
         Container(
@@ -341,10 +468,11 @@ class _HrState extends State<Hr> {
               style: TextStyle(color: Colors.black),
             ),
             onPressed: () {
-              setState(() {});
-              widget.organizationsName = organizations.name!;
-              widget.organizationsArabicName = organizations.arabicName;
-              widget.organizationId = organizations.organizations_id;
+              setState(() {
+                widget.organizationsName = organizations.name!;
+                widget.organizationsArabicName = organizations.arabicName;
+                widget.organizationId = organizations.organizations_id;
+              });
               Navigator.pop(context);
             },
           ),

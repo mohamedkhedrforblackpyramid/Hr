@@ -8,7 +8,6 @@ import 'package:hr/screens/multiscreen_tasks/addphase.dart';
 import 'package:hr/screens/multiscreen_tasks/addtask.dart';
 import 'package:hr/screens/multiscreen_tasks/showtasks.dart';
 import 'package:hr/screens/projects.dart';
-import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 

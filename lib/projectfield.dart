@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:hr/mainchooseList.dart';
 import 'package:hr/screens/profile.dart';
-import 'package:hr/screens/showpermission.dart';
 import 'package:hr/screens/taskmanagement.dart';
 import 'package:hr/screens/tasktable.dart';
 import 'package:hr/screens/whoisattend.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
 import '../main.dart';
 import '../modules/organizationmodel.dart';
 import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
+import 'mainchooseList.dart';
+
 
 class ProjectsField extends StatefulWidget {
   final int? userId;
@@ -36,18 +38,45 @@ class ProjectsField extends StatefulWidget {
 class _ProjectsFieldState extends State<ProjectsField> {
   String status = '';
   bool isLoading = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  XFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+  void _handleDrawerItemSelection(VoidCallback action) {
+    if (isLoading) {
+      // Optionally stop loading if it's active
+      setState(() {
+        isLoading = false;
+      });
+    }
+    action();
+  }
+  void _pickImage() async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = pickedFile;
+        });
+      }
+    } catch (e) {
+      print("Error picking image: $e");
+    }
+  }
+
   returnPage() {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MainPage(
-                  userId: widget.userId,
-                  oranizaionsList: widget.oranizaionsList,
-                  organizationId: widget.organizationId,
-                  organizationsName: widget.organizationsName,
-                  organizationsArabicName: widget.organizationsArabicName,
-                  personType: '',
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => MainPage(
+          userId: widget.userId,
+          oranizaionsList: widget.oranizaionsList,
+          organizationId: widget.organizationId,
+          organizationsName: widget.organizationsName,
+          organizationsArabicName: widget.organizationsArabicName,
+          personType: '',
+        ),
+      ),
+    );
   }
 
   void _startLoading(VoidCallback action) {
@@ -100,180 +129,239 @@ class _ProjectsFieldState extends State<ProjectsField> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
-        return returnPage();
+      onWillPop: () async {
+        return true; // Allow back navigation
       },
-      child: Scaffold(
-        drawer: Drawer(
-          child: Column(
-            children: <Widget>[
-              UserAccountsDrawerHeader(
-                accountName: Text(
-                  CacheHelper.getData(key: 'name') ?? 'User',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                accountEmail: Text(
-                  CacheHelper.getData(key: 'email') ?? 'Email',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-                currentAccountPicture: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Text(
-                    (CacheHelper.getData(key: 'name') ??
-                        'U')[0], // Display the first letter of the name
+      child: WillPopScope(
+        onWillPop: () {
+          return returnPage();
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              icon: Icon(Icons.menu, size: 30),
+              onPressed: () {
+                _scaffoldKey.currentState?.openDrawer();
+              },
+            ),
+          ),
+          drawer: Drawer(
+            child: Column(
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  accountName: Text(
+                    CacheHelper.getData(key: 'name') ?? 'User',
                     style: TextStyle(
-                      color: Colors.teal,
-                      fontSize: 40,
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  accountEmail: Text(
+                    CacheHelper.getData(key: 'email') ?? 'Email',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  currentAccountPicture: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 40,
+                        child: _imageFile != null
+                            ? ClipOval(
+                          child: Image.file(
+                            File(_imageFile!.path),
+                            fit: BoxFit.cover,
+                            width: 80,
+                            height: 80,
+                          ),
+                        )
+                            : Text(
+                          (CacheHelper.getData(key: 'name') ?? 'U')[0],
+                          style: TextStyle(
+                            color: Colors.teal,
+                            fontSize: 40,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        top: 40,
+                        left: 40,
+                        child: IconButton(
+                          icon: Icon(Icons.edit, color: Colors.black, size: 20),
+                          onPressed: _pickImage,
+                        ),
+                      ),
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.home),
+                  title: Text(
+                    widget.organizationsName!,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                        fontSize: 22),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) =>
+                              buildOranizationsList(
+                                  organizations: widget
+                                      .oranizaionsList
+                                      .organizationsListt![index],
+                                  index: index),
+                          itemCount: widget.oranizaionsList
+                              .organizationsListt!.length,
+                        );
+                      },
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text('Profile Setting'),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    _handleDrawerItemSelection(() {
+                      _startLoading(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Profile(
+                              organizationId: widget.organizationId,
+                              userId: widget.userId,
+                            ),
+                          ),
+                        );
+                      });
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text('Log Out'),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    _handleDrawerItemSelection(() {
+                      _startLoading(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyApp(
+                              lang: '${CacheHelper.getData(key: 'language')}',
+                            ),
+                          ),
+                        );
+                      });
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.event_available),
+                  title: Text('Attending Today'),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    _handleDrawerItemSelection(() {
+                      _startLoading(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WhoIsAttend(
+                              organizationId: widget.organizationId,
+                              userId: widget.userId,
+                            ),
+                          ),
+                        );
+                      });
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          body: Stack(
+            children: [
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                    children: <Widget>[
+                      DashboardCard(
+                        title: 'Projects',
+                        icon: Icons.work,
+                        color: Colors.teal.shade200,
+                        onTap: () {
+                          _startLoading(() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TaskManagement(
+                                  userId: widget.userId,
+                                  organizationId: widget.organizationId,
+                                  organizationsName: widget.organizationsName,
+                                  oranizaionsList: widget.oranizaionsList,
+                                  organizationsArabicName: widget.organizationsArabicName,
+                                ),
+                              ),
+                            );
+                          });
+                        },
+                      ),
+                      DashboardCard(
+                        title: 'Tasks',
+                        icon: Icons.task,
+                        color: Colors.purple.shade200,
+                        onTap: () {
+                          _startLoading(() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TaskTable(
+                                  organizationId: widget.organizationId,
+                                  userId: widget.userId,
+                                ),
+                              ),
+                            );
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (isLoading)
+                Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: Center(
+                    child: SpinKitCircle(
+                      color: Colors.white,
+                      size: 80.0,
                     ),
                   ),
                 ),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text(
-                  widget.organizationsName!,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                      fontSize: 22),
-                ),
-                onTap: () {
-                  showModalBottomSheet<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) =>
-                            buildOranizationsList(
-                                organizations: widget
-                                    .oranizaionsList.organizationsListt![index],
-                                index: index),
-                        itemCount:
-                            widget.oranizaionsList.organizationsListt!.length,
-                      );
-                    },
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.person),
-                title: Text('Profile Setting'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Profile(
-                        organizationId: widget.organizationId,
-                        userId: widget.userId,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.logout),
-                title: Text('Log Out'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyApp(
-                        lang: '${CacheHelper.getData(key: 'language')}',
-                      ),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.event_available),
-                title: Text('Attending Today'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WhoIsAttend(
-                        organizationId: widget.organizationId,
-                        userId: widget.userId,
-                      ),
-                    ),
-                  );
-                },
-              ),
             ],
           ),
-        ),
-        body: Stack(
-          children: [
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  children: <Widget>[
-                    DashboardCard(
-                      title: 'Projects',
-                      icon: Icons.work,
-                      color: Colors.teal.shade200,
-                      onTap: () {
-                        _startLoading(() {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TaskManagement(
-                                        userId: widget.userId,
-                                        organizationId: widget.organizationId,
-                                        organizationsName:
-                                            widget.organizationsName,
-                                        oranizaionsList: widget.oranizaionsList,
-                                        organizationsArabicName:
-                                            widget.organizationsArabicName,
-                                      )));
-                        });
-                      },
-                    ),
-                    DashboardCard(
-                      title: 'Tasks',
-                      icon: Icons.task,
-                      color: Colors.purple.shade200,
-                      onTap: () {
-                        _startLoading(() {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TaskTable(
-                                        organizationId: widget.organizationId,
-                                        userId: widget.userId,
-                                      )));
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            if (isLoading)
-              Container(
-                color: Colors.black.withOpacity(0.5),
-                child: Center(
-                  child: SpinKitCircle(
-                    color: Colors.white,
-                    size: 80.0,
-                  ),
-                ),
-              ),
-          ],
         ),
       ),
     );
@@ -291,10 +379,11 @@ class _ProjectsFieldState extends State<ProjectsField> {
               style: TextStyle(color: Colors.black),
             ),
             onPressed: () {
-              setState(() {});
-              widget.organizationsName = organizations.name!;
-              widget.organizationsArabicName = organizations.arabicName;
-              widget.organizationId = organizations.organizations_id;
+              setState(() {
+                widget.organizationsName = organizations.name!;
+                widget.organizationsArabicName = organizations.arabicName;
+                widget.organizationId = organizations.organizations_id;
+              });
               Navigator.pop(context);
             },
           ),

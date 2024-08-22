@@ -10,7 +10,6 @@ import 'package:hr/modules/phases.dart';
 import 'package:hr/modules/tasks.dart';
 import 'package:hr/screens/excusepermission.dart';
 import 'package:hr/screens/projects.dart';
-import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 

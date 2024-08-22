@@ -8,7 +8,6 @@ import 'package:hr/screens/excusepermission.dart';
 import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/projects.dart';
 import 'package:hr/screens/showpermission.dart';
-import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:hr/screens/tasktable.dart';
 import 'package:hr/screens/taskmanagement.dart';
 import 'package:hr/screens/whoisattend.dart';
@@ -326,7 +325,7 @@ class _ChooseListState extends State<ChooseList> {
                                         Navigator.push(context,
                                             MaterialPageRoute(builder: (context) =>  Showpermit(
                                               organizationId: widget.organizationId,
-                                              userId: widget.userId, personType: widget.personType,
+                                              userId: widget.userId, personType: widget.personType, vacancesCount: null, permitsPermission: null, oranizaionsList: null, organizationsName: '', organizationsArabicName: '',
                                             )));
                                       }
                                       ,

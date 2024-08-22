@@ -10,6 +10,7 @@ import 'package:rive/rive.dart';
 
 import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
+import 'hr.dart';
 import 'onboding/components/animated_btn.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -18,10 +19,25 @@ class Showpermit extends StatefulWidget {
   int? userId;
   int?organizationId;
   String?personType;
+   int? vacancesCount;
+   int? permitsPermission;
+  final dynamic oranizaionsList;
+  String? organizationsName;
+  String? organizationsArabicName;
+
+
+
+
 
   Showpermit({ required this.userId,
     required this.personType,
-     required this.organizationId});
+     required this.organizationId,
+    required this.vacancesCount,
+    required this.permitsPermission,
+    required this.oranizaionsList,
+    required this.organizationsName,
+    required this.organizationsArabicName
+  });
 
   @override
   State<Showpermit> createState() => _ShowpermitState();
@@ -32,8 +48,6 @@ class _ShowpermitState extends State<Showpermit> {
   bool isSignInDialogShown = false;
   late RiveAnimationController _btnAnimationController;
    late PermitList permits;
-   late PermitList permitsPermissionsCount;
-   late PermitList permitsVacancesCount;
   bool permitLoading = false;
   String valueClosed = '0';
   bool isOpen = false;
@@ -67,18 +81,39 @@ class _ShowpermitState extends State<Showpermit> {
       setState(() {
         permitLoading = false;
       });
-      print("hhhhhhhhhhhh");
-      print(response.data);
-      print("hhhhhhhhhhhh");
+
     }).catchError((error) {
       print(error.response);
     });
   }
+/*
+  returnPage() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Hr(
+              userId: widget.userId,
+              oranizaionsList: widget.oranizaionsList!,
+              organizationId: widget.organizationId,
+              organizationsName: widget.organizationsName,
+              organizationsArabicName:
+              widget.organizationsArabicName,
+              personType: widget.personType,
+              permitsPermission: widget.permitsPermission,
+              vacancesCount: widget.vacancesCount,
+            ),));
+  }
+*/
 
   @override
   void initState() {
     print(CacheHelper.getData(key: 'token'));
     _btnAnimationController = OneShotAnimation("active", autoplay: false);
+    print('jjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+    print(widget.vacancesCount);
+    print(widget.permitsPermission);
+    print('jjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+
     getPermissions();
 
 
@@ -127,11 +162,22 @@ class _ShowpermitState extends State<Showpermit> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(16.0),
                                         child: Center(
-                                          child: Text(
-                                            'Permissions',
-                                            style: TextStyle(color: Colors.grey[700], fontSize: 15,
-                                              fontWeight: FontWeight.bold
-                                            ),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'Permissions',
+                                                style: TextStyle(color: Colors.grey[700], fontSize: 15,
+                                                  fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                              SizedBox(height: 20,),
+                                              Text(
+                                                '${widget.permitsPermission!=0?widget.permitsPermission:''}',
+                                                style: TextStyle(color: Colors.deepPurple, fontSize: 20,
+                                                    fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -159,12 +205,25 @@ class _ShowpermitState extends State<Showpermit> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(16.0),
                                         child: Center(
-                                          child: Text(
-                                            'Vacances',
-                                            style: TextStyle(color: Colors.grey[700], fontSize: 15,
-                                                fontWeight: FontWeight.bold
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'Vacances',
+                                                style: TextStyle(color: Colors.grey[700], fontSize: 15,
+                                                    fontWeight: FontWeight.bold
 
-                                            ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 20,),
+
+                                              Text(
+                                                '${widget.vacancesCount!=0? widget.vacancesCount:''}',
+                                                style: TextStyle(color: Colors.deepPurple, fontSize: 20,
+                                                    fontWeight: FontWeight.bold
+
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),

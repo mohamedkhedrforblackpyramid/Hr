@@ -4,6 +4,8 @@ import 'package:hr/projectfield.dart';
 import 'package:hr/screens/hr.dart';
 import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/whoisattend.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 import 'main.dart';
 import 'modules/organizationmodel.dart';
@@ -34,22 +36,41 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   bool shouldPop = false;
   bool isLoading = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  XFile? _imageFile;
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = pickedFile;
+        });
+
+      }
+    } catch (e) {
+      print("Error picking image: $e");
+    }
+  }
 
   getOrganizations() {
     DioHelper.getData(
       url: "api/organizations",
     ).then((response) {
       print(response.data);
+    }).catchError((error) {
+      print("Error fetching organizations: $error");
     });
   }
 
   @override
   void initState() {
-    print('hhhhhhhhhhhhhhojhipihiphp');
+    super.initState();
+    print('Initialization started');
     print(CacheHelper.getData(key: 'token'));
     getOrganizations();
-
-    super.initState();
   }
 
   void _startLoading(VoidCallback action) {
@@ -65,6 +86,16 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  void _handleDrawerItemSelection(VoidCallback action) {
+    if (isLoading) {
+      // Optionally stop loading if it's active
+      setState(() {
+        isLoading = false;
+      });
+    }
+    action();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -72,6 +103,8 @@ class _MainPageState extends State<MainPage> {
         return shouldPop;
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
+        key: _scaffoldKey,
         drawer: Drawer(
           child: Column(
             children: <Widget>[
@@ -91,15 +124,40 @@ class _MainPageState extends State<MainPage> {
                     fontSize: 16,
                   ),
                 ),
-                currentAccountPicture: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Text(
-                    (CacheHelper.getData(key: 'name') ?? 'U')[0],
-                    style: TextStyle(
-                      color: Colors.teal,
-                      fontSize: 40,
+                currentAccountPicture: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 40,
+                      child: _imageFile != null
+                          ? ClipOval(
+                        child: Image.file(
+                          File(_imageFile!.path),
+                          fit: BoxFit.cover,
+                          width: 80,
+                          height: 80,
+                        ),
+                      )
+                          : Text(
+                        (CacheHelper.getData(key: 'name') ?? 'U')[0],
+                        style: TextStyle(
+                          color: Colors.teal,
+                          fontSize: 40,
+                        ),
+                      ),
                     ),
-                  ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      top: 40,
+                      left: 40,
+                      child: IconButton(
+                        icon: Icon(Icons.edit, color: Colors.black, size: 20),
+                        onPressed: _pickImage,
+                      ),
+                    ),
+                  ],
                 ),
                 decoration: BoxDecoration(
                   color: Colors.blue,
@@ -115,6 +173,7 @@ class _MainPageState extends State<MainPage> {
                       fontSize: 22),
                 ),
                 onTap: () {
+                  Navigator.pop(context); // Close the drawer
                   showModalBottomSheet<void>(
                     context: context,
                     builder: (BuildContext context) {
@@ -137,16 +196,19 @@ class _MainPageState extends State<MainPage> {
                 leading: Icon(Icons.person),
                 title: Text('Profile Setting'),
                 onTap: () {
-                  _startLoading(() {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Profile(
-                          organizationId: widget.organizationId,
-                          userId: widget.userId,
+                  Navigator.pop(context); // Close the drawer
+                  _handleDrawerItemSelection(() {
+                    _startLoading(() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Profile(
+                            organizationId: widget.organizationId,
+                            userId: widget.userId,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    });
                   });
                 },
               ),
@@ -154,15 +216,18 @@ class _MainPageState extends State<MainPage> {
                 leading: Icon(Icons.logout),
                 title: Text('Log Out'),
                 onTap: () {
-                  _startLoading(() {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MyApp(
-                          lang: '${CacheHelper.getData(key: 'language')}',
+                  Navigator.pop(context); // Close the drawer
+                  _handleDrawerItemSelection(() {
+                    _startLoading(() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyApp(
+                            lang: '${CacheHelper.getData(key: 'language')}',
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    });
                   });
                 },
               ),
@@ -170,20 +235,32 @@ class _MainPageState extends State<MainPage> {
                 leading: Icon(Icons.event_available),
                 title: Text('Attending Today'),
                 onTap: () {
-                  _startLoading(() {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WhoIsAttend(
-                          organizationId: widget.organizationId,
-                          userId: widget.userId,
+                  Navigator.pop(context); // Close the drawer
+                  _handleDrawerItemSelection(() {
+                    _startLoading(() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WhoIsAttend(
+                            organizationId: widget.organizationId,
+                            userId: widget.userId,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    });
                   });
                 },
               ),
             ],
+          ),
+        ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.menu, size: 30),
+            onPressed: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
           ),
         ),
         body: Stack(
@@ -290,10 +367,11 @@ class _MainPageState extends State<MainPage> {
               style: TextStyle(color: Colors.black),
             ),
             onPressed: () {
-              setState(() {});
-              widget.organizationsName = organizations.name!;
-              widget.organizationsArabicName = organizations.arabicName;
-              widget.organizationId = organizations.organizations_id;
+              setState(() {
+                widget.organizationsName = organizations.name!;
+                widget.organizationsArabicName = organizations.arabicName;
+                widget.organizationId = organizations.organizations_id;
+              });
               Navigator.pop(context);
             },
           ),

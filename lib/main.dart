@@ -11,7 +11,6 @@ import 'package:hr/screens/holiday_permission.dart';
 import 'package:hr/screens/onboding/onboding_screen.dart';
 import 'package:hr/screens/excusepermission.dart';
 import 'package:hr/screens/showpermission.dart';
-import 'package:hr/screens/switchpermitandvacan.dart';
 import 'package:hr/screens/multiscreen_tasks/multiscreenfortasks.dart';
 import 'package:hr/screens/timepicker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
