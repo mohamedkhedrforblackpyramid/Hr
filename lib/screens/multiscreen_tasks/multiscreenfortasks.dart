@@ -93,64 +93,11 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
     ];
     return Scaffold(
       resizeToAvoidBottomInset: true,
-     /* bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.pinkAccent,
-        currentIndex:widget.currentIndex,
-        onTap: (int currentIndexOntap){
-          setState(() {
-            
-          });
-          widget.currentIndex = currentIndexOntap;
-          if(widget.currentIndex==0){
-            widget.phaseName='';
-            widget.phaseId=null;
-          }
-        },
-        backgroundColor:  Colors.white.withOpacity(.8),
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.task_outlined),
-              label: "Phases"
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: screens[widget.currentIndex],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.create),
-            label: "${AppLocalizations.of(context)!.add_phase}",
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.task),
-              label: "${AppLocalizations.of(context)!.addTask}"
-
-          ),
-
-        ],
-      ),*/
-        backgroundColor: Color(0xff1A6293),
-
-        body: Stack(
-          children: [
-            Positioned(
-                width: MediaQuery.of(context).size.width * 1.7,
-                bottom: 200,
-                left: 100,
-                child: Image.asset('assets/Backgrounds/Spline.png')),
-            Positioned.fill(
-                child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-            )),
-            const RiveAnimation.asset('assets/RiveAssets/shapes.riv'),
-            Positioned.fill(
-                child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-              child: const SizedBox(),
-            )),
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: screens[widget.currentIndex],
-              ),
-            ),
-          ],
         ));
   }
 }

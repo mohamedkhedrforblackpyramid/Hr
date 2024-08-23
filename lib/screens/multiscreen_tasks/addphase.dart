@@ -86,21 +86,21 @@ class _AddphaseState extends State<Addphase> {
                   child: Text(
                     AppLocalizations.of(context)!.add_phase,
                     style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      color: Color(0xff7D5060)),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 40),
                   child: Theme(
                     data: Theme.of(context)
-                        .copyWith(splashColor: Colors.transparent),
+                        .copyWith(splashColor: Colors.black),
                     child: TextField(
                       controller: phaseName,
                       autofocus: false,
                       style:
-                          TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                          TextStyle(fontSize: 22.0, color: Colors.green),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color(0xFCED3FF),
@@ -110,17 +110,17 @@ class _AddphaseState extends State<Addphase> {
                             AppLocalizations.of(context)!.phase_name,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                                color: Colors.black),
                           ),
                         ),
                         contentPadding: const EdgeInsets.only(
                             left: 14.0, bottom: 8.0, top: 8.0, right: 14),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(25.7),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(25.7),
                         ),
                       ),
@@ -131,12 +131,12 @@ class _AddphaseState extends State<Addphase> {
                   padding: const EdgeInsets.only(bottom: 40),
                   child: Theme(
                     data: Theme.of(context)
-                        .copyWith(splashColor: Colors.transparent),
+                        .copyWith(splashColor: Colors.black),
                     child: TextField(
                       controller: phasedesc,
                       autofocus: false,
                       style:
-                          TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                          TextStyle(fontSize: 22.0, color: Colors.green),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color(0xFCED3FF),
@@ -146,17 +146,17 @@ class _AddphaseState extends State<Addphase> {
                             AppLocalizations.of(context)!.phase_desc,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                                color: Colors.black),
                           ),
                         ),
                         contentPadding: const EdgeInsets.only(
                             left: 14.0, bottom: 8.0, top: 8.0, right: 14),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(25.7),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(25.7),
                         ),
                       ),
@@ -199,7 +199,7 @@ class _AddphaseState extends State<Addphase> {
                         controller: fromDateController,
                         autofocus: false,
                         style:
-                            TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                            TextStyle(fontSize: 22.0, color: Colors.green),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color(0xFCED3FF),
@@ -209,17 +209,17 @@ class _AddphaseState extends State<Addphase> {
                               AppLocalizations.of(context)!.dateFrom,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                                  color: Colors.black),
                             ),
                           ),
                           contentPadding: const EdgeInsets.only(
                               left: 14.0, bottom: 8.0, top: 8.0),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                         ),
@@ -231,7 +231,7 @@ class _AddphaseState extends State<Addphase> {
                   padding: const EdgeInsets.only(bottom: 40),
                   child: Theme(
                     data: Theme.of(context)
-                        .copyWith(splashColor: Colors.transparent),
+                        .copyWith(splashColor: Colors.black),
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
@@ -265,7 +265,7 @@ class _AddphaseState extends State<Addphase> {
                         controller: dueDateController,
                         autofocus: false,
                         style:
-                            TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                            TextStyle(fontSize: 22.0, color: Colors.green),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color(0xFCED3FF),
@@ -275,17 +275,17 @@ class _AddphaseState extends State<Addphase> {
                               AppLocalizations.of(context)!.due_date,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                                  color: Colors.black),
                             ),
                           ),
                           contentPadding: const EdgeInsets.only(
                               left: 14.0, bottom: 8.0, top: 8.0),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                         ),
@@ -306,6 +306,7 @@ class _AddphaseState extends State<Addphase> {
                               color1: Colors.purple,
                               color2: Colors.lightBlue,
                               onTap: () async {
+                                print(phaseName.text);
                                 setState(() {});
                                 clickAdd = true;
                                 await DioHelper.postData(

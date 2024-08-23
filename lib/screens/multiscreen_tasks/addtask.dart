@@ -122,21 +122,21 @@ class _AddTasksState extends State<AddTasks> {
                   child: Text(
                     AppLocalizations.of(context)!.addTask,
                     style: TextStyle(
-                        color: Colors.white70,
+                        fontWeight: FontWeight.bold,
                         fontSize: 30,
-                        fontWeight: FontWeight.bold),
+                        color: Color(0xff7D5060)),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 40),
                   child: Theme(
                     data: Theme.of(context)
-                        .copyWith(splashColor: Colors.transparent),
+                        .copyWith(splashColor: Colors.black),
                     child: TextField(
                       controller: taskName,
                       autofocus: false,
                       style:
-                          TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                          TextStyle(fontSize: 22.0, color: Colors.green),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color(0xFCED3FF),
@@ -146,17 +146,17 @@ class _AddTasksState extends State<AddTasks> {
                             AppLocalizations.of(context)!.taskName,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                                color: Colors.black),
                           ),
                         ),
                         contentPadding: const EdgeInsets.only(
                             left: 14.0, bottom: 8.0, top: 8.0, right: 14),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(25.7),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(25.7),
                         ),
                       ),
@@ -167,12 +167,12 @@ class _AddTasksState extends State<AddTasks> {
                   padding: const EdgeInsets.only(bottom: 40),
                   child: Theme(
                     data: Theme.of(context)
-                        .copyWith(splashColor: Colors.transparent),
+                        .copyWith(splashColor: Colors.black),
                     child: TextField(
                       controller: taskdesc,
                       autofocus: false,
                       style:
-                          TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                          TextStyle(fontSize: 22.0, color: Colors.green),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color(0xFCED3FF),
@@ -182,17 +182,17 @@ class _AddTasksState extends State<AddTasks> {
                             AppLocalizations.of(context)!.taskDesc,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                                color: Colors.black),
                           ),
                         ),
                         contentPadding: const EdgeInsets.only(
                             left: 14.0, bottom: 8.0, top: 8.0, right: 14),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(25.7),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(25.7),
                         ),
                       ),
@@ -240,12 +240,12 @@ class _AddTasksState extends State<AddTasks> {
                     padding: const EdgeInsets.only(bottom: 40),
                     child: Theme(
                       data: Theme.of(context)
-                          .copyWith(splashColor: Colors.transparent),
+                          .copyWith(splashColor: Colors.black),
                       child: TextField(
                         enabled: false,
                         autofocus: false,
                         style:
-                            TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                            TextStyle(fontSize: 22.0, color: Colors.green),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color(0xFCED3FF),
@@ -256,7 +256,7 @@ class _AddTasksState extends State<AddTasks> {
                                     AppLocalizations.of(context)!.addTaskTo,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                                        color: Colors.black),
                                   )
                                 : Text(
                                     'You Selected ${users.length} Employee',
@@ -268,11 +268,11 @@ class _AddTasksState extends State<AddTasks> {
                           contentPadding: const EdgeInsets.only(
                               left: 14.0, bottom: 8.0, top: 8.0, right: 14),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                         ),
@@ -323,7 +323,7 @@ class _AddTasksState extends State<AddTasks> {
                         enabled: false,
                         autofocus: false,
                         style:
-                            TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                            TextStyle(fontSize: 22.0, color: Colors.green),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color(0xFCED3FF),
@@ -334,23 +334,23 @@ class _AddTasksState extends State<AddTasks> {
                                     AppLocalizations.of(context)!.choosePhase,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                                        color: Colors.black),
                                   )
                                 : Text(
                                     widget.phaseName,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                                        color: Colors.black),
                                   ),
                           ),
                           contentPadding: const EdgeInsets.only(
                               left: 14.0, bottom: 8.0, top: 8.0, right: 14),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                         ),
@@ -362,7 +362,7 @@ class _AddTasksState extends State<AddTasks> {
                   padding: const EdgeInsets.only(bottom: 40),
                   child: Theme(
                     data: Theme.of(context)
-                        .copyWith(splashColor: Colors.transparent),
+                        .copyWith(splashColor: Colors.black),
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
@@ -392,7 +392,7 @@ class _AddTasksState extends State<AddTasks> {
                         controller: fromDateController,
                         autofocus: false,
                         style:
-                            TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                            TextStyle(fontSize: 22.0, color: Colors.green),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color(0xFCED3FF),
@@ -402,17 +402,17 @@ class _AddTasksState extends State<AddTasks> {
                               AppLocalizations.of(context)!.dateFrom,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                                  color: Colors.black),
                             ),
                           ),
                           contentPadding: const EdgeInsets.only(
                               left: 14.0, bottom: 8.0, top: 8.0),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                         ),
@@ -424,7 +424,7 @@ class _AddTasksState extends State<AddTasks> {
                   padding: const EdgeInsets.only(bottom: 40),
                   child: Theme(
                     data: Theme.of(context)
-                        .copyWith(splashColor: Colors.transparent),
+                        .copyWith(splashColor: Colors.black),
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
@@ -455,7 +455,7 @@ class _AddTasksState extends State<AddTasks> {
                         controller: dateController,
                         autofocus: false,
                         style:
-                            TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                            TextStyle(fontSize: 22.0, color: Colors.green),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color(0xFCED3FF),
@@ -465,17 +465,17 @@ class _AddTasksState extends State<AddTasks> {
                               AppLocalizations.of(context)!.due_date,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                                  color: Colors.black),
                             ),
                           ),
                           contentPadding: const EdgeInsets.only(
                               left: 14.0, bottom: 8.0, top: 8.0),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25.7),
                           ),
                         ),
