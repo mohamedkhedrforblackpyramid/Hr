@@ -30,7 +30,7 @@ class _WhoIsAttendState extends State<WhoIsAttend> {
         url: "api/current-users",
         query: {'organization_id': widget.organizationId}).then((response) {
       users = response.data;
-      print(users);
+      print(response.data);
       setState(() {
         showLoading = false;
       });

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hr/projectfield.dart';
@@ -11,6 +12,7 @@ import 'main.dart';
 import 'modules/organizationmodel.dart';
 import 'network/local/cache_helper.dart';
 import 'network/remote/dio_helper.dart';
+import 'package:http_parser/http_parser.dart';
 
 class MainPage extends StatefulWidget {
   final int? userId;
@@ -36,19 +38,72 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   bool shouldPop = false;
   bool isLoading = false;
+  String? image_path;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  XFile? _imageFile;
+  XFile? photo;
 
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage() async {
     try {
-      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
+      final ImagePicker picker =
+      ImagePicker();
+      this.photo =
+      await picker.pickImage(
+          source:
+          ImageSource
+              .gallery,
+          imageQuality: 50);
+      final photo = this.photo;
+      if (photo != null) {
+        print(photo.path);
         setState(() {
-          _imageFile = pickedFile;
+          image_path =
+              photo?.path;
         });
+        print(
+            "image is here !");
+        print(image_path);
+        print(
+            "image is here !");
+        image_path != null
+            ? Container(
+          height: 200,
+          child: Image.file(
+            File(
+                image_path!),
+            fit: BoxFit
+                .contain,
+          ),
+        )
+            : SizedBox.shrink();
+        var file_image;
+        if (image_path != null) {
+          file_image =
+          await MultipartFile
+              .fromFile(
+              image_path!,
+              filename:
+              "fileName.jpg",
+              contentType:
+              MediaType(
+                  'image',
+                  'jpg'));
+        }
+        DioHelper.postFormData(
+            url: "api/user/${widget.userId}",
+            data: {
+              "avatar": file_image,
 
+            },
+        ).then((response){
+          print('Done');
+          print(file_image);
+          DioHelper.getData(url:'api/user/${widget.userId}' ).then((response){print('Folla');}).catchError((error){
+            print(error.response.data);
+          });
+        });
       }
     } catch (e) {
       print("Error picking image: $e");
@@ -130,10 +185,10 @@ class _MainPageState extends State<MainPage> {
                     CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: 40,
-                      child: _imageFile != null
+                      child: image_path != null
                           ? ClipOval(
                         child: Image.file(
-                          File(_imageFile!.path),
+                          File(image_path!),
                           fit: BoxFit.cover,
                           width: 80,
                           height: 80,

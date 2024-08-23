@@ -43,10 +43,25 @@ class _ProfileState extends State<Profile> {
       print(error);
     });
   }
+  getInfo() async {
+    setState(() {
+      showLoading = true;
+    });
+    await DioHelper.getData(
+      url: "api/user/${widget.userId}",
+    ).then((response) {
+     print(response.data);
+
+    }).catchError((error){
+      print(error);
+    });
+  }
 
   @override
   void initState() {
     getTasks();
+    getInfo();
+
     super.initState();
   }
 
