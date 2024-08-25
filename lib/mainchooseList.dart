@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hr/projectfield.dart';
 import 'package:hr/screens/hr.dart';
+import 'package:hr/screens/onboding/onboding_screen.dart';
 import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/whoisattend.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,94 +39,92 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   bool shouldPop = false;
   bool isLoading = false;
-  String? image_path;
+  bool isImageLoading = false; // حالة تحميل الصورة
+  String? imagePath;
+  bool showLoading = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  XFile? photo;
-
   final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    getProfileInfo();
+    getOrganizations();
+  }
+
+  Future<void> getProfileInfo() async {
+    setState(() {
+      showLoading = true;
+    });
+
+    try {
+      final response = await DioHelper.getData(
+        url: "api/auth/me?profile=true",
+      );
+      setState(() {
+        imagePath = response.data['avatar'];
+      });
+    } catch (error) {
+      print("Error fetching profile info: $error");
+    } finally {
+      setState(() {
+        showLoading = false;
+      });
+    }
+  }
 
   Future<void> _pickImage() async {
     try {
-      final ImagePicker picker =
-      ImagePicker();
-      this.photo =
-      await picker.pickImage(
-          source:
-          ImageSource
-              .gallery,
-          imageQuality: 50);
-      final photo = this.photo;
-      if (photo != null) {
-        print(photo.path);
+      final XFile? pickedPhoto = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 50,
+      );
+
+      if (pickedPhoto != null) {
         setState(() {
-          image_path =
-              photo?.path;
+          isImageLoading = true; // بدء تحميل الصورة
+          imagePath = pickedPhoto.path;
         });
-        print(
-            "image is here !");
-        print(image_path);
-        print(
-            "image is here !");
-        image_path != null
-            ? Container(
-          height: 200,
-          child: Image.file(
-            File(
-                image_path!),
-            fit: BoxFit
-                .contain,
-          ),
-        )
-            : SizedBox.shrink();
-        var file_image;
-        if (image_path != null) {
-          file_image =
-          await MultipartFile
-              .fromFile(
-              image_path!,
-              filename:
-              "fileName.jpg",
-              contentType:
-              MediaType(
-                  'image',
-                  'jpg'));
-        }
-        DioHelper.postFormData(
+
+        final fileImage = await MultipartFile.fromFile(
+          pickedPhoto.path,
+          filename: "fileName.jpg",
+          contentType: MediaType('image', 'jpg'),
+        );
+
+        try {
+          await DioHelper.postFormData(
             url: "api/user/${widget.userId}",
             data: {
-              "avatar": file_image,
-
+              "avatar": fileImage,
             },
-        ).then((response){
-          print('Done');
-          print(file_image);
-          DioHelper.getData(url:'api/user/${widget.userId}' ).then((response){print('Folla');}).catchError((error){
-            print(error.response.data);
+          );
+          await getProfileInfo();
+          print('Image updated successfully');
+        } catch (error) {
+          print("Error updating image: $error");
+        } finally {
+          setState(() {
+            isImageLoading = false; // إيقاف تحميل الصورة
           });
-        });
+        }
       }
+
     } catch (e) {
       print("Error picking image: $e");
     }
   }
 
-  getOrganizations() {
-    DioHelper.getData(
-      url: "api/organizations",
-    ).then((response) {
+  Future<void> getOrganizations() async {
+    try {
+      final response = await DioHelper.getData(
+        url: "api/organizations",
+      );
       print(response.data);
-    }).catchError((error) {
+    } catch (error) {
       print("Error fetching organizations: $error");
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    print('Initialization started');
-    print(CacheHelper.getData(key: 'token'));
-    getOrganizations();
+    }
   }
 
   void _startLoading(VoidCallback action) {
@@ -143,7 +142,6 @@ class _MainPageState extends State<MainPage> {
 
   void _handleDrawerItemSelection(VoidCallback action) {
     if (isLoading) {
-      // Optionally stop loading if it's active
       setState(() {
         isLoading = false;
       });
@@ -180,35 +178,39 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 currentAccountPicture: Stack(
-                  alignment: Alignment.center,
+                  alignment: Alignment.bottomRight,
                   children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 40,
-                      child: image_path != null
-                          ? ClipOval(
-                        child: Image.file(
-                          File(image_path!),
-                          fit: BoxFit.cover,
-                          width: 80,
-                          height: 80,
-                        ),
+                    if (isImageLoading)
+                      SpinKitFadingCircle(
+                        color: Colors.white,
+                        size: 50.0, // حجم مؤشر التحميل
                       )
-                          : Text(
-                        (CacheHelper.getData(key: 'name') ?? 'U')[0],
-                        style: TextStyle(
-                          color: Colors.teal,
-                          fontSize: 40,
+                    else
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 40,
+                        child: imagePath != null
+                            ? ClipOval(
+                          child: Image.network(
+                            imagePath!,
+                            fit: BoxFit.cover,
+                            width: 80,
+                            height: 80,
+                          ),
+                        )
+                            : Icon(
+                          Icons.person,
+                          size: 80,
+                          color: Colors.grey,
                         ),
                       ),
-                    ),
                     Positioned(
                       bottom: 0,
                       right: 0,
                       top: 40,
                       left: 40,
                       child: IconButton(
-                        icon: Icon(Icons.edit, color: Colors.black, size: 20),
+                        icon: Icon(Icons.edit, color: Colors.black, size: 28),
                         onPressed: _pickImage,
                       ),
                     ),
@@ -235,7 +237,7 @@ class _MainPageState extends State<MainPage> {
                       return ListView.builder(
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, int index) =>
-                            buildOranizationsList(
+                            buildOrganizationsList(
                                 organizations: widget
                                     .oranizaionsList
                                     .organizationsListt![index],
@@ -277,9 +279,10 @@ class _MainPageState extends State<MainPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyApp(
+                          builder: (context) => OnboardingScreen()
+                          /*MyApp(
                             lang: '${CacheHelper.getData(key: 'language')}',
-                          ),
+                          ),*/
                         ),
                       );
                     });
@@ -398,7 +401,7 @@ class _MainPageState extends State<MainPage> {
               Container(
                 color: Colors.black.withOpacity(0.5),
                 child: Center(
-                  child: SpinKitCircle(
+                  child: SpinKitFadingCircle(
                     color: Colors.white,
                     size: 80.0,
                   ),
@@ -410,8 +413,10 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget buildOranizationsList(
-      {required OrganizationsModel organizations, required int index}) {
+  Widget buildOrganizationsList({
+    required OrganizationsModel organizations,
+    required int index,
+  }) {
     return Column(
       children: [
         Container(

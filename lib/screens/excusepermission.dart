@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hr/screens/timepicker.dart';
@@ -541,102 +542,93 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
 
     String parsedTimezoneOffset = timezoneOffset >= 0 ? '+${timezoneOffset}' : timezoneOffset.toString();
     print(notesController.text);
-    await DioHelper.postData(
-      url: "api/vacancies",
-      data: {
-        //"from": '${dateController.text} ${timeFromController.text}${parsedTimezoneOffset}',
-        "to": '${dateController.text} ${timeToController.text}${parsedTimezoneOffset}',
-        'is_permit': true,
-        "notes": notesController.text,
-        'type': permit_type,
-        // 'type':'ORDINARY',
-        'organization_id': widget.organizationId,
-        'user_id':widget.userId
-      },
-    ).then((value) {
-      print(widget.organizationId);
-      print(value.data);
-      print(widget.userId);
-      if (dateController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.dateisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else if (timeToController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.timeToisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                'Sent Successfully',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-        dateController.text='';
-        timeToController.text='';
-        timeFromController.text='';
-      }
-      loadingSend = false;
-      setState(() {});
-    }).catchError((error) {
-      print(error.response.data);
-      print(widget.organizationId);
+    if (dateController.text == '') {
+      Flushbar(
+        message: 'Date is Empty !',
+        icon: Icon(
+          Icons.info_outline,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.red,
+      )..show(context);
+      loadingSend =false;
 
-      if (dateController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.dateisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      }else{
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Color(0xff93D0FC),
-            content: Text('${AppLocalizations.of(context)!.youCanNotSend}'),
-
-          );
+    } else if (timeToController.text == '') {
+      Flushbar(
+        message: 'Time To is Empty !',
+        icon: Icon(
+          Icons.info_outline,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.red,
+      )..show(context);
+      loadingSend =false;
+    }
+    else {
+      await DioHelper.postData(
+        url: "api/vacancies",
+        data: {
+          "to": '${dateController.text} ${timeToController
+              .text}${parsedTimezoneOffset}',
+          'is_permit': true,
+          "notes": notesController.text,
+          'type': permit_type,
+          'organization_id': widget.organizationId,
+          'user_id': widget.userId
         },
-      );}
-      setState(() {});
-      loadingSend = false;
-      print(permit_type);
-      print(widget.userId);
-      print(error);
-    });
-    print(dateController.text + " " + timeFromController.text);
+      ).then((value) {
+        print(widget.organizationId);
+        print(value.data);
+        print(widget.userId);
+
+        Flushbar(
+          message: 'Sent Successfully',
+          icon: Icon(
+            Icons.verified_outlined,
+            size: 30.0,
+            color: Colors.black,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+          backgroundColor: Colors.green,
+        )..show(context);
+        dateController.text = '';
+        timeToController.text = '';
+        timeFromController.text = '';
+
+        loadingSend = false;
+        setState(() {});
+      }).catchError((error) {
+        print(error.response.data);
+        print(widget.organizationId);
+
+
+        Flushbar(
+          message: '${AppLocalizations.of(context)!.youCanNotSend}',
+          icon: Icon(
+            Icons.info_outline,
+            size: 30.0,
+            color: Colors.black,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+          backgroundColor: Colors.red,
+        )..show(context);
+
+        setState(() {});
+        loadingSend = false;
+        print(permit_type);
+        print(widget.userId);
+        print(error);
+      });
+      print(dateController.text + " " + timeFromController.text);
+    }
   }
 
   sendExcuseNullTo() async {
@@ -648,61 +640,60 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
 
     String parsedTimezoneOffset = timezoneOffset >= 0 ? '+${timezoneOffset}' : timezoneOffset.toString();
     print(notesController.text);
+    if (dateController.text == '') {
+      Flushbar(
+        message: '${AppLocalizations.of(context)!.dateisEmpty}',
+        icon: Icon(
+          Icons.info_outline,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.red,
+      )..show(context);
+      loadingSend=false;
+    }
+    else if (timeFromController.text == '') {
+      Flushbar(
+        message: 'Time From is Empty !',
+        icon: Icon(
+          Icons.info_outline,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.red,
+      )..show(context);
+      loadingSend =false;
+    }else{
     await DioHelper.postData(
       url: "api/vacancies",
       data: {
         "from": '${dateController.text} ${timeFromController.text}${parsedTimezoneOffset}',
-        //  "to": '${dateController.text} ${timeToController.text}' ,
         'is_permit': true,
         "notes": notesController.text,
         'type': permit_type,
-        // 'type':'ORDINARY',
         'organization_id':widget.organizationId,
         'user_id': widget.userId
       },
     ).then((value) {
       print(value.data);
       print(widget.userId);
-      if (dateController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.dateisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else if (timeFromController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.timeFromisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                'Sent Successfully',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      }
+
+      Flushbar(
+        message: 'Sent Successfully',
+        icon: Icon(
+          Icons.verified_outlined,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.green,
+      )..show(context);
+
       loadingSend = false;
       setState(() {});
       dateController.text='';
@@ -710,43 +701,20 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
       timeFromController.text='';
     }).catchError((error) {
       print(error);
-      if (dateController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.dateisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else if (timeFromController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.timeFromisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else {print(widget.userId);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text('You can not send right now , Try again later'),
-            );
-          },
-        );
-      }
+         print(widget.userId);
+
+      Flushbar(
+        message: '${AppLocalizations.of(context)!.youCanNotSend}',
+        icon: Icon(
+          Icons.info_outline,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.red,
+      )..show(context);
+
 
       setState(() {});
       loadingSend = false;
@@ -755,6 +723,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
       print(error.response.data);
     });
     print(dateController.text + " " + timeFromController.text);
+    }
   }
 
   sendExcuseFromAndTo() async {
@@ -766,115 +735,107 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
     DateTime localDatetime = DateTime.now();
     int timezoneOffset = localDatetime.timeZoneOffset.inHours;
 
-    String parsedTimezoneOffset = timezoneOffset >= 0 ? '+${timezoneOffset}' : timezoneOffset.toString();
+    String parsedTimezoneOffset = timezoneOffset >= 0
+        ? '+${timezoneOffset}'
+        : timezoneOffset.toString();
     print(notesController.text);
-    await DioHelper.postData(
-      url: "api/vacancies",
-      data: {
-        "from": '${dateController.text} ${timeFromController.text}${parsedTimezoneOffset}',
-        "to": '${dateController.text} ${timeToController.text}${parsedTimezoneOffset}',
-        'is_permit': true,
-        "notes": notesController.text,
-        'type': permit_type,
-        // 'type':'ORDINARY',
-        'organization_id': widget.organizationId,
-        'user_id': widget.userId
-      },
-    ).then((value) {
-      print(value.data);
-      print(widget.userId);
-      if (dateController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.dateisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else if (timeFromController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.timeFromisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else if (timeToController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.timeToisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                'Sent Successfully',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      }
+    if (dateController.text == '') {
+      Flushbar(
+        message: '${AppLocalizations.of(context)!.dateisEmpty}',
+        icon: Icon(
+          Icons.info_outline,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.red,
+      )
+        ..show(context);
       loadingSend = false;
-      setState(() {});
-      dateController.text='';
-      timeToController.text='';
-      timeFromController.text='';
-    }).catchError((error) {
-      if (dateController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.dateisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      }else if (timeFromController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.timeFromisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      }
-      setState(() {});
+    } else if (timeFromController.text == '') {
+      Flushbar(
+        message: 'Time From is Empty !',
+        icon: Icon(
+          Icons.info_outline,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.red,
+      )
+        ..show(context);
       loadingSend = false;
-      print(permit_type);
-      print(widget.userId);
-      print(error.response.data);
-    });
-    print(dateController.text + " " + timeFromController.text);
+    } else if (timeToController.text == '') {
+      Flushbar(
+        message: 'Time To is Empty !',
+        icon: Icon(
+          Icons.info_outline,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.red,
+      )
+        ..show(context);
+      loadingSend = false;
+    } else {
+      await DioHelper.postData(
+        url: "api/vacancies",
+        data: {
+          "from": '${dateController.text} ${timeFromController
+              .text}${parsedTimezoneOffset}',
+          "to": '${dateController.text} ${timeToController
+              .text}${parsedTimezoneOffset}',
+          'is_permit': true,
+          "notes": notesController.text,
+          'type': permit_type,
+          'organization_id': widget.organizationId,
+          'user_id': widget.userId
+        },
+      ).then((value) {
+        print(value.data);
+        print(widget.userId);
+        Flushbar(
+          message: 'Sent Successfully',
+          icon: Icon(
+            Icons.verified_outlined,
+            size: 30.0,
+            color: Colors.black,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+          backgroundColor: Colors.green,
+        )
+          ..show(context);
+
+        loadingSend = false;
+        setState(() {});
+        dateController.text = '';
+        timeToController.text = '';
+        timeFromController.text = '';
+      }).catchError((error) {
+        Flushbar(
+          message: '${AppLocalizations.of(context)!.youCanNotSend}',
+          icon: Icon(
+            Icons.info_outline,
+            size: 30.0,
+            color: Colors.black,
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.blue[300],
+          backgroundColor: Colors.red,
+        )
+          ..show(context);
+        setState(() {});
+        loadingSend = false;
+        print(permit_type);
+        print(widget.userId);
+        print(error.response.data);
+      });
+      print(dateController.text + " " + timeFromController.text);
+    }
   }
 }

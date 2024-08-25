@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,9 +12,12 @@ import '../network/remote/dio_helper.dart';
 import 'attendance.dart';
 import 'excusepermission.dart';
 import 'holiday_permission.dart';
+import 'onboding/onboding_screen.dart';
 import 'profile.dart';
 import 'showpermission.dart';
 import 'whoisattend.dart';
+import 'package:http_parser/http_parser.dart';
+
 
 class Hr extends StatefulWidget {
   final int? userId;
@@ -48,6 +52,11 @@ class _HrState extends State<Hr> {
   PermitList? permitsPermission;
   int? permissionCount;
   int? vacancesCount;
+  bool isImageLoading = false; // حالة تحميل الصورة
+  String? imagePath;
+  bool showLoading = false;
+
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   XFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
@@ -60,18 +69,69 @@ class _HrState extends State<Hr> {
     }
     action();
   }
-  void _pickImage() async {
+  Future<void> getProfileInfo() async {
+    setState(() {
+      showLoading = true;
+    });
+
     try {
-      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
+      final response = await DioHelper.getData(
+        url: "api/auth/me?profile=true",
+      );
+      setState(() {
+        imagePath = response.data['avatar'];
+      });
+    } catch (error) {
+      print("Error fetching profile info: $error");
+    } finally {
+      setState(() {
+        showLoading = false;
+      });
+    }
+  }
+
+  Future<void> _pickImage() async {
+    try {
+      final XFile? pickedPhoto = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 50,
+      );
+
+      if (pickedPhoto != null) {
         setState(() {
-          _imageFile = pickedFile;
+          isImageLoading = true; // بدء تحميل الصورة
+          imagePath = pickedPhoto.path;
         });
+
+        final fileImage = await MultipartFile.fromFile(
+          pickedPhoto.path,
+          filename: "fileName.jpg",
+          contentType: MediaType('image', 'jpg'),
+        );
+
+        try {
+          await DioHelper.postFormData(
+            url: "api/user/${widget.userId}",
+            data: {
+              "avatar": fileImage,
+            },
+          );
+          await getProfileInfo();
+          print('Image updated successfully');
+        } catch (error) {
+          print("Error updating image: $error");
+        } finally {
+          setState(() {
+            isImageLoading = false; // إيقاف تحميل الصورة
+          });
+        }
       }
+
     } catch (e) {
       print("Error picking image: $e");
     }
   }
+
 
   Future<void> checkAttendace() async {
     await DioHelper.getData(
@@ -147,6 +207,7 @@ class _HrState extends State<Hr> {
     checkAttendace();
     getVecan();
     getPermissions();
+    getProfileInfo();
   }
 
   void _startLoading(VoidCallback action) {
@@ -196,35 +257,39 @@ class _HrState extends State<Hr> {
                 ),
               ),
               currentAccountPicture: Stack(
-                alignment: Alignment.center,
+                alignment: Alignment.bottomRight,
                 children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 40,
-                    child: _imageFile != null
-                        ? ClipOval(
-                      child: Image.file(
-                        File(_imageFile!.path),
-                        fit: BoxFit.cover,
-                        width: 80,
-                        height: 80,
-                      ),
+                  if (isImageLoading)
+                    SpinKitFadingCircle(
+                      color: Colors.white,
+                      size: 50.0, // حجم مؤشر التحميل
                     )
-                        : Text(
-                      (CacheHelper.getData(key: 'name') ?? 'U')[0],
-                      style: TextStyle(
-                        color: Colors.teal,
-                        fontSize: 40,
+                  else
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 40,
+                      child: imagePath != null
+                          ? ClipOval(
+                        child: Image.network(
+                          imagePath!,
+                          fit: BoxFit.cover,
+                          width: 80,
+                          height: 80,
+                        ),
+                      )
+                          : Icon(
+                        Icons.person,
+                        size: 80,
+                        color: Colors.grey,
                       ),
                     ),
-                  ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     top: 40,
                     left: 40,
                     child: IconButton(
-                      icon: Icon(Icons.edit, color: Colors.black, size: 20),
+                      icon: Icon(Icons.edit, color: Colors.black, size: 28),
                       onPressed: _pickImage,
                     ),
                   ),
@@ -293,8 +358,8 @@ class _HrState extends State<Hr> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MyApp(
-                          lang: '${CacheHelper.getData(key: 'language')}',
+                        builder: (context) => OnboardingScreen(
+
                         ),
                       ),
                     );

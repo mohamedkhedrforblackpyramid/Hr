@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
       showLoading = true;
     });
     await DioHelper.getData(
-      url: "api/user/${widget.userId}",
+      url: "api/auth/me?profile=true",
     ).then((response) {
      print(response.data);
 

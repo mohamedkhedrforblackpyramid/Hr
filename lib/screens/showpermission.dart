@@ -238,7 +238,7 @@ class _ShowpermitState extends State<Showpermit> {
 
                       permits.permitList!.isNotEmpty
                           ? SizedBox(
-                              height: MediaQuery.of(context).size.height,
+                              //height: MediaQuery.of(context).size.height,
                               child: ListView.builder(
                                  shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),

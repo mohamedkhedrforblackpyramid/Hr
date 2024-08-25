@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hr/screens/onboding/onboding_screen.dart';
 import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/taskmanagement.dart';
 import 'package:hr/screens/tasktable.dart';
@@ -12,6 +14,7 @@ import '../modules/organizationmodel.dart';
 import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
 import 'mainchooseList.dart';
+import 'package:http_parser/http_parser.dart';
 
 
 class ProjectsField extends StatefulWidget {
@@ -38,6 +41,10 @@ class ProjectsField extends StatefulWidget {
 class _ProjectsFieldState extends State<ProjectsField> {
   String status = '';
   bool isLoading = false;
+  String? imagePath;
+  bool showLoading = false;
+  bool isImageLoading = false; // حالة تحميل الصورة
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   XFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
@@ -50,18 +57,7 @@ class _ProjectsFieldState extends State<ProjectsField> {
     }
     action();
   }
-  void _pickImage() async {
-    try {
-      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        setState(() {
-          _imageFile = pickedFile;
-        });
-      }
-    } catch (e) {
-      print("Error picking image: $e");
-    }
-  }
+
 
   returnPage() {
     Navigator.push(
@@ -109,6 +105,69 @@ class _ProjectsFieldState extends State<ProjectsField> {
     });
   }
 
+  Future<void> getProfileInfo() async {
+    setState(() {
+      showLoading = true;
+    });
+
+    try {
+      final response = await DioHelper.getData(
+        url: "api/auth/me?profile=true",
+      );
+      setState(() {
+        imagePath = response.data['avatar'];
+      });
+    } catch (error) {
+      print("Error fetching profile info: $error");
+    } finally {
+      setState(() {
+        showLoading = false;
+      });
+    }
+  }
+
+  Future<void> _pickImage() async {
+    try {
+      final XFile? pickedPhoto = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 50,
+      );
+
+      if (pickedPhoto != null) {
+        setState(() {
+          isImageLoading = true; // بدء تحميل الصورة
+          imagePath = pickedPhoto.path;
+        });
+
+        final fileImage = await MultipartFile.fromFile(
+          pickedPhoto.path,
+          filename: "fileName.jpg",
+          contentType: MediaType('image', 'jpg'),
+        );
+
+        try {
+          await DioHelper.postFormData(
+            url: "api/user/${widget.userId}",
+            data: {
+              "avatar": fileImage,
+            },
+          );
+          await getProfileInfo();
+          print('Image updated successfully');
+        } catch (error) {
+          print("Error updating image: $error");
+        } finally {
+          setState(() {
+            isImageLoading = false; // إيقاف تحميل الصورة
+          });
+        }
+      }
+
+    } catch (e) {
+      print("Error picking image: $e");
+    }
+  }
+
   getOrganizations() {
     DioHelper.getData(
       url: "api/organizations",
@@ -123,6 +182,8 @@ class _ProjectsFieldState extends State<ProjectsField> {
     print('Initializing...');
     print(CacheHelper.getData(key: 'token'));
     getOrganizations();
+    getProfileInfo();
+
     checkAttendace();
   }
 
@@ -168,35 +229,39 @@ class _ProjectsFieldState extends State<ProjectsField> {
                     ),
                   ),
                   currentAccountPicture: Stack(
-                    alignment: Alignment.center,
+                    alignment: Alignment.bottomRight,
                     children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 40,
-                        child: _imageFile != null
-                            ? ClipOval(
-                          child: Image.file(
-                            File(_imageFile!.path),
-                            fit: BoxFit.cover,
-                            width: 80,
-                            height: 80,
-                          ),
+                      if (isImageLoading)
+                        SpinKitFadingCircle(
+                          color: Colors.white,
+                          size: 50.0, // حجم مؤشر التحميل
                         )
-                            : Text(
-                          (CacheHelper.getData(key: 'name') ?? 'U')[0],
-                          style: TextStyle(
-                            color: Colors.teal,
-                            fontSize: 40,
+                      else
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 40,
+                          child: imagePath != null
+                              ? ClipOval(
+                            child: Image.network(
+                              imagePath!,
+                              fit: BoxFit.cover,
+                              width: 80,
+                              height: 80,
+                            ),
+                          )
+                              : Icon(
+                            Icons.person,
+                            size: 80,
+                            color: Colors.grey,
                           ),
                         ),
-                      ),
                       Positioned(
                         bottom: 0,
                         right: 0,
                         top: 40,
                         left: 40,
                         child: IconButton(
-                          icon: Icon(Icons.edit, color: Colors.black, size: 20),
+                          icon: Icon(Icons.edit, color: Colors.black, size: 28),
                           onPressed: _pickImage,
                         ),
                       ),
@@ -265,8 +330,7 @@ class _ProjectsFieldState extends State<ProjectsField> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MyApp(
-                              lang: '${CacheHelper.getData(key: 'language')}',
+                            builder: (context) => OnboardingScreen(
                             ),
                           ),
                         );

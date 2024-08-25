@@ -65,6 +65,8 @@ class DioHelper {
     Map<String, dynamic>? query,
     required Map<String, dynamic> data,
   }) async {
+    print(url);
+
     if (CacheHelper.getData(key: "token") != null) {
       dio.options.headers['Authorization'] = "Bearer ${CacheHelper.getData(key: "token")}";
     }
