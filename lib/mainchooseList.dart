@@ -8,6 +8,8 @@ import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/whoisattend.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 import 'main.dart';
 import 'modules/organizationmodel.dart';
@@ -186,22 +188,36 @@ class _MainPageState extends State<MainPage> {
                         size: 50.0, // حجم مؤشر التحميل
                       )
                     else
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 40,
-                        child: imagePath != null
-                            ? ClipOval(
-                          child: Image.network(
-                            imagePath!,
-                            fit: BoxFit.cover,
-                            width: 80,
-                            height: 80,
+                      GestureDetector(
+                        onTap: () {
+                          if (imagePath != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PhotoViewGalleryPageWrapper(
+                                  imagePath: imagePath!,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 40,
+                          child: imagePath != null
+                              ? ClipOval(
+                            child: Image.network(
+                              imagePath!,
+                              fit: BoxFit.cover,
+                              width: 80,
+                              height: 80,
+                            ),
+                          )
+                              : Icon(
+                            Icons.person,
+                            size: 80,
+                            color: Colors.grey,
                           ),
-                        )
-                            : Icon(
-                          Icons.person,
-                          size: 80,
-                          color: Colors.grey,
                         ),
                       ),
                     Positioned(
@@ -279,7 +295,7 @@ class _MainPageState extends State<MainPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => OnboardingScreen()
+                            builder: (context) => OnboardingScreen()
                           /*MyApp(
                             lang: '${CacheHelper.getData(key: 'language')}',
                           ),*/
@@ -486,6 +502,34 @@ class DashboardCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class PhotoViewGalleryPageWrapper extends StatelessWidget {
+  final String imagePath;
+
+  const PhotoViewGalleryPageWrapper({required this.imagePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: PhotoViewGallery.builder(
+        itemCount: 1,
+        builder: (context, index) {
+          return PhotoViewGalleryPageOptions(
+            imageProvider: NetworkImage(imagePath),
+            minScale: PhotoViewComputedScale.contained,
+            maxScale: PhotoViewComputedScale.covered * 2,
+          );
+        },
+        scrollPhysics: BouncingScrollPhysics(),
+        backgroundDecoration: BoxDecoration(
+          color: Colors.black,
+        ),
+        pageController: PageController(),
       ),
     );
   }

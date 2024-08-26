@@ -11,10 +11,17 @@ import 'package:rive/rive.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unique_identifier/unique_identifier.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:async';
 
+import 'package:flutter/services.dart';
+import 'package:unique_identifier/unique_identifier.dart';
+import 'package:app_settings/app_settings.dart';
 import '../../../network/local/cache_helper.dart';
 import '../../../network/remote/dio_helper.dart';
 import '../../choose_list.dart';
+var url;
+
 enum FormData {
   userName,
   password,
@@ -56,6 +63,9 @@ class _SignInFormState extends State<SignInForm> {
   String personType = '';
   String organizationsArabicName = '';
   bool _isChecked = false;
+  bool settingsLoad = false;
+  String versionNow = '1.0.4';
+  List <String>? versions;
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
         StateMachineController.fromArtboard(artboard, "State Machine 1");
@@ -74,6 +84,34 @@ class _SignInFormState extends State<SignInForm> {
       _identifier = identifier!;
     });
   }
+
+
+  void getSettings() {
+    DioHelper.getData(
+      url: "api/settings",
+    ).then((response) {
+      print(response.data);
+
+      if(response.data['app.version'].contains(versionNow)){
+        _isChecked==true? handleRemeberme(true):null;
+        userLogin(
+            name: userNameController.text,
+            password: passwordController.text);
+      }else{
+        url = response.data['app.download'];
+        print(url);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => UpdateAlert(),
+        );
+      }
+      setState(() {
+      });
+    }).catchError((error) {
+      print(error.response.data);
+    });
+  }
+
 
   Future? userLogin({
     required String name,
@@ -208,13 +246,14 @@ class _SignInFormState extends State<SignInForm> {
 
   @override
   void initState() {
-    initPlatformState();
+   // initPlatformState();
     loadUserEmailPassword();
     initUniqueIdentifierState();
+  //  getSettings();
     super.initState();
   }
 
-  Future<void> initPlatformState() async {
+  /*Future<void> initPlatformState() async {
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       jailbroken = await FlutterJailbreakDetection.jailbroken;
@@ -233,7 +272,7 @@ class _SignInFormState extends State<SignInForm> {
       _jailbroken = jailbroken;
       _developerMode = developerMode;
     });
-  }
+  }*/
 
 
   @override
@@ -345,10 +384,9 @@ class _SignInFormState extends State<SignInForm> {
                   padding: const EdgeInsets.only(top: 8.0, bottom: 24),
                   child: ElevatedButton.icon(
                       onPressed: () async {
-                        _isChecked==true? handleRemeberme(true):null;
-                        userLogin(
-                            name: userNameController.text,
-                            password: passwordController.text);
+                        getSettings();
+
+
                         //     signIn(context);
                         /*if(developerMode == false) {
                           userLogin(name: userNameController.text,
@@ -430,6 +468,69 @@ class CustomPositioned extends StatelessWidget {
           Spacer(flex: 2),
         ],
       ),
+    );
+  }
+
+}
+
+class UpdateAlert extends StatefulWidget {
+  @override
+  State<UpdateAlert> createState() => _UpdateAlertState();
+}
+
+class _UpdateAlertState extends State<UpdateAlert> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      backgroundColor: Colors.white,
+      title: Column(
+        children: [
+          Icon(
+            Icons.update,
+            color: Colors.blue,
+            size: 40.0,
+          ),
+          SizedBox(height: 16.0),
+          Text(
+            'Update required',
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+      content: Text(
+        'There is a new version of the app. Please update the app to benefit from new features and improvements',
+        textAlign: TextAlign.center,
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ),
+          child: Text('Update Now'),
+          onPressed: () async {
+            print(url);
+            if ( await canLaunch(url)) {
+            await launch(url,
+            enableJavaScript: true, universalLinksOnly: false);
+            }
+          },
+        ),
+        TextButton(
+          child: Text('Later'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }

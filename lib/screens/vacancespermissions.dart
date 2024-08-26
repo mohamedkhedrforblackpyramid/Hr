@@ -1,26 +1,24 @@
 import 'dart:ui';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hr/screens/timepicker.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../calender.dart';
 import '../network/remote/dio_helper.dart';
 
-class HolidayPermission extends StatefulWidget {
+class VacancesPermissions extends StatefulWidget {
   int? userId;
   int? organizationId;
 
-  HolidayPermission({required this.userId, required this.organizationId});
+  VacancesPermissions({required this.userId, required this.organizationId});
   @override
-  State<HolidayPermission> createState() => _HolidayPermissionState();
+  State<VacancesPermissions> createState() => _VacancesPermissionsState();
 }
 
-class _HolidayPermissionState extends State<HolidayPermission> {
+class _VacancesPermissionsState extends State<VacancesPermissions> {
   bool loadingSend = false;
   String? dropdownValue;
   bool shouldPop = false;
@@ -419,8 +417,51 @@ class _HolidayPermissionState extends State<HolidayPermission> {
   }
 
   sendVacation() async {
+    if (dateFromController.text == '') {
+      Flushbar(
+        message: 'Date From is Empty !',
+        icon: Icon(
+          Icons.info_outline,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.red,
+      )..show(context);
+      loadingSend = false;
 
-    print(translateType);
+    } else if (dateToController.text == '') {
+      Flushbar(
+        message: 'Date TO is Empty !',
+        icon: Icon(
+          Icons.info_outline,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.red,
+      )..show(context);
+      loadingSend = false;
+
+    } else if (vacationtype.text == '') {
+      Flushbar(
+        message: '${AppLocalizations.of(context)!.vacationTypeis}',
+        icon: Icon(
+          Icons.info_outline,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.red,
+      )..show(context);
+      loadingSend = false;
+    }else{
+      loadingSend = false;
+
+      print(translateType);
     await DioHelper.postData(
       url: "api/vacancies",
       data: {
@@ -435,108 +476,29 @@ class _HolidayPermissionState extends State<HolidayPermission> {
     ).then((value) {
 
       print(translateType);
-      if (dateFromController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.dateisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else if (dateToController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.dateToisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else if (vacationtype.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.vacationTypeis}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                'Sent Successfully',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
+
+      Flushbar(
+        message: 'Sent Successfully',
+        icon: Icon(
+          Icons.verified_outlined,
+          size: 30.0,
+          color: Colors.black,
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.blue[300],
+        backgroundColor: Colors.green,
+      )..show(context);
+
         dateFromController.text='';
         dateToController.text='';
         vacationtype.text='';
         noteController.text='';
-      }
+
       loadingSend = false;
       setState(() {});
     }).catchError((error) {
       print(translateType);
 
-      if (dateFromController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.dateFromisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else if (dateToController.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.dateToisEmpty}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else if (vacationtype.text == '') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: Color(0xff93D0FC),
-              content: Text(
-                '${AppLocalizations.of(context)!.vacationTypeis}',
-                textAlign: TextAlign.center,
-              ),
-            );
-          },
-        );
-      } else {
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -546,11 +508,11 @@ class _HolidayPermissionState extends State<HolidayPermission> {
             );
           },
         );
-      }
+
       setState(() {});
       loadingSend = false;
 
       print(error.response.data);
-    });
+    });}
   }
 }

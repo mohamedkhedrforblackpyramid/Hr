@@ -5,13 +5,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../main.dart';
+import '../mainchooseList.dart';
 import '../modules/organizationmodel.dart';
 import '../modules/permitmodel.dart';
 import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
 import 'attendance.dart';
 import 'excusepermission.dart';
-import 'holiday_permission.dart';
+import 'vacancespermissions.dart';
 import 'onboding/onboding_screen.dart';
 import 'profile.dart';
 import 'showpermission.dart';
@@ -68,6 +69,21 @@ class _HrState extends State<Hr> {
       });
     }
     action();
+  }
+  returnPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MainPage(
+          userId: widget.userId,
+          oranizaionsList: widget.oranizaionsList,
+          organizationId: widget.organizationId,
+          organizationsName: widget.organizationsName,
+          organizationsArabicName: widget.organizationsArabicName,
+          personType: '',
+        ),
+      ),
+    );
   }
   Future<void> getProfileInfo() async {
     setState(() {
@@ -225,296 +241,305 @@ class _HrState extends State<Hr> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      key: _scaffoldKey,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () {
+        return returnPage();
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.menu, size: 30),
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
+        key: _scaffoldKey,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.menu, size: 30),
+            onPressed: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
+          ),
         ),
-      ),
-      drawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text(
-                CacheHelper.getData(key: 'name') ?? 'User',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              accountEmail: Text(
-                CacheHelper.getData(key: 'email') ?? 'Email',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-              currentAccountPicture: Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  if (isImageLoading)
-                    SpinKitFadingCircle(
-                      color: Colors.white,
-                      size: 50.0, // حجم مؤشر التحميل
-                    )
-                  else
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 40,
-                      child: imagePath != null
-                          ? ClipOval(
-                        child: Image.network(
-                          imagePath!,
-                          fit: BoxFit.cover,
-                          width: 80,
-                          height: 80,
-                        ),
-                      )
-                          : Icon(
-                        Icons.person,
-                        size: 80,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    top: 40,
-                    left: 40,
-                    child: IconButton(
-                      icon: Icon(Icons.edit, color: Colors.black, size: 28),
-                      onPressed: _pickImage,
-                    ),
-                  ),
-                ],
-              ),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text(
-                widget.organizationsName!,
-                style: TextStyle(
+        drawer: Drawer(
+          child: Column(
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: Text(
+                  CacheHelper.getData(key: 'name') ?? 'User',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                    fontSize: 22),
+                  ),
+                ),
+                accountEmail: Text(
+                  CacheHelper.getData(key: 'email') ?? 'Email',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+                currentAccountPicture: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    if (isImageLoading)
+                      SpinKitFadingCircle(
+                        color: Colors.white,
+                        size: 50.0, // حجم مؤشر التحميل
+                      )
+                    else
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 40,
+                        child: imagePath != null
+                            ? ClipOval(
+                          child: Image.network(
+                            imagePath!,
+                            fit: BoxFit.cover,
+                            width: 80,
+                            height: 80,
+                          ),
+                        )
+                            : Icon(
+                          Icons.person,
+                          size: 80,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      top: 40,
+                      left: 40,
+                      child: IconButton(
+                        icon: Icon(Icons.edit, color: Colors.black, size: 28),
+                        onPressed: _pickImage,
+                      ),
+                    ),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
               ),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                showModalBottomSheet<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) =>
-                          buildOranizationsList(
-                              organizations: widget
-                                  .oranizaionsList
-                                  .organizationsListt![index],
-                              index: index),
-                      itemCount: widget.oranizaionsList
-                          .organizationsListt!.length,
-                    );
-                  },
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Profile Setting'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                _handleDrawerItemSelection(() {
-                  _startLoading(() {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Profile(
-                          organizationId: widget.organizationId,
-                          userId: widget.userId,
+              ListTile(
+                leading: Icon(Icons.home),
+                title: Text(
+                  widget.organizationsName!,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                      fontSize: 22),
+                ),
+                onTap: () {
+                  Navigator.pop(context); // Close the drawer
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) =>
+                            buildOranizationsList(
+                                organizations: widget
+                                    .oranizaionsList
+                                    .organizationsListt![index],
+                                index: index),
+                        itemCount: widget.oranizaionsList
+                            .organizationsListt!.length,
+                      );
+                    },
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.person),
+                title: Text('Profile Setting'),
+                onTap: () {
+                  Navigator.pop(context); // Close the drawer
+                  _handleDrawerItemSelection(() {
+                    _startLoading(() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Profile(
+                            organizationId: widget.organizationId,
+                            userId: widget.userId,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    });
                   });
-                });
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Log Out'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                _handleDrawerItemSelection(() {
-                  _startLoading(() {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OnboardingScreen(
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text('Log Out'),
+                onTap: () {
+                  Navigator.pop(context); // Close the drawer
+                  _handleDrawerItemSelection(() {
+                    _startLoading(() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OnboardingScreen(
 
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    });
                   });
-                });
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.event_available),
-              title: Text('Attending Today'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                _handleDrawerItemSelection(() {
-                  _startLoading(() {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WhoIsAttend(
-                          organizationId: widget.organizationId,
-                          userId: widget.userId,
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.event_available),
+                title: Text('Attending Today'),
+                onTap: () {
+                  Navigator.pop(context); // Close the drawer
+                  _handleDrawerItemSelection(() {
+                    _startLoading(() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WhoIsAttend(
+                            organizationId: widget.organizationId,
+                            userId: widget.userId,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    });
                   });
-                });
-              },
-            ),
-          ],
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-      body: Stack(
-        children: [
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                children: <Widget>[
-                  DashboardCard(
-                    title: 'Vacations',
-                    icon: Icons.beach_access,
-                    color: Colors.orange.shade200,
-                    onTap: () {
-                      _startLoading(() {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HolidayPermission(
-                              userId: widget.userId,
-                              organizationId: widget.organizationId,
-                            ),
-                          ),
-                        );
-                      });
-                    },
-                  ),
-                  DashboardCard(
-                    title: 'Permissions',
-                    icon: Icons.access_time,
-                    color: Colors.blue.shade200,
-                    onTap: () {
-                      _startLoading(() {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ExcusePrmission(
-                              userId: widget.userId,
-                              organizationId: widget.organizationId,
-                            ),
-                          ),
-                        );
-                      });
-                    },
-                  ),
-                  DashboardCard(
-                    title: 'Attendance',
-                    icon: Icons.calendar_today,
-                    color: Colors.green.shade200,
-                    onTap: () async {
-                      await checkAttendace();
-                      if (status == 'NOACTION' || status.isEmpty) {
-                        Alert(
-                          context: context,
-                          desc: "Try Again Later!",
-                        ).show();
-                      } else {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        await Future.delayed(Duration(seconds: 1));
-                        setState(() {
-                          isLoading = false;
-                        });
+        body: Stack(
+          children: [
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  children: <Widget>[
+                    DashboardCard(
+                      title: 'Vacations',
+                      icon: Icons.beach_access,
+                      color: Colors.orange.shade200,
+                      onTap: () {
                         _startLoading(() {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Attendance(
+                              builder: (context) => VacancesPermissions(
                                 userId: widget.userId,
                                 organizationId: widget.organizationId,
-                                organizationsName: widget.organizationsName,
-                                oranizaionsList: widget.oranizaionsList,
-                                organizationsArabicName: widget.organizationsArabicName,
-                                personType: widget.personType,
                               ),
                             ),
                           );
                         });
-                      }
-                    },
-                  ),
-                  DashboardCard(
-                    title: 'Requests',
-                    icon: Icons.request_page,
-                    color: Colors.red.shade200,
-                    onTap: () {
-                      getPermissions();
-                      getVecan();
-                      setState(() {});
-                      _startLoading(() {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Showpermit(
-                              organizationId: widget.organizationId,
-                              userId: widget.userId,
-                              personType: widget.personType,
-                              vacancesCount: vacancesCount,
-                              permitsPermission: permissionCount,
-                              oranizaionsList: widget.oranizaionsList,
-                              organizationsName: widget.organizationsName,
-                              organizationsArabicName: widget.organizationsArabicName,
+                      },
+                    ),
+                    DashboardCard(
+                      title: 'Permissions',
+                      icon: Icons.access_time,
+                      color: Colors.blue.shade200,
+                      onTap: () {
+                        _startLoading(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ExcusePrmission(
+                                userId: widget.userId,
+                                organizationId: widget.organizationId,
+                              ),
                             ),
-                          ),
-                        );
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (isLoading)
-            Container(
-              color: Colors.black.withOpacity(0.5),
-              child: Center(
-                child: SpinKitCircle(
-                  color: Colors.white,
-                  size: 80.0,
+                          );
+                        });
+                      },
+                    ),
+                    DashboardCard(
+                      title: 'Attendance',
+                      icon: Icons.calendar_today,
+                      color: Colors.green.shade200,
+                      onTap: ()  {
+                         checkAttendace();
+                        if (status == 'NOACTION' || status.isEmpty) {
+
+
+
+
+                          Alert(
+                            context: context,
+                            desc: "Try Again Later!",
+                          ).show();
+                        } else {
+                          setState(() {
+                            isLoading = true;
+                          });
+                           Future.delayed(Duration(seconds: 1));
+                          setState(() {
+                            isLoading = false;
+                          });
+                          _startLoading(() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Attendance(
+                                  userId: widget.userId,
+                                  organizationId: widget.organizationId,
+                                  organizationsName: widget.organizationsName,
+                                  oranizaionsList: widget.oranizaionsList,
+                                  organizationsArabicName: widget.organizationsArabicName,
+                                  personType: widget.personType,
+                                ),
+                              ),
+                            );
+                          });
+                        }
+                      },
+                    ),
+                    DashboardCard(
+                      title: 'Requests',
+                      icon: Icons.request_page,
+                      color: Colors.red.shade200,
+                      onTap: () {
+                        getPermissions();
+                        getVecan();
+                        setState(() {});
+                        _startLoading(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Showpermit(
+                                organizationId: widget.organizationId,
+                                userId: widget.userId,
+                                personType: widget.personType,
+                                vacancesCount: vacancesCount,
+                                permitsPermission: permissionCount,
+                                oranizaionsList: widget.oranizaionsList,
+                                organizationsName: widget.organizationsName,
+                                organizationsArabicName: widget.organizationsArabicName,
+                              ),
+                            ),
+                          );
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
-        ],
+            if (isLoading)
+              Container(
+                color: Colors.black.withOpacity(0.5),
+                child: Center(
+                  child: SpinKitCircle(
+                    color: Colors.white,
+                    size: 80.0,
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -599,4 +624,5 @@ class DashboardCard extends StatelessWidget {
       ),
     );
   }
+
 }

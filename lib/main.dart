@@ -7,7 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hr/modules/organizationmodel.dart';
 import 'package:hr/screens/attendance.dart';
 import 'package:hr/screens/choose_list.dart';
-import 'package:hr/screens/holiday_permission.dart';
+import 'package:hr/screens/vacancespermissions.dart';
 import 'package:hr/screens/onboding/onboding_screen.dart';
 import 'package:hr/screens/excusepermission.dart';
 import 'package:hr/screens/showpermission.dart';

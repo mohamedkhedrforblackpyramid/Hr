@@ -18,7 +18,7 @@ import 'package:rive/rive.dart';
 import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
 import 'attendance.dart';
-import 'holiday_permission.dart';
+import 'vacancespermissions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreateOrganizations extends StatefulWidget {
