@@ -221,16 +221,21 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ),
                     Positioned(
-                      bottom: 0,
-                      right: 0,
-                      top: 40,
-                      left: 40,
-                      child: IconButton(
-                        icon: Icon(Icons.edit, color: Colors.black, size: 28),
-                        onPressed: _pickImage,
+                      right: -10,
+                      bottom: -10,
+                      child: GestureDetector(
+                        onTap: _pickImage,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.blue,
+                          radius: 18,
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ),                  ],
                 ),
                 decoration: BoxDecoration(
                   color: Colors.blue,
@@ -328,6 +333,9 @@ class _MainPageState extends State<MainPage> {
             ],
           ),
         ),
+
+
+
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
@@ -523,12 +531,15 @@ class PhotoViewGalleryPageWrapper extends StatelessWidget {
             imageProvider: NetworkImage(imagePath),
             minScale: PhotoViewComputedScale.contained,
             maxScale: PhotoViewComputedScale.covered * 2,
+
           );
         },
         scrollPhysics: BouncingScrollPhysics(),
         backgroundDecoration: BoxDecoration(
           color: Colors.black,
+
         ),
+
         pageController: PageController(),
       ),
     );

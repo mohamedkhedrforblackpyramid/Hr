@@ -237,35 +237,54 @@ class _ProjectsFieldState extends State<ProjectsField> {
                           size: 50.0, // حجم مؤشر التحميل
                         )
                       else
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 40,
-                          child: imagePath != null
-                              ? ClipOval(
-                            child: Image.network(
-                              imagePath!,
-                              fit: BoxFit.cover,
-                              width: 80,
-                              height: 80,
+                        GestureDetector(
+                          onTap: () {
+                            if (imagePath != null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PhotoViewGalleryPageWrapper(
+                                    imagePath: imagePath!,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 40,
+                            child: imagePath != null
+                                ? ClipOval(
+                              child: Image.network(
+                                imagePath!,
+                                fit: BoxFit.cover,
+                                width: 80,
+                                height: 80,
+                              ),
+                            )
+                                : Icon(
+                              Icons.person,
+                              size: 80,
+                              color: Colors.grey,
                             ),
-                          )
-                              : Icon(
-                            Icons.person,
-                            size: 80,
-                            color: Colors.grey,
                           ),
                         ),
                       Positioned(
-                        bottom: 0,
-                        right: 0,
-                        top: 40,
-                        left: 40,
-                        child: IconButton(
-                          icon: Icon(Icons.edit, color: Colors.black, size: 28),
-                          onPressed: _pickImage,
+                        right: -10,
+                        bottom: -10,
+                        child: GestureDetector(
+                          onTap: _pickImage,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.blue,
+                            radius: 18,
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                      ),                  ],
                   ),
                   decoration: BoxDecoration(
                     color: Colors.blue,
@@ -330,8 +349,10 @@ class _ProjectsFieldState extends State<ProjectsField> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => OnboardingScreen(
-                            ),
+                              builder: (context) => OnboardingScreen()
+                            /*MyApp(
+                            lang: '${CacheHelper.getData(key: 'language')}',
+                          ),*/
                           ),
                         );
                       });

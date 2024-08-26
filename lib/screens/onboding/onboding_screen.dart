@@ -144,7 +144,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Column(
                         children: [
                           Text(
-                            "Version Date : 25/08/2024",
+                            "Version Date : 26/08/2024",
                             style: TextStyle(
                               fontSize: 17,
                               fontFamily: "Poppins",
@@ -153,7 +153,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),
                           ),
                           Text(
-                            "Version: 1.0.3",
+                            "Version: 1.0.4",
                             style: TextStyle(
                               fontSize: 17,
                               fontFamily: "Poppins",
