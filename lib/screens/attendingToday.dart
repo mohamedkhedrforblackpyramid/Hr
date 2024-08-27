@@ -4,25 +4,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../network/remote/dio_helper.dart';
 
-class WhoIsAttend extends StatefulWidget {
+class Attending extends StatefulWidget {
   int? organizationId;
   int? userId;
 
-  WhoIsAttend({
+  Attending({
     required this.organizationId,
     required this.userId,
   });
 
   @override
-  State<WhoIsAttend> createState() => _WhoIsAttendState();
+  State<Attending> createState() => _AttendingState();
 }
 
-class _WhoIsAttendState extends State<WhoIsAttend> {
+class _AttendingState extends State<Attending> {
   bool showLoading = false;
   var password = TextEditingController();
   var confirmPassword = TextEditingController();
   bool clickAdd = false;
-  List users = [];
+  List<dynamic> users = [];
 
   getAttendUser() async {
     showLoading = true;
@@ -43,6 +43,21 @@ class _WhoIsAttendState extends State<WhoIsAttend> {
   void initState() {
     getAttendUser();
     super.initState();
+  }
+
+  // Function to add three hours to a given time string
+  String addThreeHours(String timeString) {
+    try {
+      // Parse the time string to DateTime object
+      DateTime time = DateTime.parse(timeString);
+      // Add 3 hours
+      DateTime newTime = time.add(Duration(hours: 3));
+      // Format the new time
+      return "${newTime.hour}:${newTime.minute.toString().padLeft(2, '0')}";
+    } catch (e) {
+      // In case of an error (invalid format), return the original string
+      return timeString;
+    }
   }
 
   @override
@@ -131,23 +146,42 @@ class _WhoIsAttendState extends State<WhoIsAttend> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: ListTile(
-                                leading: Icon(
-                                  CupertinoIcons.person_alt_circle,
-                                  color: Colors.blueAccent,
-                                  size: 40,
+                                leading: ClipOval(
+                                  child: Image.network(
+                                    users[index]['avatar'],
+                                    fit: BoxFit.cover,
+                                    width: 55,
+                                    height: 55,
+                                  ),
                                 ),
                                 title: Text(
-                                  users[index],
+                                  users[index]['name'],
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 22,
                                     color: Colors.black87,
                                   ),
                                 ),
-                                trailing: Icon(
-                                  CupertinoIcons.checkmark_seal_fill,
-                                  color: Colors.green,
-                                  size: 30,
+
+                                subtitle: Row(
+                                  children: [
+                                    Text(
+                                      "Attended in: ",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        color: Colors.deepPurple
+                                      ),
+                                    ),
+                                    Text(
+                                      "${addThreeHours(users[index]['first_attendance'])}",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        color: Colors.green
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),

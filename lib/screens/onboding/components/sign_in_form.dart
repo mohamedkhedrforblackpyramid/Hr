@@ -93,10 +93,7 @@ class _SignInFormState extends State<SignInForm> {
       print(response.data);
 
       if(response.data['app.version'].contains(versionNow)){
-        _isChecked==true? handleRemeberme(true):null;
-        userLogin(
-            name: userNameController.text,
-            password: passwordController.text);
+
       }else{
         url = response.data['app.download'];
         print(url);
@@ -172,20 +169,40 @@ class _SignInFormState extends State<SignInForm> {
         if (_formKey.currentState!.validate()) {
           // show success
           check.fire();
-          Future.delayed(Duration(seconds: 2), () {
+          Future.delayed(Duration(seconds: 1), () {
             setState(() {
               isShowLoading = false;
             });
             confetti.fire();
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MainPage(
-                        userId: userID,
-                        oranizaionsList: orgList!,
-                        organizationId: organizationsId,
-                        organizationsName: organizationsName,
-                        organizationsArabicName: organizationsArabicName, personType: personType,)));
+            DioHelper.getData(
+              url: "api/settings",
+            ).then((response) {
+              print(response.data);
+
+              if(response.data['app.version'].contains(versionNow)){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MainPage(
+                          userId: userID,
+                          oranizaionsList: orgList!,
+                          organizationId: organizationsId,
+                          organizationsName: organizationsName,
+                          organizationsArabicName: organizationsArabicName, personType: personType,)));
+
+              }else{
+                url = response.data['app.download'];
+                print(url);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => UpdateAlert(),
+                );
+              }
+              setState(() {
+              });
+            }).catchError((error) {
+              print(error.response.data);
+            });
           });
         }
       });
@@ -384,8 +401,10 @@ class _SignInFormState extends State<SignInForm> {
                   padding: const EdgeInsets.only(top: 8.0, bottom: 24),
                   child: ElevatedButton.icon(
                       onPressed: () async {
-                        getSettings();
-
+                        _isChecked==true? handleRemeberme(true):null;
+                        userLogin(
+                            name: userNameController.text,
+                            password: passwordController.text);
 
                         //     signIn(context);
                         /*if(developerMode == false) {
@@ -518,10 +537,10 @@ class _UpdateAlertState extends State<UpdateAlert> {
           child: Text('Update Now'),
           onPressed: () async {
             print(url);
-            if ( await canLaunch(url)) {
+
             await launch(url,
             enableJavaScript: true, universalLinksOnly: false);
-            }
+
           },
         ),
         TextButton(

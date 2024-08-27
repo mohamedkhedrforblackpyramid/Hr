@@ -5,7 +5,7 @@ import 'package:hr/projectfield.dart';
 import 'package:hr/screens/hr.dart';
 import 'package:hr/screens/onboding/onboding_screen.dart';
 import 'package:hr/screens/profile.dart';
-import 'package:hr/screens/whoisattend.dart';
+import 'package:hr/screens/attendingToday.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:photo_view/photo_view.dart';
@@ -320,7 +320,7 @@ class _MainPageState extends State<MainPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => WhoIsAttend(
+                          builder: (context) => Attending(
                             organizationId: widget.organizationId,
                             userId: widget.userId,
                           ),

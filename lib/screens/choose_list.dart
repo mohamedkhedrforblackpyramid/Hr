@@ -10,7 +10,7 @@ import 'package:hr/screens/projects.dart';
 import 'package:hr/screens/showpermission.dart';
 import 'package:hr/screens/tasktable.dart';
 import 'package:hr/screens/taskmanagement.dart';
-import 'package:hr/screens/whoisattend.dart';
+import 'package:hr/screens/attendingToday.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rive/rive.dart';
 
@@ -134,7 +134,7 @@ class _ChooseListState extends State<ChooseList> {
                   }
                   if(dropdownValue == 'Attending today'){
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => WhoIsAttend(
+                        MaterialPageRoute(builder: (context) => Attending(
                         organizationId: widget.organizationId,
                         userId: widget.userId
 

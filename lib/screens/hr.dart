@@ -16,7 +16,7 @@ import 'vacancespermissions.dart';
 import 'onboding/onboding_screen.dart';
 import 'profile.dart';
 import 'showpermission.dart';
-import 'whoisattend.dart';
+import 'attendingToday.dart';
 import 'package:http_parser/http_parser.dart';
 
 
@@ -417,7 +417,7 @@ class _HrState extends State<Hr> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => WhoIsAttend(
+                          builder: (context) => Attending(
                             organizationId: widget.organizationId,
                             userId: widget.userId,
                           ),
