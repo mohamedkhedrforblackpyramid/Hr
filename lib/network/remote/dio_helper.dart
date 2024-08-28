@@ -8,20 +8,20 @@ class DioHelper {
     dio = Dio(
       BaseOptions(
           connectTimeout: Duration(
-            seconds: 10
+              seconds: 10
           ),
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-           // 'Content-Language': CacheHelper.getData(key: 'language')
+            // 'Content-Language': CacheHelper.getData(key: 'language')
           },
           receiveDataWhenStatusError: true,
           //  baseUrl: 'http://192.168.1.135:8000/')
           //  baseUrl: 'http://localhost:8000/')
-         //  baseUrl: 'http://192.168.1.142:8005/',
-         //   baseUrl: 'http://192.168.1.135:8000/'
-        baseUrl: 'https://hr-api.alex4prog.com/'
+          //  baseUrl: 'http://192.168.1.142:8005/',
+          //   baseUrl: 'http://192.168.1.135:8000/'
+          baseUrl: 'https://hr-api.alex4prog.com/'
       ),
 
     );

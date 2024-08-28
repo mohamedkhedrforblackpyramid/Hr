@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hr/screens/chart.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../main.dart';
@@ -543,6 +544,30 @@ class _HrState extends State<Hr> {
                           );
                         });
                       },
+                    ),
+                    DashboardCard(
+                      title: 'Charts',
+                      icon: Icons.bar_chart,
+                      color: Colors.purple.shade200,
+                      onTap: () {
+                        setState(() {});
+                        _startLoading(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Charts(
+                                organizationId: widget.organizationId,
+                                userId: widget.userId,
+                                personType: widget.personType,
+                                vacancesCount: vacancesCount,
+                                permitsPermission: permissionCount,
+                                oranizaionsList: widget.oranizaionsList,
+                                organizationsName: widget.organizationsName,
+                                organizationsArabicName: widget.organizationsArabicName,
+                              ),
+                            ),
+                          );
+                        });                      },
                     ),
                   ],
                 ),
