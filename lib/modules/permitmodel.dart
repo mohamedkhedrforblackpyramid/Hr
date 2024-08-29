@@ -26,7 +26,7 @@ class PermitModel {
     status = json['status'];
     notes = json['notes'];
     created_at = json['created_at'];
-    name = json['user']['name'];
+    name = json['user_name'];
 
   }
 }

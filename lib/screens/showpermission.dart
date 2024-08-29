@@ -58,9 +58,9 @@ class _ShowpermitState extends State<Showpermit> {
   getPermissions() {
     permitLoading = true;
     DioHelper.getData(
-      url: "api/organizations/${widget.organizationId}/vacancies?is_permit=1&status=1",
+      url: "api/vacancies?organization_id=${widget.organizationId}&is_permit=1",
     ).then((response) {
-      permits = PermitList.fromJson(response.data);
+      permits = PermitList.fromJson(response.data['data']);
       print(response.data);
 
       setState(() {
@@ -75,9 +75,9 @@ class _ShowpermitState extends State<Showpermit> {
     CacheHelper.getData(key: 'token');
     permitLoading = true;
     DioHelper.getData(
-      url: "api/organizations/${widget.organizationId}/vacancies?is_permit=0&status=1",
+      url: "api/vacancies?organization_id=${widget.organizationId}&is_permit=0",
     ).then((response) {
-      permits = PermitList.fromJson(response.data);
+      permits = PermitList.fromJson(response.data['data']);
       setState(() {
         permitLoading = false;
       });
@@ -86,24 +86,7 @@ class _ShowpermitState extends State<Showpermit> {
       print(error.response);
     });
   }
-/*
-  returnPage() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Hr(
-              userId: widget.userId,
-              oranizaionsList: widget.oranizaionsList!,
-              organizationId: widget.organizationId,
-              organizationsName: widget.organizationsName,
-              organizationsArabicName:
-              widget.organizationsArabicName,
-              personType: widget.personType,
-              permitsPermission: widget.permitsPermission,
-              vacancesCount: widget.vacancesCount,
-            ),));
-  }
-*/
+
 
   @override
   void initState() {
@@ -171,12 +154,12 @@ class _ShowpermitState extends State<Showpermit> {
                                                 ),
                                               ),
                                               SizedBox(height: 20,),
-                                              Text(
+                                           widget.personType=='MANAGER'?   Text(
                                                 '${widget.permitsPermission!=0?widget.permitsPermission:''}',
                                                 style: TextStyle(color: Colors.deepPurple, fontSize: 20,
                                                     fontWeight: FontWeight.bold
                                                 ),
-                                              ),
+                                              ):SizedBox(),
                                             ],
                                           ),
                                         ),
@@ -216,13 +199,13 @@ class _ShowpermitState extends State<Showpermit> {
                                               ),
                                               SizedBox(height: 20,),
 
-                                              Text(
+                                             widget.personType=='MANAGER'? Text(
                                                 '${widget.vacancesCount!=0? widget.vacancesCount:''}',
                                                 style: TextStyle(color: Colors.deepPurple, fontSize: 20,
                                                     fontWeight: FontWeight.bold
 
                                                 ),
-                                              ),
+                                              ):SizedBox(),
                                             ],
                                           ),
                                         ),
@@ -277,7 +260,8 @@ class _ShowpermitState extends State<Showpermit> {
             )
           ],
         ));
-  }Widget buildPermitList({
+  }
+  Widget buildPermitList({
     required PermitModel per,
     required int index,
     required BuildContext context,
@@ -339,8 +323,31 @@ class _ShowpermitState extends State<Showpermit> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Status : ',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.black45,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                '${per.status}',
+                style: TextStyle(
+                  fontSize: 15,
+                  color:per.status=='APPROVED'? Colors.green:per.status=="REFUSED"?Colors.red:Color(0xffFFA500),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
           SizedBox(height: 15,),
-          widget.personType=='MANAGER'? Row(
+          widget.personType=='MANAGER'?
+          per.status=='PENDING'?Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -374,7 +381,8 @@ class _ShowpermitState extends State<Showpermit> {
                                       },
                                     ).then((value) {
                                       setState(() {
-                                        permits.permitList?.removeAt(index);
+                                        getPermissions();
+                                      //  permits.permitList?.removeAt(index);
                                       });
                                       print('Accepted');
                                     }).catchError((error) {
@@ -439,7 +447,8 @@ class _ShowpermitState extends State<Showpermit> {
                                       },
                                     ).then((value) {
                                       setState(() {
-                                        permits.permitList?.removeAt(index);
+                                        getPermissions();
+                                       // permits.permitList?.removeAt(index);
                                       });
                                       print('Rejected');
                                     }).catchError((error) {
@@ -475,6 +484,7 @@ class _ShowpermitState extends State<Showpermit> {
               ),
             ],
           ):SizedBox()
+              :SizedBox()
         ],
       ),
     );
@@ -531,8 +541,32 @@ class _ShowpermitState extends State<Showpermit> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Status : ',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.black45,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                '${per.status}',
+                style: TextStyle(
+                  fontSize: 15,
+                  color:per.status=='APPROVED'? Colors.green:per.status=="REFUSED"?Colors.red:Color(0xffFFA500),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+
           SizedBox(height: 15,),
-          widget.personType=='MANAGER'?Row(
+          widget.personType=='MANAGER'?
+         per.status=='PENDING'? Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -566,7 +600,8 @@ class _ShowpermitState extends State<Showpermit> {
                                     },
                                   ).then((value) {
                                     setState(() {
-                                      permits.permitList?.removeAt(index);
+                                      getVecan();
+                                    //  permits.permitList?.removeAt(index);
                                     });
                                     print('mbroook');
                                   }).catchError((error){});
@@ -628,7 +663,8 @@ class _ShowpermitState extends State<Showpermit> {
                                     },
                                   ).then((value) {
                                     setState(() {
-                                      permits.permitList?.removeAt(index);
+                                      getVecan();
+                                     // permits.permitList?.removeAt(index);
                                     });
                                     print('mbroook');
                                   }).catchError((error){});
@@ -661,6 +697,7 @@ class _ShowpermitState extends State<Showpermit> {
               ),
             ],
           ):SizedBox()
+             :SizedBox()
         ],
       ),
     );
