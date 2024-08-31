@@ -64,7 +64,7 @@ class _SignInFormState extends State<SignInForm> {
   String organizationsArabicName = '';
   bool _isChecked = false;
   bool settingsLoad = false;
-  String versionNow = '1.0.4';
+  String versionNow = '1.0.5';
   List <String>? versions;
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
@@ -387,7 +387,7 @@ class _SignInFormState extends State<SignInForm> {
                                   onChanged: handleRemeberme),
                             )),
                         SizedBox(width: 10.0),
-                        Text("Remember Me",
+                        Text("${AppLocalizations.of(context)!.remember}",
                             textScaleFactor: 1.0,
                             style: TextStyle(
                                 color: Color(0xff646464),

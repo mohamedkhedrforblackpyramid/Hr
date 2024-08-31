@@ -4,10 +4,14 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:hr/main.dart';
 import 'package:hr/network/local/cache_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart'; // استيراد حزمة Spinkit
+import 'package:animations/animations.dart'; // استيراد حزمة Animations
 
+import '../../network/locale_provider.dart';
 import 'components/custom_sign_in.dart';
 
 // تعريف الألوان بشكل موحد
@@ -25,11 +29,31 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   bool shouldPop = false;
   bool isSignInDialogShown = false;
+  bool isLoading = false; // متغير لتحديد حالة التحميل
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocale();
+  }
+
+  void _loadLocale() async {
+    final savedLocale = CacheHelper.getData(key: 'locale');
+    if (savedLocale != null) {
+      Locale newLocale = Locale(savedLocale);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Provider.of<LocaleProvider>(context, listen: false).setLocale(newLocale);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<LocaleProvider>(context);
+
     return WillPopScope(
       onWillPop: () async {
+        _saveLocale();
         return shouldPop;
       },
       child: Scaffold(
@@ -51,126 +75,161 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: const SizedBox(),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: AppLocalizations.of(context)!.localeName == 'ar'
-                        ? Alignment.topLeft
-                        : Alignment.topRight,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MyApp(
-                              lang: AppLocalizations.of(context)!.localeName == 'ar'
-                                  ? 'en'
-                                  : 'ar',
-                            ),
-                          ),
-                        );
-                        getOutOfApp();
-                      },
-                      child: Text(
-                        AppLocalizations.of(context)!.localeName == 'ar' ? 'English' : 'عربي',
-                        style: TextStyle(color: accentColor, fontSize: 18),
-                      ),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 800),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  final tween = Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset.zero);
+                  final offsetAnimation = animation.drive(tween.chain(CurveTween(curve: Curves.easeInOut)));
+
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: FadeTransition(
+                      opacity: animation,
+                      child: child,
                     ),
-                  ),
-                  Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${AppLocalizations.of(context)!.alexforProg}",
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontFamily: "Poppins",
-                            height: 1.3,
-                            color: primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          "${AppLocalizations.of(context)!.nowYouCan}",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 40),
-                        _buildFeatureText('- Mobile Applications'),
-                        _buildFeatureText('- Web Applications'),
-                        _buildFeatureText('- Desktop Applications'),
-                        _buildFeatureText('- Networking and Security'),
-                      ],
-                    ),
-                  ),
-                  Spacer(),
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white, backgroundColor: accentColor,
-                        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isSignInDialogShown = true;
-                        });
-                        customSigninDialog(context, onClosed: (_) {
-                          setState(() {
-                            isSignInDialogShown = false;
-                          });
-                        });
-                      },
-                      child: Text(
-                        'Get Started',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Text(
-                            "Version Date : 29/08/2024",
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontFamily: "Poppins",
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            "Version: 1.0.4",
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontFamily: "Poppins",
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                  );
+                },
+                child: _buildContent(context, provider),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, LocaleProvider provider) {
+    return Column(
+      key: ValueKey<String>(AppLocalizations.of(context)!.localeName), // مفتاح فريد لكل حالة محلية
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Align(
+          alignment: AppLocalizations.of(context)!.localeName == 'ar'
+              ? Alignment.topLeft
+              : Alignment.topRight,
+          child: TextButton(
+            onPressed: () {
+              setState(() {
+                isLoading = true; // بدء التحميل
+              });
+
+              final currentLocale = AppLocalizations.of(context)!.localeName;
+              if (currentLocale == 'ar') {
+                provider.setLocale(Locale('en'));
+                CacheHelper.saveData(key: 'locale', value: 'en');
+              } else {
+                provider.setLocale(Locale('ar'));
+                CacheHelper.saveData(key: 'locale', value: 'ar');
+              }
+
+              Future.delayed(Duration(seconds: 1), () {
+                setState(() {
+                  isLoading = false; // إيقاف التحميل
+                });
+              });
+            },
+            child: isLoading
+                ? SpinKitCircle(
+              color: accentColor,
+              size: 30.0,
+            )
+                : Text(
+              AppLocalizations.of(context)!.localeName == 'ar'
+                  ? 'English'
+                  : 'عربي',
+              style: TextStyle(color: accentColor, fontSize: 18),
+            ),
+          ),
+        ),
+        Spacer(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "${AppLocalizations.of(context)!.alexforProg}",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontFamily: "Poppins",
+                  height: 1.3,
+                  color: primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 16),
+              Text(
+                "${AppLocalizations.of(context)!.nowYouCan}",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 40),
+              _buildFeatureText('- ${AppLocalizations.of(context)!.mobile_applications}'),
+              _buildFeatureText('- ${AppLocalizations.of(context)!.web_app}'),
+              _buildFeatureText('- ${AppLocalizations.of(context)!.desktop_app}'),
+              _buildFeatureText('- ${AppLocalizations.of(context)!.network}'),
+            ],
+          ),
+        ),
+        Spacer(),
+        Center(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: accentColor,
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+            onPressed: () {
+              setState(() {
+                isSignInDialogShown = true;
+              });
+              customSigninDialog(context, onClosed: (_) {
+                setState(() {
+                  isSignInDialogShown = false;
+                });
+              });
+            },
+            child: Text(
+              '${AppLocalizations.of(context)!.getstarted}',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        Spacer(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Column(
+              children: [
+                Text(
+                  "${AppLocalizations.of(context)!.versionDate} : 29/08/2024",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontFamily: "Poppins",
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  "${AppLocalizations.of(context)!.version}: 1.0.5",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontFamily: "Poppins",
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -185,19 +244,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
+  void _saveLocale() {
+    final currentLocale = AppLocalizations.of(context)!.localeName;
+    CacheHelper.saveData(key: 'locale', value: currentLocale);
+  }
+
   void getOutOfApp() {
-    if (Platform.isIOS) {
-      try {
-        exit(0);
-      } catch (e) {
-        SystemNavigator.pop(); // for iOS, this might not work consistently
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _saveLocale();
+      if (Platform.isIOS) {
+        try {
+          exit(0);
+        } catch (e) {
+          SystemNavigator.pop();
+        }
+      } else {
+        try {
+          SystemNavigator.pop();
+        } catch (e) {
+          exit(0);
+        }
       }
-    } else {
-      try {
-        SystemNavigator.pop(); // sometimes it might not exit the app
-      } catch (e) {
-        exit(0); // fallback if pop fails
-      }
-    }
+    });
   }
 }

@@ -8,6 +8,7 @@ import 'package:hr/screens/tasktable.dart';
 import 'package:hr/screens/attendingToday.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../main.dart';
 import '../modules/organizationmodel.dart';
@@ -321,7 +322,7 @@ class _ProjectsFieldState extends State<ProjectsField> {
                 ),
                 ListTile(
                   leading: Icon(Icons.person),
-                  title: Text('Profile Setting'),
+                  title: Text('${AppLocalizations.of(context)!.profileSetting}'),
                   onTap: () {
                     Navigator.pop(context); // Close the drawer
                     _handleDrawerItemSelection(() {
@@ -341,7 +342,7 @@ class _ProjectsFieldState extends State<ProjectsField> {
                 ),
                 ListTile(
                   leading: Icon(Icons.logout),
-                  title: Text('Log Out'),
+                  title: Text('${AppLocalizations.of(context)!.logOut}'),
                   onTap: () {
                     Navigator.pop(context); // Close the drawer
                     _handleDrawerItemSelection(() {
@@ -361,7 +362,7 @@ class _ProjectsFieldState extends State<ProjectsField> {
                 ),
                 ListTile(
                   leading: Icon(Icons.event_available),
-                  title: Text('Attending Today'),
+                  title: Text('${AppLocalizations.of(context)!.attendingToday}'),
                   onTap: () {
                     Navigator.pop(context); // Close the drawer
                     _handleDrawerItemSelection(() {
@@ -393,7 +394,7 @@ class _ProjectsFieldState extends State<ProjectsField> {
                     mainAxisSpacing: 16.0,
                     children: <Widget>[
                       DashboardCard(
-                        title: 'Projects',
+                        title: '${AppLocalizations.of(context)!.myProject}',
                         icon: Icons.work,
                         color: Colors.teal.shade200,
                         onTap: () {
@@ -414,7 +415,7 @@ class _ProjectsFieldState extends State<ProjectsField> {
                         },
                       ),
                       DashboardCard(
-                        title: 'Tasks',
+                        title: '${AppLocalizations.of(context)!.tasks}',
                         icon: Icons.task,
                         color: Colors.purple.shade200,
                         onTap: () {

@@ -6,6 +6,10 @@ import 'package:hr/screens/hr.dart';
 import 'package:hr/screens/onboding/onboding_screen.dart';
 import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/attendingToday.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:photo_view/photo_view.dart';
@@ -272,7 +276,7 @@ class _MainPageState extends State<MainPage> {
               ),
               ListTile(
                 leading: Icon(Icons.person),
-                title: Text('Profile Setting'),
+                title: Text('${AppLocalizations.of(context)!.profileSetting}'),
                 onTap: () {
                   Navigator.pop(context); // Close the drawer
                   _handleDrawerItemSelection(() {
@@ -292,7 +296,7 @@ class _MainPageState extends State<MainPage> {
               ),
               ListTile(
                 leading: Icon(Icons.logout),
-                title: Text('Log Out'),
+                title: Text('${AppLocalizations.of(context)!.logOut}'),
                 onTap: () {
                   Navigator.pop(context); // Close the drawer
                   _handleDrawerItemSelection(() {
@@ -312,7 +316,7 @@ class _MainPageState extends State<MainPage> {
               ),
               ListTile(
                 leading: Icon(Icons.event_available),
-                title: Text('Attending Today'),
+                title: Text('${AppLocalizations.of(context)!.attendingToday}'),
                 onTap: () {
                   Navigator.pop(context); // Close the drawer
                   _handleDrawerItemSelection(() {
@@ -356,7 +360,7 @@ class _MainPageState extends State<MainPage> {
                   mainAxisSpacing: 16.0,
                   children: <Widget>[
                     DashboardCard(
-                      title: 'HR',
+                      title: '${AppLocalizations.of(context)!.hr}',
                       icon: Icons.people,
                       color: Colors.red.shade200,
                       onTap: () {
@@ -379,7 +383,7 @@ class _MainPageState extends State<MainPage> {
                       },
                     ),
                     DashboardCard(
-                      title: 'Project Management',
+                      title: '${AppLocalizations.of(context)!.project_management}',
                       icon: Icons.assignment,
                       color: Colors.blue.shade200,
                       onTap: () {
@@ -402,7 +406,7 @@ class _MainPageState extends State<MainPage> {
                       },
                     ),
                     DashboardCard(
-                      title: 'Marketing',
+                      title: '${AppLocalizations.of(context)!.marketing}',
                       icon: Icons.trending_up,
                       color: Colors.green.shade200,
                       onTap: () {
@@ -410,7 +414,7 @@ class _MainPageState extends State<MainPage> {
                       },
                     ),
                     DashboardCard(
-                      title: 'Accounting',
+                      title: '${AppLocalizations.of(context)!.accounting}',
                       icon: Icons.account_balance,
                       color: Colors.orange.shade200,
                       onTap: () {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../network/remote/dio_helper.dart';
 import 'package:hr/modules/chartsmodel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Charts extends StatefulWidget {
   final int? userId;
@@ -60,7 +61,7 @@ class _ChartsState extends State<Charts> {
     });
   }
 
-  void getCharts(DateTime from, DateTime to) {
+  void getChartsByAttendanceTime(DateTime from, DateTime to) {
     setState(() {
       chartLoading = true;
     });
@@ -77,7 +78,34 @@ class _ChartsState extends State<Charts> {
 
         chartLoading = false;
         print(response.data);
-        print('Number of layers: ${chartData!.length}');
+        print('Number of layers by attendance time: ${chartData!.length}');
+      });
+    }).catchError((error) {
+      print(error.response.data);
+      setState(() {
+        chartLoading = false;
+      });
+    });
+  }
+
+  void getChartsByAttendancePercentage(DateTime from, DateTime to) {
+    setState(() {
+      chartLoading = true;
+    });
+    DioHelper.getData(
+      url: "api/employee-stats?organization_id=${widget.organizationId}&from=${from.toLocal().toIso8601String()}&to=${to.toLocal().toIso8601String()}",
+    ).then((response) {
+      setState(() {
+        chartData = (response.data['data'] as List)
+            .map((item) => ChartsModel.fromJson(item))
+            .where((data) => data.attendance_pecentage != null && data.attendance_pecentage > 0)
+            .toList();
+
+        chartData!.sort((a, b) => b.attendance_pecentage.compareTo(a.attendance_pecentage));
+
+        chartLoading = false;
+        print(response.data);
+        print('Number of layers by attendance percentage: ${chartData!.length}');
       });
     }).catchError((error) {
       print(error.response.data);
@@ -97,7 +125,11 @@ class _ChartsState extends State<Charts> {
     if (picked != null && picked != initialDate) {
       setState(() {
         onDateSelected(picked);
-        getCharts(dateFrom, dateTo);  // Update charts based on new date range
+        if (_pageController.page == 0) {
+          getChartsByAttendanceTime(dateFrom, dateTo);
+        } else {
+          getChartsByAttendancePercentage(dateFrom, dateTo);
+        }
       });
     }
   }
@@ -106,7 +138,7 @@ class _ChartsState extends State<Charts> {
   void initState() {
     super.initState();
     _initializeDates();
-    getCharts(dateFrom, dateTo);
+    getChartsByAttendanceTime(dateFrom, dateTo); // أو getChartsByAttendancePercentage بناءً على الصفحة
   }
 
   @override
@@ -115,9 +147,16 @@ class _ChartsState extends State<Charts> {
       child: Scaffold(
         body: PageView(
           controller: _pageController,
+          onPageChanged: (index) {
+            if (index == 0) {
+              getChartsByAttendanceTime(dateFrom, dateTo);
+            } else {
+              getChartsByAttendancePercentage(dateFrom, dateTo);
+            }
+          },
           children: [
             _buildChartPage(),
-            _buildChartPagePercentage(), // Duplicate page for demonstration; replace or modify as needed
+            _buildChartPagePercentage(),
           ],
         ),
       ),
@@ -139,13 +178,13 @@ class _ChartsState extends State<Charts> {
                     setState(() {
                       dateFrom = selectedDate;
                     });
-                    getCharts(dateFrom, dateTo);
+                    getChartsByAttendanceTime(dateFrom, dateTo);
                   }),
                   child: AbsorbPointer(
                     child: TextFormField(
                       controller: TextEditingController(text: "${dateFrom.toLocal()}".split(' ')[0]),
                       decoration: InputDecoration(
-                        labelText: 'Date From',
+                        labelText: '${AppLocalizations.of(context)!.dateFrom}',
                         suffixIcon: Icon(Icons.calendar_today),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -164,13 +203,13 @@ class _ChartsState extends State<Charts> {
                     setState(() {
                       dateTo = selectedDate;
                     });
-                    getCharts(dateFrom, dateTo);
+                    getChartsByAttendanceTime(dateFrom, dateTo);
                   }),
                   child: AbsorbPointer(
                     child: TextFormField(
                       controller: TextEditingController(text: "${dateTo.toLocal()}".split(' ')[0]),
                       decoration: InputDecoration(
-                        labelText: 'Date To',
+                        labelText: '${AppLocalizations.of(context)!.dateTo}',
                         suffixIcon: Icon(Icons.calendar_today),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -187,7 +226,31 @@ class _ChartsState extends State<Charts> {
           SizedBox(height: 20),
           Expanded(
             child: chartLoading
-                ? Center(child: CircularProgressIndicator())
+                ? Center(
+              child: Container(
+                width: 60,
+                height: 60,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      strokeWidth: 6,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+                    ),
+                    Positioned(
+                      child: SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 6,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
                 : chartData == null || chartData!.isEmpty
                 ? Center(child: Text('No Data Found', style: TextStyle(fontSize: 16, color: Colors.grey)))
                 : Container(
@@ -204,7 +267,7 @@ class _ChartsState extends State<Charts> {
               ),
               child: SfPyramidChart(
                 title: ChartTitle(
-                  text: 'Attendance Time in Hour',
+                  text: '${AppLocalizations.of(context)!.attendanceTimeInHours}',
                   textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 legend: Legend(
@@ -245,6 +308,7 @@ class _ChartsState extends State<Charts> {
       ),
     );
   }
+
   Widget _buildChartPagePercentage() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -260,13 +324,13 @@ class _ChartsState extends State<Charts> {
                     setState(() {
                       dateFrom = selectedDate;
                     });
-                    getCharts(dateFrom, dateTo);
+                    getChartsByAttendancePercentage(dateFrom, dateTo);
                   }),
                   child: AbsorbPointer(
                     child: TextFormField(
                       controller: TextEditingController(text: "${dateFrom.toLocal()}".split(' ')[0]),
                       decoration: InputDecoration(
-                        labelText: 'Date From',
+                        labelText: '${AppLocalizations.of(context)!.dateFrom}',
                         suffixIcon: Icon(Icons.calendar_today),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -285,13 +349,13 @@ class _ChartsState extends State<Charts> {
                     setState(() {
                       dateTo = selectedDate;
                     });
-                    getCharts(dateFrom, dateTo);
+                    getChartsByAttendancePercentage(dateFrom, dateTo);
                   }),
                   child: AbsorbPointer(
                     child: TextFormField(
                       controller: TextEditingController(text: "${dateTo.toLocal()}".split(' ')[0]),
                       decoration: InputDecoration(
-                        labelText: 'Date To',
+                        labelText: '${AppLocalizations.of(context)!.dateTo}',
                         suffixIcon: Icon(Icons.calendar_today),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -308,7 +372,31 @@ class _ChartsState extends State<Charts> {
           SizedBox(height: 20),
           Expanded(
             child: chartLoading
-                ? Center(child: CircularProgressIndicator())
+                ? Center(
+              child: Container(
+                width: 60,
+                height: 60,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      strokeWidth: 6,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+                    ),
+                    Positioned(
+                      child: SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 6,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
                 : chartData == null || chartData!.isEmpty
                 ? Center(child: Text('No Data Found', style: TextStyle(fontSize: 16, color: Colors.grey)))
                 : Container(
@@ -325,7 +413,7 @@ class _ChartsState extends State<Charts> {
               ),
               child: SfPyramidChart(
                 title: ChartTitle(
-                  text: 'Attendance Percentage',
+                  text: '${AppLocalizations.of(context)!.attendancePercentage}',
                   textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 legend: Legend(
@@ -335,7 +423,6 @@ class _ChartsState extends State<Charts> {
                   textStyle: TextStyle(fontSize: 10, color: Colors.black54),
                 ),
                 series: PyramidSeries<ChartsModel, String>(
-
                   height: '${chartData!.length * 10}%',
                   width: '50%',
                   explodeOffset: '5%',
@@ -349,6 +436,7 @@ class _ChartsState extends State<Charts> {
                   gapRatio: 0.05,
                   pyramidMode: PyramidMode.linear,
                   dataLabelSettings: DataLabelSettings(
+
                     isVisible: true,
                     labelAlignment: ChartDataLabelAlignment.middle,
                     labelPosition: ChartDataLabelPosition.outside,
@@ -358,7 +446,7 @@ class _ChartsState extends State<Charts> {
                       fontSize: 9,
                     ),
                     labelIntersectAction: LabelIntersectAction.none,
-                    builder: (data, point, series, pointIndex, seriesIndex) {
+                 /*   builder: (data, point, series, pointIndex, seriesIndex) {
                       return Text(
                         '${data.attendance_pecentage}%',
                         style: TextStyle(
@@ -366,10 +454,13 @@ class _ChartsState extends State<Charts> {
                           color: colors[pointIndex % colors.length], // Match label color to layer color
                         ),
                       );// Add "%" to the label
-                    },
-                  ),              ),
+                    },*/
+                  ),
+                  ),
+                ),
+
               ),
-            ),
+
           ),
         ],
       ),

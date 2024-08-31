@@ -170,18 +170,14 @@ class _HomeScreenState extends State<TaskManagement> {
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           elevation: 0,
-          leading:  Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              //backgroundImage: AssetImage('assets/profile.jpg'), // صورة البروفايل
-            ),
-          ),
+
           title: TextField(
             controller: controller,
             decoration: InputDecoration(
-              hintText: 'Find Your Project',
+              hintText: '${AppLocalizations.of(context)!.findProject}',
               border: InputBorder.none,
               filled: true,
               fillColor: Colors.grey[200],
@@ -215,10 +211,7 @@ class _HomeScreenState extends State<TaskManagement> {
 
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.notifications, color: Colors.grey),
-              onPressed: () {},
-            ),
+
           ],
         ),
         body: SingleChildScrollView(
@@ -230,8 +223,8 @@ class _HomeScreenState extends State<TaskManagement> {
               children: [
                 Row(
                   children: [
-                    const Text(
-                      'Projects',
+                     Text(
+                      '${AppLocalizations.of(context)!.myProject}',
                       style:
                       TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
@@ -542,8 +535,8 @@ class _HomeScreenState extends State<TaskManagement> {
                 if (projectClick == true) ...[
                   Row(
                     children: [
-                      const Text(
-                        'Phases',
+                       Text(
+                        '${AppLocalizations.of(context)!.phases}',
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),
@@ -625,8 +618,8 @@ class _HomeScreenState extends State<TaskManagement> {
                   if (phaseClick == true) ...[
                     Row(
                       children: [
-                        const Text(
-                          'Tasks',
+                         Text(
+                          '${AppLocalizations.of(context)!.tasks}',
                           style: TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold),
                         ),

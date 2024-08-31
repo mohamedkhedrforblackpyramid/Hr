@@ -19,6 +19,8 @@ import 'profile.dart';
 import 'showpermission.dart';
 import 'attendingToday.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 
 class Hr extends StatefulWidget {
@@ -370,7 +372,7 @@ class _HrState extends State<Hr> {
               ),
               ListTile(
                 leading: Icon(Icons.person),
-                title: Text('Profile Setting'),
+                title: Text('${AppLocalizations.of(context)!.profileSetting}'),
                 onTap: () {
                   Navigator.pop(context); // Close the drawer
                   _handleDrawerItemSelection(() {
@@ -390,7 +392,7 @@ class _HrState extends State<Hr> {
               ),
               ListTile(
                 leading: Icon(Icons.logout),
-                title: Text('Log Out'),
+                title: Text('${AppLocalizations.of(context)!.logOut}'),
                 onTap: () {
                   Navigator.pop(context); // Close the drawer
                   _handleDrawerItemSelection(() {
@@ -410,7 +412,7 @@ class _HrState extends State<Hr> {
               ),
               ListTile(
                 leading: Icon(Icons.event_available),
-                title: Text('Attending Today'),
+                title: Text('${AppLocalizations.of(context)!.attendingToday}'),
                 onTap: () {
                   Navigator.pop(context); // Close the drawer
                   _handleDrawerItemSelection(() {
@@ -441,44 +443,9 @@ class _HrState extends State<Hr> {
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
                   children: <Widget>[
+
                     DashboardCard(
-                      title: 'Vacations',
-                      icon: Icons.beach_access,
-                      color: Colors.orange.shade200,
-                      onTap: () {
-                        _startLoading(() {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VacancesPermissions(
-                                userId: widget.userId,
-                                organizationId: widget.organizationId,
-                              ),
-                            ),
-                          );
-                        });
-                      },
-                    ),
-                    DashboardCard(
-                      title: 'Permissions',
-                      icon: Icons.access_time,
-                      color: Colors.blue.shade200,
-                      onTap: () {
-                        _startLoading(() {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ExcusePrmission(
-                                userId: widget.userId,
-                                organizationId: widget.organizationId,
-                              ),
-                            ),
-                          );
-                        });
-                      },
-                    ),
-                    DashboardCard(
-                      title: 'Attendance',
+                      title: '${AppLocalizations.of(context)!.attendance}',
                       icon: Icons.calendar_today,
                       color: Colors.green.shade200,
                       onTap: ()  {
@@ -519,7 +486,7 @@ class _HrState extends State<Hr> {
                       },
                     ),
                     DashboardCard(
-                      title: 'Requests',
+                      title: '${AppLocalizations.of(context)!.requests}',
                       icon: Icons.request_page,
                       color: Colors.red.shade200,
                       onTap: () {
@@ -546,7 +513,43 @@ class _HrState extends State<Hr> {
                       },
                     ),
                     DashboardCard(
-                      title: 'Charts',
+                      title: '${AppLocalizations.of(context)!.vacation}',
+                      icon: Icons.beach_access,
+                      color: Colors.orange.shade200,
+                      onTap: () {
+                        _startLoading(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VacancesPermissions(
+                                userId: widget.userId,
+                                organizationId: widget.organizationId,
+                              ),
+                            ),
+                          );
+                        });
+                      },
+                    ),
+                    DashboardCard(
+                      title: '${AppLocalizations.of(context)!.permissions}',
+                      icon: Icons.access_time,
+                      color: Colors.blue.shade200,
+                      onTap: () {
+                        _startLoading(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ExcusePrmission(
+                                userId: widget.userId,
+                                organizationId: widget.organizationId,
+                              ),
+                            ),
+                          );
+                        });
+                      },
+                    ),
+                    DashboardCard(
+                      title: '${AppLocalizations.of(context)!.charts}',
                       icon: Icons.bar_chart,
                       color: Colors.purple.shade200,
                       onTap: () {

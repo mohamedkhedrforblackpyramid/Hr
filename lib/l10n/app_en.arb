@@ -122,7 +122,36 @@
   "scanSecondId": "Provide back National Id ",
   "scancommercial": "Provide commercial register",
   "scanCard": " Provide Card tax",
-  "scannedSuccef": "Attached successfully"
+  "scannedSuccef": "Attached successfully",
+  "mobile_applications": "Mobile Applications",
+  "web_app": "Web Applications",
+  "desktop_app": "Desktop Applications",
+  "network": "Networking and Security",
+  "getstarted": "Get Started",
+  "remember": "Remember Me",
+  "hr": "HR",
+  "project_management": "Project Management",
+  "accounting": "Accounting",
+  "marketing": "Marketing",
+  "profileSetting": "Profile Setting",
+  "logOut": "Log Out",
+  "attendingToday": "Attending Today",
+  "requests": "Requests",
+  "attendance": "Attendance",
+  "permissions": "Permissions",
+  "vacations": "Vacations",
+  "charts": "Charts",
+  "attendanceTimeInHours": "Attendance Time in Hours",
+  "attendancePercentage": "Attendance Percentage",
+  "version": "Version",
+  "versionDate": "Version Date",
+  "status": "Status",
+  "permissionsReq": "Permissions",
+  "vacancesReq": "Vacances",
+  "findProject": "Find Your Project"
+
+
+
 
 
 

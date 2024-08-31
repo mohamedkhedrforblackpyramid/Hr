@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,6 +16,7 @@ import 'package:hr/screens/multiscreen_tasks/multiscreenfortasks.dart';
 import 'package:hr/screens/timepicker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'network/local/cache_helper.dart';
+import 'network/locale_provider.dart';
 import 'network/remote/dio_helper.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
@@ -44,7 +46,14 @@ main() async {
     CacheHelper.saveData(key: 'fcm_token', value: 'No Firebase Token');
   }
 
-  runApp(MyApp(lang: '${CacheHelper.getData(key: 'language')}',));
+  runApp(
+
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => LocaleProvider()),
+
+        ],
+          child: MyApp(lang: '${CacheHelper.getData(key: 'language')}',)));
 }
 
 class MyApp extends StatefulWidget {
@@ -68,19 +77,18 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     CacheHelper.saveData(key: 'language', value: '${widget.lang}');
     print(widget.lang);
+    final provider = Provider.of<LocaleProvider>(context);
+
 
     return WillPopScope(
       onWillPop: () async {
         return shouldPop;
       },
       child: MaterialApp(
-        locale: Locale(widget.lang),
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
+
+        locale: provider.locale,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+
         supportedLocales: const [
           Locale('en'),
           Locale('ar'),

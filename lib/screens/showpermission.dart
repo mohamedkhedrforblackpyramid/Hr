@@ -148,7 +148,7 @@ class _ShowpermitState extends State<Showpermit> {
                                           child: Column(
                                             children: [
                                               Text(
-                                                'Permissions',
+                                                '${AppLocalizations.of(context)!.permissionsReq}',
                                                 style: TextStyle(color: Colors.grey[700], fontSize: 15,
                                                   fontWeight: FontWeight.bold
                                                 ),
@@ -191,7 +191,7 @@ class _ShowpermitState extends State<Showpermit> {
                                           child: Column(
                                             children: [
                                               Text(
-                                                'Vacances',
+                                                '${AppLocalizations.of(context)!.vacancesReq}',
                                                 style: TextStyle(color: Colors.grey[700], fontSize: 15,
                                                     fontWeight: FontWeight.bold
 
@@ -328,7 +328,7 @@ class _ShowpermitState extends State<Showpermit> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Status : ',
+                '${AppLocalizations.of(context)!.status} : ',
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.black45,
@@ -546,7 +546,7 @@ class _ShowpermitState extends State<Showpermit> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Status : ',
+                '${AppLocalizations.of(context)!.status} : ',
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.black45,
