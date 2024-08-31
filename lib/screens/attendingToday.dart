@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../network/remote/dio_helper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Attending extends StatefulWidget {
   int? organizationId;
@@ -111,11 +112,11 @@ class _AttendingState extends State<Attending> {
             ),
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding:  EdgeInsets.all(20.0),
                 child: Column(
                   children: [
                     Text(
-                      'Attending Today',
+                      '${AppLocalizations.of(context)!.attendingToday}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -166,7 +167,7 @@ class _AttendingState extends State<Attending> {
                                 subtitle: Row(
                                   children: [
                                     Text(
-                                      "Attended in: ",
+                                      "${AppLocalizations.of(context)!.attendIn}",
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,

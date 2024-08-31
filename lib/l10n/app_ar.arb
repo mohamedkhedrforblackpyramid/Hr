@@ -148,7 +148,10 @@
   "status": "حالة الطلب",
   "permissionsReq": "الأذونات",
   "vacancesReq": "الأجازات",
-  "findProject": "ابحث عن مشروع"
+  "findProject": "ابحث عن مشروع",
+  "aboutUs": "من نحن :",
+  "attendIn": "حضر في: "
+
 
 
 

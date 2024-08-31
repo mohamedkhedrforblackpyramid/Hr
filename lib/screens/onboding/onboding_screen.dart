@@ -10,6 +10,7 @@ import 'package:hr/network/local/cache_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart'; // استيراد حزمة Spinkit
 import 'package:animations/animations.dart'; // استيراد حزمة Animations
+import 'package:url_launcher/url_launcher.dart'; // استيراد حزمة url_launcher
 
 import '../../network/locale_provider.dart';
 import 'components/custom_sign_in.dart';
@@ -158,6 +159,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
               SizedBox(height: 16),
+
               Text(
                 "${AppLocalizations.of(context)!.nowYouCan}",
                 style: TextStyle(
@@ -175,6 +177,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ),
         Spacer(),
+
         Center(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -184,6 +187,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
+              elevation: 5, // إضافة ظل للزر
+              shadowColor: Colors.black.withOpacity(0.3), // لون ظل الزر
             ),
             onPressed: () {
               setState(() {
@@ -202,6 +207,37 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ),
         Spacer(),
+        Center(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.transparent,
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              elevation: 8, // إضافة ظل للزر
+              shadowColor: Colors.black.withOpacity(0.4), // لون ظل الزر
+            ),
+            onPressed: () async {
+              final url = 'https://alex4prog.com';
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+            },
+            child: Text(
+              '${AppLocalizations.of(context)!.aboutUs} alex4prog.com',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.2, // تباعد بين الحروف
+              ),
+            ),
+          ),
+        ),
+
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(

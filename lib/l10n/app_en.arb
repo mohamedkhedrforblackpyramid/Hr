@@ -148,7 +148,10 @@
   "status": "Status",
   "permissionsReq": "Permissions",
   "vacancesReq": "Vacances",
-  "findProject": "Find Your Project"
+  "findProject": "Find Your Project",
+  "aboutUs": "About us :",
+  "attendIn": "Attended in: "
+
 
 
 
