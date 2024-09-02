@@ -284,7 +284,6 @@ class _VacancesPermissionsState extends State<VacancesPermissions> {
                                             dropdownValue = value!;
                                             vacationtype.text =
                                                 dropdownValue.toString();
-
                                             if (vacationtype.text == "اعتيادي" ||
                                                 vacationtype.text == "ORDINARY") {
                                               translateType = "ORDINARY";
@@ -419,7 +418,7 @@ class _VacancesPermissionsState extends State<VacancesPermissions> {
   sendVacation() async {
     if (dateFromController.text == '') {
       Flushbar(
-        message: 'Date From is Empty !',
+        message: '${AppLocalizations.of(context)!.dateFromisEmpty}',
         icon: Icon(
           Icons.info_outline,
           size: 30.0,
@@ -433,7 +432,7 @@ class _VacancesPermissionsState extends State<VacancesPermissions> {
 
     } else if (dateToController.text == '') {
       Flushbar(
-        message: 'Date TO is Empty !',
+        message: '${AppLocalizations.of(context)!.dateToisEmpty}',
         icon: Icon(
           Icons.info_outline,
           size: 30.0,
@@ -478,7 +477,7 @@ class _VacancesPermissionsState extends State<VacancesPermissions> {
       print(translateType);
 
       Flushbar(
-        message: 'Sent Successfully',
+        message: '${AppLocalizations.of(context)!.sentSuccessfully}',
         icon: Icon(
           Icons.verified_outlined,
           size: 30.0,

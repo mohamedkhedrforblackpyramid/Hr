@@ -1,26 +1,20 @@
 import 'dart:math';
-import 'dart:ui';
-
-import 'package:another_flushbar/flushbar.dart';
-import 'package:fancy_containers/fancy_containers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hr/modules/projects.dart';
-import 'package:hr/screens/multiscreen_tasks/multiscreenfortasks.dart';
-import 'package:rive/rive.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../modules/phases.dart';
+import '../modules/projects.dart';
 import '../modules/tasks.dart';
 import '../network/local/cache_helper.dart';
 import '../network/remote/dio_helper.dart';
 
 class TaskTable extends StatefulWidget {
-  int? organizationId;
-  int? userId;
+  final int? organizationId;
+  final int? userId;
+
   TaskTable({required this.organizationId, required this.userId});
 
   @override
-  State<TaskTable> createState() => _TaskTableState();
+  _TaskTableState createState() => _TaskTableState();
 }
 
 class _TaskTableState extends State<TaskTable> {
@@ -29,285 +23,219 @@ class _TaskTableState extends State<TaskTable> {
   String valueClosed = '0';
   bool isOpen = false;
   String permit_type = 'myTasks';
-  bool myTask = false;
   late PhaseList phase_list;
   int? phaseId;
   int? projectId;
   late ProjectsList projects;
   bool projectLoading = false;
 
-  getMyTasks() async {
-    showLoading = true;
-    Map<String, dynamic> query = {};
-    if (widget.organizationId != null) {
-      query['organization_id'] = widget.organizationId;
-    }
-    if (widget.userId != null) {
-      query['user_id'] = widget.userId;
-    }
-    if (phaseId != null) {
-      query['phase_id'] = phaseId;
-    }
-    if (projectId != null) {
-      query['project_id'] = projectId;
-    }
-    await DioHelper.getData(url: "api/current-tasks", query: query).then((response) {
-      task_list = TasksList.fromJson(response.data);
-      print(response.data);
-      setState(() {
-        showLoading = false;
-      });
-    }).catchError((error) {
-      print(error.response.data);
-    });
-  }
-
-  getAllTasks() async {
-    showLoading = true;
-    Map<String, dynamic> query = {};
-    if (widget.organizationId != null) {
-      query['organization_id'] = widget.organizationId;
-    }
-    if (phaseId != null) {
-      query['phase_id'] = phaseId;
-    }
-    if (projectId != null) {
-      query['project_id'] = projectId;
-    }
-    await DioHelper.getData(url: "api/current-tasks", query: query).then((response) {
-      task_list = TasksList.fromJson(response.data);
-      setState(() {
-        showLoading = false;
-      });
-    }).catchError((error) {
-      print(error.response.data);
-    });
-  }
-
-  getPhases() {
-    DioHelper.getData(url: "api/phases", query: {
-      'organization_id': widget.organizationId,
-    }).then((response) {
-      phase_list = PhaseList.fromJson(response.data);
-      setState(() {});
-    }).catchError((error) {
-      print(error.response.data);
-    });
-  }
-
-  getProjects() async {
-    projectLoading = true;
-    await DioHelper.getData(url: "api/projects", query: {'organization_id': widget.organizationId}).then((response) {
-      projects = ProjectsList.fromJson(response.data);
-      setState(() {
-        projectLoading = false;
-      });
-    }).catchError((error) {
-      print(error);
-    });
-  }
-
   @override
   void initState() {
-    print(CacheHelper.getData(key: 'name'));
+    super.initState();
     getMyTasks();
     getPhases();
     getProjects();
-    super.initState();
+  }
+
+  Future<void> getMyTasks() async {
+    setState(() => showLoading = true);
+    final query = {
+      if (widget.organizationId != null) 'organization_id': widget.organizationId,
+      if (widget.userId != null) 'user_id': widget.userId,
+      if (phaseId != null) 'phase_id': phaseId,
+      if (projectId != null) 'project_id': projectId,
+    };
+    try {
+      final response = await DioHelper.getData(url: "api/current-tasks", query: query);
+      task_list = TasksList.fromJson(response.data);
+    } catch (error) {
+      print(error);
+    } finally {
+      setState(() => showLoading = false);
+    }
+  }
+
+  Future<void> getAllTasks() async {
+    setState(() => showLoading = true);
+    final query = {
+      if (widget.organizationId != null) 'organization_id': widget.organizationId,
+      if (phaseId != null) 'phase_id': phaseId,
+      if (projectId != null) 'project_id': projectId,
+    };
+    try {
+      final response = await DioHelper.getData(url: "api/current-tasks", query: query);
+      task_list = TasksList.fromJson(response.data);
+    } catch (error) {
+      print(error);
+    } finally {
+      setState(() => showLoading = false);
+    }
+  }
+
+  Future<void> getPhases() async {
+    try {
+      final response = await DioHelper.getData(url: "api/phases", query: {'organization_id': widget.organizationId});
+      phase_list = PhaseList.fromJson(response.data);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> getProjects() async {
+    setState(() => projectLoading = true);
+    try {
+      final response = await DioHelper.getData(url: "api/projects", query: {'organization_id': widget.organizationId});
+      projects = ProjectsList.fromJson(response.data);
+    } catch (error) {
+      print(error);
+    } finally {
+      setState(() => projectLoading = false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.teal.shade100,
-                                borderRadius: BorderRadius.circular(10),  // Adjust the borderRadius as per your preference
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: Offset(0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: RadioListTile(
-                                title: Text(
-                                  "My Tasks",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                tileColor: Colors.transparent,  // Set tileColor to transparent to see the Container's decoration
-                                value: '0',
-                                groupValue: valueClosed,
-                                onChanged: (value) {
-                                  setState(() {
-
-                                  });
-                                  getMyTasks();
-                                  setState(() {
-                                    permit_type = 'myTasks';
-                                    isOpen = false;
-                                    valueClosed = value.toString();
-                                  });
-                                },
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),  // Match the borderRadius of the Container
-                                ),
-                                controlAffinity: ListTileControlAffinity.trailing,  // Align the radio button to the right
-                              ),
-                            )
-                            ,
-                          ),
-                          SizedBox(width: 15),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.redAccent.shade100,
-                                borderRadius: BorderRadius.circular(10), // Adjust the borderRadius as per your preference
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: Offset(0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: RadioListTile(
-                                title: Text(
-                                  "All Tasks",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                tileColor: Colors.transparent, // Set tileColor to transparent to see the Container's decoration
-                                value: '1',
-                                groupValue: valueClosed,
-                                onChanged: (value) {
-                                  setState(() {
-
-                                  });
-                                  getAllTasks();
-                                  setState(() {
-                                    permit_type = 'allTasks';
-                                    isOpen = false;
-                                    valueClosed = value.toString();
-                                  });
-                                },
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10), // Match the borderRadius of the Container
-                                ),
-                                controlAffinity: ListTileControlAffinity.trailing, // Align the radio button to the right
-                              ),
-                            )
-                            ,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      showLoading == false
-                          ? task_list.tasksList!.isNotEmpty
-                          ? buildTasksList()
-                          : Padding(
-                        padding: EdgeInsets.symmetric(vertical: 300),
-                        child: Center(
-                          child: Text(
-                            "${AppLocalizations.of(context)!.noTask}",
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal.shade100,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      )
-                          : const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 300),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.indigo,
-                          ),
+                        elevation: 5,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          permit_type = 'myTasks';
+                          isOpen = false;
+                          valueClosed = '0';
+                        });
+                        getMyTasks();
+                      },
+                      child: Text(
+                        "${AppLocalizations.of(context)!.myTasks}",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
                         ),
                       ),
-                    ],
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green.shade100,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 5,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          permit_type = 'allTasks';
+                          isOpen = false;
+                          valueClosed = '1';
+                        });
+                        getAllTasks();
+                      },
+                      child: Text(
+                        "${AppLocalizations.of(context)!.allTasks}",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: showLoading
+                    ? Center(child: CircularProgressIndicator(color: Colors.teal))
+                    : task_list.tasksList!.isNotEmpty
+                    ? buildTasksList()
+                    : Center(
+                  child: Text(
+                    "${AppLocalizations.of(context)!.noTask}",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget buildTasksList() {
-    Map<String, List<TasksModel>> tasksByProject = {};
+    final tasksByProject = <String, List<TasksModel>>{};
     for (var task in task_list.tasksList!) {
-      if (!tasksByProject.containsKey(task.project_name)) {
-        tasksByProject[task.project_name!] = [];
-      }
-      tasksByProject[task.project_name]!.add(task);
+      tasksByProject.putIfAbsent(task.project_name!, () => []).add(task);
     }
 
     return ListView(
-      shrinkWrap: true,
-      physics: const ScrollPhysics(),
+      padding: EdgeInsets.zero,
       children: tasksByProject.keys.map((projectName) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              projectName,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.teal,
+        final tasks = tasksByProject[projectName]!;
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                projectName,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.teal,
+                ),
               ),
-            ),
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
-                var task = tasksByProject[projectName]![index];
-                return buildTasks(task: task, index: index);
-              },
-              itemCount: tasksByProject[projectName]!.length,
-              separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
-            ),
-            SizedBox(height: 20),
-          ],
+              SizedBox(height: 8),
+              ...tasks.map((task) => buildTasks(task: task)).toList(),
+            ],
+          ),
         );
       }).toList(),
     );
   }
 
-  Widget buildTasks({required TasksModel task, required int index}) {
-    return ListTile(
-
-      leading: Container(
-        width: 10,
-        height: 40,
-        color: Colors.primaries[Random().nextInt(Colors.primaries.length)].shade500,
+  Widget buildTasks({required TasksModel task}) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
       ),
-      title: Text('${task.task_name}'),
-      trailing: Transform.scale(
-        scale: 1.2,
-        child:task.assignees_names!.contains(CacheHelper.getData(key: 'name'))? CircleAvatar(
+      child: ListTile(
+        contentPadding: EdgeInsets.all(16),
+        leading: Container(
+          width: 10,
+          height: 40,
+          color: Colors.primaries[Random().nextInt(Colors.primaries.length)].shade500,
+        ),
+        title: Text(
+          '${task.task_name}',
+          style: TextStyle(fontSize: 16),
+        ),
+        trailing: task.assignees_names!.contains(CacheHelper.getData(key: 'name'))
+            ? Transform.scale(
+          scale: 1.2,
           child: Checkbox(
             checkColor: Colors.black,
             fillColor: MaterialStateProperty.all(Colors.white),
@@ -315,35 +243,30 @@ class _TaskTableState extends State<TaskTable> {
             onChanged: (value) {
               if (task.close = value!) {
                 showDialog(
-                  context: (context),
-                  builder: (contextop) => AlertDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
                     content: Text(
-                      'Did you finish this task?',
-                      style: TextStyle(fontSize: 20),
+                      '${AppLocalizations.of(context)!.finishTask}',
+                      style: TextStyle(fontSize: 18),
                     ),
                     actions: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextButton(
-                            child: Text('Yes'),
+                            child: Text('${AppLocalizations.of(context)!.yes}'),
                             onPressed: () {
-                              DioHelper.patchData(url: "api/tasks/${task.task_id}", data: {
-                                "status": "COMPLETED",
-                              }).then((v) {
-                                setState(() {
-                                  task_list.tasksList!.removeAt(index);
-                                });
+                              DioHelper.patchData(url: "api/tasks/${task.task_id}", data: {"status": "COMPLETED"})
+                                  .then((_) {
+                                setState(() => task_list.tasksList!.remove(task));
                               }).catchError((e) {
-                                setState(() {
-                                  task.close = false;
-                                });
+                                setState(() => task.close = false);
                                 showDialog(
-                                  context: (context),
-                                  builder: (contextotllp) => AlertDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
                                     content: Text(
                                       "${e.response.data['en']}",
-                                      style: TextStyle(fontSize: 20),
+                                      style: TextStyle(fontSize: 18),
                                     ),
                                   ),
                                 );
@@ -351,12 +274,12 @@ class _TaskTableState extends State<TaskTable> {
                               Navigator.of(context).pop();
                             },
                           ),
+                          SizedBox(width: 8),
                           TextButton(
-                            child: Text('No'),
+                            child: Text('${AppLocalizations.of(context)!.no}'),
                             onPressed: () {
                               Navigator.of(context).pop();
-                              task.close = false;
-                              setState(() {});
+                              setState(() => task.close = false);
                             },
                           ),
                         ],
@@ -369,58 +292,9 @@ class _TaskTableState extends State<TaskTable> {
               }
             },
           ),
-        ):SizedBox(),
+        )
+            : SizedBox(),
       ),
-    );
-  }
-
-  Widget buildChoosePhaes({required PhasesModel phase, required int index}) {
-    return Column(
-      children: [
-        TextButton(
-          onPressed: () {
-            phaseId = phase.phase_id;
-            projectId = null;
-            if (permit_type == 'myTasks') {
-              getMyTasks();
-            }
-            if (permit_type == 'allTasks') {
-              getAllTasks();
-            }
-            Navigator.pop(context);
-          },
-          child: Text(
-            "${phase.phaseName}",
-            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildProjects({required ProjectsModel pr, required int index}) {
-    return Column(
-      children: [
-        TextButton(
-          onPressed: () {
-            projectId = pr.id;
-            phaseId = null;
-            if (permit_type == 'myTasks') {
-              getMyTasks();
-            }
-            if (permit_type == 'allTasks') {
-              getAllTasks();
-            }
-            Navigator.pop(context);
-          },
-          child: Text(
-            "${pr.name}",
-            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
     );
   }
 }

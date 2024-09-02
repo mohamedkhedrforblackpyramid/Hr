@@ -72,7 +72,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 30),
                                     child: Text(
-                                      "Permissions Requests",
+                                      "${AppLocalizations.of(context)!.permissionRequest}",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
@@ -544,7 +544,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
     print(notesController.text);
     if (dateController.text == '') {
       Flushbar(
-        message: 'Date is Empty !',
+        message: '${AppLocalizations.of(context)!.dateisEmpty}',
         icon: Icon(
           Icons.info_outline,
           size: 30.0,
@@ -558,7 +558,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
 
     } else if (timeToController.text == '') {
       Flushbar(
-        message: 'Time To is Empty !',
+        message: '${AppLocalizations.of(context)!.timeToisEmpty}',
         icon: Icon(
           Icons.info_outline,
           size: 30.0,
@@ -588,7 +588,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
         print(widget.userId);
 
         Flushbar(
-          message: 'Sent Successfully',
+          message: '${AppLocalizations.of(context)!.sentSuccessfully}',
           icon: Icon(
             Icons.verified_outlined,
             size: 30.0,
@@ -656,7 +656,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
     }
     else if (timeFromController.text == '') {
       Flushbar(
-        message: 'Time From is Empty !',
+        message: '${AppLocalizations.of(context)!.timeFromisEmpty}',
         icon: Icon(
           Icons.info_outline,
           size: 30.0,
@@ -683,7 +683,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
       print(widget.userId);
 
       Flushbar(
-        message: 'Sent Successfully',
+        message: '${AppLocalizations.of(context)!.sentSuccessfully}',
         icon: Icon(
           Icons.verified_outlined,
           size: 30.0,
@@ -755,7 +755,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
       loadingSend = false;
     } else if (timeFromController.text == '') {
       Flushbar(
-        message: 'Time From is Empty !',
+        message: '${AppLocalizations.of(context)!.timeFromisEmpty}',
         icon: Icon(
           Icons.info_outline,
           size: 30.0,
@@ -769,7 +769,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
       loadingSend = false;
     } else if (timeToController.text == '') {
       Flushbar(
-        message: 'Time To is Empty !',
+        message: '${AppLocalizations.of(context)!.timeToisEmpty}',
         icon: Icon(
           Icons.info_outline,
           size: 30.0,
@@ -799,7 +799,7 @@ class _ExcusePrmissionState extends State<ExcusePrmission> {
         print(value.data);
         print(widget.userId);
         Flushbar(
-          message: 'Sent Successfully',
+          message: '${AppLocalizations.of(context)!.sentSuccessfully}',
           icon: Icon(
             Icons.verified_outlined,
             size: 30.0,

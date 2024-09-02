@@ -36,7 +36,7 @@
   "timeFromisEmpty": "الوقت من فارغ !",
   "timeToisEmpty": "الوقت الى فارغ !",
   "vacationTypeis": "نوع الأجازة فارغ ! ",
-  "YouCanNotSend": "لا يمكنك الإرسال الآن، حاول مرة أخرى لاحقاً\n",
+  "YouCanNotSend": "لا يمكنك الإرسال الآن، حاول مرة أخرى لاحقا\n",
   "attendAlert": "تم حضورك بنجاح",
   "leaveAlert":"تم مغادرتك بنجاح",
   "permissions": "الأذونات",
@@ -129,7 +129,7 @@
   "network": "الشبكات وأمن المعلومات",
   "getstarted": "البدأ",
   "remember": "تذكرني",
-  "hr": "الموارد البشرية و الحضور",
+  "hr": "الموارد البشرية",
   "project_management": "إدارة المشاريع",
   "accounting": "الحسابات",
   "marketing": "التسويق",
@@ -150,23 +150,25 @@
   "vacancesReq": "الأجازات",
   "findProject": "ابحث عن مشروع",
   "aboutUs": "من نحن :",
-  "attendIn": "حضر في: "
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  "attendIn": "حضر في: ",
+  "permissionRequest": "طلب إذن",
+  "sentSuccessfully": "تم ارسال الطلب",
+  "allTasks": "جميع المهام",
+  "myTasks": "مهامي",
+  "editProject": "تعديل المشروع",
+  "selectedEmployee": "عدد الموظفين المختارين ",
+  "deleteProject": "هل تريد مسح هذا المشروع؟",
+  "addThisProjectTo": "إضافة هذا المشروع الى",
+  "save": "حفظ",
+  "editPhase": "تعديل المرحلة",
+  "deletePhase": "هل تريد مسح هذه المرحلة؟",
+  "deletetask": "هل تريد مسح هذه المهمة؟",
+  "editTask": "تعديل المهمة",
+  "addThisTaskTo": "إضة هذه المهمة الى",
+  "salary": "الراتب",
+  "totalOverTime": "الإضافات",
+  "deduction": "الخصومات",
+  "total": "الإجمالي"
 
 
 }

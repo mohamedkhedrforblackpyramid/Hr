@@ -8,6 +8,7 @@ class PermitModel {
    String? notes;
    String? created_at;
    String? name;
+   int? user_id;
   PermitModel({
     required this.id,
     required this.organization_id,
@@ -16,7 +17,8 @@ class PermitModel {
     required this.status,
     required this.notes,
     required this.created_at,
-    required this.name
+    required this.name,
+    required this.user_id
   });
   PermitModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -27,6 +29,7 @@ class PermitModel {
     notes = json['notes'];
     created_at = json['created_at'];
     name = json['user_name'];
+    user_id = json['user_id'];
 
   }
 }

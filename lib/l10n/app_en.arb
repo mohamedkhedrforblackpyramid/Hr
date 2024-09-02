@@ -33,8 +33,8 @@
   "dateisEmpty": "Date is Empty !",
   "dateToisEmpty": "Date To is Empty !",
   "dateFromisEmpty": "Date From To is Empty !",
-  "timeFromisEmpty": "Time From To is Empty !",
-  "timeToisEmpty": "Time To From To is Empty !",
+  "timeFromisEmpty": "Time From is Empty !",
+  "timeToisEmpty": "Time To is Empty !",
   "vacationTypeis": "Vacation type is Empty ! ",
   "youCanNotSend": "You can not send right now, Try again later",
   "attendAlert": "You Attend Successfully",
@@ -150,20 +150,23 @@
   "vacancesReq": "Vacances",
   "findProject": "Find Your Project",
   "aboutUs": "About us :",
-  "attendIn": "Attended in: "
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  "attendIn": "Attended in: ",
+  "permissionRequest": "Attended in: ",
+  "sentSuccessfully": "Added Successfully",
+  "allTasks": "All Tasks",
+  "myTasks": "My Tasks",
+  "editProject": "Edit Project",
+  "selectedEmployee": "Number of selected employee ",
+  "deleteProject": "Delete this project ?",
+  "addThisProjectTo": "Add this project to",
+  "addThisTaskTo": "Add this Task to",
+  "save": "Save",
+  "editPhase": "Edit Phase",
+  "deletePhase": "Delete this phase?",
+  "deletetask": "Delete this Task?",
+  "editTask": "Edit Task",
+  "salary": "Salary",
+  "totalOverTime": "Total OverTime",
+  "deduction": "Deduction",
+  "total": "Total"
 }

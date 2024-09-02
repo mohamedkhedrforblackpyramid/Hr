@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hr/screens/chart.dart';
+import 'package:hr/screens/salary.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../main.dart';
@@ -83,7 +84,7 @@ class _HrState extends State<Hr> {
           organizationId: widget.organizationId,
           organizationsName: widget.organizationsName,
           organizationsArabicName: widget.organizationsArabicName,
-          personType: '',
+          personType: widget.personType,
         ),
       ),
     );
@@ -572,6 +573,33 @@ class _HrState extends State<Hr> {
                           );
                         });                      },
                     ),
+/*
+                    DashboardCard(
+                      title: '${AppLocalizations.of(context)!.salary}',
+                      icon: Icons.attach_money_outlined,
+                      color: Colors.pink.shade200,
+                      onTap: () {
+                        setState(() {});
+                        _startLoading(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Salary(
+                                organizationId: widget.organizationId,
+                                userId: widget.userId,
+                                personType: widget.personType,
+                                vacancesCount: vacancesCount,
+                                permitsPermission: permissionCount,
+                                oranizaionsList: widget.oranizaionsList,
+                                organizationsName: widget.organizationsName,
+                                organizationsArabicName: widget.organizationsArabicName,
+                              ),
+                            ),
+                          );
+                        });                      },
+                    ),
+*/
+
                   ],
                 ),
               ),

@@ -252,10 +252,10 @@ class _HomeScreenState extends State<TaskManagement> {
                                           child: SingleChildScrollView(
                                             child: Column(
                                               children: [
-                                                const Padding(
+                                                 Padding(
                                                   padding: EdgeInsets.all(15.0),
                                                   child: Text(
-                                                    "Add Project",
+                                                    "${AppLocalizations.of(context)!.addProject}",
                                                     style: TextStyle(
                                                         fontSize: 30,
                                                         fontWeight: FontWeight.bold),
@@ -269,7 +269,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                       controller: projectName,
                                                       decoration: new InputDecoration(
                                                         labelText:
-                                                        "Project Name",
+                                                        "${AppLocalizations.of(context)!.projectName}",
                                                         fillColor: Colors.white,
                                                         border: new OutlineInputBorder(
                                                           borderRadius:
@@ -297,7 +297,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                     controller: projectDescription,
                                                     decoration: new InputDecoration(
                                                       labelText:
-                                                      "Project Description",
+                                                      "${AppLocalizations.of(context)!.projectDescription}",
                                                       fillColor: Colors.white,
                                                       border: new OutlineInputBorder(
                                                         borderRadius:
@@ -374,15 +374,15 @@ class _HomeScreenState extends State<TaskManagement> {
                                                           label: Padding(
                                                             padding: const EdgeInsets.all(10),
                                                             child: users.isEmpty
-                                                                ? const Text(
-                                                              "Add this project to",
+                                                                ?  Text(
+                                                              "${AppLocalizations.of(context)!.addThisProjectTo}",
                                                               style: TextStyle(
                                                                   fontWeight:
                                                                   FontWeight.bold,
                                                                   color: Colors.black45),
                                                             )
                                                                 : Text(
-                                                              'You Selected ${users.length} Employee',
+                                                              '${AppLocalizations.of(context)!.selectedEmployee}${users.length}',
                                                               style: const TextStyle(
                                                                   fontWeight:
                                                                   FontWeight.bold,
@@ -450,7 +450,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                             Flushbar(
                                                               backgroundColor: Colors.red,
                                                               message:
-                                                              "Project Is Empty",
+                                                              "${AppLocalizations.of(context)!.projectNameisEmpty}",
                                                               icon: const Icon(
                                                                 Icons.info_outline,
                                                                 size: 30.0,
@@ -482,7 +482,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                         });
                                                       },
                                                       title:
-                                                      'Add',
+                                                      '${AppLocalizations.of(context)!.save}',
                                                       color1: Colors.purple,
                                                       color2: Colors.lightBlue,
                                                     )
@@ -812,10 +812,10 @@ class _HomeScreenState extends State<TaskManagement> {
                                         child: SingleChildScrollView(
                                           child: Column(
                                             children: [
-                                              const Padding(
+                                               Padding(
                                                 padding: EdgeInsets.all(15.0),
                                                 child: Text(
-                                                  "Edit Project Name",
+                                                  "${AppLocalizations.of(context)!.editProject}",
                                                   style: TextStyle(
                                                       fontSize: 30,
                                                       fontWeight: FontWeight.bold),
@@ -829,7 +829,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                   child: TextFormField(
                                                     controller: projectName,
                                                     decoration: new InputDecoration(
-                                                      labelText: "Project Name",
+                                                      labelText: "${AppLocalizations.of(context)!.projectName}",
                                                       fillColor: Colors.white,
                                                       border: new OutlineInputBorder(
                                                         borderRadius:
@@ -858,7 +858,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                 child: TextFormField(
                                                   controller: projectDescription,
                                                   decoration: new InputDecoration(
-                                                    labelText: "Project Description",
+                                                    labelText: "${AppLocalizations.of(context)!.projectDescription}",
                                                     fillColor: Colors.white,
                                                     border: new OutlineInputBorder(
                                                       borderRadius:
@@ -946,8 +946,8 @@ class _HomeScreenState extends State<TaskManagement> {
                                                           const EdgeInsets.all(
                                                               10),
                                                           child: users.isEmpty
-                                                              ? const Text(
-                                                            "Add this project to",
+                                                              ?  Text(
+                                                            "${AppLocalizations.of(context)!.addThisProjectTo}",
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                 FontWeight
@@ -956,7 +956,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                                     .black45),
                                                           )
                                                               : Text(
-                                                            'You Selected ${users.length} Employee',
+                                                            '${AppLocalizations.of(context)!.selectedEmployee}${users.length}',
                                                             style: const TextStyle(
                                                                 fontWeight:
                                                                 FontWeight
@@ -1039,7 +1039,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                             backgroundColor:
                                                             Colors.red,
                                                             message:
-                                                            "Project Name Is Empty",
+                                                            "${AppLocalizations.of(context)!.projectNameisEmpty}",
                                                             icon: const Icon(
                                                               Icons
                                                                   .info_outline,
@@ -1057,7 +1057,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                             .text.isEmpty) {
                                                           Flushbar(
                                                             message:
-                                                            "Project Description id Empty",
+                                                            "${AppLocalizations.of(context)!.projectDescisEmpty}",
                                                             backgroundColor:
                                                             Colors.red,
                                                             icon: const Icon(
@@ -1096,7 +1096,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                             .response.data);
                                                       });
                                                     },
-                                                    title: 'Save',
+                                                    title: '${AppLocalizations.of(context)!.save}',
                                                     color1: Colors.purple,
                                                     color2: Colors.lightBlue,
                                                   )
@@ -1127,8 +1127,8 @@ class _HomeScreenState extends State<TaskManagement> {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   //  title: const Text('Basic dialog title'),
-                                  content: const Text(
-                                    'Delete this project ?',
+                                  content:  Text(
+                                    '${AppLocalizations.of(context)!.deleteProject}',
                                     textAlign: TextAlign.center,
                                   ),
                                   actions: [
@@ -1141,8 +1141,8 @@ class _HomeScreenState extends State<TaskManagement> {
                                                 .textTheme
                                                 .labelLarge,
                                           ),
-                                          child: const Text(
-                                              'yes'),
+                                          child:  Text(
+                                              '${AppLocalizations.of(context)!.yes}'),
                                           onPressed: () async {
                                             setState(() {});
                                             await DioHelper.deleteData(
@@ -1192,8 +1192,8 @@ class _HomeScreenState extends State<TaskManagement> {
                                                 .textTheme
                                                 .labelLarge,
                                           ),
-                                          child: const Text(
-                                              'No'),
+                                          child:  Text(
+                                              '${AppLocalizations.of(context)!.no}'),
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
@@ -1288,10 +1288,10 @@ class _HomeScreenState extends State<TaskManagement> {
                                           1.1,
                                       child: Column(
                                         children: [
-                                          const Padding(
+                                           Padding(
                                             padding: EdgeInsets.all(15.0),
                                             child: Text(
-                                              "Edit Phase Name",
+                                              "${AppLocalizations.of(context)!.editPhase}",
                                               style: TextStyle(
                                                   fontSize: 30,
                                                   fontWeight: FontWeight.bold),
@@ -1305,7 +1305,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                               child: TextFormField(
                                                 controller: taskName,
                                                 decoration: new InputDecoration(
-                                                  labelText: "Phase Name",
+                                                  labelText: "${AppLocalizations.of(context)!.phase_name}",
                                                   fillColor: Colors.white,
                                                   border:
                                                   new OutlineInputBorder(
@@ -1337,7 +1337,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                               controller: phaseDescription,
                                               decoration: new InputDecoration(
                                                 labelText:
-                                                "Phase Description",
+                                                "${AppLocalizations.of(context)!.phase_desc}",
                                                 fillColor: Colors.white,
                                                 border: new OutlineInputBorder(
                                                   borderRadius:
@@ -1468,7 +1468,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                   });
                                                 },
                                                 title:
-                                                'Save',
+                                                '${AppLocalizations.of(context)!.save}',
                                                 color1: Colors.purple,
                                                 color2: Colors.lightBlue,
                                               )
@@ -1498,8 +1498,8 @@ class _HomeScreenState extends State<TaskManagement> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 //  title: const Text('Basic dialog title'),
-                                content: const Text(
-                                  'Delete this phase ?',
+                                content:  Text(
+                                  '${AppLocalizations.of(context)!.deletePhase}',
                                   textAlign: TextAlign.center,
                                 ),
                                 actions: [
@@ -1616,11 +1616,12 @@ class _HomeScreenState extends State<TaskManagement> {
                 value: task.close,
                 onChanged: (value) {
                   if (task.close = value!) {
-                    showDialog(
+                    showDialog(barrierDismissible: false,
                       context: (context),
                       builder: (contextop) => AlertDialog(
-                        content: const Text(
-                          'Did you finish this task?',
+
+                        content:  Text(
+                          '${AppLocalizations.of(context)!.finishTask}',
                           style: TextStyle(fontSize: 20),
                         ),
                         actions: [
@@ -1628,7 +1629,7 @@ class _HomeScreenState extends State<TaskManagement> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               TextButton(
-                                child: const Text('Yes'),
+                                child:  Text('${AppLocalizations.of(context)!.yes}'),
                                 onPressed: () {
                                   DioHelper.patchData(
                                       url: "api/tasks/${task.task_id}",
@@ -1661,7 +1662,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                 },
                               ),
                               TextButton(
-                                child: const Text('No'),
+                                child:  Text('${AppLocalizations.of(context)!.no}'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   task.close = false;
@@ -1715,10 +1716,10 @@ class _HomeScreenState extends State<TaskManagement> {
                               child: SingleChildScrollView(
                                 child: Column(
                                   children: [
-                                    const Padding(
+                                     Padding(
                                       padding: EdgeInsets.all(15.0),
                                       child: Text(
-                                        "Edit Task Name",
+                                        "${AppLocalizations.of(context)!.editTask}",
                                         style: TextStyle(
                                             fontSize: 30,
                                             fontWeight: FontWeight.bold),
@@ -1732,7 +1733,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                         child: TextFormField(
                                           controller: taskName,
                                           decoration: InputDecoration(
-                                            labelText: "New Task Name",
+                                            labelText: "${AppLocalizations.of(context)!.taskName}",
                                             fillColor: Colors.white,
                                             border:
                                             OutlineInputBorder(
@@ -1764,7 +1765,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                         controller: taskDescription,
                                         decoration: InputDecoration(
                                           labelText:
-                                          "Task Description",
+                                          "${AppLocalizations.of(context)!.taskDesc}",
                                           fillColor: Colors.white,
                                           border: OutlineInputBorder(
                                             borderRadius:
@@ -1855,8 +1856,8 @@ class _HomeScreenState extends State<TaskManagement> {
                                                 const EdgeInsets.all(
                                                     10),
                                                 child: users.isEmpty
-                                                    ? const Text(
-                                                  "Add this project to",
+                                                    ?  Text(
+                                                  "${AppLocalizations.of(context)!.addThisTaskTo}",
                                                   style: TextStyle(
                                                       fontWeight:
                                                       FontWeight
@@ -1865,7 +1866,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                           .black45),
                                                 )
                                                     : Text(
-                                                  'You Selected ${users.length} Employee',
+                                                  '${AppLocalizations.of(context)!.selectedEmployee}${users.length}',
                                                   style: const TextStyle(
                                                       fontWeight:
                                                       FontWeight
@@ -1996,7 +1997,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                             });
                                           },
                                           title:
-                                          'Save',
+                                          '${AppLocalizations.of(context)!.save}',
                                           color1: Colors.purple,
                                           color2: Colors.lightBlue,
                                         )
@@ -2027,8 +2028,8 @@ class _HomeScreenState extends State<TaskManagement> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         //  title: const Text('Basic dialog title'),
-                        content: const Text(
-                          'Delete this task ?',
+                        content:  Text(
+                          '${AppLocalizations.of(context)!.deletetask}',
                         ),
                         actions: [
                           Row(
