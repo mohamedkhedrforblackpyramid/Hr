@@ -502,8 +502,8 @@ class _HomeScreenState extends State<TaskManagement> {
                           );
                         },
                         icon: Icon(Icons.add_circle_sharp,
-                          size: 30,
-                          color: Colors.red.shade300,
+                          size: 40,
+                          color: Colors.deepPurple.shade200,
                         ))
                   ],
                 ),
@@ -560,8 +560,8 @@ class _HomeScreenState extends State<TaskManagement> {
                                 )));
                       },
                           icon: Icon(Icons.add_circle_sharp,
-                            size: 30,
-                            color: Colors.red.shade300,
+                            size: 40,
+                            color: Colors.deepPurple.shade200,
                           ))
                     ],
                   ),
@@ -643,8 +643,8 @@ class _HomeScreenState extends State<TaskManagement> {
                                   )));
                         },
                             icon: Icon(Icons.add_circle_sharp,
-                              size: 30,
-                              color: Colors.red.shade300,
+                              size: 40,
+                              color: Colors.deepPurple.shade200,
                             ))
                       ],
                     ),

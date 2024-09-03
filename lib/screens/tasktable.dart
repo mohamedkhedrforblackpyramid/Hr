@@ -28,6 +28,7 @@ class _TaskTableState extends State<TaskTable> {
   int? projectId;
   late ProjectsList projects;
   bool projectLoading = false;
+  bool isMyTasksActive = true;  // New variable to track active button
 
   @override
   void initState() {
@@ -108,17 +109,21 @@ class _TaskTableState extends State<TaskTable> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.teal.shade100,
+
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         elevation: 5,
-                        padding: EdgeInsets.symmetric(vertical: 16),
+                        padding: EdgeInsets.symmetric(
+                          vertical: isMyTasksActive ? 20 : 16, // Increase size when active
+                        ),
                       ),
                       onPressed: () {
                         setState(() {
                           permit_type = 'myTasks';
                           isOpen = false;
                           valueClosed = '0';
+                          isMyTasksActive = true;
                         });
                         getMyTasks();
                       },
@@ -137,17 +142,21 @@ class _TaskTableState extends State<TaskTable> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green.shade100,
+
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         elevation: 5,
-                        padding: EdgeInsets.symmetric(vertical: 16),
+                        padding: EdgeInsets.symmetric(
+                          vertical: !isMyTasksActive ? 20 : 16, // Increase size when active
+                        ),
                       ),
                       onPressed: () {
                         setState(() {
                           permit_type = 'allTasks';
                           isOpen = false;
                           valueClosed = '1';
+                          isMyTasksActive = false;
                         });
                         getAllTasks();
                       },
