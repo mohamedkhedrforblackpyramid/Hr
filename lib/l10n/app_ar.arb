@@ -168,7 +168,15 @@
   "salary": "الراتب",
   "totalOverTime": "الإضافات",
   "deduction": "الخصومات",
-  "total": "الإجمالي"
+  "total": "الإجمالي",
+
+
+  "pending": "قيد الإنتظار",
+  "approved": "موافقة",
+  "refused": "رفض"
+
+
+
 
 
 }

@@ -67,7 +67,8 @@ class _ShowpermitState extends State<Showpermit> {
   dynamic year_dayoffs;
   dynamic month_dayoffs;
   int? usrId;
-
+  late int monthNumber;
+ late int  yearNumber;
   getPermissions() {
     permitLoading = true;
     Map<String, dynamic> query = {};
@@ -148,13 +149,14 @@ class _ShowpermitState extends State<Showpermit> {
                   personType: widget.personType,
                 )));
   }
+
   getRequestInfo() async{
     CacheHelper.getData(key: 'token');
 
 
    await DioHelper.getData(
         url:
-        "api/user/time-offs/?user_id=${usrId}&organization_id=${widget.organizationId}",
+        "api/user/time-offs/?user_id=${usrId}&organization_id=${widget.organizationId}&month=${monthNumber}&year=${yearNumber}",
          )
         .then((response) {
       total_monthly_timeoff_hours = response.data['total_monthly_timeoff_hours'];
@@ -345,7 +347,7 @@ class _ShowpermitState extends State<Showpermit> {
                                   }
                                   setState(() {});
                                 },
-                                child: Text('Pending',),
+                                child: Text('${AppLocalizations.of(context)!.pending}',),
                               ),
                               decoration:BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
@@ -380,7 +382,7 @@ class _ShowpermitState extends State<Showpermit> {
                                     }
                                     setState(() {});
                                   },
-                                  child: Text('Approved'),
+                                  child: Text('${AppLocalizations.of(context)!.approved}'),
                                 ),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
@@ -412,7 +414,7 @@ class _ShowpermitState extends State<Showpermit> {
                                   }
                                   setState(() {});
                                 },
-                                child: Text('Refused'),
+                                child: Text('${AppLocalizations.of(context)!.refuse}'),
                               ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
@@ -564,11 +566,24 @@ class _ShowpermitState extends State<Showpermit> {
               ),
               widget.personType == 'MANAGER'?  IconButton(
                   onPressed:()async{
+
+                    // Extract month and year numbers
+                    monthNumber = per.from != null
+                        ? DateTime.parse(per.from!).add(Duration(hours: 3)).month
+                        : -1; // -1 if date is null
+                    yearNumber = per.from != null
+                        ? DateTime.parse(per.from!).add(Duration(hours: 3)).year
+                        : -1; // -1 if date is null
                     usrId = per.user_id;
                   await  getRequestInfo();
                    setState(() {
 
                    });
+
+
+                    // Print month and year numbers to console
+                    print('Month Number: $monthNumber');
+                    print('Year Number: $yearNumber');
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -597,7 +612,7 @@ class _ShowpermitState extends State<Showpermit> {
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
-                              Text("Month Day off : ${year_dayoffs}",
+                              Text("Month Day off : ${month_dayoffs}",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold
                                 ),
@@ -792,9 +807,6 @@ class _ShowpermitState extends State<Showpermit> {
         : '____';
     String formattedTo =
         per.to != null ? dateFormat.format(DateTime.parse(per.to!)) : '____';
-    print('naaaaaaaaaaaaaaaaaaaaaaame');
-    print(per.name);
-    print('naaaaaaaaaaaaaaaaaaaaaaame');
 
     return Container(
       margin: EdgeInsets.all(20),
@@ -873,11 +885,26 @@ class _ShowpermitState extends State<Showpermit> {
               ),
               widget.personType == 'MANAGER'?  IconButton(
                   onPressed:()async{
+
+                    // Extract month and year numbers
+                    monthNumber = per.from != null
+                        ? DateTime.parse(per.from!).add(Duration(hours: 3)).month
+                        : -1; // -1 if date is null
+                    yearNumber = per.from != null
+                        ? DateTime.parse(per.from!).add(Duration(hours: 3)).year
+                        : -1; // -1 if date is null
                     usrId = per.user_id;
                     await  getRequestInfo();
                     setState(() {
 
                     });
+                    usrId = per.user_id;
+                    await  getRequestInfo();
+                    setState(() {
+
+                    });
+                    print('Month Number: $monthNumber');
+                    print('Year Number: $yearNumber');
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -906,7 +933,7 @@ class _ShowpermitState extends State<Showpermit> {
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
-                              Text("Month Day off : ${year_dayoffs}",
+                              Text("Month Day off : ${month_dayoffs}",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold
                                 ),

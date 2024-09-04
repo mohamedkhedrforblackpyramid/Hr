@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'main.dart';
 import 'modules/organizationmodel.dart';
@@ -57,8 +58,85 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     getProfileInfo();
     getOrganizations();
+    _checkFirstLaunch();
+  }
+  Future<void> _checkFirstLaunch() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool hasShownDialog = prefs.getBool('hasShownDialog') ?? false;
+
+    if (!hasShownDialog) {
+      _showUpdateDialog();
+      await prefs.setBool('hasShownDialog', true);
+    }
   }
 
+  void _showUpdateDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.update,
+                color: Colors.blueAccent,
+                size: 28,
+              ),
+              SizedBox(width: 10),
+              Text(
+                'تحديثات جديدة',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                  color: Colors.blueAccent,
+                ),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'إليك آخر التحديثات...',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black54,
+                ),
+              ),
+              SizedBox(height: 20),
+
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Text(
+                  'موافق',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
   Future<void> getProfileInfo() async {
     setState(() {
       showLoading = true;
@@ -127,7 +205,10 @@ class _MainPageState extends State<MainPage> {
       final response = await DioHelper.getData(
         url: "api/organizations",
       );
+      print('fffffffffffffffffffffffffffffffffffffffffff');
       print(response.data);
+      print('fffffffffffffffffffffffffffffffffffffffffff');
+
     } catch (error) {
       print("Error fetching organizations: $error");
     }
@@ -248,13 +329,16 @@ class _MainPageState extends State<MainPage> {
               ListTile(
                 leading: Icon(Icons.home),
                 title: Text(
-                  widget.organizationsName!,
+                  AppLocalizations.of(context)!.localeName == 'ar'?widget.organizationsArabicName!:   widget.organizationsName!,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.green,
                       fontSize: 22),
                 ),
                 onTap: () {
+                  setState(() {
+
+                  });
                   Navigator.pop(context); // Close the drawer
                   showModalBottomSheet<void>(
                     context: context,
@@ -451,7 +535,7 @@ class _MainPageState extends State<MainPage> {
           width: double.infinity,
           child: TextButton(
             child: Text(
-              organizations.name!,
+           organizations.name!,
               style: TextStyle(color: Colors.black),
             ),
             onPressed: () {

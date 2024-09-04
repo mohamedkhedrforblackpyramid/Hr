@@ -345,7 +345,7 @@ class _HrState extends State<Hr> {
               ListTile(
                 leading: Icon(Icons.home),
                 title: Text(
-                  widget.organizationsName!,
+                  AppLocalizations.of(context)!.localeName == 'ar'?widget.organizationsArabicName!:   widget.organizationsName!,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.green,

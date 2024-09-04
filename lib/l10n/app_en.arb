@@ -168,5 +168,10 @@
   "salary": "Salary",
   "totalOverTime": "Total OverTime",
   "deduction": "Deduction",
-  "total": "Total"
+  "total": "Total",
+
+  "pending": "Pending",
+  "approved": "Approved",
+  "refused": "Refused"
+
 }
