@@ -58,9 +58,9 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     getProfileInfo();
     getOrganizations();
-    _checkFirstLaunch();
+   // _checkFirstLaunch();
   }
-  Future<void> _checkFirstLaunch() async {
+ /* Future<void> _checkFirstLaunch() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool hasShownDialog = prefs.getBool('hasShownDialog') ?? false;
 
@@ -68,32 +68,36 @@ class _MainPageState extends State<MainPage> {
       _showUpdateDialog();
       await prefs.setBool('hasShownDialog', true);
     }
-  }
+  }*/
 
+/*
   void _showUpdateDialog() {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
           title: Row(
             children: [
-              Icon(
-                Icons.update,
-                color: Colors.blueAccent,
-                size: 28,
-              ),
-              SizedBox(width: 10),
+
               Text(
-                'تحديثات جديدة',
+                "What's new in this update?",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
                   color: Colors.blueAccent,
                 ),
               ),
+              Icon(
+                Icons.update,
+                color: Colors.blueAccent,
+                size: 28,
+              ),
+              SizedBox(width: 10),
             ],
           ),
           content: Column(
@@ -124,7 +128,7 @@ class _MainPageState extends State<MainPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: Text(
-                  'موافق',
+                  'OK',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -137,6 +141,7 @@ class _MainPageState extends State<MainPage> {
       },
     );
   }
+*/
   Future<void> getProfileInfo() async {
     setState(() {
       showLoading = true;

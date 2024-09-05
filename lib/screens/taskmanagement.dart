@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:fancy_containers/fancy_containers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_face_pile/flutter_face_pile.dart';
 import 'package:hr/projectfield.dart';
 import '../modules/chooseusers.dart';
 import '../modules/organizationmodel.dart';
@@ -59,13 +60,14 @@ class _HomeScreenState extends State<TaskManagement> {
   bool clickAdd = false;
   var taskDescription = TextEditingController();
 
+
   getProjects() async {
     projectLoading = true;
     await DioHelper.getData(
         url: "api/projects",
         query: {'organization_id': widget.organizationId}).then((response) {
       projectsNew = ProjectsList.fromJson(response.data);
-      //  print(projects);
+
       print(response.data);
 
       setState(() {
@@ -74,6 +76,17 @@ class _HomeScreenState extends State<TaskManagement> {
     }).catchError((error) {
       print(error);
     });
+  }
+  List<FaceHolder> getFaceHolders(ProjectsModel project) {
+    return project.assignee_avatars.asMap().entries.map((entry) {
+      int index = entry.key;
+      String avatarUrl = entry.value;
+      return FaceHolder(
+        id: (project.assignees[index] ?? index).toString(),
+        name: 'User $index', // Or use an appropriate name if available
+        avatar: NetworkImage(avatarUrl),
+      );
+    }).toList();
   }
 
   searchProjects(String query) async {
@@ -512,7 +525,7 @@ class _HomeScreenState extends State<TaskManagement> {
                   scrollDirection: Axis.horizontal,
                   child: Row(children: [
                     SizedBox(
-                      height: 200,
+                      height: 180,
                       child: ListView.separated(
                         shrinkWrap: true,
                         physics: const ScrollPhysics(),
@@ -734,6 +747,7 @@ class _HomeScreenState extends State<TaskManagement> {
     required ProjectsModel task,
     required int index,
   }) {
+
     return GestureDetector(
       onTap: () async {
         projectId = task.id;
@@ -756,34 +770,22 @@ class _HomeScreenState extends State<TaskManagement> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    overflow:TextOverflow.ellipsis ,
-                    maxLines: 2,
-                    '${task.name}',
-                    style: TextStyle(color: Colors.grey[700], fontSize: 20),
-                  ),
-                ),
-                /*Text(
-                  maxLines: 5,
-                  '${task.description}',
-                  style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold),
-                ),*/
-                SizedBox(height: 10,),
-                const SizedBox(height: 20),
-                LinearProgressIndicator(
-                  value: .5,
-                  backgroundColor: Colors.grey[300],
-                  color: Colors.blue,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                          onPressed: () {
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        overflow:TextOverflow.ellipsis ,
+                        maxLines: 2,
+                        '${task.name}',
+                        style: TextStyle(color: Colors.grey[700], fontSize: 20),
+                      ),
+                      flex: 2,
+                    ),
+                    Expanded(
+                      child: PopupMenuButton(
+                        onSelected: (value) {
+                          // تنفيذ الإجراءات بناءً على القيمة المحددة
+                          if (value == 'edit') {
                             projectName.text = task.name;
                             users = task.assignees as List<int>;
                             if (task.description == null) {
@@ -812,7 +814,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                         child: SingleChildScrollView(
                                           child: Column(
                                             children: [
-                                               Padding(
+                                              Padding(
                                                 padding: EdgeInsets.all(15.0),
                                                 child: Text(
                                                   "${AppLocalizations.of(context)!.editProject}",
@@ -1114,14 +1116,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                   );
                                 });
                               },
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.edit,
-                            color: Colors.black54,
-                          )),
-                      IconButton(
-                          onPressed: () async {
+                            );                            } else if (value == 'delete') {
                             showDialog<void>(
                               context: context,
                               builder: (BuildContext context) {
@@ -1204,15 +1199,58 @@ class _HomeScreenState extends State<TaskManagement> {
                                 );
                               },
                             );
-                          },
-                          icon: const Icon(
-                            Icons.delete,
-                            color: Colors.black54,
-                          )),
+                            // قم بإجراء الحذف
+                          }
+                        },
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                          PopupMenuItem(
+                            value: 'edit',
+                            child: ListTile(
+                              leading: Icon(Icons.edit),
+                              title: Text('Edit'),
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 'delete',
+                            child: ListTile(
+                              leading: Icon(Icons.delete),
+                              title: Text('Delete'),
+                            ),
+                          ),
+                        ],
+                        icon: Icon(Icons.more_vert), // زر النقاط الثلاث
+                      ),
+                    ),
+
+                  ],
+                ),
+
+
+                    SizedBox(height: 10,),
+                    LinearProgressIndicator(
+                  value: .5,
+                  backgroundColor: Colors.grey[300],
+                  color: Colors.blue,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
 
                     ],
                   ),
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 100),
+                  child: FacePile(
+                    faces:getFaceHolders(task),
+                    faceSize: 30,
+                    facePercentOverlap: .2,
+                    borderColor: Colors.white,
+                  ),
+                ),
+
               ],
             ),
           ),

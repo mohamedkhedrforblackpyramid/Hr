@@ -95,6 +95,11 @@ class _ShowpermitState extends State<Showpermit> {
         .then((response) {
           print(response.data);
       permits = PermitList.fromJson(response.data['data']);
+      if(clickperPending == true  || clickVacPending ==true)
+          widget.permitsPermission = permits.permitList!.length;
+      else{
+
+          }
       print(response.data);
 
       setState(() {
@@ -129,6 +134,11 @@ class _ShowpermitState extends State<Showpermit> {
             query: query)
         .then((response) {
       permits = PermitList.fromJson(response.data['data']);
+      if(clickperPending == true  || clickVacPending ==true)
+        widget.vacancesCount =permits.permitList!.length;
+      else{
+
+      }
       setState(() {
         permitLoading = false;
       });
@@ -330,7 +340,6 @@ class _ShowpermitState extends State<Showpermit> {
                               child: TextButton(
                                 onPressed: () {
 
-
                                   if (clickPermission == true) {
                                     clickperPending = true;
                                     clickperRefused = false;
@@ -365,12 +374,17 @@ class _ShowpermitState extends State<Showpermit> {
                                   onPressed: () {
 
                                     if (clickPermission == true) {
+                                      permits.permitList!.length = 0;
+
                                       clickperPending = false;
                                       clickperRefused = false;
                                       clickperApproved = true;
 
-
                                       getPermissions();
+                                      setState(() {
+
+                                      });
+
                                     } else {
                                       clickperPending = false;
                                       clickperRefused = false;

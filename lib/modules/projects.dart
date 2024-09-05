@@ -3,21 +3,24 @@ class ProjectsModel {
   late String name;
   late String? description;
   late List<int> assignees;
-  bool isSlected =false;
+  late List<String> assignee_avatars; // Updated to List<String>
+  bool isSelected = false;
 
   ProjectsModel({
     required this.id,
     required this.name,
     this.description,
     required this.assignees,
-    required this.isSlected
+    required this.isSelected,
+    required this.assignee_avatars,
   });
+
   ProjectsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    description= json['description'];
-    print(json['assignees']);
+    description = json['description'];
     assignees = (json['assignees'] ?? []).cast<int>();
+    assignee_avatars = (json['assignee_avatars'] ?? []).cast<String>(); // Updated
   }
 }
 
