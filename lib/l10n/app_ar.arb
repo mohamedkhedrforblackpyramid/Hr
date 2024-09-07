@@ -169,11 +169,11 @@
   "totalOverTime": "الإضافات",
   "deduction": "الخصومات",
   "total": "الإجمالي",
-
-
   "pending": "قيد الإنتظار",
   "approved": "موافقة",
-  "refused": "رفض"
+  "refused": "رفض",
+  "edit": "تعديل",
+  "delete": "حذف"
 
 
 

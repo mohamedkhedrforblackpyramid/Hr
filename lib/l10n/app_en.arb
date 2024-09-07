@@ -169,9 +169,12 @@
   "totalOverTime": "Total OverTime",
   "deduction": "Deduction",
   "total": "Total",
-
   "pending": "Pending",
   "approved": "Approved",
-  "refused": "Refused"
+  "refused": "Refused",
+  "edit": "Edit",
+  "delete": "Delete"
+
+
 
 }
