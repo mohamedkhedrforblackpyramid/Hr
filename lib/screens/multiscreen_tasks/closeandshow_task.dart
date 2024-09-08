@@ -143,6 +143,7 @@ class _CloseTasksState extends State<CloseTasks> {
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             MultiScreenForTasks(
+                                              projectName: '',
                                               projectId: widget.projectId,
                                               organization_id:
                                                   widget.organization_id,

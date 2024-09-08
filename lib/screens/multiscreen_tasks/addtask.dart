@@ -319,6 +319,7 @@ class _AddTasksState extends State<AddTasks> {
                       data: Theme.of(context)
                           .copyWith(splashColor: Colors.transparent),
                       child: TextField(
+
                         controller: phaseController,
                         enabled: false,
                         autofocus: false,
@@ -326,7 +327,7 @@ class _AddTasksState extends State<AddTasks> {
                             TextStyle(fontSize: 22.0, color: Colors.green),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: Color(0xFCED3FF),
+                          fillColor: Colors.green.shade100,
                           label: Padding(
                             padding: const EdgeInsets.all(10),
                             child: widget.phaseName.isEmpty

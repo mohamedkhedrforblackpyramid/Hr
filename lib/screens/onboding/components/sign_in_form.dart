@@ -64,7 +64,7 @@ class _SignInFormState extends State<SignInForm> {
   String organizationsArabicName = '';
   bool _isChecked = false;
   bool settingsLoad = false;
-  String versionNow = '1.0.5';
+  String versionNow = '1.0.6';
   List <String>? versions;
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
@@ -92,10 +92,10 @@ class _SignInFormState extends State<SignInForm> {
     ).then((response) {
       print(response.data);
 
-      if(response.data['app.version'].contains(versionNow)){
+      if(response.data['app_version'].contains(versionNow)){
 
       }else{
-        url = response.data['app.download'];
+        url = response.data['app_download'];
         print(url);
         showDialog(
           context: context,
@@ -179,7 +179,7 @@ class _SignInFormState extends State<SignInForm> {
             ).then((response) {
               print(response.data);
 
-              if(response.data['app.version'].contains(versionNow)){
+              if(response.data['app_version'].contains(versionNow)){
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -191,7 +191,7 @@ class _SignInFormState extends State<SignInForm> {
                           organizationsArabicName: organizationsArabicName, personType: personType,)));
 
               }else{
-                url = response.data['app.download'];
+                url = response.data['app_download'];
                 print(url);
                 showDialog(
                   context: context,
@@ -201,7 +201,7 @@ class _SignInFormState extends State<SignInForm> {
               setState(() {
               });
             }).catchError((error) {
-              print(error.response.data);
+              print(error);
             });
           });
         }

@@ -244,7 +244,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: Column(
               children: [
                 Text(
-                  "${AppLocalizations.of(context)!.versionDate} : 05/09/2024",
+                  "${AppLocalizations.of(context)!.versionDate} : 08/09/2024",
                   style: TextStyle(
                     fontSize: 17,
                     fontFamily: "Poppins",
@@ -253,7 +253,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
                 Text(
-                  "${AppLocalizations.of(context)!.version}: 1.0.5",
+                  "${AppLocalizations.of(context)!.version}: 1.0.6",
                   style: TextStyle(
                     fontSize: 17,
                     fontFamily: "Poppins",

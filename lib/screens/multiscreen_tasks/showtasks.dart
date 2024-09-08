@@ -135,6 +135,7 @@ class _ShowTasksState extends State<ShowTasks> {
                                             widget.organizationsArabicName,
                                         phaseName: '',
                                         phaseId: widget.phaseId,
+                                    projectName: '',
                                       )));
                         },
                         icon: Icon(

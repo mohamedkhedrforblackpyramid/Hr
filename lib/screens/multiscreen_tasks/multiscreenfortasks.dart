@@ -26,6 +26,7 @@ class MultiScreenForTasks extends StatefulWidget {
   String? organizationsName;
   String?organizationsArabicName;
   String? phaseName;
+  String? projectName;
   int?phaseId;
   MultiScreenForTasks(
       {
@@ -37,7 +38,8 @@ class MultiScreenForTasks extends StatefulWidget {
         required this.organizationsName,
         required this.oranizaionsList,
         required this.phaseName,
-         this.phaseId
+         this.phaseId,
+        required this.projectName
   }
   );
   @override
@@ -75,6 +77,9 @@ class _MultiScreenForTasksState extends State<MultiScreenForTasks> {
         organizationsName: widget.organizationsName,
         phaseId: widget.phaseId,
         phaseName: widget.phaseName,
+        projectName : widget.projectName
+
+
 
 
       ),

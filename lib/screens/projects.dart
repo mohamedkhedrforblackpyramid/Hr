@@ -474,6 +474,7 @@ class _ProjectsState extends State<Projects> {
                   organizationsName: widget.organizationsName,
                   phaseName: '',
                   phaseId: null,
+                  projectName: '',
                 )));
       },
       child: Container(

@@ -29,6 +29,7 @@ class Addphase extends StatefulWidget {
   String? organizationsArabicName;
   int? phaseId;
   String? phaseName;
+  String? projectName;
 
   Addphase(
       {required this.projectId,
@@ -38,6 +39,7 @@ class Addphase extends StatefulWidget {
       required this.organizationsName,
       required this.oranizaionsList,
       required this.phaseId,
+        required this.projectName,
       required this.phaseName});
   @override
   State<Addphase> createState() => _AddphaseState();
@@ -144,6 +146,44 @@ class _AddphaseState extends State<Addphase> {
                           padding: const EdgeInsets.all(10),
                           child: Text(
                             AppLocalizations.of(context)!.phase_desc,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.only(
+                            left: 14.0, bottom: 8.0, top: 8.0, right: 14),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.circular(25.7),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 40),
+                  child: Theme(
+                    data: Theme.of(context)
+                        .copyWith(splashColor: Colors.transparent),
+                    child: TextField(
+
+                    //  controller: phaseController,
+                      enabled: false,
+                      autofocus: false,
+                      style:
+                      TextStyle(fontSize: 22.0, color: Colors.green),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.green.shade100,
+                        label: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child:Text(
+                            widget.projectName!,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
