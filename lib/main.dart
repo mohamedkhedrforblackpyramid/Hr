@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:hr/screens/maps.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +99,7 @@ class _MyAppState extends State<MyApp> {
             errorBorder: defaultInputBorder,
           ),
         ),
-        home: OnboardingScreen(),
+        home: CompanyLocationPage(),
       ),
     );
   }
