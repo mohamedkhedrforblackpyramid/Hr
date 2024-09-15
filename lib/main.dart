@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:hr/screens/maps.dart';
+
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -38,17 +38,17 @@ main() async {
   }
 
   runApp(
-
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => LocaleProvider()),
-
-        ],
-          child: MyApp(lang: '${CacheHelper.getData(key: 'language')}',)));
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
+      ],
+      child: MyApp(lang: '${CacheHelper.getData(key: 'language')}',),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
-  String lang;
+  final String lang;
   MyApp({required this.lang});
 
   @override
@@ -66,20 +66,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    CacheHelper.saveData(key: 'language', value: '${widget.lang}');
-    print(widget.lang);
+    CacheHelper.saveData(key: 'language', value: widget.lang);
     final provider = Provider.of<LocaleProvider>(context);
-
 
     return WillPopScope(
       onWillPop: () async {
         return shouldPop;
       },
       child: MaterialApp(
-
         locale: provider.locale,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
-
         supportedLocales: const [
           Locale('en'),
           Locale('ar'),
@@ -98,13 +94,33 @@ class _MyAppState extends State<MyApp> {
             focusedBorder: defaultInputBorder,
             errorBorder: defaultInputBorder,
           ),
+          appBarTheme: AppBarTheme(
+            color: Colors.blue.shade700,
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            elevation: 5,
+            iconTheme: IconThemeData(color: Colors.white),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue.shade700,
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              shadowColor: Colors.blue.shade400,
+              elevation: 8,
+            ),
+          ),
         ),
-        home: CompanyLocationPage(),
+        home: OnboardingScreen(),
       ),
     );
   }
 }
-
 
 const defaultInputBorder = OutlineInputBorder(
   borderRadius: BorderRadius.all(Radius.circular(16)),

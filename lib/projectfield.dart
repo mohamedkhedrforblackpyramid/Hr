@@ -202,9 +202,14 @@ class _ProjectsFieldState extends State<ProjectsField> {
           key: _scaffoldKey,
           backgroundColor: Colors.white,
           appBar: AppBar(
+            elevation: 0,
+
             backgroundColor: Colors.white,
             leading: IconButton(
-              icon: Icon(Icons.menu, size: 30),
+              icon: Icon(Icons.menu, size: 30,
+                color: Colors.black,
+
+              ),
               onPressed: () {
                 _scaffoldKey.currentState?.openDrawer();
               },

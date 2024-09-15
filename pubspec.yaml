@@ -78,6 +78,8 @@ dependencies:
   flutter_map: ^7.0.1
   latlong2: ^0.9.1
   location: ^7.0.0
+  flutter_typeahead: ^5.2.0
+
 
 
 

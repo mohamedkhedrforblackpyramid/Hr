@@ -253,9 +253,14 @@ class _HrState extends State<Hr> {
         backgroundColor: Colors.white,
         key: _scaffoldKey,
         appBar: AppBar(
+          elevation: 0,
+
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.menu, size: 30),
+            icon: Icon(Icons.menu, size: 30,
+              color: Colors.black,
+
+            ),
             onPressed: () {
               _scaffoldKey.currentState?.openDrawer();
             },
