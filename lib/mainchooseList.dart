@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hr/projectfield.dart';
 import 'package:hr/screens/hr.dart';
+import 'package:hr/screens/marketing.dart';
 import 'package:hr/screens/onboding/onboding_screen.dart';
 import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/attendingToday.dart';
@@ -502,8 +503,22 @@ class _MainPageState extends State<MainPage> {
                       icon: Icons.trending_up,
                       color: Colors.green.shade200,
                       onTap: () {
-                        // Handle tap
-                      },
+                        _startLoading(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MarketingScreen(
+                                userId: widget.userId,
+                                oranizaionsList: widget.oranizaionsList!,
+                                organizationId: widget.organizationId,
+                                organizationsName: widget.organizationsName,
+                                organizationsArabicName:
+                                widget.organizationsArabicName,
+                                personType: widget.personType,
+                              ),
+                            ),
+                          );
+                        });                      },
                     ),
                     DashboardCard(
                       title: '${AppLocalizations.of(context)!.accounting}',

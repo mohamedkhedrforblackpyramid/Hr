@@ -19,7 +19,6 @@ import 'package:unique_identifier/unique_identifier.dart';
 import 'package:app_settings/app_settings.dart';
 import '../../../network/local/cache_helper.dart';
 import '../../../network/remote/dio_helper.dart';
-import '../../choose_list.dart';
 var url;
 
 enum FormData {

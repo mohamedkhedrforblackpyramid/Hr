@@ -173,7 +173,9 @@
   "approved": "موافقة",
   "refused": "رفض",
   "edit": "تعديل",
-  "delete": "حذف"
+  "delete": "حذف",
+  "addCustomerInformation": "إضافة معلومات العميل",
+  "customerInformation": "معلومات العميل"
 
 
 

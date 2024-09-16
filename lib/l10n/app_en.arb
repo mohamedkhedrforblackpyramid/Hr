@@ -173,8 +173,7 @@
   "approved": "Approved",
   "refused": "Refused",
   "edit": "Edit",
-  "delete": "Delete"
-
-
-
+  "delete": "Delete",
+  "addCustomerInformation": "Add Customer Information",
+  "customerInformation": "Customer Information"
 }
