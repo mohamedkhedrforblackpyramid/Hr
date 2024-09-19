@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hr/projectfield.dart';
+import 'package:hr/screens/attendance.dart';
 import 'package:hr/screens/hr.dart';
 import 'package:hr/screens/marketing.dart';
 import 'package:hr/screens/onboding/onboding_screen.dart';
@@ -15,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'main.dart';
@@ -50,14 +52,33 @@ class _MainPageState extends State<MainPage> {
   bool isImageLoading = false; // حالة تحميل الصورة
   String? imagePath;
   bool showLoading = false;
+  String status = '';
+
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final ImagePicker _picker = ImagePicker();
-
+  Future<void> checkAttendace() async {
+    await DioHelper.getData(
+      url: "api/organizations/${widget.organizationId}/attendance/check",
+    ).then((response) {
+      status = response.data['status'];
+      setState(() {});
+    }).catchError((error) {
+      print(error.response.data);
+      if (error.response?.statusCode != 200) {
+        status = '';
+        print('Error occurred');
+      } else {
+        print(error);
+      }
+    });
+  }
   @override
   void initState() {
     super.initState();
     getProfileInfo();
+    checkAttendace();
+
     getOrganizations();
    // _checkFirstLaunch();
   }
@@ -422,6 +443,47 @@ class _MainPageState extends State<MainPage> {
                       );
                     });
                   });
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.emoji_emotions),
+                title: Text('Attend Now'),
+                onTap: () {
+                  Navigator.pop(context); // Close the drawer
+                  _handleDrawerItemSelection(() {
+    checkAttendace();
+    if (status == 'NOACTION' || status.isEmpty) {
+
+    Alert(
+    context: context,
+    desc: "Try Again Later!",
+    ).show();
+    } else {
+    setState(() {
+    isLoading = true;
+    });
+    Future.delayed(Duration(seconds: 1));
+    setState(() {
+    isLoading = false;
+    });
+    _startLoading(() {
+    Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) => Attendance(
+    userId: widget.userId,
+    organizationId: widget.organizationId,
+    organizationsName: widget.organizationsName,
+    oranizaionsList: widget.oranizaionsList,
+    organizationsArabicName: widget.organizationsArabicName,
+    personType: widget.personType,
+    ),
+    ),
+    );
+    });
+    }
+    },
+    );
                 },
               ),
             ],
