@@ -59,6 +59,8 @@ class _HomeScreenState extends State<TaskManagement> {
   var projectDescription = TextEditingController();
   TextEditingController controller = TextEditingController();
   List<int?> users = [];
+  List<int?> addUsers = [];
+  List<int?> addTaskUsers = [];
   late ChooseUserList chooseList;
   int? userId;
   bool clickAddProject = false;
@@ -253,7 +255,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                     onPressed: () {
                                       projectName.text = '';
                                       projectDescription.text = '';
-                                      users.length = 0;
+                                      addUsers.length = 0;
                                       showModalBottomSheet<void>(
                                         isScrollControlled: true,
                                         context: context,
@@ -392,7 +394,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                                             .builder(
                                                                           shrinkWrap:
                                                                               true,
-                                                                          itemBuilder: (BuildContext context, int index) => buildChooseUsers(
+                                                                          itemBuilder: (BuildContext context, int index) => buildAddChooseUsers(
                                                                               user:
                                                                                   chooseList.chooseuserList![index],
                                                                               index: index),
@@ -461,7 +463,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                                         const EdgeInsets
                                                                             .all(
                                                                             10),
-                                                                    child: users
+                                                                    child: addUsers
                                                                             .isEmpty
                                                                         ? Text(
                                                                             "${AppLocalizations.of(context)!.addThisProjectTo}",
@@ -470,7 +472,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                                                 color: Colors.black45),
                                                                           )
                                                                         : Text(
-                                                                            '${AppLocalizations.of(context)!.selectedEmployee}${users.length}',
+                                                                            '${AppLocalizations.of(context)!.selectedEmployee}${addUsers.length}',
                                                                             style: const TextStyle(
                                                                                 fontWeight: FontWeight.bold,
                                                                                 color: Colors.green),
@@ -543,7 +545,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                                           "organization_id":
                                                                               widget.organizationId,
                                                                           "assignees":
-                                                                              users,
+                                                                              addUsers,
                                                                         },
                                                                       ).then(
                                                                           (value) {
@@ -1081,9 +1083,9 @@ class _HomeScreenState extends State<TaskManagement> {
                                   Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        taskName.text,
+                                        phaseName.text,
                                         style: TextStyle(
-                                          fontSize: taskName.text.length<12? 24 : 15,
+                                          fontSize: phaseName.text.length<12? 24 : 15,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.red.shade200,
                                         ),
@@ -1163,6 +1165,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                   IconButton(
                                       onPressed: () {
                                         taskName.text = '';
+                                        addTaskUsers.length =0;
                                         showModalBottomSheet<void>(
                                           isScrollControlled: true,
                                           context: context,
@@ -1285,7 +1288,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                                       shrinkWrap: true,
                                                                       itemBuilder: (BuildContext context,
                                                                           int index) =>
-                                                                          buildChooseUsers(
+                                                                          buildAddTaskChooseUsers(
                                                                               user:
                                                                               chooseList.chooseuserList![index],
                                                                               index: index),
@@ -1324,7 +1327,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                                     fillColor: Color(0xFCED3FF),
                                                                     label: Padding(
                                                                       padding: const EdgeInsets.all(10),
-                                                                      child: users.isEmpty
+                                                                      child: addTaskUsers.isEmpty
                                                                           ? Text(
                                                                         AppLocalizations.of(context)!.addTaskTo,
                                                                         style: TextStyle(
@@ -1332,7 +1335,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                                             color: Colors.black),
                                                                       )
                                                                           : Text(
-                                                                        'You Selected ${users.length} Employee',
+                                                                        'You Selected ${addTaskUsers.length} Employee',
                                                                         style: TextStyle(
                                                                             fontWeight: FontWeight.bold,
                                                                             color: Colors.green),
@@ -1537,7 +1540,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                                         "description": taskdesc.text,
                                                                         "phase_id": phaseId ?? phaseID,
                                                                         "due_date": dateController.text,
-                                                                        "assignees": users,
+                                                                        "assignees": addTaskUsers,
                                                                         "status": "PENDING",
                                                                         "from_date": fromDateController.text,
                                                                       },
@@ -1550,7 +1553,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                                       taskdesc.text = '';
                                                                       fromDateController.text = '';
                                                                       phaseController.text = '';
-                                                                      users.length = 0;
+                                                                      addTaskUsers.length = 0;
 
                                                                       Flushbar(
                                                                         message:
@@ -2417,7 +2420,7 @@ class _HomeScreenState extends State<TaskManagement> {
         phaseClick = true;
         phaseId = task.phase_id;
         getTasks();
-        taskName.text = task.phaseName!;
+        phaseName.text = task.phaseName!;
         setState(() {});
       },
       child: AnimatedContainer(
@@ -3370,6 +3373,92 @@ class _HomeScreenState extends State<TaskManagement> {
       );
     });
   }
+
+  Widget buildAddChooseUsers({required ChooseUserModel user, required int index}) {
+    userId = user.userId;
+    return StatefulBuilder(builder:
+        (BuildContext context, void Function(void Function()) setState) {
+      return Row(
+        children: [
+          Expanded(
+            child: Text(
+              "${user.name}",
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Expanded(
+            child: Checkbox(
+              checkColor: Colors.white,
+              value: addUsers.contains(user.userId),
+              onChanged: (bool? value) {
+                if (!addUsers.contains(user.userId)) {
+                  setState(
+                    () {
+                      addUsers.add(user.userId);
+                    },
+                  );
+                } else {
+                  setState(
+                    () {
+                      addUsers.remove(user.userId);
+                    },
+                  );
+                }
+                print(addUsers);
+              },
+            ),
+          ),
+        ],
+      );
+    });
+  }
+  Widget buildAddTaskChooseUsers({required ChooseUserModel user, required int index}) {
+    userId = user.userId;
+    return StatefulBuilder(builder:
+        (BuildContext context, void Function(void Function()) setState) {
+      return Row(
+        children: [
+          Expanded(
+            child: Text(
+              "${user.name}",
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Expanded(
+            child: Checkbox(
+              checkColor: Colors.white,
+              value: addTaskUsers.contains(user.userId),
+              onChanged: (bool? value) {
+                if (!addTaskUsers.contains(user.userId)) {
+                  setState(
+                    () {
+                      addTaskUsers.add(user.userId);
+                    },
+                  );
+                } else {
+                  setState(
+                    () {
+                      addTaskUsers.remove(user.userId);
+                    },
+                  );
+                }
+                print(addTaskUsers);
+              },
+            ),
+          ),
+        ],
+      );
+    });
+  }
+
   Widget buildChoosePhaes({required PhasesModel phase, required int index}) {
     return Column(
       children: [
