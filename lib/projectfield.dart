@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hr/screens/attendance.dart';
 import 'package:hr/screens/onboding/onboding_screen.dart';
 import 'package:hr/screens/profile.dart';
 import 'package:hr/screens/taskmanagement.dart';
@@ -9,6 +10,7 @@ import 'package:hr/screens/attendingToday.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../main.dart';
 import '../modules/organizationmodel.dart';
@@ -385,6 +387,48 @@ class _ProjectsFieldState extends State<ProjectsField> {
                     });
                   },
                 ),
+                ListTile(
+                  leading: Icon(Icons.emoji_emotions),
+                  title: Text('Attend Now'),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    _handleDrawerItemSelection(() {
+                      checkAttendace();
+                      if (status == 'NOACTION' || status.isEmpty) {
+
+                        Alert(
+                          context: context,
+                          desc: "Try Again Later!",
+                        ).show();
+                      } else {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        Future.delayed(Duration(seconds: 1));
+                        setState(() {
+                          isLoading = false;
+                        });
+                        _startLoading(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Attendance(
+                                userId: widget.userId,
+                                organizationId: widget.organizationId,
+                                organizationsName: widget.organizationsName,
+                                oranizaionsList: widget.oranizaionsList,
+                                organizationsArabicName: widget.organizationsArabicName,
+                                personType: widget.personType,
+                              ),
+                            ),
+                          );
+                        });
+                      }
+                    },
+                    );
+                  },
+                ),
+
               ],
             ),
           ),

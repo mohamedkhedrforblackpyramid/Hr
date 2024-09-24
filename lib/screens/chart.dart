@@ -34,6 +34,7 @@ class _ChartsState extends State<Charts> {
   List<ChartsModel>? chartData;
   DateTime dateFrom = DateTime.now();
   DateTime dateTo = DateTime.now();
+  String? topPerformerName; // To hold the name of the top performer
 
   final List<Color> colors = [
     Colors.red,
@@ -75,6 +76,7 @@ class _ChartsState extends State<Charts> {
             .toList();
 
         chartData!.sort((a, b) => b.total_attendance_time.compareTo(a.total_attendance_time));
+        topPerformerName = chartData!.isNotEmpty ? chartData!.first.name : null;
 
         chartLoading = false;
         print(response.data);
@@ -102,6 +104,7 @@ class _ChartsState extends State<Charts> {
             .toList();
 
         chartData!.sort((a, b) => b.attendance_pecentage.compareTo(a.attendance_pecentage));
+        topPerformerName = chartData!.isNotEmpty ? chartData!.first.name : null;
 
         chartLoading = false;
         print(response.data);
@@ -162,7 +165,21 @@ class _ChartsState extends State<Charts> {
       ),
     );
   }
+  Widget _buildTopPerformer() {
+    if (topPerformerName == null) return Container();
 
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.emoji_events, color: Colors.amber, size: 30), // Crown icon
+        SizedBox(width: 8),
+        Text(
+          '$topPerformerName',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
   Widget _buildChartPage() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -315,6 +332,7 @@ class _ChartsState extends State<Charts> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -370,6 +388,7 @@ class _ChartsState extends State<Charts> {
             ],
           ),
           SizedBox(height: 20),
+
           Expanded(
             child: chartLoading
                 ? Center(
@@ -383,6 +402,7 @@ class _ChartsState extends State<Charts> {
                       strokeWidth: 6,
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
                     ),
+
                     Positioned(
                       child: SizedBox(
                         width: 60,
@@ -393,6 +413,7 @@ class _ChartsState extends State<Charts> {
                         ),
                       ),
                     ),
+
                   ],
                 ),
               ),

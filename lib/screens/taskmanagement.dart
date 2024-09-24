@@ -11,7 +11,6 @@ import '../modules/phases.dart';
 import '../modules/projects.dart';
 import '../modules/tasks.dart';
 import '../network/remote/dio_helper.dart';
-import 'multiscreen_tasks/multiscreenfortasks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskManagement extends StatefulWidget {
@@ -76,7 +75,6 @@ class _HomeScreenState extends State<TaskManagement> {
         query: {'organization_id': widget.organizationId}).then((response) {
       projectsNew = ProjectsList.fromJson(response.data);
 
-      print(response.data);
 
       setState(() {
         projectLoading = false;
@@ -88,11 +86,10 @@ class _HomeScreenState extends State<TaskManagement> {
 
   List<FaceHolder> getFaceHolders(ProjectsModel project) {
     return project.assignee_avatars.asMap().entries.map((entry) {
-      int index = entry.key;
       String avatarUrl = entry.value;
       return FaceHolder(
-        id: (project.assignees[index] ?? index).toString(),
-        name: 'User $index', // Or use an appropriate name if available
+        id: avatarUrl,
+        name: avatarUrl,
         avatar: NetworkImage(avatarUrl),
       );
     }).toList();
@@ -1791,6 +1788,7 @@ class _HomeScreenState extends State<TaskManagement> {
         projectClick = true;
         phaseClick = false;
         taskName.text = '';
+        phaseName.text='';
         await getPhases();
         setState(() {});
       },
@@ -2080,6 +2078,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                               clickAddProject =
                                                                   true;
                                                             });
+
                                                             await DioHelper
                                                                 .patchData(
                                                               url:
@@ -2095,14 +2094,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                                                     users,
                                                               },
                                                             ).then((value) {
-                                                              print(projectName
-                                                                  .text);
-                                                              print(
-                                                                  projectDescription
-                                                                      .text);
                                                               print(value.data);
-                                                              print(
-                                                                  "Tmaaaaaaaaaaaaaaaaaaaaaaaaam");
                                                               setState(() {});
                                                               clickAddProject =
                                                                   false;
@@ -2110,8 +2102,7 @@ class _HomeScreenState extends State<TaskManagement> {
 
                                                               Navigator.pop(
                                                                   context);
-                                                              print(
-                                                                  "Shaaaaaaaaatr");
+
                                                             }).catchError(
                                                                 (error) {
                                                               clickAddProject =
@@ -2377,7 +2368,7 @@ class _HomeScreenState extends State<TaskManagement> {
                                       itemCount: getFaceHolders(task).length,
                                       itemBuilder: (context, index) {
                                         return CircleAvatar(
-                                          backgroundImage: getFaceHolders(task)[index].avatar, // الآن يتم تمرير ImageProvider
+                                          backgroundImage: getFaceHolders(task)[index].avatar,
                                         );
                                       },
                                     ),
