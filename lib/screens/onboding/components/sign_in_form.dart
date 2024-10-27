@@ -63,7 +63,7 @@ class _SignInFormState extends State<SignInForm> {
   String organizationsArabicName = '';
   bool _isChecked = false;
   bool settingsLoad = false;
-  String versionNow = '1.0.6';
+  String versionNow = '1.0.7';
   List <String>? versions;
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
