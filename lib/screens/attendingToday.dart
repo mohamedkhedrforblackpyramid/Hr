@@ -1,9 +1,9 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../network/remote/dio_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class Attending extends StatefulWidget {
   int? organizationId;
@@ -46,15 +46,15 @@ class _AttendingState extends State<Attending> {
     super.initState();
   }
 
-  // Function to add three hours to a given time string
-  String addThreeHours(String timeString) {
+  // Function to format a given time string to the local timezone
+  String formatToLocalTime(String timeString) {
     try {
-      // Parse the time string to DateTime object
-      DateTime time = DateTime.parse(timeString);
-      // Add 3 hours
-      DateTime newTime = time.add(Duration(hours: 3));
-      // Format the new time
-      return "${newTime.hour}:${newTime.minute.toString().padLeft(2, '0')}";
+      // Ensure the time string is in UTC by adding 'Z' at the end
+      DateTime utcTime = DateTime.parse("${timeString}Z").toUtc();
+      // Convert UTC time to local time
+      DateTime localTime = utcTime.toLocal();
+      // Format the new local time
+      return DateFormat('HH:mm').format(localTime);
     } catch (e) {
       // In case of an error (invalid format), return the original string
       return timeString;
@@ -112,7 +112,7 @@ class _AttendingState extends State<Attending> {
             ),
             SafeArea(
               child: Padding(
-                padding:  EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(20.0),
                 child: Column(
                   children: [
                     Text(
@@ -163,7 +163,6 @@ class _AttendingState extends State<Attending> {
                                     color: Colors.black87,
                                   ),
                                 ),
-
                                 subtitle: Row(
                                   children: [
                                     Text(
@@ -171,15 +170,15 @@ class _AttendingState extends State<Attending> {
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                        color: Colors.deepPurple
+                                          color: Colors.deepPurple
                                       ),
                                     ),
                                     Text(
-                                      "${addThreeHours(users[index]['first_attendance'])}",
+                                      "${formatToLocalTime(users[index]['first_attendance'])}",
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                        color: Colors.green
+                                          color: Colors.green
                                       ),
                                     ),
                                   ],
