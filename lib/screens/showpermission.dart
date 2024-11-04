@@ -26,13 +26,13 @@ class Showpermit extends StatefulWidget {
 
   Showpermit(
       {required this.userId,
-      required this.personType,
-      required this.organizationId,
-      required this.vacancesCount,
-      required this.permitsPermission,
-      required this.oranizaionsList,
-      required this.organizationsName,
-      required this.organizationsArabicName});
+        required this.personType,
+        required this.organizationId,
+        required this.vacancesCount,
+        required this.permitsPermission,
+        required this.oranizaionsList,
+        required this.organizationsName,
+        required this.organizationsArabicName});
 
   @override
   State<Showpermit> createState() => _ShowpermitState();
@@ -88,9 +88,9 @@ class _ShowpermitState extends State<Showpermit> {
     }
 
     DioHelper.getData(
-            url:
-                "api/vacancies?organization_id=${widget.organizationId}&is_permit=1",
-            query: query)
+        url:
+        "api/vacancies?organization_id=${widget.organizationId}&is_permit=1",
+        query: query)
         .then((response) {
       print(response.data);
       permits = PermitList.fromJson(response.data['data']);
@@ -126,9 +126,9 @@ class _ShowpermitState extends State<Showpermit> {
       query['status'] = perPending;
     }
     DioHelper.getData(
-            url:
-                "api/vacancies?organization_id=${widget.organizationId}&is_permit=0",
-            query: query)
+        url:
+        "api/vacancies?organization_id=${widget.organizationId}&is_permit=0",
+        query: query)
         .then((response) {
       permits = PermitList.fromJson(response.data['data']);
       if (clickperPending == true || clickVacPending == true)
@@ -147,13 +147,13 @@ class _ShowpermitState extends State<Showpermit> {
         context,
         MaterialPageRoute(
             builder: (context) => Hr(
-                  userId: widget.userId,
-                  oranizaionsList: widget.oranizaionsList,
-                  organizationId: widget.organizationId,
-                  organizationsName: widget.organizationsName,
-                  organizationsArabicName: widget.organizationsArabicName,
-                  personType: widget.personType,
-                )));
+              userId: widget.userId,
+              oranizaionsList: widget.oranizaionsList,
+              organizationId: widget.organizationId,
+              organizationsName: widget.organizationsName,
+              organizationsArabicName: widget.organizationsArabicName,
+              personType: widget.personType,
+            )));
   }
 
   getRequestInfo() async {
@@ -161,10 +161,10 @@ class _ShowpermitState extends State<Showpermit> {
 
     await DioHelper.getData(
       url:
-          "api/user/time-offs/?user_id=${usrId}&organization_id=${widget.organizationId}&month=${monthNumber}&year=${yearNumber}",
+      "api/user/time-offs/?user_id=${usrId}&organization_id=${widget.organizationId}&month=${monthNumber}&year=${yearNumber}",
     ).then((response) {
       total_monthly_timeoff_hours =
-          response.data['total_monthly_timeoff_hours'];
+      response.data['total_monthly_timeoff_hours'];
       month_timeoffs = response.data['month_timeoffs'];
       year_dayoffs = response.data['year_dayoffs'];
       month_dayoffs = response.data['month_dayoffs'];
@@ -192,18 +192,18 @@ class _ShowpermitState extends State<Showpermit> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
-      children: [
-        AnimatedPositioned(
-          duration: Duration(milliseconds: 240),
-          top: isSignInDialogShown ? -50 : 0,
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: SafeArea(
-            child: SingleChildScrollView(
-              child: permitLoading == false
-                  ? Column(
-                      children: [
-                        Padding(
+          children: [
+            AnimatedPositioned(
+              duration: Duration(milliseconds: 240),
+              top: isSignInDialogShown ? -50 : 0,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: permitLoading == false
+                      ? Column(
+                    children: [
+                      Padding(
                           padding: const EdgeInsets.all(15),
                           child: Padding(
                             padding: const EdgeInsets.all(15),
@@ -359,182 +359,182 @@ class _ShowpermitState extends State<Showpermit> {
                             ),
                           )
 
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: TextButton(
+                              onPressed: () {
+                                if (clickPermission == true) {
+                                  clickperPending = true;
+                                  clickperRefused = false;
+                                  clickperApproved = false;
+                                  getPermissions();
+                                } else {
+                                  clickperPending = false;
+                                  clickperRefused = false;
+                                  clickperApproved = false;
+                                  clickVacPending = true;
+                                  clickVacApproved = false;
+                                  clickVacRefused = false;
+                                  getVecan();
+                                }
+                                setState(() {});
+                              },
+                              child: Text(
+                                '${AppLocalizations.of(context)!.pending}',
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: clickPermission == true
+                                  ? clickperPending == true ||
+                                  clickVacPending == true
+                                  ? Colors.yellow.shade100
+                                  : Colors.teal.shade100
+                                  : clickperPending == true ||
+                                  clickVacPending == true
+                                  ? Colors.red.shade100
+                                  : Colors.teal.shade100,
+                            ),
+                            height: clickperPending || clickVacPending == true
+                                ? 80
+                                : 50,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
                               child: TextButton(
                                 onPressed: () {
                                   if (clickPermission == true) {
-                                    clickperPending = true;
+                                    permits.permitList!.length = 0;
+
+                                    clickperPending = false;
                                     clickperRefused = false;
-                                    clickperApproved = false;
+                                    clickperApproved = true;
+
                                     getPermissions();
+                                    setState(() {});
                                   } else {
                                     clickperPending = false;
                                     clickperRefused = false;
                                     clickperApproved = false;
-                                    clickVacPending = true;
-                                    clickVacApproved = false;
+                                    clickVacPending = false;
+                                    clickVacApproved = true;
                                     clickVacRefused = false;
                                     getVecan();
                                   }
                                   setState(() {});
                                 },
                                 child: Text(
-                                  '${AppLocalizations.of(context)!.pending}',
-                                ),
+                                    '${AppLocalizations.of(context)!.approved}'),
                               ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 color: clickPermission == true
-                                    ? clickperPending == true ||
-                                            clickVacPending == true
-                                        ? Colors.yellow.shade100
-                                        : Colors.teal.shade100
-                                    : clickperPending == true ||
-                                            clickVacPending == true
-                                        ? Colors.red.shade100
-                                        : Colors.teal.shade100,
+                                    ? clickperApproved == true ||
+                                    clickVacApproved == true
+                                    ? Colors.yellow.shade100
+                                    : Colors.teal.shade100
+                                    : clickperApproved == true ||
+                                    clickVacApproved == true
+                                    ? Colors.red.shade100
+                                    : Colors.teal.shade100,
                               ),
-                              height: clickperPending || clickVacPending == true
+                              height:
+                              clickperApproved || clickVacApproved == true
                                   ? 80
                                   : 50,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Container(
-                                child: TextButton(
-                                  onPressed: () {
-                                    if (clickPermission == true) {
-                                      permits.permitList!.length = 0;
-
-                                      clickperPending = false;
-                                      clickperRefused = false;
-                                      clickperApproved = true;
-
-                                      getPermissions();
-                                      setState(() {});
-                                    } else {
-                                      clickperPending = false;
-                                      clickperRefused = false;
-                                      clickperApproved = false;
-                                      clickVacPending = false;
-                                      clickVacApproved = true;
-                                      clickVacRefused = false;
-                                      getVecan();
-                                    }
-                                    setState(() {});
-                                  },
-                                  child: Text(
-                                      '${AppLocalizations.of(context)!.approved}'),
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: clickPermission == true
-                                      ? clickperApproved == true ||
-                                              clickVacApproved == true
-                                          ? Colors.yellow.shade100
-                                          : Colors.teal.shade100
-                                      : clickperApproved == true ||
-                                              clickVacApproved == true
-                                          ? Colors.red.shade100
-                                          : Colors.teal.shade100,
-                                ),
-                                height:
-                                    clickperApproved || clickVacApproved == true
-                                        ? 80
-                                        : 50,
-                              ),
+                          ),
+                          Container(
+                            child: TextButton(
+                              onPressed: () {
+                                if (clickPermission == true) {
+                                  clickperPending = false;
+                                  clickperRefused = true;
+                                  clickperApproved = false;
+                                  getPermissions();
+                                } else {
+                                  clickperPending = false;
+                                  clickperRefused = false;
+                                  clickperApproved = false;
+                                  clickVacPending = false;
+                                  clickVacApproved = false;
+                                  clickVacRefused = true;
+                                  getVecan();
+                                }
+                                setState(() {});
+                              },
+                              child: Text(
+                                  '${AppLocalizations.of(context)!.refuse}'),
                             ),
-                            Container(
-                              child: TextButton(
-                                onPressed: () {
-                                  if (clickPermission == true) {
-                                    clickperPending = false;
-                                    clickperRefused = true;
-                                    clickperApproved = false;
-                                    getPermissions();
-                                  } else {
-                                    clickperPending = false;
-                                    clickperRefused = false;
-                                    clickperApproved = false;
-                                    clickVacPending = false;
-                                    clickVacApproved = false;
-                                    clickVacRefused = true;
-                                    getVecan();
-                                  }
-                                  setState(() {});
-                                },
-                                child: Text(
-                                    '${AppLocalizations.of(context)!.refuse}'),
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: clickPermission == true
-                                    ? clickperRefused == true ||
-                                            clickVacRefused == true
-                                        ? Colors.yellow.shade100
-                                        : Colors.teal.shade100
-                                    : clickperRefused == true ||
-                                            clickVacRefused == true
-                                        ? Colors.red.shade100
-                                        : Colors.teal.shade100,
-                              ),
-                              height: clickperRefused || clickVacRefused == true
-                                  ? 80
-                                  : 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: clickPermission == true
+                                  ? clickperRefused == true ||
+                                  clickVacRefused == true
+                                  ? Colors.yellow.shade100
+                                  : Colors.teal.shade100
+                                  : clickperRefused == true ||
+                                  clickVacRefused == true
+                                  ? Colors.red.shade100
+                                  : Colors.teal.shade100,
                             ),
-                          ],
+                            height: clickperRefused || clickVacRefused == true
+                                ? 80
+                                : 50,
+                          ),
+                        ],
+                      ),
+                      permits.permitList!.isNotEmpty
+                          ? SizedBox(
+                        //height: MediaQuery.of(context).size.height,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context,
+                              int index) =>
+                          clickPermission == true
+                              ? buildPermitList(
+                              per: permits.permitList![index],
+                              index: index,
+                              context: context)
+                              : buildVacanList(
+                              per: permits.permitList![index],
+                              index: index,
+                              context: context),
+                          itemCount: permits.permitList!.length,
                         ),
-                        permits.permitList!.isNotEmpty
-                            ? SizedBox(
-                                //height: MediaQuery.of(context).size.height,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context,
-                                          int index) =>
-                                      clickPermission == true
-                                          ? buildPermitList(
-                                              per: permits.permitList![index],
-                                              index: index,
-                                              context: context)
-                                          : buildVacanList(
-                                              per: permits.permitList![index],
-                                              index: index,
-                                              context: context),
-                                  itemCount: permits.permitList!.length,
-                                ),
-                              )
-                            : Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 200),
-                                child: Center(
-                                  child: Text(
-                                    "No Requests ",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                      ],
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 300),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.indigo,
+                      )
+                          : Padding(
+                        padding:
+                        const EdgeInsets.symmetric(vertical: 200),
+                        child: Center(
+                          child: Text(
+                            "No Requests ",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
+                    ],
+                  )
+                      : Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 300),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.indigo,
+                      ),
                     ),
-            ),
-          ),
-        )
-      ],
-    ));
+                  ),
+                ),
+              ),
+            )
+          ],
+        ));
   }
 
   Widget buildPermitList({
@@ -542,15 +542,27 @@ class _ShowpermitState extends State<Showpermit> {
     required int index,
     required BuildContext context,
   }) {
-    // Define date format
-    final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
+    // Function to format a given time string to the local timezone
+    String formatToLocalTime(String timeString) {
+      try {
+        // Ensure the time string is in UTC by adding 'Z' at the end
+        DateTime utcTime = DateTime.parse("${timeString}Z").toUtc();
+        // Convert UTC time to local time
+        DateTime localTime = utcTime.toLocal();
+        // Format the new local time
+        return DateFormat('yyyy-MM-dd HH:mm').format(localTime);
+      } catch (e) {
+        // In case of an error (invalid format), return the original string
+        return timeString;
+      }
+    }
 
-    // Format date and time with added 3 hours
+    // Format date and time using the local time format function
     String formattedFrom = per.from != null
-        ? dateFormat.format(DateTime.parse(per.from!).add(Duration(hours: 3)))
+        ? formatToLocalTime(per.from!)
         : '____';
     String formattedTo = per.to != null
-        ? dateFormat.format(DateTime.parse(per.to!).add(Duration(hours: 3)))
+        ? formatToLocalTime(per.to!)
         : '____';
 
     return Container(
@@ -591,16 +603,14 @@ class _ShowpermitState extends State<Showpermit> {
             ),
           ),
           Text(
-            '${AppLocalizations.of(context)!.notesView} : ${per.notes == null ? '____' : per.notes}',
+            '${AppLocalizations.of(context)!.notesView} : ${per.notes ?? '____'}',
             style: TextStyle(
               fontSize: 15,
               color: Colors.black45,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -619,255 +629,267 @@ class _ShowpermitState extends State<Showpermit> {
                   color: per.status == 'APPROVED'
                       ? Colors.green
                       : per.status == "REFUSED"
-                          ? Colors.red
-                          : Color(0xffFFA500),
+                      ? Colors.red
+                      : Color(0xffFFA500),
                   fontWeight: FontWeight.bold,
                 ),
               ),
               widget.personType == 'MANAGER'
                   ? IconButton(
-                      onPressed: () async {
-                        // Extract month and year numbers
-                        monthNumber = per.from != null
-                            ? DateTime.parse(per.from!)
-                                .add(Duration(hours: 3))
-                                .month
-                            : -1; // -1 if date is null
-                        yearNumber = per.from != null
-                            ? DateTime.parse(per.from!)
-                                .add(Duration(hours: 3))
-                                .year
-                            : -1; // -1 if date is null
-                        usrId = per.user_id;
-                        await getRequestInfo();
-                        setState(() {});
+                onPressed: () async {
+                  // Extract month and year numbers
+                  monthNumber = per.from != null
+                      ? DateTime.parse(per.from!)
+                      .toLocal()
+                      .month
+                      : -1; // -1 if date is null
+                  yearNumber = per.from != null
+                      ? DateTime.parse(per.from!)
+                      .toLocal()
+                      .year
+                      : -1; // -1 if date is null
+                  usrId = per.user_id;
+                  await getRequestInfo();
+                  setState(() {});
 
-                        // Print month and year numbers to console
-                        print('Month Number: $monthNumber');
-                        print('Year Number: $yearNumber');
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "About this Employee",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red),
-                                  ),
-                                  Text(
-                                    "Total Monthly (time off hours) : ${total_monthly_timeoff_hours}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Month Time Off : ${month_timeoffs}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Year Day Off : ${year_dayoffs}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Month Day off : ${month_dayoffs}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      icon: Icon(Icons.info_outline))
+                  // Print month and year numbers to console
+                  print('Month Number: $monthNumber');
+                  print('Year Number: $yearNumber');
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "About this Employee",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red),
+                            ),
+                            Text(
+                              "Total Monthly (time off hours) : ${total_monthly_timeoff_hours}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Month Time Off : ${month_timeoffs}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Year Day Off : ${year_dayoffs}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Month Day off : ${month_dayoffs}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                icon: Icon(Icons.info_outline),
+              )
                   : SizedBox(),
             ],
           ),
-          SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 15),
           widget.personType == 'MANAGER'
               ? per.status == 'PENDING'
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xff49796B),
-                            borderRadius: BorderRadius.circular(30),
+              ? Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(0xff49796B),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text(
+                            '${AppLocalizations.of(context)!.accept_permission}',
                           ),
-                          child: TextButton(
-                            onPressed: () {
-                              showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    content: Text(
-                                      '${AppLocalizations.of(context)!.accept_permission}',
-                                    ),
-                                    actions: [
-                                      Row(
-                                        children: [
-                                          TextButton(
-                                            style: TextButton.styleFrom(
-                                              textStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .labelLarge,
-                                            ),
-                                            child: Text(
-                                                '${AppLocalizations.of(context)!.yes}'),
-                                            onPressed: () async {
-                                              await DioHelper.postData(
-                                                url:
-                                                    "api/update-status/${per.id}",
-                                                data: {
-                                                  "status": true,
-                                                },
-                                              ).then((value) {
-                                                setState(() {
-                                                  getPermissions();
-                                                  //  permits.permitList?.removeAt(index);
-                                                });
-                                                print('Accepted');
-                                              }).catchError((error) {
-                                                print('Error: $error');
-                                              });
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                          TextButton(
-                                            style: TextButton.styleFrom(
-                                              textStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .labelLarge,
-                                            ),
-                                            child: Text(
-                                                '${AppLocalizations.of(context)!.no}'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            child: Text(
-                              '${AppLocalizations.of(context)!.accept}',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
+                          actions: [
+                            Row(
+                              children: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                                  ),
+                                  child: Text(
+                                      '${AppLocalizations.of(context)!.yes}'),
+                                  onPressed: () async {
+                                    await DioHelper.postData(
+                                      url:
+                                      "api/update-status/${per.id}",
+                                      data: {
+                                        "status": true,
+                                      },
+                                    ).then((value) {
+                                      setState(() {
+                                        getPermissions();
+                                        // permits.permitList?.removeAt(index);
+                                      });
+                                      print('Accepted');
+                                    }).catchError((error) {
+                                      print('Error: $error');
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                                  ),
+                                  child: Text(
+                                      '${AppLocalizations.of(context)!.no}'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                              mainAxisAlignment:
+                              MainAxisAlignment.center,
                             ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Text(
+                    '${AppLocalizations.of(context)!.accept}',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(0xff49796B),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text(
+                            '${AppLocalizations.of(context)!.are_denyPermission}',
                           ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xff49796B),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: TextButton(
-                            onPressed: () {
-                              showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    content: Text(
-                                      '${AppLocalizations.of(context)!.are_denyPermission}',
-                                    ),
-                                    actions: [
-                                      Row(
-                                        children: [
-                                          TextButton(
-                                            style: TextButton.styleFrom(
-                                              textStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .labelLarge,
-                                            ),
-                                            child: Text(
-                                                '${AppLocalizations.of(context)!.yes}'),
-                                            onPressed: () async {
-                                              await DioHelper.postData(
-                                                url:
-                                                    "api/update-status/${per.id}",
-                                                data: {
-                                                  "status": false,
-                                                },
-                                              ).then((value) {
-                                                setState(() {
-                                                  getPermissions();
-                                                  // permits.permitList?.removeAt(index);
-                                                });
-                                                print('Rejected');
-                                              }).catchError((error) {
-                                                print('Error: $error');
-                                              });
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                          TextButton(
-                                            style: TextButton.styleFrom(
-                                              textStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .labelLarge,
-                                            ),
-                                            child: Text(
-                                                '${AppLocalizations.of(context)!.no}'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            child: Text(
-                              '${AppLocalizations.of(context)!.refuse}',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
+                          actions: [
+                            Row(
+                              children: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                                  ),
+                                  child: Text(
+                                      '${AppLocalizations.of(context)!.yes}'),
+                                  onPressed: () async {
+                                    await DioHelper.postData(
+                                      url:
+                                      "api/update-status/${per.id}",
+                                      data: {
+                                        "status": false,
+                                      },
+                                    ).then((value) {
+                                      setState(() {
+                                        getPermissions();
+                                        // permits.permitList?.removeAt(index);
+                                      });
+                                      print('Rejected');
+                                    }).catchError((error) {
+                                      print('Error: $error');
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                                  ),
+                                  child: Text(
+                                      '${AppLocalizations.of(context)!.no}'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                              mainAxisAlignment:
+                              MainAxisAlignment.center,
                             ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : SizedBox()
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Text(
+                    '${AppLocalizations.of(context)!.refuse}',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
               : SizedBox()
+              : SizedBox(),
         ],
       ),
     );
   }
+
 
   Widget buildVacanList({
     required PermitModel per,
     required int index,
     required BuildContext context,
   }) {
-    final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+    // Function to format a given time string to the local timezone
+    String formatToLocalTime(String timeString) {
+      try {
+        // Ensure the time string is in UTC by adding 'Z' at the end
+        DateTime utcTime = DateTime.parse("${timeString}Z").toUtc();
+        // Convert UTC time to local time
+        DateTime localTime = utcTime.toLocal();
+        // Format the new local time
+        return DateFormat('yyyy-MM-dd').format(localTime);
+      } catch (e) {
+        // In case of an error (invalid format), return the original string
+        return timeString;
+      }
+    }
 
-    // Format date and time
+    // Format date and time using the local time format function
     String formattedFrom = per.from != null
-        ? dateFormat.format(DateTime.parse(per.from!))
+        ? formatToLocalTime(per.from!)
         : '____';
-    String formattedTo =
-        per.to != null ? dateFormat.format(DateTime.parse(per.to!)) : '____';
+    String formattedTo = per.to != null
+        ? formatToLocalTime(per.to!)
+        : '____';
 
     return Container(
       margin: EdgeInsets.all(20),
@@ -890,35 +912,28 @@ class _ShowpermitState extends State<Showpermit> {
                 fontWeight: FontWeight.bold),
           ),
           Text(
-            '${AppLocalizations.of(context)!.timeFrom} : ${formattedFrom}',
+            '${AppLocalizations.of(context)!.timeFrom} : $formattedFrom',
             style: TextStyle(
                 fontSize: 15,
                 color: Colors.black45,
                 fontWeight: FontWeight.bold),
           ),
           Text(
-            '${AppLocalizations.of(context)!.timeTo} :${formattedTo}',
+            '${AppLocalizations.of(context)!.timeTo} : $formattedTo',
             style: TextStyle(
                 fontSize: 15,
                 color: Colors.black45,
                 fontWeight: FontWeight.bold),
           ),
-          /* Text(
-            'Status : ${per.status}',
-            style: TextStyle(
-                fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
-          ),*/
           Text(
-            '${AppLocalizations.of(context)!.notesView} : ${per.notes == null ? '____' : per.notes}',
+            '${AppLocalizations.of(context)!.notesView} : ${per.notes ?? '____'}',
             style: TextStyle(
               fontSize: 15,
               color: Colors.black45,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -937,233 +952,222 @@ class _ShowpermitState extends State<Showpermit> {
                   color: per.status == 'APPROVED'
                       ? Colors.green
                       : per.status == "REFUSED"
-                          ? Colors.red
-                          : Color(0xffFFA500),
+                      ? Colors.red
+                      : Color(0xffFFA500),
                   fontWeight: FontWeight.bold,
                 ),
               ),
               widget.personType == 'MANAGER'
                   ? IconButton(
-                      onPressed: () async {
-                        // Extract month and year numbers
-                        monthNumber = per.from != null
-                            ? DateTime.parse(per.from!)
-                                .add(Duration(hours: 3))
-                                .month
-                            : -1; // -1 if date is null
-                        yearNumber = per.from != null
-                            ? DateTime.parse(per.from!)
-                                .add(Duration(hours: 3))
-                                .year
-                            : -1; // -1 if date is null
-                        usrId = per.user_id;
-                        await getRequestInfo();
-                        setState(() {});
-                        usrId = per.user_id;
-                        await getRequestInfo();
-                        setState(() {});
-                        print('Month Number: $monthNumber');
-                        print('Year Number: $yearNumber');
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "About this Employee",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red),
-                                  ),
-                                  Text(
-                                    "Total Monthly (time off hours) : ${total_monthly_timeoff_hours}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Month Time Off : ${month_timeoffs}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Year Day Off : ${year_dayoffs}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Month Day off : ${month_dayoffs}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ],
+                  onPressed: () async {
+                    // Extract month and year numbers
+                    monthNumber = per.from != null
+                        ? DateTime.parse(per.from!)
+                        .toLocal()
+                        .month
+                        : -1; // -1 if date is null
+                    yearNumber = per.from != null
+                        ? DateTime.parse(per.from!)
+                        .toLocal()
+                        .year
+                        : -1; // -1 if date is null
+                    usrId = per.user_id;
+                    await getRequestInfo();
+                    setState(() {});
+                    print('Month Number: $monthNumber');
+                    print('Year Number: $yearNumber');
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "About this Employee",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red),
                               ),
-                            );
-                          },
+                              Text(
+                                "Total Monthly (time off hours) : ${total_monthly_timeoff_hours}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Month Time Off : ${month_timeoffs}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Year Day Off : ${year_dayoffs}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Month Day off : ${month_dayoffs}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         );
                       },
-                      icon: Icon(Icons.info_outline))
+                    );
+                  },
+                  icon: Icon(Icons.info_outline))
                   : SizedBox(),
             ],
           ),
-          SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 15),
           widget.personType == 'MANAGER'
               ? per.status == 'PENDING'
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Color(0xff49796B),
-                              borderRadius: BorderRadius.circular(30)),
-                          child: TextButton(
-                              onPressed: () {
-                                showDialog<void>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      //  title: const Text('Basic dialog title'),
-                                      content: Text(
-                                        '${AppLocalizations.of(context)!.accept_excuse}',
-                                      ),
-                                      actions: [
-                                        Row(
-                                          children: [
-                                            TextButton(
-                                              style: TextButton.styleFrom(
-                                                textStyle: Theme.of(context)
-                                                    .textTheme
-                                                    .labelLarge,
-                                              ),
-                                              child: Text(
-                                                  '${AppLocalizations.of(context)!.yes}'),
-                                              onPressed: () async {
-                                                await DioHelper.postData(
-                                                  url:
-                                                      "api/update-status/${per.id}",
-                                                  data: {
-                                                    "status": true,
-                                                  },
-                                                ).then((value) {
-                                                  setState(() {
-                                                    getVecan();
-                                                    //  permits.permitList?.removeAt(index);
-                                                  });
-                                                  print('mbroook');
-                                                }).catchError((error) {});
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            TextButton(
-                                              style: TextButton.styleFrom(
-                                                textStyle: Theme.of(context)
-                                                    .textTheme
-                                                    .labelLarge,
-                                              ),
-                                              child: Text(
-                                                  '${AppLocalizations.of(context)!.no}'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Text(
-                                '${AppLocalizations.of(context)!.accept}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              )),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Color(0xff49796B),
-                              borderRadius: BorderRadius.circular(30)),
-                          child: TextButton(
-                              onPressed: () {
-                                showDialog<void>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      //  title: const Text('Basic dialog title'),
-                                      content: Text(
-                                        '${AppLocalizations.of(context)!.are_denyExcuse}',
-                                      ),
-                                      actions: [
-                                        Row(
-                                          children: [
-                                            TextButton(
-                                              style: TextButton.styleFrom(
-                                                textStyle: Theme.of(context)
-                                                    .textTheme
-                                                    .labelLarge,
-                                              ),
-                                              child: Text(
-                                                  '${AppLocalizations.of(context)!.yes}'),
-                                              onPressed: () async {
-                                                await DioHelper.postData(
-                                                  url:
-                                                      "api/update-status/${per.id}",
-                                                  data: {
-                                                    "status": false,
-                                                  },
-                                                ).then((value) {
-                                                  setState(() {
-                                                    getVecan();
-                                                    // permits.permitList?.removeAt(index);
-                                                  });
-                                                  print('mbroook');
-                                                }).catchError((error) {});
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            TextButton(
-                                              style: TextButton.styleFrom(
-                                                textStyle: Theme.of(context)
-                                                    .textTheme
-                                                    .labelLarge,
-                                              ),
-                                              child: Text(
-                                                  '${AppLocalizations.of(context)!.no}'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                          // crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Text(
-                                '${AppLocalizations.of(context)!.refuse}',
-                                style: TextStyle(color: Colors.white),
-                              )),
-                        ),
-                      ],
-                    )
-                  : SizedBox()
+              ? Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    color: Color(0xff49796B),
+                    borderRadius: BorderRadius.circular(30)),
+                child: TextButton(
+                    onPressed: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text(
+                              '${AppLocalizations.of(context)!.accept_excuse}',
+                            ),
+                            actions: [
+                              Row(
+                                children: [
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge,
+                                    ),
+                                    child: Text(
+                                        '${AppLocalizations.of(context)!.yes}'),
+                                    onPressed: () async {
+                                      await DioHelper.postData(
+                                        url:
+                                        "api/update-status/${per.id}",
+                                        data: {
+                                          "status": true,
+                                        },
+                                      ).then((value) {
+                                        setState(() {
+                                          getVecan();
+                                        });
+                                        print('mbroook');
+                                      }).catchError((error) {});
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge,
+                                    ),
+                                    child: Text(
+                                        '${AppLocalizations.of(context)!.no}'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Text(
+                      '${AppLocalizations.of(context)!.accept}',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    )),
+              ),
+              SizedBox(width: 10),
+              Container(
+                decoration: BoxDecoration(
+                    color: Color(0xff49796B),
+                    borderRadius: BorderRadius.circular(30)),
+                child: TextButton(
+                    onPressed: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text(
+                              '${AppLocalizations.of(context)!.are_denyExcuse}',
+                            ),
+                            actions: [
+                              Row(
+                                children: [
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge,
+                                    ),
+                                    child: Text(
+                                        '${AppLocalizations.of(context)!.yes}'),
+                                    onPressed: () async {
+                                      await DioHelper.postData(
+                                        url:
+                                        "api/update-status/${per.id}",
+                                        data: {
+                                          "status": false,
+                                        },
+                                      ).then((value) {
+                                        setState(() {
+                                          getVecan();
+                                        });
+                                        print('mbroook');
+                                      }).catchError((error) {});
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge,
+                                    ),
+                                    child: Text(
+                                        '${AppLocalizations.of(context)!.no}'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Text(
+                      '${AppLocalizations.of(context)!.refuse}',
+                      style: TextStyle(color: Colors.white),
+                    )),
+              ),
+            ],
+          )
+              : SizedBox()
               : SizedBox()
         ],
       ),
     );
   }
+
 }

@@ -39,6 +39,7 @@ class TasksModel {
     description = json['description'];
      assignees_names = json['assignees_names'];
     assignees = (json['assignees'] ?? []).cast<int>();
+    assignees = (json['assignees'] ?? []).cast<int>();
 
     //list?.contains(CacheHelper.getData(key: 'name'));
 

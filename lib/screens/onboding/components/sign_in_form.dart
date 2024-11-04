@@ -63,7 +63,7 @@ class _SignInFormState extends State<SignInForm> {
   String organizationsArabicName = '';
   bool _isChecked = false;
   bool settingsLoad = false;
-  String versionNow = '1.0.7';
+  String versionNow = '1.0.8';
   List <String>? versions;
   StateMachineController getRiveController(Artboard artboard) {
     StateMachineController? controller =
@@ -118,8 +118,7 @@ class _SignInFormState extends State<SignInForm> {
       isShowConfetti = true;
     });
     print("sending");
-    /*  print(name);
-    print(password);*/
+
 
     await DioHelper.postData(
       url: "api/auth/login",
