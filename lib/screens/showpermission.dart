@@ -204,162 +204,190 @@ class _ShowpermitState extends State<Showpermit> {
                   ? Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Padding(
                             padding: const EdgeInsets.all(15),
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      clickPermission = true;
-                                      clickVacances = false;
-                                      getPermissions();
-                                      setState(() {});
-                                      clickVacPending = false;
-                                      clickVacApproved = false;
-                                      clickVacRefused = false;
-                                    },
-                                    child: AnimatedContainer(
-                                      duration: const Duration(milliseconds: 300),
-                                      height: clickPermission == true ? 130 : 110, // تصغير الكارت قليلاً
-                                      width: 120, // عرض الكارت أصغر
-                                      margin: const EdgeInsets.only(right: 16),
-                                      decoration: BoxDecoration(
-                                        color: Colors.yellow.shade100,
-                                        borderRadius: BorderRadius.circular(12), // زوايا منحنية أصغر
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withOpacity(0.1),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                          )
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(12.0), // تقليل التباعد الداخلي
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  AppLocalizations.of(context)!.permissionsReq,
-                                                  style: TextStyle(
-                                                    color: Colors.grey[700],
-                                                    fontSize: 13, // حجم النص أصغر قليلاً
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                            if (widget.personType == 'MANAGER' &&
-                                                widget.permitsPermission != 0)
-                                              Positioned(
-                                                top: 0,
-                                                right: 0,
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.red.shade200,
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: Text(
-                                                    '${widget.permitsPermission}',
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        clickPermission = true;
+                                        clickVacances = false;
+                                        getPermissions();
+                                        setState(() {});
+                                        clickVacPending = false;
+                                        clickVacApproved = false;
+                                        clickVacRefused = false;
+                                      },
+                                      child: AnimatedContainer(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        height: clickPermission == true
+                                            ? 130
+                                            : 110, // تصغير الكارت قليلاً
+                                        width: 120, // عرض الكارت أصغر
+                                        margin:
+                                            const EdgeInsets.only(right: 16),
+                                        decoration: BoxDecoration(
+                                          color: Colors.yellow.shade100,
+                                          borderRadius: BorderRadius.circular(
+                                              12), // زوايا منحنية أصغر
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.1),
+                                              spreadRadius: 2,
+                                              blurRadius: 5,
+                                            )
+                                          ],
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(
+                                              12.0), // تقليل التباعد الداخلي
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .permissionsReq,
                                                     style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 11, // حجم الرقم أصغر
-                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.grey[700],
+                                                      fontSize:
+                                                          13, // حجم النص أصغر قليلاً
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                              if (widget.personType ==
+                                                      'MANAGER' &&
+                                                  widget.permitsPermission != 0)
+                                                Positioned(
+                                                  top: 0,
+                                                  right: 0,
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          Colors.red.shade200,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Text(
+                                                      '${widget.permitsPermission}',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize:
+                                                            11, // حجم الرقم أصغر
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  GestureDetector(
-                                    onTap: () {
-                                      clickVacances = true;
-                                      clickPermission = false;
-                                      getVecan();
-                                      setState(() {});
-                                      clickperPending = false;
-                                      clickperRefused = false;
-                                      clickperApproved = false;
-                                    },
-                                    child: AnimatedContainer(
-                                      duration: const Duration(milliseconds: 300),
-                                      height: clickVacances == true ? 130 : 110,
-                                      width: 120,
-                                      margin: const EdgeInsets.only(right: 16),
-                                      decoration: BoxDecoration(
-                                        color: Colors.red.shade100,
-                                        borderRadius: BorderRadius.circular(12),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withOpacity(0.1),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                          )
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  AppLocalizations.of(context)!.vacancesReq,
-                                                  style: TextStyle(
-                                                    color: Colors.grey[700],
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                            if (widget.personType == 'MANAGER' &&
-                                                widget.vacancesCount != 0)
-                                              Positioned(
-                                                top: 0,
-                                                right: 0,
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.red.shade200,
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: Text(
-                                                    '${widget.vacancesCount}',
+                                    const SizedBox(width: 10),
+                                    GestureDetector(
+                                      onTap: () {
+                                        clickVacances = true;
+                                        clickPermission = false;
+                                        getVecan();
+                                        setState(() {});
+                                        clickperPending = false;
+                                        clickperRefused = false;
+                                        clickperApproved = false;
+                                      },
+                                      child: AnimatedContainer(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        height:
+                                            clickVacances == true ? 130 : 110,
+                                        width: 120,
+                                        margin:
+                                            const EdgeInsets.only(right: 16),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red.shade100,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.1),
+                                              spreadRadius: 2,
+                                              blurRadius: 5,
+                                            )
+                                          ],
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .vacancesReq,
                                                     style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 11,
-                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.grey[700],
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                              if (widget.personType ==
+                                                      'MANAGER' &&
+                                                  widget.vacancesCount != 0)
+                                                Positioned(
+                                                  top: 0,
+                                                  right: 0,
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          Colors.red.shade200,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Text(
+                                                      '${widget.vacancesCount}',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 11,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-
-                        ),
+                            )),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -542,16 +570,25 @@ class _ShowpermitState extends State<Showpermit> {
     required int index,
     required BuildContext context,
   }) {
-    // Define date format
-    final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
+    // Function to format a given time string to the local timezone
+    String formatToLocalTime(String timeString) {
+      try {
+        // Ensure the time string is in UTC by adding 'Z' at the end
+        DateTime utcTime = DateTime.parse("${timeString}Z").toUtc();
+        // Convert UTC time to local time
+        DateTime localTime = utcTime.toLocal();
+        // Format the new local time
+        return DateFormat('yyyy-MM-dd HH:mm').format(localTime);
+      } catch (e) {
+        // In case of an error (invalid format), return the original string
+        return timeString;
+      }
+    }
 
-    // Format date and time with added 3 hours
-    String formattedFrom = per.from != null
-        ? dateFormat.format(DateTime.parse(per.from!).add(Duration(hours: 3)))
-        : '____';
-    String formattedTo = per.to != null
-        ? dateFormat.format(DateTime.parse(per.to!).add(Duration(hours: 3)))
-        : '____';
+    // Format date and time to local time
+    String formattedFrom =
+        per.from != null ? formatToLocalTime(per.from!) : '____';
+    String formattedTo = per.to != null ? formatToLocalTime(per.to!) : '____';
 
     return Container(
       margin: EdgeInsets.all(20),
@@ -598,9 +635,7 @@ class _ShowpermitState extends State<Showpermit> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -688,9 +723,7 @@ class _ShowpermitState extends State<Showpermit> {
                   : SizedBox(),
             ],
           ),
-          SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 15),
           widget.personType == 'MANAGER'
               ? per.status == 'PENDING'
                   ? Row(
@@ -732,7 +765,7 @@ class _ShowpermitState extends State<Showpermit> {
                                               ).then((value) {
                                                 setState(() {
                                                   getPermissions();
-                                                  //  permits.permitList?.removeAt(index);
+                                                  // permits.permitList?.removeAt(index);
                                                 });
                                                 print('Accepted');
                                               }).catchError((error) {
@@ -770,9 +803,7 @@ class _ShowpermitState extends State<Showpermit> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
+                        SizedBox(width: 10),
                         Container(
                           decoration: BoxDecoration(
                             color: Color(0xff49796B),
@@ -860,173 +891,171 @@ class _ShowpermitState extends State<Showpermit> {
     required int index,
     required BuildContext context,
   }) {
-    final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+    // Function to format a given time string to the local timezone
+    String formatToLocalTime(String timeString) {
+      try {
+        // Ensure the time string is in UTC by adding 'Z' at the end
+        DateTime utcTime = DateTime.parse("${timeString}Z").toUtc();
+        // Convert UTC time to local time
+        DateTime localTime = utcTime.toLocal();
+        // Format the new local time
+        return DateFormat('yyyy-MM-dd HH:mm').format(localTime);
+      } catch (e) {
+        // In case of an error (invalid format), return the original string
+        return timeString;
+      }
+    }
 
-    // Format date and time
-    String formattedFrom = per.from != null
-        ? dateFormat.format(DateTime.parse(per.from!))
-        : '____';
-    String formattedTo =
-        per.to != null ? dateFormat.format(DateTime.parse(per.to!)) : '____';
+    // Format date and time to local time
+    String formattedFrom =
+        per.from != null ? formatToLocalTime(per.from!) : '____';
+    String formattedTo = per.to != null ? formatToLocalTime(per.to!) : '____';
 
     return Container(
-      margin: EdgeInsets.all(20),
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.red.shade100,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(40.0),
-          bottomLeft: Radius.circular(40.0),
+        margin: EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.red.shade100,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(40.0),
+            bottomLeft: Radius.circular(40.0),
+          ),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${AppLocalizations.of(context)!.userName} : ${per.name} ',
-            style: TextStyle(
-                fontSize: 15,
-                color: Colors.black45,
-                fontWeight: FontWeight.bold),
-          ),
-          Text(
-            '${AppLocalizations.of(context)!.timeFrom} : ${formattedFrom}',
-            style: TextStyle(
-                fontSize: 15,
-                color: Colors.black45,
-                fontWeight: FontWeight.bold),
-          ),
-          Text(
-            '${AppLocalizations.of(context)!.timeTo} :${formattedTo}',
-            style: TextStyle(
-                fontSize: 15,
-                color: Colors.black45,
-                fontWeight: FontWeight.bold),
-          ),
-          /* Text(
-            'Status : ${per.status}',
-            style: TextStyle(
-                fontSize: 15, color: Colors.black45, fontWeight: FontWeight.bold),
-          ),*/
-          Text(
-            '${AppLocalizations.of(context)!.notesView} : ${per.notes == null ? '____' : per.notes}',
-            style: TextStyle(
-              fontSize: 15,
-              color: Colors.black45,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '${AppLocalizations.of(context)!.status} : ',
-                style: TextStyle(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${AppLocalizations.of(context)!.userName} : ${per.name} ',
+              style: TextStyle(
                   fontSize: 15,
                   color: Colors.black45,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                '${per.status}',
-                style: TextStyle(
+                  fontWeight: FontWeight.bold),
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.timeFrom} : $formattedFrom',
+              style: TextStyle(
                   fontSize: 15,
-                  color: per.status == 'APPROVED'
-                      ? Colors.green
-                      : per.status == "REFUSED"
-                          ? Colors.red
-                          : Color(0xffFFA500),
-                  fontWeight: FontWeight.bold,
-                ),
+                  color: Colors.black45,
+                  fontWeight: FontWeight.bold),
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.timeTo} : $formattedTo',
+              style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.black45,
+                  fontWeight: FontWeight.bold),
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.notesView} : ${per.notes == null ? '____' : per.notes}',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black45,
+                fontWeight: FontWeight.bold,
               ),
-              widget.personType == 'MANAGER'
-                  ? IconButton(
-                      onPressed: () async {
-                        // Extract month and year numbers
-                        monthNumber = per.from != null
-                            ? DateTime.parse(per.from!)
-                                .add(Duration(hours: 3))
-                                .month
-                            : -1; // -1 if date is null
-                        yearNumber = per.from != null
-                            ? DateTime.parse(per.from!)
-                                .add(Duration(hours: 3))
-                                .year
-                            : -1; // -1 if date is null
-                        usrId = per.user_id;
-                        await getRequestInfo();
-                        setState(() {});
-                        usrId = per.user_id;
-                        await getRequestInfo();
-                        setState(() {});
-                        print('Month Number: $monthNumber');
-                        print('Year Number: $yearNumber');
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "About this Employee",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red),
-                                  ),
-                                  Text(
-                                    "Total Monthly (time off hours) : ${total_monthly_timeoff_hours}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Month Time Off : ${month_timeoffs}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Year Day Off : ${year_dayoffs}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Month Day off : ${month_dayoffs}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      icon: Icon(Icons.info_outline))
-                  : SizedBox(),
-            ],
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          widget.personType == 'MANAGER'
-              ? per.status == 'PENDING'
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Color(0xff49796B),
-                              borderRadius: BorderRadius.circular(30)),
-                          child: TextButton(
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '${AppLocalizations.of(context)!.status} : ',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black45,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  '${per.status}',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: per.status == 'APPROVED'
+                        ? Colors.green
+                        : per.status == "REFUSED"
+                            ? Colors.red
+                            : Color(0xffFFA500),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                widget.personType == 'MANAGER'
+                    ? IconButton(
+                        onPressed: () async {
+                          // Extract month and year numbers
+                          monthNumber = per.from != null
+                              ? DateTime.parse(per.from!)
+                                  .add(Duration(hours: 3))
+                                  .month
+                              : -1; // -1 if date is null
+                          yearNumber = per.from != null
+                              ? DateTime.parse(per.from!)
+                                  .add(Duration(hours: 3))
+                                  .year
+                              : -1; // -1 if date is null
+                          usrId = per.user_id;
+                          await getRequestInfo();
+                          setState(() {});
+                          print('Month Number: $monthNumber');
+                          print('Year Number: $yearNumber');
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      "About this Employee",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red),
+                                    ),
+                                    Text(
+                                      "Total Monthly (time off hours) : ${total_monthly_timeoff_hours}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "Month Time Off : ${month_timeoffs}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "Year Day Off : ${year_dayoffs}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "Month Day off : ${month_dayoffs}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        icon: Icon(Icons.info_outline))
+                    : SizedBox(),
+              ],
+            ),
+            SizedBox(height: 15),
+            widget.personType == 'MANAGER'
+                ? per.status == 'PENDING'
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Color(0xff49796B),
+                                borderRadius: BorderRadius.circular(30)),
+                            child: TextButton(
                               onPressed: () {
                                 showDialog<void>(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      //  title: const Text('Basic dialog title'),
                                       content: Text(
                                         '${AppLocalizations.of(context)!.accept_excuse}',
                                       ),
@@ -1051,9 +1080,8 @@ class _ShowpermitState extends State<Showpermit> {
                                                 ).then((value) {
                                                   setState(() {
                                                     getVecan();
-                                                    //  permits.permitList?.removeAt(index);
                                                   });
-                                                  print('mbroook');
+                                                  print('Accepted');
                                                 }).catchError((error) {});
                                                 Navigator.of(context).pop();
                                               },
@@ -1084,22 +1112,20 @@ class _ShowpermitState extends State<Showpermit> {
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),
-                              )),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Color(0xff49796B),
-                              borderRadius: BorderRadius.circular(30)),
-                          child: TextButton(
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Color(0xff49796B),
+                                borderRadius: BorderRadius.circular(30)),
+                            child: TextButton(
                               onPressed: () {
                                 showDialog<void>(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      //  title: const Text('Basic dialog title'),
                                       content: Text(
                                         '${AppLocalizations.of(context)!.are_denyExcuse}',
                                       ),
@@ -1124,9 +1150,8 @@ class _ShowpermitState extends State<Showpermit> {
                                                 ).then((value) {
                                                   setState(() {
                                                     getVecan();
-                                                    // permits.permitList?.removeAt(index);
                                                   });
-                                                  print('mbroook');
+                                                  print('Rejected');
                                                 }).catchError((error) {});
                                                 Navigator.of(context).pop();
                                               },
@@ -1144,7 +1169,6 @@ class _ShowpermitState extends State<Showpermit> {
                                               },
                                             ),
                                           ],
-                                          // crossAxisAlignment: CrossAxisAlignment.center,
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                         ),
@@ -1156,14 +1180,14 @@ class _ShowpermitState extends State<Showpermit> {
                               child: Text(
                                 '${AppLocalizations.of(context)!.refuse}',
                                 style: TextStyle(color: Colors.white),
-                              )),
-                        ),
-                      ],
-                    )
-                  : SizedBox()
-              : SizedBox()
-        ],
-      ),
-    );
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : SizedBox()
+                : SizedBox(),
+          ],
+        ));
   }
 }
